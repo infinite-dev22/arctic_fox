@@ -99,8 +99,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     },
                       child: Text('back to login', style: AppTheme.subTextBold,))),
 
-
-
+                  
                 ],
               ),
             ),

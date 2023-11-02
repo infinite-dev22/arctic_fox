@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:smart_rent/screens/auth/complete_signup_screen.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 import 'package:smart_rent/widgets/app_button.dart';
 import 'package:smart_rent/widgets/app_password_textfield.dart';
@@ -27,6 +28,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 1.h),
           child: Center(
             child: SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -89,7 +91,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     title: 'Next',
                     color: AppTheme.primaryColor,
                     function: (){
-
+                      Get.to(() => CompleteSignUpScreen());
                     },
                   ),
                   SizedBox(height: 1.h,),

@@ -33,7 +33,7 @@ class _InitialScreenState extends State<InitialScreen> {
 
                 SizedBox(height: 1.h,),
 
-                Image.asset('assets/auth/logo.png'),
+                Image.asset('assets/auth/logo.png', width: 50.w,),
                 SizedBox(height: 3.h,),
                 Text(introText, style: AppTheme.subText,),
                 SizedBox(height: 5.h,),

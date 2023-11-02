@@ -36,7 +36,7 @@ class AppTextField extends StatelessWidget {
         Text(title ?? '', style: AppTheme.appFieldTitle,),
         SizedBox(height: 1.h,),
         SizedBox(
-          height: 7.5.h,
+          height: 6.5.h,
           child: TextFormField(
             validator: (val) =>
             val!.isEmpty ? 'Required field, Please fill in.' : null,
@@ -47,7 +47,7 @@ class AppTextField extends StatelessWidget {
             decoration: InputDecoration(
               focusedBorder: (borderSide != BorderSide.none)
                   ? OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10.sp),
+                borderRadius: BorderRadius.circular(15.sp),
                 borderSide: const BorderSide(
                   color: Colors.grey,
                   width: 2.0,

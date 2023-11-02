@@ -27,12 +27,13 @@ class _LoginScreenState extends State<LoginScreen> {
           padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 1.h),
           child: Center(
             child: SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
 
-                  Image.asset('assets/auth/logo.png'),
+                  Image.asset('assets/auth/logo.png', width: 50.w,),
 
                   Text('Sign in' , style: AppTheme.appTitleLarge,),
 

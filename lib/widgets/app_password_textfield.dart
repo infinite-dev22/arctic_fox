@@ -40,7 +40,7 @@ class _AuthPasswordTextField extends State<AppPasswordTextField> {
         Text(widget.title ?? '', style: AppTheme.appFieldTitle,),
         SizedBox(height: 1.h,),
         SizedBox(
-          height: 7.5.h,
+          height: 6.5.h,
           child: TextFormField(
             validator: (val) =>
             val!.isEmpty ? 'Required field, Please fill in.' : null,
@@ -51,7 +51,7 @@ class _AuthPasswordTextField extends State<AppPasswordTextField> {
             decoration: InputDecoration(
               focusedBorder: (widget.borderSide != BorderSide.none)
                   ? OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10.sp),
+                borderRadius: BorderRadius.circular(15.sp),
                 borderSide: const BorderSide(
                   color: Colors.grey,
                   width: 2.0,
@@ -60,7 +60,7 @@ class _AuthPasswordTextField extends State<AppPasswordTextField> {
                   : null,
               enabledBorder: (widget.borderSide != BorderSide.none)
                   ? OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10.sp),
+                borderRadius: BorderRadius.circular(15.sp),
                 borderSide: const BorderSide(
                   color: Colors.grey,
                 ),
@@ -78,7 +78,7 @@ class _AuthPasswordTextField extends State<AppPasswordTextField> {
                   )),
               border: OutlineInputBorder(
                 borderSide: widget.borderSide,
-                borderRadius: BorderRadius.circular(10.sp),
+                borderRadius: BorderRadius.circular(15.sp),
               ),
               fillColor: widget.fillColor,
               filled: true,

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/screens/auth/initial_screen.dart';
 import 'package:smart_rent/screens/home/homepage_screen.dart';
 
-void main() {
+void main() async{
   runApp(const MyApp());
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp],);
 }
 
 class MyApp extends StatelessWidget {

@@ -3,7 +3,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 
 
-class AppTextField extends StatelessWidget {
+class AppSearchTextField extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
   final bool obscureText;
@@ -14,7 +14,7 @@ class AppTextField extends StatelessWidget {
   final bool enabled;
   final String? title;
 
-  const AppTextField({
+  const AppSearchTextField({
     super.key,
     required this.controller,
     required this.hintText,
@@ -33,8 +33,7 @@ class AppTextField extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(title ?? '', style: AppTheme.appFieldTitle,),
-        SizedBox(height: 1.h,),
+
         SizedBox(
           height: 6.5.h,
           child: TextFormField(
@@ -47,7 +46,7 @@ class AppTextField extends StatelessWidget {
             decoration: InputDecoration(
               focusedBorder: (borderSide != BorderSide.none)
                   ? OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15.sp),
+                borderRadius: BorderRadius.circular(20.sp),
                 borderSide: const BorderSide(
                   color: Colors.grey,
                   width: 2.0,
@@ -56,7 +55,7 @@ class AppTextField extends StatelessWidget {
                   : null,
               enabledBorder: (borderSide != BorderSide.none)
                   ? OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15.sp),
+                borderRadius: BorderRadius.circular(20.sp),
                 borderSide: const BorderSide(
                   color: Colors.grey,
                 ),
@@ -64,7 +63,7 @@ class AppTextField extends StatelessWidget {
                   : null,
               border: OutlineInputBorder(
                 borderSide: borderSide,
-                borderRadius: BorderRadius.circular(15.sp),
+                borderRadius: BorderRadius.circular(20.sp),
               ),
               fillColor: fillColor,
               filled: true,
@@ -73,10 +72,20 @@ class AppTextField extends StatelessWidget {
                 color: Colors.grey,
                 fontSize: 16.sp,
               ),
+              suffixIcon: Image.asset('assets/home/filter.png'),
+              prefixIcon: Image.asset('assets/home/search.png'),
             ),
             keyboardType: TextInputType.emailAddress,
           ),
         ),
+
+        SizedBox(height: 2.h,),
+
+        Align(alignment: Alignment.centerRight, child: Image.asset('assets/home/add.png')),
+
+        Text('Your properties', style: AppTheme.appTitle1,),
+        Text('243 properties', style: AppTheme.subText,),
+
       ],
     );
   }

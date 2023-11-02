@@ -91,7 +91,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     title: 'Next',
                     color: AppTheme.primaryColor,
                     function: (){
-                      Get.to(() => CompleteSignUpScreen());
+                      Get.to(() => CompleteSignUpScreen(), transition: Transition.rightToLeftWithFade);
                     },
                   ),
                   SizedBox(height: 1.h,),

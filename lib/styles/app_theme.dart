@@ -19,8 +19,13 @@ class AppTheme{
   static const blueTitleColor2 = Color(0xFF3C81BA);
   static const greyTextColor1 = Color(0xFF7B7F9E);
   static const fillColor = Color(0xFFF2F3F3);
+  static const greenCardColor = Color(0xFF2DB398);
+  static const redCardColor = Color(0xFFE65D4A);
   static const darkGray = Color(0xFF888888);
   static const blackColor1 = Color(0xFF121515);
+  static const blackColor2 = Color(0xFF14223B);
+  static const foundationColor = Color(0xFF1A1E25);
+  static const orange1 = Color(0xFFF2994A);
   static const shadowColor = Colors.black;
 
 
@@ -41,6 +46,12 @@ class AppTheme{
   static TextStyle get subText => GoogleFonts.hind(
     color: greyTextColor1,
     fontSize: 18.sp,
+    fontWeight: FontWeight.w400,
+  );
+
+  static TextStyle get orangeSubText => GoogleFonts.hind(
+    color: orange1,
+    fontSize: 16.sp,
     fontWeight: FontWeight.w400,
   );
 
@@ -74,6 +85,37 @@ class AppTheme{
     fontSize: 25.sp,
     fontWeight: FontWeight.w700,
   );
+
+  static TextStyle get appTitle3 => GoogleFonts.hind(
+    color: blackColor2,
+    fontSize: 20.sp,
+    fontWeight: FontWeight.w700,
+  );
+
+  static TextStyle get appTitle4 => GoogleFonts.hind(
+    color: blackColor2,
+    fontSize: 17.sp,
+    fontWeight: FontWeight.w400,
+  );
+
+  static TextStyle get appTitle5 => GoogleFonts.hind(
+    color: blackColor2,
+    fontSize: 25.sp,
+    fontWeight: FontWeight.w700,
+  );
+
+  static TextStyle get appTitle6 => GoogleFonts.hind(
+    color: foundationColor,
+    fontSize: 20.sp,
+    fontWeight: FontWeight.w400,
+  );
+
+  static TextStyle get cardPrice1 => GoogleFonts.hind(
+    color: shadowColor,
+    fontSize: 20.sp,
+    fontWeight: FontWeight.w700,
+  );
+
 
   static TextStyle get blueSubText => GoogleFonts.hind(
     color: blueTitleColor2,

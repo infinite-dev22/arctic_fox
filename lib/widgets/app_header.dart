@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 
@@ -16,8 +17,13 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget{
       automaticallyImplyLeading: false,
       title: Text(title ?? '', style: AppTheme.appTitle3,),
       centerTitle: true,
-      actions: actions ?? [],
-      leading: leading,
+      actions: actions ?? [
+        Padding(
+          padding: EdgeInsets.only(right: 5.w),
+          child: Image.asset('assets/home/sidely.png'),
+        ),
+      ],
+      leading: leading ?? GestureDetector(onTap: (){Get.back();},child: leading ?? Image.asset('assets/general/back.png')),
     );
   }
 

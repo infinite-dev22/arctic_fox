@@ -104,6 +104,9 @@ flutter:
     - assets/auth/
     - assets/home/
     - assets/property/
+    - assets/tenant/
+    - assets/general/
+    - assets/avatar/
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

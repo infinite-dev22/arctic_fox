@@ -25,6 +25,9 @@ class AppTheme{
   static const blackColor1 = Color(0xFF121515);
   static const blackColor2 = Color(0xFF14223B);
   static const foundationColor = Color(0xFF1A1E25);
+  static const darkBlueColor = Color(0xFF1A2B49);
+  static const gray60Color = Color(0xFF4E4E53);
+  static const gray70Color = Color(0xFF232326);
   static const orange1 = Color(0xFFF2994A);
   static const shadowColor = Colors.black;
 
@@ -47,6 +50,36 @@ class AppTheme{
     color: greyTextColor1,
     fontSize: 18.sp,
     fontWeight: FontWeight.w400,
+  );
+
+  static TextStyle get gray70Text => GoogleFonts.hind(
+    color: gray70Color,
+    fontSize: 18.sp,
+    fontWeight: FontWeight.w400,
+  );
+
+  static TextStyle get gray70Text2 => GoogleFonts.hind(
+    color: gray70Color,
+    fontSize: 16.sp,
+    fontWeight: FontWeight.w400,
+  );
+
+  static TextStyle get subTextInter1 => GoogleFonts.inter(
+    color: gray60Color,
+    fontSize: 18.sp,
+    fontWeight: FontWeight.w400,
+  );
+
+  static TextStyle get darkBlueText1 => GoogleFonts.hind(
+    color: darkBlueColor,
+    fontSize: 18.sp,
+    fontWeight: FontWeight.w500,
+  );
+
+  static TextStyle get darkBlueTitle => GoogleFonts.hind(
+    color: darkBlueColor,
+    fontSize: 22.5.sp,
+    fontWeight: FontWeight.w700,
   );
 
   static TextStyle get orangeSubText => GoogleFonts.hind(

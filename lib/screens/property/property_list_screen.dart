@@ -41,44 +41,38 @@ class _PropertyListScreenState extends State<PropertyListScreen> {
       body: Padding(
         padding: EdgeInsets.only(left: 5.w, right: 5.w, top: 2.h),
         child: SingleChildScrollView(
-          padding: EdgeInsets.only(bottom: 5.h),
           physics: BouncingScrollPhysics(),
-          child: Container(
-            height: MediaQuery.of(context).size.height,
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Image.asset('assets/home/location.png', fit: BoxFit.cover,scale: 0.65),
-                    Text('JK Holdings', style: AppTheme.appTitle1,),
-                  ],
-                ),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Image.asset('assets/home/location.png', fit: BoxFit.cover,scale: 0.65),
+                  Text('JK Holdings', style: AppTheme.appTitle1,),
+                ],
+              ),
 
-                AppSearchTextField(
-                    controller: searchController,
-                    hintText: 'Search properties, tenants, rooms',
-                    obscureText: false,
+              AppSearchTextField(
+                  controller: searchController,
+                  hintText: 'Search properties, tenants, rooms',
+                  obscureText: false,
 
-                ),
+              ),
 
-                Expanded(
-                  child: ListView.builder(
-                      shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: 5,
-                      clipBehavior: Clip.none,
-                      itemBuilder: (context, index) {
-                      return Bounceable(
-                        onTap: (){
+              ListView.builder(
+                  shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: 5,
+                  clipBehavior: Clip.none,
+                  itemBuilder: (context, index) {
+                  return Bounceable(
+                    onTap: (){
 
-                        },
-                          child: PropertyCardWidget());
-                  }),
-                ),
+                    },
+                      child: PropertyCardWidget());
+              }),
 
 
-              ],
-            ),
+            ],
           ),
         ),
       ),

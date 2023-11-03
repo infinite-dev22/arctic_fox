@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:smart_rent/controllers/complaints/complaints_controller.dart';
 import 'package:smart_rent/screens/property/property_list_screen.dart';
+import 'package:smart_rent/screens/tenant/tenant_list_screen.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 import 'package:smart_rent/widgets/app_header.dart';
 import 'package:smart_rent/widgets/complaints_widget.dart';
@@ -13,15 +15,11 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ComplaintsController complaintsController = Get.put(ComplaintsController());
     return Scaffold(
       appBar: AppHeader(
         title: 'Dashboard',
-        actions: [
-          Padding(
-            padding: EdgeInsets.only(right: 5.w),
-            child: Image.asset('assets/home/sidely.png'),
-          ),
-        ],
+        leading: Container(),
       ),
 
       body: Padding(
@@ -50,7 +48,7 @@ class HomePage extends StatelessWidget {
                     color: AppTheme.redCardColor, total: 8,
                     title: 'Total Tenants',
                     function: () {
-
+                      Get.to(() => TenantListScreen(), transition: Transition.zoom);
                     },),
                 ],
               ),
@@ -67,7 +65,9 @@ class HomePage extends StatelessWidget {
 
               SizedBox(height: 2.h,),
 
-              ComplaintsWidget(),
+              ComplaintsWidget(
+                complaintsController: complaintsController,
+              ),
 
             ],
           ),

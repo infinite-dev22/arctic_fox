@@ -31,6 +31,7 @@ class AppTheme{
   static const orange1 = Color(0xFFF2994A);
   static const blackGrey = Color(0xff3a4b50ad);
   static const shadowColor = Colors.black;
+  static const purpleColor1 = Colors.deepPurpleAccent;
 
 
 
@@ -86,6 +87,12 @@ class AppTheme{
   static TextStyle get darkBlueTitle => GoogleFonts.hind(
     color: darkBlueColor,
     fontSize: 22.5.sp,
+    fontWeight: FontWeight.w700,
+  );
+
+  static TextStyle get purpleText1 => GoogleFonts.hind(
+    color: purpleColor1,
+    fontSize: 18.sp,
     fontWeight: FontWeight.w700,
   );
 

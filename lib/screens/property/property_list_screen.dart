@@ -1,6 +1,10 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
+import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:smart_rent/screens/property/add_property_screen.dart';
+import 'package:smart_rent/screens/property/property_details_screen.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 import 'package:smart_rent/widgets/app_header.dart';
 import 'package:smart_rent/widgets/app_image_header.dart';
@@ -22,6 +26,8 @@ class _PropertyListScreenState extends State<PropertyListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppImageHeader(
+        isTitleCentred: true,
+        leading: Text(''),
           title: 'assets/auth/logo.png',
         actions: [
           Padding(
@@ -55,6 +61,9 @@ class _PropertyListScreenState extends State<PropertyListScreen> {
                   controller: searchController,
                   hintText: 'Search properties, tenants, rooms',
                   obscureText: false,
+                function: (){
+                    Get.to(() => AddPropertyScreen(), transition: Transition.downToUp);
+                },
 
               ),
 
@@ -66,9 +75,9 @@ class _PropertyListScreenState extends State<PropertyListScreen> {
                   itemBuilder: (context, index) {
                   return Bounceable(
                     onTap: (){
-
+                      Get.to(() => PropertyDetailsScreen());
                     },
-                      child: PropertyCardWidget());
+                      child: SlideInUp(child: PropertyCardWidget()));
               }),
 
 

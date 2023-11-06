@@ -3,7 +3,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 
 
-class AppTextField extends StatelessWidget {
+class AppMaxTextField extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
   final bool obscureText;
@@ -14,7 +14,7 @@ class AppTextField extends StatelessWidget {
   final bool enabled;
   final String? title;
 
-  const AppTextField({
+  const AppMaxTextField({
     super.key,
     required this.controller,
     required this.hintText,
@@ -33,10 +33,10 @@ class AppTextField extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        title == null ? Container() : Text(title ?? '', style: AppTheme.appFieldTitle,),
-        title == null ? Container() : SizedBox(height: 1.h,),
+        Text(title ?? '', style: AppTheme.appFieldTitle,),
+        SizedBox(height: 1.h,),
         SizedBox(
-          height: 6.5.h,
+          height: 13.h,
           child: TextFormField(
             validator: (val) =>
             val!.isEmpty ? 'Required field, Please fill in.' : null,
@@ -75,7 +75,9 @@ class AppTextField extends StatelessWidget {
               ),
             ),
             keyboardType: TextInputType.emailAddress,
-            // maxLines: 10,
+            maxLines: 5,
+            maxLength: 200,
+
           ),
         ),
       ],

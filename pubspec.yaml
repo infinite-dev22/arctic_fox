@@ -53,6 +53,17 @@ dependencies:
   dropdown_button2: ^2.3.9
   amount_formatter: ^0.0.2
   image_picker: ^1.0.4
+  google_maps_widget: ^1.0.5+1
+  carousel_slider: ^4.2.1
+  fluttertoast: ^8.2.2
+  dotted_border: ^2.1.0
+  photo_view: ^0.14.0
+  share_plus: ^7.2.1
+  string_capitalize: ^0.0.10
+  readmore: ^2.2.0
+  url_launcher: ^6.1.6
+#  url_launcher: ^6.2.1
+
 
 dev_dependencies:
   flutter_test:

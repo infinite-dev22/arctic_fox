@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 
@@ -13,6 +14,7 @@ class AppSearchTextField extends StatelessWidget {
   final TextStyle? style;
   final bool enabled;
   final String? title;
+  final VoidCallback function;
 
   const AppSearchTextField({
     super.key,
@@ -24,7 +26,7 @@ class AppSearchTextField extends StatelessWidget {
     this.fillColor = AppTheme.fillColor,
     this.style,
     this.enabled = true,
-    this.title
+    this.title, required this.function
   });
 
   @override
@@ -81,7 +83,9 @@ class AppSearchTextField extends StatelessWidget {
 
         SizedBox(height: 2.h,),
 
-        Align(alignment: Alignment.centerRight, child: Image.asset('assets/home/add.png')),
+        Align(alignment: Alignment.centerRight, child: Bounceable(
+          onTap: function,
+            child: Image.asset('assets/home/add.png'))),
 
         Text('Your properties', style: AppTheme.appTitle1,),
         Text('243 properties', style: AppTheme.subText,),

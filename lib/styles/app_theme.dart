@@ -29,6 +29,7 @@ class AppTheme{
   static const gray60Color = Color(0xFF4E4E53);
   static const gray70Color = Color(0xFF232326);
   static const orange1 = Color(0xFFF2994A);
+  static const blackGrey = Color(0xff3a4b50ad);
   static const shadowColor = Colors.black;
 
 
@@ -48,6 +49,12 @@ class AppTheme{
 
   static TextStyle get subText => GoogleFonts.hind(
     color: greyTextColor1,
+    fontSize: 18.sp,
+    fontWeight: FontWeight.w400,
+  );
+
+  static TextStyle get descriptionText1 => GoogleFonts.hind(
+    color: foundationColor,
     fontSize: 18.sp,
     fontWeight: FontWeight.w400,
   );
@@ -154,6 +161,13 @@ class AppTheme{
     color: blueTitleColor2,
     fontSize: 17.5.sp,
     fontWeight: FontWeight.w400,
+  );
+
+
+  static TextStyle get subTextBold1 => GoogleFonts.hind(
+    color: darkGray,
+    fontSize: 17.5.sp,
+    fontWeight: FontWeight.w700,
   );
 
 

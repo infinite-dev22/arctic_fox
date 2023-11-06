@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bounceable/flutter_bounceable.dart';
+import 'package:google_maps_widget/google_maps_widget.dart';
+import 'package:readmore/readmore.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/styles/app_theme.dart';
+import 'package:smart_rent/widgets/app_button.dart';
 import 'package:smart_rent/widgets/app_header.dart';
+import 'package:smart_rent/widgets/app_image_header.dart';
 import 'package:smart_rent/widgets/tenant_requirement_widget.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class TenantDetailsScreen extends StatefulWidget {
   const TenantDetailsScreen({super.key});
@@ -22,8 +28,9 @@ class _TenantDetailsScreenState extends State<TenantDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppHeader(
-        title: 'Smart Rent',
+      appBar: AppImageHeader(
+          title: 'assets/auth/logo.png',
+        isTitleCentred: true,
       ),
 
       body: Padding(
@@ -56,10 +63,23 @@ class _TenantDetailsScreenState extends State<TenantDetailsScreen> {
                   ),
                 ),
                 
-                Card(
-                  child: Padding(
-                    padding: EdgeInsets.all(15.sp),
-                    child: Image.asset('assets/general/call.png'),
+                Bounceable(
+                  onTap: () async {
+                    final Uri phoneUri = Uri(
+                        scheme: 'tel',
+                        path: '0785556722'
+                    );
+                    if(await canLaunchUrl(phoneUri)){
+                      await launchUrl(phoneUri);
+                    } else {
+                      print('Cannot make Call');
+                    }
+                  },
+                  child: Card(
+                    child: Padding(
+                      padding: EdgeInsets.all(15.sp),
+                      child: Image.asset('assets/general/call.png'),
+                    ),
                   ),
                 )
                 
@@ -68,6 +88,73 @@ class _TenantDetailsScreenState extends State<TenantDetailsScreen> {
 
             SizedBox(height: 2.h,),
             Text('Requirements', style: AppTheme.appTitle3,),
+
+            ClipRRect(
+              borderRadius: BorderRadius.circular(20.sp),
+              child: Container(
+                clipBehavior: Clip.antiAlias,
+                height: 30.h,
+                width: 90.w,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20.sp),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.6),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: Offset(0, 3), // changes position of shadow
+                    ),
+                  ],
+                ),
+                child: GoogleMapsWidget(
+                  mapType: MapType.terrain,
+                    sourceMarkerIconInfo: MarkerIconInfo(
+                      infoWindowTitle: 'Ryan Musk',
+                      onTapInfoWindow: (_) {
+                        print("Tapped on source info window");
+                      },
+                      assetPath: "assets/home/location.png",
+                    ),
+                    apiKey: 'AIzaSyCsl_5sdhkwJrPqgYMeYGvyMKyytrLfMG0',
+                    sourceLatLng: LatLng(0.31224095925812473, 32.5845170394287),
+                    destinationLatLng: LatLng(0, 0),
+                    zoomControlsEnabled: false,
+                    zoomGesturesEnabled: true,
+                    // destinationLatLng:  LatLng(0.31471590184881015, 32.584398366412834),
+
+                ),
+              ),
+            ),
+
+            SizedBox(height: 2.h,),
+            Text('Description', style: AppTheme.appTitle3,),
+            ReadMoreText(
+              'The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact.',
+              trimLines: 6,
+              colorClickableText: AppTheme.primaryColor,
+              trimMode: TrimMode.Line,
+              trimCollapsedText: 'Read more',
+              trimExpandedText: 'Show less',
+              style: AppTheme.descriptionText1,
+              moreStyle: AppTheme.descriptionText1,
+            ),
+
+            SizedBox(height: 2.h,),
+            AppButton(
+                title: 'Contact',
+                color: AppTheme.primaryColor,
+                function: () async{
+                  final Uri phoneUri = Uri(
+                      scheme: 'tel',
+                      path: '0785556722'
+                  );
+                  if(await canLaunchUrl(phoneUri)){
+                    await launchUrl(phoneUri);
+                  } else {
+                    print('Cannot make Call');
+                  }
+                },
+            )
 
             // GridView.builder(
             //   // padding: EdgeInsets.zero,

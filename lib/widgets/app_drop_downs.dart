@@ -2,6 +2,7 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/models/general/smart_model.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 import 'package:smart_rent/widgets/custom_elevated_image.dart';
@@ -201,7 +202,7 @@ class CustomGenericDropdown<T extends SmartModel> extends StatelessWidget {
     return Column(
       children: [
         SizedBox(
-          height: 50,
+          height: 6.5.h,
           child: DropdownButtonFormField2<T>(
             isExpanded: true,
             decoration: InputDecoration(

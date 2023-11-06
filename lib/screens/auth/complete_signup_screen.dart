@@ -71,6 +71,8 @@ class _CompleteSignUpScreenState extends State<CompleteSignUpScreen> {
                   ],
                 ),
 
+                SizedBox(height: 3.h,),
+
                 AppTextField(
                   isEmail: true,
                   controller: emailNameEditingController,

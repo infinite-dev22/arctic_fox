@@ -52,6 +52,7 @@ dependencies:
   dropdown_textfield: ^1.0.8
   dropdown_button2: ^2.3.9
   amount_formatter: ^0.0.2
+  image_picker: ^1.0.4
 
 dev_dependencies:
   flutter_test:

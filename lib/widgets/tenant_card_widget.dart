@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
+import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:smart_rent/screens/tenant/tenant_details_screen.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 
 class TenantCardWidget extends StatelessWidget {
@@ -49,7 +51,11 @@ class TenantCardWidget extends StatelessWidget {
             ),
 
             Text('Madam Lian', style: AppTheme.darkBlueTitle,),
-            Text('View More Info', style: AppTheme.darkBlueText1,),
+            Bounceable(
+              onTap: (){
+                Get.to(() => TenantDetailsScreen());
+              },
+                child: Text('View More Info', style: AppTheme.darkBlueText1,)),
 
           ],
         ),

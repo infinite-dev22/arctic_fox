@@ -43,7 +43,7 @@ class _TenantListScreenState extends State<TenantListScreen> {
                   ),
                   Bounceable(
                     onTap: (){
-                      
+
                     },
                       child: Image.asset('assets/home/add.png')),
                 ],
@@ -54,7 +54,10 @@ class _TenantListScreenState extends State<TenantListScreen> {
                   shrinkWrap: true,
                   itemCount: 30,
                   itemBuilder: (context, index){
-                    return TenantCardWidget();
+                    return Padding(
+                      padding: EdgeInsets.only(top: 1.h),
+                      child: TenantCardWidget(),
+                    );
                   }),
 
             ],

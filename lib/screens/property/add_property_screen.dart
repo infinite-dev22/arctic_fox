@@ -107,6 +107,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                 ],
               ),
 
+              SizedBox(height: 2.h,),
 
               AppTextField(
                 controller: addressController,

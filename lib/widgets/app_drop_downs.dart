@@ -123,7 +123,7 @@ class CustomDropdownAction extends StatelessWidget {
   }
 }
 
-class SearchableDropDown<T extends SmartModel> extends StatelessWidget {
+class SearchableDropDown<T> extends StatelessWidget {
   const SearchableDropDown(
       {super.key,
         required this.hintText,
@@ -172,7 +172,7 @@ class SearchableDropDown<T extends SmartModel> extends StatelessWidget {
         autovalidateMode: AutovalidateMode.always,
         dropDownList: menuItems
             .map(
-                (item) => DropDownValueModel(value: item, name: item.getName()))
+                (item) => DropDownValueModel(value: item, name: item.toString()))
             .toList(),
         onChanged: onChanged,
       ),
@@ -180,7 +180,7 @@ class SearchableDropDown<T extends SmartModel> extends StatelessWidget {
   }
 }
 
-class CustomGenericDropdown<T extends SmartModel> extends StatelessWidget {
+class CustomGenericDropdown<T> extends StatelessWidget {
   const CustomGenericDropdown(
       {super.key,
         required this.hintText,
@@ -223,7 +223,7 @@ class CustomGenericDropdown<T extends SmartModel> extends StatelessWidget {
                 .map((item) => DropdownMenuItem<T>(
               value: item,
               child: Text(
-                item.getName(),
+                item.toString(),
                 style: const TextStyle(
                   fontSize: 14,
                 ),

@@ -51,7 +51,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       title: 'Verify',
                       color: AppTheme.darkerColor,
                       function: (){
-
+                        Get.snackbar('INFO', 'Please check your email',
+                          titleText: Text('INFO', style: AppTheme.appTitle3,),
+                        );
                       }),
 
                   Row(
@@ -77,7 +79,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               title: 'Get code',
                               color: AppTheme.primaryColor,
                               function: (){
-
+                                Get.snackbar('OTP', 'Your OTP is 1234',
+                                  titleText: Text('OTP', style: AppTheme.appTitle3,),
+                                );
                               }),
                         ],
                       ),

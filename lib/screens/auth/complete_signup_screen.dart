@@ -25,8 +25,13 @@ class _CompleteSignUpScreenState extends State<CompleteSignUpScreen> {
   final TextEditingController passwordEditingController = TextEditingController();
   final TextEditingController confirmPasswordEditingController = TextEditingController();
 
-  List<SmartModel> menuList = [
+  var userList = [
+    'admin',
+    'manager',
+    'user'
   ];
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -93,9 +98,12 @@ class _CompleteSignUpScreenState extends State<CompleteSignUpScreen> {
                 SizedBox(height: 3.h,),
 
                 Text('TYPE OF USER', style: AppTheme.appFieldTitle,),
-                CustomGenericDropdown(
+                CustomGenericDropdown<String>(
                     hintText: 'Choose your user-type',
-                  menuItems: menuList,
+                  menuItems: userList,
+                  onChanged: (value){
+
+                  },
                 ),
 
                 SizedBox(height: 3.h,),
@@ -104,7 +112,10 @@ class _CompleteSignUpScreenState extends State<CompleteSignUpScreen> {
                     title: 'Submit',
                     color: AppTheme.primaryColor,
                     function: (){
-                      Get.to(() => HomePage(), transition: Transition.rightToLeftWithFade);
+                      Get.off(() => HomePage(), transition: Transition.rightToLeftWithFade);
+                      Get.snackbar('SUCCESS', 'Account created successfully',
+                        titleText: Text('SUCCESS', style: AppTheme.greenTitle1,),
+                      );
                     }),
 
                 SizedBox(height: 5.h,),

@@ -4,6 +4,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/models/general/smart_model.dart';
@@ -30,7 +31,15 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
   final TextEditingController phoneNoController = TextEditingController();
 
 
-  List<SmartModel> menuList = [
+  var typeList = [
+    'Individual',
+    'Company',
+    'Family',
+  ];
+
+  var sexList = [
+    'Mr',
+    'Mrs',
   ];
 
   String imageError = '';
@@ -81,12 +90,18 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
 
               CustomGenericDropdown(
                 hintText: 'Individual',
-                menuItems: menuList,
+                menuItems: typeList,
+                onChanged: (value){
+
+                },
               ),
 
               CustomGenericDropdown(
                 hintText: 'Mr',
-                menuItems: menuList,
+                menuItems: sexList,
+                onChanged: (value){
+
+                },
               ),
 
 
@@ -217,7 +232,10 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                 title: 'Submit',
                 color: AppTheme.primaryColor,
                 function: (){
-
+                  Get.back();
+                  Get.snackbar('SUCCESS', 'Tenant added to your list',
+                      titleText: Text('SUCCESS', style: AppTheme.greenTitle1,),
+                  );
                 },
               ),
 

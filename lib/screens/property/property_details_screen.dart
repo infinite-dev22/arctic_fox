@@ -91,9 +91,14 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
               Positioned(
                 top: 5.h,
                 left: 5.w,
-                child: CircleAvatar(
-                  backgroundColor: Colors.white,
-                  child: Image.asset('assets/general/arrow-left.png'),
+                child: GestureDetector(
+                  onTap: (){
+                    Get.back();
+                  },
+                  child: CircleAvatar(
+                    backgroundColor: Colors.white,
+                    child: Image.asset('assets/general/arrow-left.png'),
+                  ),
                 ),
               ),
 

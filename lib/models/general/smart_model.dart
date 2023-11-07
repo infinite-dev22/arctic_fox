@@ -1,4 +1,4 @@
-abstract class SmartModel {
-  int getId();
-  String getName();
-}
+// abstract class SmartModel {
+//   int getId();
+//   String getName();
+// }

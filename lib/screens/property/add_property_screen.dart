@@ -4,6 +4,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/models/general/smart_model.dart';
@@ -13,6 +14,7 @@ import 'package:smart_rent/widgets/app_drop_downs.dart';
 import 'package:smart_rent/widgets/app_image_header.dart';
 import 'package:smart_rent/widgets/app_max_textfield.dart';
 import 'package:smart_rent/widgets/app_textfield.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 
 class AddPropertyScreen extends StatefulWidget {
@@ -28,7 +30,14 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
   final TextEditingController addressController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
 
-  List<SmartModel> menuList = [
+  var typeList = [
+    'single',
+    'double'
+  ];
+
+  var categoryList = [
+    'flat',
+    'bungalow'
   ];
 
   String imageError = '';
@@ -50,6 +59,14 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
       print(e);
     }
   }
+
+  YoutubePlayerController _controller = YoutubePlayerController(
+    initialVideoId: 'iLnmTe5Q2Qw',
+    flags: YoutubePlayerFlags(
+      autoPlay: true,
+      mute: true,
+    ),
+  );
 
   @override
   void initState() {
@@ -90,17 +107,23 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
 
                   SizedBox(
                     width: 42.5.w,
-                    child: CustomGenericDropdown(
+                    child: CustomGenericDropdown<String>(
                       hintText: 'Type',
-                      menuItems: menuList,
+                      menuItems: typeList,
+                      onChanged: (value){
+
+                      },
                     ),
                   ),
 
                   SizedBox(
                     width: 42.5.w,
-                    child: CustomGenericDropdown(
+                    child: CustomGenericDropdown<String>(
                       hintText: 'Category',
-                      menuItems: menuList,
+                      menuItems: categoryList,
+                      onChanged: (value){
+
+                      },
                     ),
                   ),
 
@@ -206,7 +229,10 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                   title: 'Submit',
                   color: AppTheme.primaryColor,
                   function: (){
-
+                    Get.back();
+                    Get.snackbar('SUCCESS', 'Property added to your list',
+                      titleText: Text('SUCCESS', style: AppTheme.greenTitle1,),
+                    );
                   },
               ),
 

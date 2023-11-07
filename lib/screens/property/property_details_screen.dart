@@ -225,6 +225,7 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
                   ),
 
                   ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: propertyOptionsController.options.length,
                       itemBuilder: (context, index) {

@@ -54,7 +54,7 @@ class _TenantDetailsScreenState extends State<TenantDetailsScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Ryan Musk', style: AppTheme.appTitle3,),
+                            Text('Madam Jupiter', style: AppTheme.appTitle3,),
                             Text('TENANT PRO', style: AppTheme.subText,),
                           ],
                         ),

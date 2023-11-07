@@ -5,6 +5,8 @@ import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:get/get.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:smart_rent/controllers/property_options/floor_option_controller.dart';
+import 'package:smart_rent/controllers/property_options/property_options_controller.dart';
 import 'package:smart_rent/screens/property/video_player_screen.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 import 'package:smart_rent/widgets/property_details_widget.dart';
@@ -21,8 +23,11 @@ class PropertyDetailsScreen extends StatefulWidget {
 class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
 
 
-  String videoId = YoutubePlayer.convertUrlToId("https://youtu.be/izFcWmL1YYQ").toString();
-
+  String videoId = YoutubePlayer.convertUrlToId("https://youtu.be/izFcWmL1YYQ")
+      .toString();
+  final PropertyOptionsController propertyOptionsController = Get.put(
+      PropertyOptionsController());
+  final FloorOptionsController floorOptionsController = Get.put(FloorOptionsController());
 
   @override
   void initState() {
@@ -46,22 +51,20 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
                 CarouselSlider.builder(
                   itemCount: 1,
                   options: CarouselOptions(
-                    aspectRatio: 1/1,
+                    aspectRatio: 1 / 1,
                     viewportFraction: 1,
                     autoPlay: true,
                     height: 50.h,
-                    onPageChanged: (index, r){
+                    onPageChanged: (index, r) {
                       // setState(() {
                       //   currentIndex = index;
                       // });
                       // print(currentIndex);
                     },
                   ),
-                  itemBuilder: (context, index, real){
-
+                  itemBuilder: (context, index, real) {
                     return GestureDetector(
-                      onTap: (){
-                      },
+                      onTap: () {},
                       child: Hero(
                         tag: '',
                         child: GestureDetector(
@@ -70,10 +73,10 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
                                 PhotoViewGallery.builder(
                                   // pageController: widget.pageController,
                                   itemCount: 1,
-                                  builder: (context, index){
-
+                                  builder: (context, index) {
                                     return PhotoViewGalleryPageOptions(
-                                      imageProvider: CachedNetworkImageProvider('https://i.ibb.co/WVnBf75/view-geometric-buildings.jpg'),
+                                      imageProvider: CachedNetworkImageProvider(
+                                          'https://i.ibb.co/WVnBf75/view-geometric-buildings.jpg'),
                                     );
                                   },
                                 ));
@@ -81,12 +84,16 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
                           },
                           child: CachedNetworkImage(
                             imageUrl: 'https://i.ibb.co/WVnBf75/view-geometric-buildings.jpg',
-                            width: MediaQuery.of(context).size.width,
+                            width: MediaQuery
+                                .of(context)
+                                .size
+                                .width,
                             fit: BoxFit.cover,
-                            errorWidget: (context, url, error){
+                            errorWidget: (context, url, error) {
                               return Container(
                                 child: Center(
-                                  child: Image.network('https://i.ibb.co/WVnBf75/view-geometric-buildings.jpg'),
+                                  child: Image.network(
+                                      'https://i.ibb.co/WVnBf75/view-geometric-buildings.jpg'),
                                 ),
                               );
                             },
@@ -112,7 +119,7 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
                   top: 5.h,
                   left: 5.w,
                   child: GestureDetector(
-                    onTap: (){
+                    onTap: () {
                       Get.back();
                     },
                     child: CircleAvatar(
@@ -126,7 +133,7 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
                   top: 5.h,
                   right: 5.w,
                   child: Bounceable(
-                    onTap: (){
+                    onTap: () {
 
                     },
                     child: CircleAvatar(
@@ -140,11 +147,12 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
                   bottom: 2.h,
                   right: 5.w,
                   child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 1.h),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 5.w, vertical: 1.h),
                     decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20.sp),
-                      shape: BoxShape.rectangle
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20.sp),
+                        shape: BoxShape.rectangle
                     ),
                     child: Text('1/1', style: AppTheme.descriptionText1,),
                   ),
@@ -162,7 +170,7 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
                 children: [
                   Center(
                     child: Bounceable(
-                      onTap: (){
+                      onTap: () {
                         YoutubePlayerController _controller = YoutubePlayerController(
                           initialVideoId: videoId,
                           flags: YoutubePlayerFlags(
@@ -170,7 +178,8 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
                             mute: true,
                           ),
                         );
-                        Get.to(() => VideoPlayerScreen(controller: _controller));
+                        Get.to(() =>
+                            VideoPlayerScreen(controller: _controller));
                       },
                       child: Container(
                         width: 90.w,
@@ -184,7 +193,8 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
                             )
                         ),
                         child: Center(
-                          child: Text('Watch video', style: AppTheme.purpleText1,),
+                          child: Text('Watch video',
+                            style: AppTheme.purpleText1,),
                         ),
                       ),
                     ),
@@ -197,23 +207,56 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      PropertyDetailsWidget(detail: 'Entebbe, Uganda', icon: 'assets/general/location.png',),
-                      PropertyDetailsWidget(detail: '40 rooms', icon: 'assets/property/bed.png',),
+                      PropertyDetailsWidget(detail: 'Entebbe, Uganda',
+                        icon: 'assets/general/location.png',),
+                      PropertyDetailsWidget(
+                        detail: '40 rooms', icon: 'assets/property/bed.png',),
                     ],
                   ),
 
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      PropertyDetailsWidget(detail: 'Available - 15unites (35%)',),
-                      PropertyDetailsWidget(detail: '673', icon: 'assets/property/size.png',),
+                      PropertyDetailsWidget(
+                        detail: 'Available - 15unites (35%)',),
+                      PropertyDetailsWidget(
+                        detail: '673', icon: 'assets/property/size.png',),
                     ],
                   ),
 
-                  PropertyOptionsWidget(title: 'Floors'),
-                  PropertyOptionsWidget(title: 'Rooms'),
-                  PropertyOptionsWidget(title: 'Tenants'),
-                  PropertyOptionsWidget(title: 'Paymenets'),
+                  ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: propertyOptionsController.options.length,
+                      itemBuilder: (context, index) {
+                        var option = propertyOptionsController.options[index];
+                        return Obx(() {
+                          return PropertyOptionsWidget(
+                            title: option.toString(),
+                            index: index,
+                            selectedIndex: propertyOptionsController
+                                .selectedIndex.value,
+                            function: () {
+                              propertyOptionsController.changeSelectedIndex(
+                                  index);
+
+                              if(propertyOptionsController.selectedIndex.value == 0){
+                                floorOptionsController.addWidget();
+                              } else {
+
+                              }
+
+                              print(propertyOptionsController.selectedIndex);
+                              print(index);
+                            },
+                            floorOptionsController: floorOptionsController,
+                          );
+                        });
+                      }),
+
+                  // PropertyOptionsWidget(title: 'Floors',),
+                  // PropertyOptionsWidget(title: 'Rooms', ),
+                  // PropertyOptionsWidget(title: 'Tenants', ),
+                  // PropertyOptionsWidget(title: 'Paymenets',),
 
                 ],
               ),

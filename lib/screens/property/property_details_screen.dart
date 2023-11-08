@@ -1,10 +1,17 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:get/get.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:smart_rent/controllers/property_options/property_details_options_controller.dart';
+import 'package:smart_rent/controllers/property_options/property_options_controller.dart';
+import 'package:smart_rent/screens/property/video_player_screen.dart';
 import 'package:smart_rent/styles/app_theme.dart';
+import 'package:smart_rent/widgets/property_details_widget.dart';
+import 'package:smart_rent/widgets/property_options_widget.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class PropertyDetailsScreen extends StatefulWidget {
   const PropertyDetailsScreen({super.key});
@@ -14,139 +21,277 @@ class PropertyDetailsScreen extends StatefulWidget {
 }
 
 class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
+
+
+  String videoId = YoutubePlayer.convertUrlToId("https://youtu.be/izFcWmL1YYQ")
+      .toString();
+  // final PropertyOptionsController propertyOptionsController = Get.put(
+  //     PropertyOptionsController());
+  final PropertyDetailsOptionsController propertyDetailsOptionsController = Get.put(PropertyDetailsOptionsController());
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    print(videoId);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      body: Column(
-        children: [
-          Stack(
-            children: [
-              CarouselSlider.builder(
-                itemCount: 1,
-                options: CarouselOptions(
-                  aspectRatio: 1/1,
-                  viewportFraction: 1,
-                  autoPlay: true,
-                  height: 50.h,
-                  onPageChanged: (index, r){
-                    // setState(() {
-                    //   currentIndex = index;
-                    // });
-                    // print(currentIndex);
+      body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Stack(
+              children: [
+                CarouselSlider.builder(
+                  itemCount: 1,
+                  options: CarouselOptions(
+                    aspectRatio: 1 / 1,
+                    viewportFraction: 1,
+                    autoPlay: true,
+                    height: 50.h,
+                    onPageChanged: (index, r) {
+                      // setState(() {
+                      //   currentIndex = index;
+                      // });
+                      // print(currentIndex);
+                    },
+                  ),
+                  itemBuilder: (context, index, real) {
+                    return GestureDetector(
+                      onTap: () {},
+                      child: Hero(
+                        tag: '',
+                        child: GestureDetector(
+                          onTap: () {
+                            Get.to(() =>
+                                PhotoViewGallery.builder(
+                                  // pageController: widget.pageController,
+                                  itemCount: 1,
+                                  builder: (context, index) {
+                                    return PhotoViewGalleryPageOptions(
+                                      imageProvider: CachedNetworkImageProvider(
+                                          'https://i.ibb.co/WVnBf75/view-geometric-buildings.jpg'),
+                                    );
+                                  },
+                                ));
+                            print('tapped');
+                          },
+                          child: CachedNetworkImage(
+                            imageUrl: 'https://i.ibb.co/WVnBf75/view-geometric-buildings.jpg',
+                            width: MediaQuery
+                                .of(context)
+                                .size
+                                .width,
+                            fit: BoxFit.cover,
+                            errorWidget: (context, url, error) {
+                              return Container(
+                                child: Center(
+                                  child: Image.network(
+                                      'https://i.ibb.co/WVnBf75/view-geometric-buildings.jpg'),
+                                ),
+                              );
+                            },
+                            // placeholder: (context, url,){
+                            //   return Shimmer.fromColors(
+                            //     baseColor: Colors.grey.shade200,
+                            //     highlightColor: AppTheme.primaryLightColor,
+                            //     child: Container(
+                            //       height: 50.h,
+                            //       width: MediaQuery.of(context).size.width,
+                            //       color: Colors.grey.shade200,
+                            //     ),
+                            //   );
+                            // },
+                          ),
+                        ),
+                      ),
+                    );
                   },
                 ),
-                itemBuilder: (context, index, real){
 
-                  return GestureDetector(
-                    onTap: (){
-                      // Get.to(()=> MultiGallery(urlImages: widget.product.productVariant.images[index].productVariantImgUrl, index: currentIndex,));
+                Positioned(
+                  top: 5.h,
+                  left: 5.w,
+                  child: GestureDetector(
+                    onTap: () {
+                      Get.back();
                     },
-                    child: Hero(
-                      tag: '',
-                      child: GestureDetector(
-                        onTap: () {
-                          Get.to(() =>
-                              PhotoViewGallery.builder(
-                                // pageController: widget.pageController,
-                                itemCount: 1,
-                                builder: (context, index){
+                    child: CircleAvatar(
+                      backgroundColor: Colors.white,
+                      child: Image.asset('assets/general/arrow-left.png'),
+                    ),
+                  ),
+                ),
 
-                                  return PhotoViewGalleryPageOptions(
-                                    imageProvider: CachedNetworkImageProvider('https://i.ibb.co/WVnBf75/view-geometric-buildings.jpg'),
-                                  );
-                                },
-                              ));
-                          print('tapped');
-                        },
-                        child: CachedNetworkImage(
-                          imageUrl: 'https://i.ibb.co/WVnBf75/view-geometric-buildings.jpg',
-                          width: MediaQuery.of(context).size.width,
-                          fit: BoxFit.cover,
-                          errorWidget: (context, url, error){
-                            return Container(
-                              child: Center(
-                                child: Image.network('https://i.ibb.co/WVnBf75/view-geometric-buildings.jpg'),
-                              ),
-                            );
-                          },
-                          // placeholder: (context, url,){
-                          //   return Shimmer.fromColors(
-                          //     baseColor: Colors.grey.shade200,
-                          //     highlightColor: AppTheme.primaryLightColor,
-                          //     child: Container(
-                          //       height: 50.h,
-                          //       width: MediaQuery.of(context).size.width,
-                          //       color: Colors.grey.shade200,
-                          //     ),
-                          //   );
-                          // },
+                Positioned(
+                  top: 5.h,
+                  right: 5.w,
+                  child: Bounceable(
+                    onTap: () {
+
+                    },
+                    child: CircleAvatar(
+                      backgroundColor: Colors.white,
+                      child: Image.asset('assets/general/share.png'),
+                    ),
+                  ),
+                ),
+
+                Positioned(
+                  bottom: 2.h,
+                  right: 5.w,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 5.w, vertical: 1.h),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20.sp),
+                        shape: BoxShape.rectangle
+                    ),
+                    child: Text('1/1', style: AppTheme.descriptionText1,),
+                  ),
+                ),
+
+              ],
+            ),
+
+            SizedBox(height: 2.h,),
+
+            Padding(
+              padding: EdgeInsets.only(left: 5.w, right: 5.w),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: Bounceable(
+                      onTap: () {
+                        YoutubePlayerController _controller = YoutubePlayerController(
+                          initialVideoId: videoId,
+                          flags: YoutubePlayerFlags(
+                            autoPlay: true,
+                            mute: true,
+                          ),
+                        );
+                        Get.to(() =>
+                            VideoPlayerScreen(controller: _controller));
+                      },
+                      child: Container(
+                        width: 90.w,
+                        height: 6.h,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20.sp),
+                            color: Colors.deepPurpleAccent.withOpacity(0.1),
+                            border: Border.all(
+                                color: AppTheme.purpleColor1,
+                                width: 2
+                            )
+                        ),
+                        child: Center(
+                          child: Text('Watch video',
+                            style: AppTheme.purpleText1,),
                         ),
                       ),
                     ),
-                  );
-                },
-              ),
-
-              Positioned(
-                top: 5.h,
-                left: 5.w,
-                child: GestureDetector(
-                  onTap: (){
-                    Get.back();
-                  },
-                  child: CircleAvatar(
-                    backgroundColor: Colors.white,
-                    child: Image.asset('assets/general/arrow-left.png'),
                   ),
-                ),
-              ),
 
-              Positioned(
-                top: 5.h,
-                right: 5.w,
-                child: CircleAvatar(
-                  backgroundColor: Colors.white,
-                  child: Image.asset('assets/general/share.png'),
-                ),
-              ),
+                  SizedBox(height: 2.h,),
 
-              Positioned(
-                bottom: 2.h,
-                right: 5.w,
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 1.h),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20.sp),
-                    shape: BoxShape.rectangle
+                  Text('Imperial Mall', style: AppTheme.appTitle1,),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      PropertyDetailsWidget(detail: 'Entebbe, Uganda',
+                        icon: 'assets/general/location.png',),
+                      PropertyDetailsWidget(
+                        detail: '40 rooms', icon: 'assets/property/bed.png',),
+                    ],
                   ),
-                  child: Text('1/1', style: AppTheme.descriptionText1,),
-                ),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      PropertyDetailsWidget(
+                        detail: 'Available - 15unites (35%)',),
+                      PropertyDetailsWidget(
+                        detail: '673', icon: 'assets/property/size.png',),
+                    ],
+                  ),
+
+                  ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: propertyDetailsOptionsController.options.length,
+                      itemBuilder: (context, index) {
+                        var option = propertyDetailsOptionsController.options[index];
+                        return Obx(() {
+                          return PropertyOptionsWidget(
+                            title: option.toString(),
+                            index: index,
+                            selectedIndex: propertyDetailsOptionsController
+                                .selectedIndex.value,
+                            function: () {
+                              propertyDetailsOptionsController.changeSelectedIndex(
+                                  index);
+
+                              if(propertyDetailsOptionsController.selectedIndex.value == 0){
+                                propertyDetailsOptionsController.addFloorWidget();
+                              } else {
+
+                              }
+
+                              // if(propertyDetailsOptionsController.selectedIndex.value == 0){
+                              //   propertyDetailsOptionsController.changeAddFloorStatus(false);
+                              //   propertyDetailsOptionsController.changeAddRoomStatus(true);
+                              //   propertyDetailsOptionsController.addFloorWidget();
+                              // } else if (propertyDetailsOptionsController.selectedIndex.value == 1){
+                              //   propertyDetailsOptionsController.changeAddRoomStatus(false);
+                              //   propertyDetailsOptionsController.changeAddFloorStatus(true);
+                              // } else {
+                              //
+                              // }
+
+                              print(propertyDetailsOptionsController.selectedIndex);
+                              print(index);
+                            },
+                            propertyDetailsOptionsController: propertyDetailsOptionsController,
+                            viewAllFunction: (){
+                              propertyDetailsOptionsController.changeSelectedIndex(
+                                  index);
+
+                              // if(propertyDetailsOptionsController.selectedIndex.value == 0){
+                              //   propertyDetailsOptionsController.changeAddFloorStatus(true);
+                              //   propertyDetailsOptionsController.changeAddRoomStatus(false);
+                              // } else if (propertyDetailsOptionsController.selectedIndex.value == 1){
+                              //   propertyDetailsOptionsController.changeAddRoomStatus(true);
+                              //   propertyDetailsOptionsController.changeAddFloorStatus(false);
+                              //
+                              // } else {
+                              //
+                              // }
+
+                            },
+                          );
+                        });
+                      }),
+
+                  // PropertyOptionsWidget(title: 'Floors',),
+                  // PropertyOptionsWidget(title: 'Rooms', ),
+                  // PropertyOptionsWidget(title: 'Tenants', ),
+                  // PropertyOptionsWidget(title: 'Paymenets',),
+
+                ],
               ),
+            )
 
-            ],
-          ),
-
-          SizedBox(height: 2.h,),
-
-          Container(
-            width: 90.w,
-            height: 6.h,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20.sp),
-              color: Colors.deepPurpleAccent.withOpacity(0.1),
-              border: Border.all(
-                color: AppTheme.purpleColor1,
-                width: 2
-              )
-            ),
-            child: Center(
-              child: Text('Watch video', style: AppTheme.purpleText1,),
-            ),
-          )
-
-        ],
+          ],
+        ),
       ),
     );
   }

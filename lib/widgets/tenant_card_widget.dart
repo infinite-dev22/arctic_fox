@@ -50,7 +50,7 @@ class TenantCardWidget extends StatelessWidget {
               ],
             ),
 
-            Text('Madam Lian', style: AppTheme.darkBlueTitle,),
+            Text('Madam Jupiter', style: AppTheme.darkBlueTitle,),
             Bounceable(
               onTap: (){
                 Get.to(() => TenantDetailsScreen());

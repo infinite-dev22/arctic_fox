@@ -75,6 +75,7 @@ class _PropertyListScreenState extends State<PropertyListScreen> {
                   itemBuilder: (context, index) {
                   return Bounceable(
                     onTap: (){
+
                       Get.to(() => PropertyDetailsScreen());
                     },
                       child: SlideInUp(child: PropertyCardWidget()));

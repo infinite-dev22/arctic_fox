@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:smart_rent/models/property/floor_model.dart';
 import 'package:smart_rent/models/property/room_model.dart';
 import 'package:smart_rent/models/property_options/floor_option_widget_model.dart';
 import 'package:smart_rent/models/property_options/room_option_widget.dart';
@@ -13,6 +14,12 @@ class PropertyDetailsOptionsController extends GetxController {
 
   var isFloorList = false.obs;
   var isRoomList = false.obs;
+
+  var floorList = [
+    FloorModel(floorName: 'Level 1'),
+    FloorModel(floorName: 'Level 2'),
+    FloorModel(floorName: 'Level 3'),
+  ];
 
   var roomList = [
     RoomModel(roomNumber: 14, level: 2, amount: 300000, status: 'available'),

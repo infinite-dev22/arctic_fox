@@ -56,77 +56,173 @@ class _PropertyOptionsWidgetState extends State<PropertyOptionsWidget> {
           ),
 
           Visibility(
-              visible: widget.selectedIndex == widget.index,
-              child: widget.selectedIndex == 0 ?
-              Obx(() {
-                return Column(
-                  children: [
-                    Bounceable(
-                        onTap: widget.function,
-                        child: Image.asset(widget.selectedIndex == widget.index
-                            ? 'assets/general/green_add.png'
-                            : 'assets/home/add.png', width: 5.w)),
-                    ListView.builder(
-                        padding: EdgeInsets.only(top: 2.h),
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: widget.propertyDetailsOptionsController
-                            .floorDataList
-                            .length,
-                        itemBuilder: (context, index) {
-                          var floorData = widget
-                              .propertyDetailsOptionsController
-                              .floorDataList[index];
-                          return Padding(
-                            padding: EdgeInsets.only(bottom: 1.h),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                SizedBox(
-                                  child: AppTextField(
-                                      controller: floorData.textController,
-                                      hintText: 'Floor Name',
-                                      obscureText: false),
-                                  width: 70.w,
-                                ),
-                                Bounceable(
-                                  child: Image.asset(
-                                      'assets/general/delete.png'),
-                                  onTap: () {
-                                    widget.propertyDetailsOptionsController
-                                        .removeFloorWidget(
-                                        index);
-                                  },
-                                ),
+            visible: widget.selectedIndex == widget.index,
+            child: widget.selectedIndex == 0 ?
 
-                              ],
-                            ),
-                          );
-                        }),
-                    widget.propertyDetailsOptionsController.floorDataList
-                        .isEmpty
-                        ? Container()
-                        : Padding(
-                          padding: EdgeInsets.only(top: 1.h),
-                          child: AppButton(title: 'Submit',
-                          color: AppTheme.primaryColor,
-                          function: () {}),
+            Column(
+              children: [
+                Bounceable(
+                  // onTap: widget.function,
+                    onTap: () {
+                      if(widget.propertyDetailsOptionsController.floorDataList.isNotEmpty){
+
+                      } else {
+                        widget.propertyDetailsOptionsController.addFloorWidget();
+                      }
+                      Get.bottomSheet(
+                        backgroundColor: Theme
+                            .of(context)
+                            .scaffoldBackgroundColor,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(20.sp),
+                                topLeft: Radius.circular(20.sp)
+                            )
                         ),
-                  ],
-                );
-              })
-                  : widget.selectedIndex == 1
-                  ? ListView.builder(
-                itemCount: widget.propertyDetailsOptionsController.roomList.length,
-                shrinkWrap: true,
-                  itemBuilder: (context, index){
-                  var roomModel = widget.propertyDetailsOptionsController.roomList[index];
-                  return RoomOptionWidget(roomModel: roomModel);
-              })
-                  : widget.selectedIndex == 2 ? Text('Add Tenants')
-                  : Text('Add Payments'),
-            ),
+                        Container(
+                          height: 42.5.h,
+                          width: double.infinity,
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 5.w,
+                                vertical: 1.h),
+                            child: Obx(() {
+                              return Column(
+                                children: [
+                                  Bounceable(
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Text('Add Floor', style: AppTheme.subTextBold,),
+                                        Image.asset(widget.selectedIndex == widget.index
+                                            ? 'assets/general/green_add.png'
+                                            : 'assets/home/add.png', width: 5.w),
+                                      ],
+                                    ),
+                                    onTap: () {
+                                      widget.propertyDetailsOptionsController
+                                          .addFloorWidget();
+                                    },
+                                  ),
+                                  Expanded(
+                                    child: SingleChildScrollView(
+                                      child: ListView.builder(
+                                          padding: EdgeInsets.only(top: 2.h),
+                                          physics: NeverScrollableScrollPhysics(),
+                                          shrinkWrap: true,
+                                          itemCount: widget
+                                              .propertyDetailsOptionsController
+                                              .floorDataList
+                                              .length,
+                                          itemBuilder: (context, index) {
+                                            var floorData = widget
+                                                .propertyDetailsOptionsController
+                                                .floorDataList[index];
+                                            return Padding(
+                                              padding: EdgeInsets.only(
+                                                  bottom: 1.h),
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment
+                                                    .spaceBetween,
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  SizedBox(
+                                                    child: AppTextField(
+                                                        controller: floorData
+                                                            .textController,
+                                                        hintText: 'Floor Name',
+                                                        obscureText: false),
+                                                    width: 70.w,
+                                                  ),
+                                                  Bounceable(
+                                                    child: Image.asset(
+                                                        'assets/general/delete.png'),
+                                                    onTap: () {
+                                                      widget
+                                                          .propertyDetailsOptionsController
+                                                          .removeFloorWidget(
+                                                          index);
+                                                      if(widget.propertyDetailsOptionsController.floorDataList.isEmpty){
+                                                        Get.back();
+                                                      } else {
+
+                                                      }
+                                                    },
+                                                  ),
+
+                                                ],
+                                              ),
+                                            );
+                                          }),
+                                    ),
+                                  ),
+                                  widget.propertyDetailsOptionsController
+                                      .floorDataList
+                                      .isEmpty
+                                      ? Container()
+                                      : Padding(
+                                    padding: EdgeInsets.only(top: 1.h),
+                                    child: AppButton(title: 'Submit',
+                                        color: AppTheme.primaryColor,
+                                        function: () {
+                                      Get.back();
+                                        }),
+                                  ),
+                                ],
+                              );
+                            }),
+                          ),
+                        ),
+                      );
+                    },
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text('Add Floor', style: AppTheme.subTextBold,),
+                        Image.asset(widget.selectedIndex == widget.index
+                            ? 'assets/general/green_add.png'
+                            : 'assets/home/add.png', width: 5.w),
+                      ],
+                    ),
+                ),
+
+                ListView.builder(
+                    itemCount: widget.propertyDetailsOptionsController.floorList
+                        .length,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      var floorModel = widget.propertyDetailsOptionsController
+                          .floorList[index];
+                      return Text(floorModel.floorName);
+                    }),
+
+
+              ],
+            )
+                : widget.selectedIndex == 1
+                ? Column(
+              children: [
+                Bounceable(
+                  child: Text('data'),
+                  onTap: () {
+
+                  },
+                ),
+                ListView.builder(
+                    itemCount: widget.propertyDetailsOptionsController.roomList
+                        .length,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      var roomModel = widget.propertyDetailsOptionsController
+                          .roomList[index];
+                      return RoomOptionWidget(roomModel: roomModel);
+                    }),
+              ],
+            )
+                : widget.selectedIndex == 2 ? Text('Add Tenants')
+                : Text('Add Payments'),
+          ),
 
           // widget.isClicked == true ? Text('Fields Open') : Container(),
         ],

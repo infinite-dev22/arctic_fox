@@ -5,7 +5,7 @@ import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:get/get.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:smart_rent/controllers/property_options/floor_option_controller.dart';
+import 'package:smart_rent/controllers/property_options/property_details_options_controller.dart';
 import 'package:smart_rent/controllers/property_options/property_options_controller.dart';
 import 'package:smart_rent/screens/property/video_player_screen.dart';
 import 'package:smart_rent/styles/app_theme.dart';
@@ -25,9 +25,9 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
 
   String videoId = YoutubePlayer.convertUrlToId("https://youtu.be/izFcWmL1YYQ")
       .toString();
-  final PropertyOptionsController propertyOptionsController = Get.put(
-      PropertyOptionsController());
-  final FloorOptionsController floorOptionsController = Get.put(FloorOptionsController());
+  // final PropertyOptionsController propertyOptionsController = Get.put(
+  //     PropertyOptionsController());
+  final PropertyDetailsOptionsController propertyDetailsOptionsController = Get.put(PropertyDetailsOptionsController());
 
   @override
   void initState() {
@@ -227,29 +227,56 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
                   ListView.builder(
                     physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
-                      itemCount: propertyOptionsController.options.length,
+                      itemCount: propertyDetailsOptionsController.options.length,
                       itemBuilder: (context, index) {
-                        var option = propertyOptionsController.options[index];
+                        var option = propertyDetailsOptionsController.options[index];
                         return Obx(() {
                           return PropertyOptionsWidget(
                             title: option.toString(),
                             index: index,
-                            selectedIndex: propertyOptionsController
+                            selectedIndex: propertyDetailsOptionsController
                                 .selectedIndex.value,
                             function: () {
-                              propertyOptionsController.changeSelectedIndex(
+                              propertyDetailsOptionsController.changeSelectedIndex(
                                   index);
 
-                              if(propertyOptionsController.selectedIndex.value == 0){
-                                floorOptionsController.addWidget();
+                              if(propertyDetailsOptionsController.selectedIndex.value == 0){
+                                propertyDetailsOptionsController.addFloorWidget();
                               } else {
 
                               }
 
-                              print(propertyOptionsController.selectedIndex);
+                              // if(propertyDetailsOptionsController.selectedIndex.value == 0){
+                              //   propertyDetailsOptionsController.changeAddFloorStatus(false);
+                              //   propertyDetailsOptionsController.changeAddRoomStatus(true);
+                              //   propertyDetailsOptionsController.addFloorWidget();
+                              // } else if (propertyDetailsOptionsController.selectedIndex.value == 1){
+                              //   propertyDetailsOptionsController.changeAddRoomStatus(false);
+                              //   propertyDetailsOptionsController.changeAddFloorStatus(true);
+                              // } else {
+                              //
+                              // }
+
+                              print(propertyDetailsOptionsController.selectedIndex);
                               print(index);
                             },
-                            floorOptionsController: floorOptionsController,
+                            propertyDetailsOptionsController: propertyDetailsOptionsController,
+                            viewAllFunction: (){
+                              propertyDetailsOptionsController.changeSelectedIndex(
+                                  index);
+
+                              // if(propertyDetailsOptionsController.selectedIndex.value == 0){
+                              //   propertyDetailsOptionsController.changeAddFloorStatus(true);
+                              //   propertyDetailsOptionsController.changeAddRoomStatus(false);
+                              // } else if (propertyDetailsOptionsController.selectedIndex.value == 1){
+                              //   propertyDetailsOptionsController.changeAddRoomStatus(true);
+                              //   propertyDetailsOptionsController.changeAddFloorStatus(false);
+                              //
+                              // } else {
+                              //
+                              // }
+
+                            },
                           );
                         });
                       }),

@@ -232,13 +232,13 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> with Tick
                       ],
                     ), // Your custom widget goes here
                   ),
-                  expandedHeight: 60.h,
+                  expandedHeight: 62.5.h,
                   bottom: TabBar(
                     tabs: [
-                      Tab(icon: Icon(Icons.meeting_room_rounded), text: 'Floors'),
-                      Tab(icon: Icon(Icons.bed), text: 'Rooms'),
-                      Tab(icon: Icon(Icons.person), text: 'Tenants'),
-                      Tab(icon: Icon(Icons.payment), text: 'Payments'),
+                      Tab(icon: Icon(Icons.meeting_room_rounded), child: Text('Floors', style: AppTheme.subTextBold2,)),
+                      Tab(icon: Icon(Icons.bed), child: Text('Rooms', style: AppTheme.subTextBold2,)),
+                      Tab(icon: Icon(Icons.person), child: Text('Tenants', style: AppTheme.subTextBold2,)),
+                      Tab(icon: Icon(Icons.payment), child: Text('Payments', style: AppTheme.subTextBold2,)),
                     ],
                   ),
                 ),

@@ -77,7 +77,7 @@ class _RoomTabScreenState extends State<RoomTabScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          SizedBox(height: 7.5.h,),
+          SizedBox(height: 5.h,),
           Align(
             alignment: Alignment.centerRight,
             child: Bounceable(

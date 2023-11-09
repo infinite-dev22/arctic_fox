@@ -17,7 +17,7 @@ class FloorTabScreen extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-
+          SizedBox(height: 7.5.h,),
           Align(
             alignment: Alignment.centerRight,
             child: Bounceable(
@@ -142,13 +142,14 @@ class FloorTabScreen extends StatelessWidget {
 
 
           ListView.builder(
+              physics: NeverScrollableScrollPhysics(),
               itemCount: propertyDetailsOptionsController.floorList
                   .length,
               shrinkWrap: true,
               itemBuilder: (context, index) {
                 var floorModel = propertyDetailsOptionsController
                     .floorList[index];
-                return Text('${floorModel.floorName}$index');
+                return Text(floorModel.floorName + '$index');
               }),
         ],
       ),

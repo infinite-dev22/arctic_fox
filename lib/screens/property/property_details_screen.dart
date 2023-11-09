@@ -48,304 +48,503 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> with Tick
       length: 4,
       child: Scaffold(
         extendBodyBehindAppBar: true,
-
-        body: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Stack(
+            body: NestedScrollView(
+            body: SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
+              child: Column(
                 children: [
-                  CarouselSlider.builder(
-                    itemCount: 1,
-                    options: CarouselOptions(
-                      aspectRatio: 1 / 1,
-                      viewportFraction: 1,
-                      autoPlay: true,
-                      height: 50.h,
-                      onPageChanged: (index, r) {
-                        // setState(() {
-                        //   currentIndex = index;
-                        // });
-                        // print(currentIndex);
-                      },
-                    ),
-                    itemBuilder: (context, index, real) {
-                      return GestureDetector(
-                        onTap: () {},
-                        child: Hero(
-                          tag: '',
-                          child: GestureDetector(
-                            onTap: () {
-                              Get.to(() =>
-                                  PhotoViewGallery.builder(
-                                    // pageController: widget.pageController,
-                                    itemCount: 1,
-                                    builder: (context, index) {
-                                      return PhotoViewGalleryPageOptions(
-                                        imageProvider: CachedNetworkImageProvider(
-                                            'https://i.ibb.co/WVnBf75/view-geometric-buildings.jpg'),
-                                      );
-                                    },
-                                  ));
-                              print('tapped');
-                            },
-                            child: CachedNetworkImage(
-                              imageUrl: 'https://i.ibb.co/WVnBf75/view-geometric-buildings.jpg',
-                              width: MediaQuery
-                                  .of(context)
-                                  .size
-                                  .width,
-                              fit: BoxFit.cover,
-                              errorWidget: (context, url, error) {
-                                return Container(
-                                  child: Center(
-                                    child: Image.network(
-                                        'https://i.ibb.co/WVnBf75/view-geometric-buildings.jpg'),
-                                  ),
-                                );
-                              },
-                              // placeholder: (context, url,){
-                              //   return Shimmer.fromColors(
-                              //     baseColor: Colors.grey.shade200,
-                              //     highlightColor: AppTheme.primaryLightColor,
-                              //     child: Container(
-                              //       height: 50.h,
-                              //       width: MediaQuery.of(context).size.width,
-                              //       color: Colors.grey.shade200,
-                              //     ),
-                              //   );
-                              // },
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-
-                  Positioned(
-                    top: 5.h,
-                    left: 5.w,
-                    child: GestureDetector(
-                      onTap: () {
-                        Get.back();
-                      },
-                      child: CircleAvatar(
-                        backgroundColor: Colors.white,
-                        child: Image.asset('assets/general/arrow-left.png'),
-                      ),
-                    ),
-                  ),
-
-                  Positioned(
-                    top: 5.h,
-                    right: 5.w,
-                    child: Bounceable(
-                      onTap: () {
-
-                      },
-                      child: CircleAvatar(
-                        backgroundColor: Colors.white,
-                        child: Image.asset('assets/general/share.png'),
-                      ),
-                    ),
-                  ),
-
-                  Positioned(
-                    bottom: 2.h,
-                    right: 5.w,
-                    child: Container(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 5.w, vertical: 1.h),
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20.sp),
-                          shape: BoxShape.rectangle
-                      ),
-                      child: Text('1/1', style: AppTheme.descriptionText1,),
-                    ),
-                  ),
-
+                  SizedBox(height: 7.5.h,),
+                              SizedBox(
+                                height: MediaQuery.of(context).size.height,
+                                child: TabBarView(
+                                  // controller: propertyTabCont,
+                                  children: [
+                                    FloorTabScreen(propertyDetailsOptionsController: propertyDetailsOptionsController,),
+                                    RoomTabScreen(propertyDetailsOptionsController: propertyDetailsOptionsController),
+                                    Icon(Icons.directions_car, size: 350),
+                                    Icon(Icons.directions_car, size: 350),
+                                  ],
+                                ),
+                              ),
                 ],
               ),
-
-              // SizedBox(height: 2.h,),
-
-              Padding(
-                padding: EdgeInsets.only(left: 5.w, right: 5.w),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Center(
-                    //   child: Bounceable(
-                    //     onTap: () {
-                    //       YoutubePlayerController _controller = YoutubePlayerController(
-                    //         initialVideoId: videoId,
-                    //         flags: YoutubePlayerFlags(
-                    //           autoPlay: true,
-                    //           mute: true,
-                    //         ),
-                    //       );
-                    //       Get.to(() =>
-                    //           VideoPlayerScreen(controller: _controller));
-                    //     },
-                    //     child: Container(
-                    //       width: 90.w,
-                    //       height: 6.h,
-                    //       decoration: BoxDecoration(
-                    //           borderRadius: BorderRadius.circular(20.sp),
-                    //           color: Colors.deepPurpleAccent.withOpacity(0.1),
-                    //           border: Border.all(
-                    //               color: AppTheme.purpleColor1,
-                    //               width: 2
-                    //           )
-                    //       ),
-                    //       child: Center(
-                    //         child: Text('Watch video',
-                    //           style: AppTheme.purpleText1,),
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
-
-                    SizedBox(height: 2.h,),
-
-                    Text('Imperial Mall', style: AppTheme.appTitle1,),
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            ),
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return <Widget>[
+              SliverOverlapAbsorber(
+                handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                sliver: SliverAppBar(
+                  floating: true,
+                  pinned: true,
+                  snap: false,
+                  forceElevated: innerBoxIsScrolled,
+                  automaticallyImplyLeading: false,
+                  // toolbarHeight: 50.h,
+                  flexibleSpace: FlexibleSpaceBar(
+                    background: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        PropertyDetailsWidget(detail: 'Entebbe, Uganda',
-                          icon: 'assets/general/location.png',),
-                        PropertyDetailsWidget(
-                          detail: '40 rooms', icon: 'assets/property/bed.png',),
+                        Stack(
+                          children: [
+                                  CarouselSlider.builder(
+                                    itemCount: 1,
+                                    options: CarouselOptions(
+                                      aspectRatio: 1 / 1,
+                                      viewportFraction: 1,
+                                      autoPlay: true,
+                                      height: 40.h,
+                                      onPageChanged: (index, r) {
+                                        // setState(() {
+                                        //   currentIndex = index;
+                                        // });
+                                        // print(currentIndex);
+                                      },
+                                    ),
+                                    itemBuilder: (context, index, real) {
+                                      return GestureDetector(
+                                        onTap: () {},
+                                        child: Hero(
+                                          tag: '',
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              Get.to(() =>
+                                                  PhotoViewGallery.builder(
+                                                    // pageController: widget.pageController,
+                                                    itemCount: 1,
+                                                    builder: (context, index) {
+                                                      return PhotoViewGalleryPageOptions(
+                                                        imageProvider: CachedNetworkImageProvider(
+                                                            'https://i.ibb.co/WVnBf75/view-geometric-buildings.jpg'),
+                                                      );
+                                                    },
+                                                  ));
+                                              print('tapped');
+                                            },
+                                            child: CachedNetworkImage(
+                                              imageUrl: 'https://i.ibb.co/WVnBf75/view-geometric-buildings.jpg',
+                                              width: MediaQuery
+                                                  .of(context)
+                                                  .size
+                                                  .width,
+                                              fit: BoxFit.cover,
+                                              errorWidget: (context, url, error) {
+                                                return Container(
+                                                  child: Center(
+                                                    child: Image.network(
+                                                        'https://i.ibb.co/WVnBf75/view-geometric-buildings.jpg'),
+                                                  ),
+                                                );
+                                              },
+                                              // placeholder: (context, url,){
+                                              //   return Shimmer.fromColors(
+                                              //     baseColor: Colors.grey.shade200,
+                                              //     highlightColor: AppTheme.primaryLightColor,
+                                              //     child: Container(
+                                              //       height: 50.h,
+                                              //       width: MediaQuery.of(context).size.width,
+                                              //       color: Colors.grey.shade200,
+                                              //     ),
+                                              //   );
+                                              // },
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+
+                                  Positioned(
+                                    top: 5.h,
+                                    left: 5.w,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        Get.back();
+                                      },
+                                      child: CircleAvatar(
+                                        backgroundColor: Colors.white,
+                                        child: Image.asset('assets/general/arrow-left.png'),
+                                      ),
+                                    ),
+                                  ),
+
+                                  Positioned(
+                                    top: 5.h,
+                                    right: 5.w,
+                                    child: Bounceable(
+                                      onTap: () {
+
+                                      },
+                                      child: CircleAvatar(
+                                        backgroundColor: Colors.white,
+                                        child: Image.asset('assets/general/share.png'),
+                                      ),
+                                    ),
+                                  ),
+
+                                  Positioned(
+                                    bottom: 2.h,
+                                    right: 5.w,
+                                    child: Container(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 5.w, vertical: 1.h),
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.circular(20.sp),
+                                          shape: BoxShape.rectangle
+                                      ),
+                                      child: Text('1/1', style: AppTheme.descriptionText1,),
+                                    ),
+                                  ),
+
+                                ],
+                              ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 5.w, right: 5.w),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('Imperial Mall', style: AppTheme.appTitle1,),
+
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  PropertyDetailsWidget(detail: 'Entebbe, Uganda',
+                                    icon: 'assets/general/location.png',),
+                                  PropertyDetailsWidget(
+                                    detail: '40 rooms', icon: 'assets/property/bed.png',),
+                                ],
+                              ),
+
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  PropertyDetailsWidget(
+                                    detail: 'Available - 15unites (35%)',),
+                                  PropertyDetailsWidget(
+                                    detail: '673', icon: 'assets/property/size.png',),
+                                ],
+                              ),
+                            ],
+                          ),
+                        )
+
                       ],
-                    ),
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        PropertyDetailsWidget(
-                          detail: 'Available - 15unites (35%)',),
-                        PropertyDetailsWidget(
-                          detail: '673', icon: 'assets/property/size.png',),
-                      ],
-                    ),
-
-                    TabBar(
-                      // controller: calcTabCont,
-                      tabs: [
-                        Tab(icon: Icon(Icons.meeting_room_rounded), text: 'Floors'),
-                        Tab(icon: Icon(Icons.bed), text: 'Rooms'),
-                        Tab(icon: Icon(Icons.person), text: 'Tenants'),
-                        Tab(icon: Icon(Icons.payment), text: 'Payments'),
-                      ],
-                    ),
-
-                    // Container(
-                    //   height: 5.h,
-                    //   alignment: Alignment.center,
-                    //   child: TabBar(
-                    //       labelPadding: EdgeInsets.only( right: 0.w, left: 0.w),
-                    //       labelStyle: AppTheme.subTextBold,
-                    //       isScrollable: false,
-                    //       labelColor: AppTheme.primaryColor,
-                    //       unselectedLabelColor: AppTheme.greyTextColor1,
-                    //       controller: propertyTabCont,
-                    //       indicatorColor: Colors.transparent,
-                    //       indicator: BoxDecoration(
-                    //           color: Colors.black,
-                    //           borderRadius: BorderRadius.circular(15.sp)
-                    //       ),
-                    //
-                    //       tabs:  [
-                    //         Tab(text: 'Floors'),
-                    //         Tab(text: 'Rooms'),
-                    //         Tab(text: 'Tenants'),
-                    //         Tab(text: 'Payments'),
-                    //       ]),
-                    // ),
-
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height,
-                      child: TabBarView(
-                        // controller: propertyTabCont,
-                        children: [
-                          FloorTabScreen(propertyDetailsOptionsController: propertyDetailsOptionsController,),
-                          RoomTabScreen(propertyDetailsOptionsController: propertyDetailsOptionsController),
-                          Icon(Icons.directions_car, size: 350),
-                          Icon(Icons.directions_car, size: 350),
-                        ],
-                      ),
-                    ),
-
-                    // ListView.builder(
-                    //   physics: NeverScrollableScrollPhysics(),
-                    //     shrinkWrap: true,
-                    //     itemCount: propertyDetailsOptionsController.options.length,
-                    //     itemBuilder: (context, index) {
-                    //       var option = propertyDetailsOptionsController.options[index];
-                    //       return Obx(() {
-                    //         return PropertyOptionsWidget(
-                    //           title: option.toString(),
-                    //           index: index,
-                    //           selectedIndex: propertyDetailsOptionsController
-                    //               .selectedIndex.value,
-                    //           function: () {
-                    //             propertyDetailsOptionsController.changeSelectedIndex(
-                    //                 index);
-                    //
-                    //             if(propertyDetailsOptionsController.selectedIndex.value == 0){
-                    //               propertyDetailsOptionsController.addFloorWidget();
-                    //             } else {
-                    //
-                    //             }
-                    //
-                    //             // if(propertyDetailsOptionsController.selectedIndex.value == 0){
-                    //             //   propertyDetailsOptionsController.changeAddFloorStatus(false);
-                    //             //   propertyDetailsOptionsController.changeAddRoomStatus(true);
-                    //             //   propertyDetailsOptionsController.addFloorWidget();
-                    //             // } else if (propertyDetailsOptionsController.selectedIndex.value == 1){
-                    //             //   propertyDetailsOptionsController.changeAddRoomStatus(false);
-                    //             //   propertyDetailsOptionsController.changeAddFloorStatus(true);
-                    //             // } else {
-                    //             //
-                    //             // }
-                    //
-                    //             print(propertyDetailsOptionsController.selectedIndex);
-                    //             print(index);
-                    //           },
-                    //           propertyDetailsOptionsController: propertyDetailsOptionsController,
-                    //           viewAllFunction: (){
-                    //             propertyDetailsOptionsController.changeSelectedIndex(
-                    //                 index);
-                    //
-                    //             // if(propertyDetailsOptionsController.selectedIndex.value == 0){
-                    //             //   propertyDetailsOptionsController.changeAddFloorStatus(true);
-                    //             //   propertyDetailsOptionsController.changeAddRoomStatus(false);
-                    //             // } else if (propertyDetailsOptionsController.selectedIndex.value == 1){
-                    //             //   propertyDetailsOptionsController.changeAddRoomStatus(true);
-                    //             //   propertyDetailsOptionsController.changeAddFloorStatus(false);
-                    //             //
-                    //             // } else {
-                    //             //
-                    //             // }
-                    //
-                    //           },
-                    //         );
-                    //       });
-                    //     }),
-
-
-
-                  ],
+                    ), // Your custom widget goes here
+                  ),
+                  expandedHeight: 60.h,
+                  bottom: TabBar(
+                    tabs: [
+                      Tab(icon: Icon(Icons.meeting_room_rounded), text: 'Floors'),
+                      Tab(icon: Icon(Icons.bed), text: 'Rooms'),
+                      Tab(icon: Icon(Icons.person), text: 'Tenants'),
+                      Tab(icon: Icon(Icons.payment), text: 'Payments'),
+                    ],
+                  ),
                 ),
-              )
-
-            ],
-          ),
+              ),
+            ];
+          },
         ),
+
+        // body: SingleChildScrollView(
+        //   physics: BouncingScrollPhysics(),
+        //   child: Column(
+        //     mainAxisAlignment: MainAxisAlignment.start,
+        //     crossAxisAlignment: CrossAxisAlignment.start,
+        //     children: [
+        //       Stack(
+        //         children: [
+        //           CarouselSlider.builder(
+        //             itemCount: 1,
+        //             options: CarouselOptions(
+        //               aspectRatio: 1 / 1,
+        //               viewportFraction: 1,
+        //               autoPlay: true,
+        //               height: 50.h,
+        //               onPageChanged: (index, r) {
+        //                 // setState(() {
+        //                 //   currentIndex = index;
+        //                 // });
+        //                 // print(currentIndex);
+        //               },
+        //             ),
+        //             itemBuilder: (context, index, real) {
+        //               return GestureDetector(
+        //                 onTap: () {},
+        //                 child: Hero(
+        //                   tag: '',
+        //                   child: GestureDetector(
+        //                     onTap: () {
+        //                       Get.to(() =>
+        //                           PhotoViewGallery.builder(
+        //                             // pageController: widget.pageController,
+        //                             itemCount: 1,
+        //                             builder: (context, index) {
+        //                               return PhotoViewGalleryPageOptions(
+        //                                 imageProvider: CachedNetworkImageProvider(
+        //                                     'https://i.ibb.co/WVnBf75/view-geometric-buildings.jpg'),
+        //                               );
+        //                             },
+        //                           ));
+        //                       print('tapped');
+        //                     },
+        //                     child: CachedNetworkImage(
+        //                       imageUrl: 'https://i.ibb.co/WVnBf75/view-geometric-buildings.jpg',
+        //                       width: MediaQuery
+        //                           .of(context)
+        //                           .size
+        //                           .width,
+        //                       fit: BoxFit.cover,
+        //                       errorWidget: (context, url, error) {
+        //                         return Container(
+        //                           child: Center(
+        //                             child: Image.network(
+        //                                 'https://i.ibb.co/WVnBf75/view-geometric-buildings.jpg'),
+        //                           ),
+        //                         );
+        //                       },
+        //                       // placeholder: (context, url,){
+        //                       //   return Shimmer.fromColors(
+        //                       //     baseColor: Colors.grey.shade200,
+        //                       //     highlightColor: AppTheme.primaryLightColor,
+        //                       //     child: Container(
+        //                       //       height: 50.h,
+        //                       //       width: MediaQuery.of(context).size.width,
+        //                       //       color: Colors.grey.shade200,
+        //                       //     ),
+        //                       //   );
+        //                       // },
+        //                     ),
+        //                   ),
+        //                 ),
+        //               );
+        //             },
+        //           ),
+        //
+        //           Positioned(
+        //             top: 5.h,
+        //             left: 5.w,
+        //             child: GestureDetector(
+        //               onTap: () {
+        //                 Get.back();
+        //               },
+        //               child: CircleAvatar(
+        //                 backgroundColor: Colors.white,
+        //                 child: Image.asset('assets/general/arrow-left.png'),
+        //               ),
+        //             ),
+        //           ),
+        //
+        //           Positioned(
+        //             top: 5.h,
+        //             right: 5.w,
+        //             child: Bounceable(
+        //               onTap: () {
+        //
+        //               },
+        //               child: CircleAvatar(
+        //                 backgroundColor: Colors.white,
+        //                 child: Image.asset('assets/general/share.png'),
+        //               ),
+        //             ),
+        //           ),
+        //
+        //           Positioned(
+        //             bottom: 2.h,
+        //             right: 5.w,
+        //             child: Container(
+        //               padding: EdgeInsets.symmetric(
+        //                   horizontal: 5.w, vertical: 1.h),
+        //               decoration: BoxDecoration(
+        //                   color: Colors.white,
+        //                   borderRadius: BorderRadius.circular(20.sp),
+        //                   shape: BoxShape.rectangle
+        //               ),
+        //               child: Text('1/1', style: AppTheme.descriptionText1,),
+        //             ),
+        //           ),
+        //
+        //         ],
+        //       ),
+        //
+        //       // SizedBox(height: 2.h,),
+        //
+        //       Padding(
+        //         padding: EdgeInsets.only(left: 5.w, right: 5.w),
+        //         child: Column(
+        //           crossAxisAlignment: CrossAxisAlignment.start,
+        //           children: [
+        //             // Center(
+        //             //   child: Bounceable(
+        //             //     onTap: () {
+        //             //       YoutubePlayerController _controller = YoutubePlayerController(
+        //             //         initialVideoId: videoId,
+        //             //         flags: YoutubePlayerFlags(
+        //             //           autoPlay: true,
+        //             //           mute: true,
+        //             //         ),
+        //             //       );
+        //             //       Get.to(() =>
+        //             //           VideoPlayerScreen(controller: _controller));
+        //             //     },
+        //             //     child: Container(
+        //             //       width: 90.w,
+        //             //       height: 6.h,
+        //             //       decoration: BoxDecoration(
+        //             //           borderRadius: BorderRadius.circular(20.sp),
+        //             //           color: Colors.deepPurpleAccent.withOpacity(0.1),
+        //             //           border: Border.all(
+        //             //               color: AppTheme.purpleColor1,
+        //             //               width: 2
+        //             //           )
+        //             //       ),
+        //             //       child: Center(
+        //             //         child: Text('Watch video',
+        //             //           style: AppTheme.purpleText1,),
+        //             //       ),
+        //             //     ),
+        //             //   ),
+        //             // ),
+        //
+        //             SizedBox(height: 2.h,),
+        //
+        //             Text('Imperial Mall', style: AppTheme.appTitle1,),
+        //
+        //             Row(
+        //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //               children: [
+        //                 PropertyDetailsWidget(detail: 'Entebbe, Uganda',
+        //                   icon: 'assets/general/location.png',),
+        //                 PropertyDetailsWidget(
+        //                   detail: '40 rooms', icon: 'assets/property/bed.png',),
+        //               ],
+        //             ),
+        //
+        //             Row(
+        //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //               children: [
+        //                 PropertyDetailsWidget(
+        //                   detail: 'Available - 15unites (35%)',),
+        //                 PropertyDetailsWidget(
+        //                   detail: '673', icon: 'assets/property/size.png',),
+        //               ],
+        //             ),
+        //
+        //             TabBar(
+        //               // controller: calcTabCont,
+        //               tabs: [
+        //                 Tab(icon: Icon(Icons.meeting_room_rounded), text: 'Floors'),
+        //                 Tab(icon: Icon(Icons.bed), text: 'Rooms'),
+        //                 Tab(icon: Icon(Icons.person), text: 'Tenants'),
+        //                 Tab(icon: Icon(Icons.payment), text: 'Payments'),
+        //               ],
+        //             ),
+        //
+        //             // Container(
+        //             //   height: 5.h,
+        //             //   alignment: Alignment.center,
+        //             //   child: TabBar(
+        //             //       labelPadding: EdgeInsets.only( right: 0.w, left: 0.w),
+        //             //       labelStyle: AppTheme.subTextBold,
+        //             //       isScrollable: false,
+        //             //       labelColor: AppTheme.primaryColor,
+        //             //       unselectedLabelColor: AppTheme.greyTextColor1,
+        //             //       controller: propertyTabCont,
+        //             //       indicatorColor: Colors.transparent,
+        //             //       indicator: BoxDecoration(
+        //             //           color: Colors.black,
+        //             //           borderRadius: BorderRadius.circular(15.sp)
+        //             //       ),
+        //             //
+        //             //       tabs:  [
+        //             //         Tab(text: 'Floors'),
+        //             //         Tab(text: 'Rooms'),
+        //             //         Tab(text: 'Tenants'),
+        //             //         Tab(text: 'Payments'),
+        //             //       ]),
+        //             // ),
+        //
+        //             SizedBox(
+        //               height: MediaQuery.of(context).size.height,
+        //               child: TabBarView(
+        //                 // controller: propertyTabCont,
+        //                 children: [
+        //                   FloorTabScreen(propertyDetailsOptionsController: propertyDetailsOptionsController,),
+        //                   RoomTabScreen(propertyDetailsOptionsController: propertyDetailsOptionsController),
+        //                   Icon(Icons.directions_car, size: 350),
+        //                   Icon(Icons.directions_car, size: 350),
+        //                 ],
+        //               ),
+        //             ),
+        //
+        //             // ListView.builder(
+        //             //   physics: NeverScrollableScrollPhysics(),
+        //             //     shrinkWrap: true,
+        //             //     itemCount: propertyDetailsOptionsController.options.length,
+        //             //     itemBuilder: (context, index) {
+        //             //       var option = propertyDetailsOptionsController.options[index];
+        //             //       return Obx(() {
+        //             //         return PropertyOptionsWidget(
+        //             //           title: option.toString(),
+        //             //           index: index,
+        //             //           selectedIndex: propertyDetailsOptionsController
+        //             //               .selectedIndex.value,
+        //             //           function: () {
+        //             //             propertyDetailsOptionsController.changeSelectedIndex(
+        //             //                 index);
+        //             //
+        //             //             if(propertyDetailsOptionsController.selectedIndex.value == 0){
+        //             //               propertyDetailsOptionsController.addFloorWidget();
+        //             //             } else {
+        //             //
+        //             //             }
+        //             //
+        //             //             // if(propertyDetailsOptionsController.selectedIndex.value == 0){
+        //             //             //   propertyDetailsOptionsController.changeAddFloorStatus(false);
+        //             //             //   propertyDetailsOptionsController.changeAddRoomStatus(true);
+        //             //             //   propertyDetailsOptionsController.addFloorWidget();
+        //             //             // } else if (propertyDetailsOptionsController.selectedIndex.value == 1){
+        //             //             //   propertyDetailsOptionsController.changeAddRoomStatus(false);
+        //             //             //   propertyDetailsOptionsController.changeAddFloorStatus(true);
+        //             //             // } else {
+        //             //             //
+        //             //             // }
+        //             //
+        //             //             print(propertyDetailsOptionsController.selectedIndex);
+        //             //             print(index);
+        //             //           },
+        //             //           propertyDetailsOptionsController: propertyDetailsOptionsController,
+        //             //           viewAllFunction: (){
+        //             //             propertyDetailsOptionsController.changeSelectedIndex(
+        //             //                 index);
+        //             //
+        //             //             // if(propertyDetailsOptionsController.selectedIndex.value == 0){
+        //             //             //   propertyDetailsOptionsController.changeAddFloorStatus(true);
+        //             //             //   propertyDetailsOptionsController.changeAddRoomStatus(false);
+        //             //             // } else if (propertyDetailsOptionsController.selectedIndex.value == 1){
+        //             //             //   propertyDetailsOptionsController.changeAddRoomStatus(true);
+        //             //             //   propertyDetailsOptionsController.changeAddFloorStatus(false);
+        //             //             //
+        //             //             // } else {
+        //             //             //
+        //             //             // }
+        //             //
+        //             //           },
+        //             //         );
+        //             //       });
+        //             //     }),
+        //
+        //
+        //
+        //           ],
+        //         ),
+        //       )
+        //
+        //     ],
+        //   ),
+        // ),
+
       ),
     );
   }

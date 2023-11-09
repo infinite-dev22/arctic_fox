@@ -35,6 +35,22 @@ class PropertyDetailsOptionsController extends GetxController {
     'Payments',
   ].obs;
 
+  var roomTypeList = [
+    'single',
+    'double'
+  ];
+
+  var periodList = [
+    'Per Month',
+    'Per Year',
+    'Per Day'
+  ];
+
+  var levelList = [
+    'level 1',
+    'level 2'
+  ];
+
 
 
   changeSelectedIndex(index) {

@@ -8,6 +8,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/controllers/property_options/property_details_options_controller.dart';
 import 'package:smart_rent/controllers/property_options/property_options_controller.dart';
 import 'package:smart_rent/screens/property/floor_tab_screen.dart';
+import 'package:smart_rent/screens/property/property_details_tab.dart';
 import 'package:smart_rent/screens/property/property_tab_options_widget.dart';
 import 'package:smart_rent/screens/property/room_tab_screen.dart';
 import 'package:smart_rent/screens/property/video_player_screen.dart';
@@ -59,7 +60,8 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> with Tick
                                 child: TabBarView(
                                   // controller: propertyTabCont,
                                   children: [
-                                    FloorTabScreen(propertyDetailsOptionsController: propertyDetailsOptionsController,),
+                                    PropertyDetailsTabScreen(propertyDetailsOptionsController: propertyDetailsOptionsController),
+                                    // FloorTabScreen(propertyDetailsOptionsController: propertyDetailsOptionsController,),
                                     RoomTabScreen(propertyDetailsOptionsController: propertyDetailsOptionsController),
                                     Icon(Icons.directions_car, size: 350),
                                     Icon(Icons.directions_car, size: 350),
@@ -198,45 +200,46 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> with Tick
 
                                 ],
                               ),
-                        Padding(
-                          padding: EdgeInsets.only(left: 5.w, right: 5.w),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('Imperial Mall', style: AppTheme.appTitle1,),
 
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  PropertyDetailsWidget(detail: 'Entebbe, Uganda',
-                                    icon: 'assets/general/location.png',),
-                                  PropertyDetailsWidget(
-                                    detail: '40 rooms', icon: 'assets/property/bed.png',),
-                                ],
-                              ),
-
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  PropertyDetailsWidget(
-                                    detail: 'Available - 15unites (35%)',),
-                                  PropertyDetailsWidget(
-                                    detail: '673', icon: 'assets/property/size.png',),
-                                ],
-                              ),
-                            ],
-                          ),
-                        )
+                        // Padding(
+                        //   padding: EdgeInsets.only(left: 5.w, right: 5.w),
+                        //   child: Column(
+                        //     mainAxisAlignment: MainAxisAlignment.start,
+                        //     crossAxisAlignment: CrossAxisAlignment.start,
+                        //     children: [
+                        //       Text('Imperial Mall', style: AppTheme.appTitle1,),
+                        //
+                        //       Row(
+                        //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //         children: [
+                        //           PropertyDetailsWidget(detail: 'Entebbe, Uganda',
+                        //             icon: 'assets/general/location.png',),
+                        //           PropertyDetailsWidget(
+                        //             detail: '40 units', icon: 'assets/property/bed.png',),
+                        //         ],
+                        //       ),
+                        //
+                        //       Row(
+                        //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //         children: [
+                        //           PropertyDetailsWidget(
+                        //             detail: 'Available - 15unites (35%)',),
+                        //           PropertyDetailsWidget(
+                        //             detail: '673', icon: 'assets/property/size.png',),
+                        //         ],
+                        //       ),
+                        //     ],
+                        //   ),
+                        // )
 
                       ],
                     ), // Your custom widget goes here
                   ),
-                  expandedHeight: 62.5.h,
+                  expandedHeight: 50.h,
                   bottom: TabBar(
                     tabs: [
-                      Tab(icon: Icon(Icons.meeting_room_rounded), child: Text('Floors', style: AppTheme.subTextBold2,)),
-                      Tab(icon: Icon(Icons.bed), child: Text('Rooms', style: AppTheme.subTextBold2,)),
+                      Tab(icon: Icon(Icons.meeting_room_rounded), child: Text('Details', style: AppTheme.subTextBold2,)),
+                      Tab(icon: Icon(Icons.bed), child: Text('Units', style: AppTheme.subTextBold2,)),
                       Tab(icon: Icon(Icons.person), child: Text('Tenants', style: AppTheme.subTextBold2,)),
                       Tab(icon: Icon(Icons.payment), child: Text('Payments', style: AppTheme.subTextBold2,)),
                     ],

@@ -14,7 +14,7 @@ class _RoomOptionWidgetState extends State<RoomOptionWidget> {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text('Room ${widget.roomModel.roomNumber}'),
+      title: Text('Unit ${widget.roomModel.roomNumber}'),
       subtitle: Text('Level ${widget.roomModel.level}'),
       trailing: Column(
         mainAxisSize: MainAxisSize.min,

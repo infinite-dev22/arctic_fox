@@ -59,7 +59,7 @@ class _PropertyListScreenState extends State<PropertyListScreen> {
 
               AppSearchTextField(
                   controller: searchController,
-                  hintText: 'Search properties, tenants, rooms',
+                  hintText: 'Search properties, tenants, units',
                   obscureText: false,
                 function: (){
                     Get.to(() => AddPropertyScreen(), transition: Transition.downToUp);

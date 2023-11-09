@@ -30,7 +30,7 @@ class PropertyDetailsOptionsController extends GetxController {
 
   var options = [
     'Floors',
-    'Rooms',
+    'Units',
     'Tenants',
     'Payments',
   ].obs;

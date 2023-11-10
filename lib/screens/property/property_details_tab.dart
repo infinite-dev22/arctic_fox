@@ -15,46 +15,40 @@ class PropertyDetailsTabScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Padding(
-        padding: EdgeInsets.only(left: 5.w, right: 5.w),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            SizedBox(height: 6.h,),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          SizedBox(height: 6.h,),
 
-            Padding(
-              padding: EdgeInsets.only(left: 5.w, right: 5.w),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Imperial Mall', style: AppTheme.appTitle1,),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Imperial Mall', style: AppTheme.appTitle1,),
-
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      PropertyDetailsWidget(detail: 'Entebbe, Uganda',
-                        icon: 'assets/general/location.png',),
-                      PropertyDetailsWidget(
-                        detail: '40 units', icon: 'assets/property/bed.png',),
-                    ],
-                  ),
-
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      PropertyDetailsWidget(
-                        detail: 'Available - 15unites (35%)',),
-                      PropertyDetailsWidget(
-                        detail: '673', icon: 'assets/property/size.png',),
-                    ],
-                  ),
+                  PropertyDetailsWidget(detail: 'Entebbe, Uganda',
+                    icon: 'assets/general/location.png',),
+                  PropertyDetailsWidget(
+                    detail: '40 units', icon: 'assets/property/bed.png',),
                 ],
               ),
-            )
 
-          ],
-        ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  PropertyDetailsWidget(
+                    detail: 'Available - 15unites (35%)',),
+                  PropertyDetailsWidget(
+                    detail: '673', icon: 'assets/property/size.png',),
+                ],
+              ),
+            ],
+          )
+
+        ],
       ),
     );
   }

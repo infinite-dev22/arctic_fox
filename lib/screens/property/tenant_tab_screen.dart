@@ -239,9 +239,9 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                         fit: BoxFit.cover,
                       ),
                     ),
-                    title: Text(list['first'].toString() + ' ' + list['last'].toString()),
-                    subtitle: Text('${amountFormatter.format(list['amount'].toString())}/='),
-                    trailing: Text('Unit 6'),
+                    title: Text(list['first'].toString() + ' ' + list['last'].toString(), style: AppTheme.appTitle3,),
+                    subtitle: Text('${amountFormatter.format(list['amount'].toString())}/=', style: AppTheme.greenTitle2,),
+                    trailing: Text('Unit $index', style: AppTheme.subText,),
                   ),
                 ),
               );

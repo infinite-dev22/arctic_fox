@@ -51,6 +51,11 @@ class PropertyDetailsOptionsController extends GetxController {
     'level 2'
   ];
 
+  var unitList = [
+    'Unit 1',
+    'Unit 2'
+  ];
+
   var tenantList = [
     'vincent west',
     'jonathan mark',

@@ -109,6 +109,12 @@ class AppTheme{
     fontWeight: FontWeight.w700,
   );
 
+  static TextStyle get subTextBold2 => GoogleFonts.hind(
+    color: blackColor1,
+    fontSize: 15.sp,
+    fontWeight: FontWeight.w700,
+  );
+
   static TextStyle get buttonText => GoogleFonts.hind(
     color: whiteColor,
     fontSize: 18.sp,

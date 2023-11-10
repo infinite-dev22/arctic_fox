@@ -30,11 +30,33 @@ class PropertyDetailsOptionsController extends GetxController {
 
   var options = [
     'Floors',
-    'Rooms',
+    'Units',
     'Tenants',
     'Payments',
   ].obs;
 
+  var roomTypeList = [
+    'single',
+    'double'
+  ];
+
+  var periodList = [
+    'Per Month',
+    'Per Year',
+    'Per Day'
+  ];
+
+  var levelList = [
+    'level 1',
+    'level 2'
+  ];
+
+  var tenantList = [
+    'vincent west',
+    'jonathan mark',
+    'ryan jupiter'
+
+  ];
 
 
   changeSelectedIndex(index) {

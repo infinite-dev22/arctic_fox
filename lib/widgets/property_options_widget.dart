@@ -216,7 +216,7 @@ class _PropertyOptionsWidgetState extends State<PropertyOptionsWidget> {
                     itemBuilder: (context, index) {
                       var roomModel = widget.propertyDetailsOptionsController
                           .roomList[index];
-                      return RoomOptionWidget(roomModel: roomModel);
+                      return RoomOptionWidget(roomModel: roomModel, index: index,);
                     }),
               ],
             )

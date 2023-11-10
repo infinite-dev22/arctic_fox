@@ -8,9 +8,11 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/controllers/property_options/property_details_options_controller.dart';
 import 'package:smart_rent/controllers/property_options/property_options_controller.dart';
 import 'package:smart_rent/screens/property/floor_tab_screen.dart';
+import 'package:smart_rent/screens/property/payment_tab_screen.dart';
 import 'package:smart_rent/screens/property/property_details_tab.dart';
 import 'package:smart_rent/screens/property/property_tab_options_widget.dart';
 import 'package:smart_rent/screens/property/room_tab_screen.dart';
+import 'package:smart_rent/screens/property/tenant_tab_screen.dart';
 import 'package:smart_rent/screens/property/video_player_screen.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 import 'package:smart_rent/widgets/property_details_widget.dart';
@@ -50,25 +52,28 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> with Tick
       child: Scaffold(
         extendBodyBehindAppBar: true,
             body: NestedScrollView(
-            body: SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
-              child: Column(
-                children: [
-                  SizedBox(height: 7.5.h,),
-                              SizedBox(
-                                height: MediaQuery.of(context).size.height,
-                                child: TabBarView(
-                                  // controller: propertyTabCont,
-                                  children: [
-                                    PropertyDetailsTabScreen(propertyDetailsOptionsController: propertyDetailsOptionsController),
-                                    // FloorTabScreen(propertyDetailsOptionsController: propertyDetailsOptionsController,),
-                                    RoomTabScreen(propertyDetailsOptionsController: propertyDetailsOptionsController),
-                                    Icon(Icons.directions_car, size: 350),
-                                    Icon(Icons.directions_car, size: 350),
-                                  ],
+            body: Padding(
+              padding: EdgeInsets.only(left: 5.w, right: 5.w),
+              child: SingleChildScrollView(
+                physics: BouncingScrollPhysics(),
+                child: Column(
+                  children: [
+                    SizedBox(height: 7.5.h,),
+                                SizedBox(
+                                  height: MediaQuery.of(context).size.height,
+                                  child: TabBarView(
+                                    // controller: propertyTabCont,
+                                    children: [
+                                      PropertyDetailsTabScreen(propertyDetailsOptionsController: propertyDetailsOptionsController),
+                                      // FloorTabScreen(propertyDetailsOptionsController: propertyDetailsOptionsController,),
+                                      RoomTabScreen(propertyDetailsOptionsController: propertyDetailsOptionsController),
+                                      TenantTabScreen(),
+                                      PaymentTabScreen(),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                ],
+                  ],
+                ),
               ),
             ),
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {

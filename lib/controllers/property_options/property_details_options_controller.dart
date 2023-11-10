@@ -51,6 +51,12 @@ class PropertyDetailsOptionsController extends GetxController {
     'level 2'
   ];
 
+  var tenantList = [
+    'vincent west',
+    'jonathan mark',
+    'ryan jupiter'
+
+  ];
 
 
   changeSelectedIndex(index) {

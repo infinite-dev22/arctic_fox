@@ -149,7 +149,7 @@ class _RoomTabScreenState extends State<RoomTabScreen> {
                           children: [
                             SizedBox(
                               child:  AppTextField(
-                                controller: sizeController,
+                                controller: amountController,
                                 hintText: 'Amount',
                                 obscureText: false,
                               ),
@@ -257,11 +257,11 @@ class _RoomTabScreenState extends State<RoomTabScreen> {
                         SizedBox(height: 2.h,),
 
                         AppButton(
-                          title: 'Submit',
+                          title: 'Add Unit',
                           color: AppTheme.primaryColor,
                           function: (){
                             Get.back();
-                            Get.snackbar('SUCCESS', 'Room added to your property',
+                            Get.snackbar('SUCCESS', 'Unit added to your property',
                               titleText: Text('SUCCESS', style: AppTheme.greenTitle1,),
                             );
                           },

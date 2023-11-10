@@ -67,7 +67,7 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> with Tick
                                       PropertyDetailsTabScreen(propertyDetailsOptionsController: propertyDetailsOptionsController),
                                       // FloorTabScreen(propertyDetailsOptionsController: propertyDetailsOptionsController,),
                                       RoomTabScreen(propertyDetailsOptionsController: propertyDetailsOptionsController),
-                                      TenantTabScreen(),
+                                      TenantTabScreen(propertyDetailsOptionsController: propertyDetailsOptionsController,),
                                       PaymentTabScreen(),
                                     ],
                                   ),

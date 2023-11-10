@@ -15,7 +15,7 @@ class PaymentTabScreen extends StatefulWidget {
 class _PaymentTabScreenState extends State<PaymentTabScreen> {
 
   final listSample = [
-    {'tenant': 'peter mawanda', 'unit': '4', 'amount': 50000, 'period': 'month'},
+    {'tenant': 'vincent west', 'unit': '4', 'amount': 50000, 'period': 'month'},
     {'tenant': 'jonathan mark', 'unit': '25', 'amount': 130000, 'period': 'week'},
     {'tenant': 'ryan jupiter', 'unit': '61', 'amount': 250000, 'period': 'year'},
 
@@ -27,25 +27,34 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
 
     return Padding(
       padding: EdgeInsets.only(top: 5.h),
-      child: DataTable(
-        showBottomBorder: true,
-        headingTextStyle: AppTheme.appTitle3,
-        columnSpacing: 5.w,
-        columns: [
-          DataColumn(label: Text('Tenant')),
-          DataColumn(label: Text('Unit')),
-          DataColumn(label: Text('Amount')),
-          DataColumn(label: Text('Period')),
+      child: Column(
+        children: [
+
+
+          ListView.builder(
+            shrinkWrap: true,
+            itemCount: listSample.length,
+              itemBuilder: (context, index){
+              var payment = listSample[index];
+
+              return Card(
+                child: ListTile(
+                  title: Text(payment['tenant'].toString()),
+                  subtitle: Text('Unit ${payment['unit']}'),
+                  trailing: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(payment['amount'].toString()),
+                      Text(payment['period'].toString())
+                    ],
+                  ),
+                ),
+              );
+          }),
+
+
         ],
-        rows: listSample.map((e) {
-          return DataRow
-            (cells: [
-            DataCell(Text(e['tenant'].toString())),
-            DataCell(Text(e['unit'].toString())),
-            DataCell(Text('${amountFormatter.format(e['amount'].toString())}/=')),
-            DataCell(Text(e['period'].toString())),
-          ]);
-        }).toList(),
       ),
     );
   }

@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/controllers/property_options/property_details_options_controller.dart';
+import 'package:smart_rent/screens/tenant/tenant_details_screen.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 import 'package:smart_rent/utils/extra.dart';
 import 'package:smart_rent/widgets/app_button.dart';
@@ -233,6 +234,9 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                 padding: EdgeInsets.only(bottom: 1.h),
                 child: Card(
                   child: ListTile(
+                    onTap: (){
+                      Get.to(() => TenantDetailsScreen(), transition: Transition.rightToLeftWithFade);
+                    },
                     leading: ClipRRect(
                       borderRadius: BorderRadius.circular(10.sp),
                       child: Image.asset('assets/avatar/rian.jpg',

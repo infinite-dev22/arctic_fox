@@ -3,6 +3,7 @@ import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/models/general/smart_model.dart';
+import 'package:smart_rent/screens/bottom_nav_bar/bottom_nav_bar.dart';
 import 'package:smart_rent/screens/home/homepage_screen.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 import 'package:smart_rent/widgets/app_button.dart';
@@ -112,7 +113,7 @@ class _CompleteSignUpScreenState extends State<CompleteSignUpScreen> {
                     title: 'Submit',
                     color: AppTheme.primaryColor,
                     function: (){
-                      Get.off(() => HomePage(), transition: Transition.rightToLeftWithFade);
+                      Get.off(() => BottomNavBar(), transition: Transition.rightToLeftWithFade);
                       Get.snackbar('SUCCESS', 'Account created successfully',
                         titleText: Text('SUCCESS', style: AppTheme.greenTitle1,),
                       );

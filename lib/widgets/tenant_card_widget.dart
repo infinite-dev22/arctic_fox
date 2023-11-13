@@ -31,14 +31,14 @@ class TenantCardWidget extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Bounceable(
-                          child: Image.asset('assets/tenant/edit.png'),
+                          child: Image.asset('assets/tenant/delete.png'),
                         onTap: (){
 
                         },
                       ),
                       SizedBox(width: 3.w,),
                       Bounceable(
-                          child: Image.asset('assets/tenant/delete.png'),
+                          child: Image.asset('assets/tenant/edit.png'),
                         onTap: (){
 
                         },

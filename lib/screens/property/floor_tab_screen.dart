@@ -96,7 +96,7 @@ class FloorTabScreen extends StatelessWidget {
                                                 ),
                                                 Bounceable(
                                                   child: Image.asset(
-                                                      'assets/general/delete.png'),
+                                                      'assets/general/edit.png'),
                                                   onTap: () {
                                                    propertyDetailsOptionsController
                                                         .removeFloorWidget(

@@ -280,6 +280,7 @@ class _RoomTabScreenState extends State<RoomTabScreen> {
     print(result); // This is the result.
   }
 
+
   @override
   void initState() {
     // TODO: implement initState
@@ -579,7 +580,7 @@ class _RoomTabScreenState extends State<RoomTabScreen> {
                 itemBuilder: (context, index) {
                   var roomModel = widget.propertyDetailsOptionsController
                       .roomList[index];
-                  return RoomOptionWidget(roomModel: roomModel, index: index,);
+                  return RoomOptionWidget(roomModel: roomModel, index: index, propertyDetailsOptionsController: widget.propertyDetailsOptionsController,);
                 }),
           ],
         ),

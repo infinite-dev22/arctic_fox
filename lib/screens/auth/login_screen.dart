@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/screens/auth/signup_screen.dart';
+import 'package:smart_rent/screens/bottom_nav_bar/bottom_nav_bar.dart';
 import 'package:smart_rent/screens/home/homepage_screen.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 import 'package:smart_rent/widgets/app_button.dart';
@@ -59,7 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       title: 'Sign in',
                       color: AppTheme.primaryColor,
                       function: (){
-                        Get.off(() => HomePage());
+                        Get.off(() => BottomNavBar());
                         Get.snackbar('SUCCESS', 'Logged in successfully',
                           titleText: Text('SUCCESS', style: AppTheme.greenTitle1,),
                         );

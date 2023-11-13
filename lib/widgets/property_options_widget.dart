@@ -136,7 +136,7 @@ class _PropertyOptionsWidgetState extends State<PropertyOptionsWidget> {
                                                   ),
                                                   Bounceable(
                                                     child: Image.asset(
-                                                        'assets/general/delete.png'),
+                                                        'assets/general/edit.png'),
                                                     onTap: () {
                                                       widget
                                                           .propertyDetailsOptionsController
@@ -216,7 +216,7 @@ class _PropertyOptionsWidgetState extends State<PropertyOptionsWidget> {
                     itemBuilder: (context, index) {
                       var roomModel = widget.propertyDetailsOptionsController
                           .roomList[index];
-                      return RoomOptionWidget(roomModel: roomModel, index: index,);
+                      return RoomOptionWidget(roomModel: roomModel, index: index, propertyDetailsOptionsController: widget.propertyDetailsOptionsController,);
                     }),
               ],
             )

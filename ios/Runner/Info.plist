@@ -62,6 +62,5 @@
           <string>sms</string>
           <string>tel</string>
         </array>
-		<key>UIViewControllerBasedStatusBarAppearance</key>
 	</dict>
 </plist>

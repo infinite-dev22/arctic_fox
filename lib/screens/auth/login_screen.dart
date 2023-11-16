@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:smart_rent/config/app_config.dart';
+import 'package:smart_rent/controllers/user/user_controller.dart';
+import 'package:smart_rent/models/user/user_model.dart';
+import 'package:smart_rent/screens/auth/create_organisation_screen.dart';
 import 'package:smart_rent/screens/auth/signup_screen.dart';
 import 'package:smart_rent/screens/bottom_nav_bar/bottom_nav_bar.dart';
 import 'package:smart_rent/screens/home/homepage_screen.dart';
@@ -21,8 +25,13 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
+  final _formKey = GlobalKey<FormState>();
+
+  final UserController userController = Get.put(UserController());
+
   @override
   Widget build(BuildContext context) {
+    userController.listenToChanges();
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -30,54 +39,88 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Center(
             child: SingleChildScrollView(
               physics: BouncingScrollPhysics(),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
 
-                  Image.asset('assets/auth/logo.png', width: 50.w,),
+                    Image.asset('assets/auth/logo.png', width: 50.w,),
 
-                  Text('Sign in' , style: AppTheme.appTitleLarge,),
+                    Text('Sign in', style: AppTheme.appTitleLarge,),
 
-                  AppTextField(
-                    title: 'YOUR EMAIL',
+                    AppTextField(
+                      title: 'YOUR EMAIL',
                       controller: emailController,
                       hintText: 'email',
                       obscureText: false,
-                  ),
+                    ),
 
-                  SizedBox(height: 3.h,),
+                    SizedBox(height: 3.h,),
 
-                  AppPasswordTextField(
-                    title: 'PASSWORD',
+                    AppPasswordTextField(
+                      title: 'PASSWORD',
                       controller: passwordController,
                       hintText: 'password',
-                  ),
+                    ),
 
-                  SizedBox(height: 5.h,),
+                    SizedBox(height: 5.h,),
 
-                  AppButton(
-                      title: 'Sign in',
-                      color: AppTheme.primaryColor,
-                      function: (){
-                        Get.off(() => BottomNavBar());
-                        Get.snackbar('SUCCESS', 'Logged in successfully',
-                          titleText: Text('SUCCESS', style: AppTheme.greenTitle1,),
-                        );
-                      }),
+                    AppButton(
+                        title: 'Sign in',
+                        color: AppTheme.primaryColor,
+                        function: () async {
+                          if (_formKey.currentState!.validate()) {
 
-                  SizedBox(height: 5.h,),
-                  Center(child: Text('Don\'t have an account?', style: AppTheme.subTextBold,)),
-                  AppButton(
+                            // userController.insertUser(UserModel(
+                            //     email: emailController.text.toString(),
+                            //   password: passwordController.text.toString(),
+                            // ));
+
+                            // await AppConfig().supaBaseClient.from('users')
+                            //     .insert(({
+                            //   'email': emailController.text.toString(),
+                            //   'password': passwordController.text.toString(),
+                            // }))
+                            //     .then((value) {});
+
+                            Get.off(() => BottomNavBar());
+                            Get.snackbar('SUCCESS', 'Logged in successfully',
+                              titleText: Text(
+                                'SUCCESS', style: AppTheme.greenTitle1,),
+                            );
+
+                          } else {
+
+                          }
+                        }),
+
+                    SizedBox(height: 5.h,),
+                    Center(child: Text(
+                      'Don\'t have an account?', style: AppTheme.subTextBold,)),
+                    AppButton(
                       title: 'Create An Account',
                       color: AppTheme.darkerColor,
-                      function: (){
-                        Get.to(() => SignUpScreen(), transition: Transition.upToDown);
+                      function: () async {
+                        // Get.to(() => SignUpScreen(), transition: Transition.upToDown);
+                        Get.to(() => CreateOrganisationScreen(), transition: Transition.upToDown);
                       },
-                  )
+                    ),
 
+                    Obx(() {
+                      return userController.userList.isEmpty ? Center(child: Text('No Users'),)
+                          : ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: userController.userList.length,
+                          itemBuilder: (context, index) {
+                            var user = userController.userList[index];
+                            return Text(user.email);
+                          });
+                    })
 
-                ],
+                  ],
+                ),
               ),
             ),
           ),

@@ -13,6 +13,7 @@ class AppTextField extends StatelessWidget {
   final TextStyle? style;
   final bool enabled;
   final String? title;
+  final String? Function(String?)? validator;
 
   const AppTextField({
     super.key,
@@ -24,7 +25,8 @@ class AppTextField extends StatelessWidget {
     this.fillColor = AppTheme.fillColor,
     this.style,
     this.enabled = true,
-    this.title
+    this.title,
+    this.validator
   });
 
   @override
@@ -36,10 +38,11 @@ class AppTextField extends StatelessWidget {
         title == null ? Container() : Text(title ?? '', style: AppTheme.appFieldTitle,),
         title == null ? Container() : SizedBox(height: 1.h,),
         SizedBox(
-          height: 6.5.h,
+          height: 8.5.h,
           child: TextFormField(
-            validator: (val) =>
-            val!.isEmpty ? 'Required field, Please fill in.' : null,
+            // validator: (val) =>
+            // val!.isEmpty ? 'Required field, Please fill in.' : null,
+            validator: validator,
             controller: controller,
             obscureText: obscureText,
             style: style,

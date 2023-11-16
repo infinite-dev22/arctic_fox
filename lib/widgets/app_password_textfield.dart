@@ -11,6 +11,8 @@ class AppPasswordTextField extends StatefulWidget {
   final bool enabled;
   final TextStyle? style;
   final String? title;
+  final String? Function(String?)? validator;
+  final String value;
 
   const AppPasswordTextField({
     super.key,
@@ -21,7 +23,9 @@ class AppPasswordTextField extends StatefulWidget {
     this.iconColor = AppTheme.darkerColor,
     this.style,
     this.enabled = true,
-    this.title
+    this.title,
+    this.validator,
+    this.value = '',
   });
 
   @override
@@ -30,6 +34,7 @@ class AppPasswordTextField extends StatefulWidget {
 
 class _AuthPasswordTextField extends State<AppPasswordTextField> {
   bool obscure = true;
+  String? password;
 
   @override
   Widget build(BuildContext context) {
@@ -40,11 +45,19 @@ class _AuthPasswordTextField extends State<AppPasswordTextField> {
         Text(widget.title ?? '', style: AppTheme.appFieldTitle,),
         SizedBox(height: 1.h,),
         SizedBox(
-          height: 6.5.h,
+          height: 8.5.h,
           child: TextFormField(
-            validator: (val) =>
-            val!.isEmpty ? 'Required field, Please fill in.' : null,
+
+            // validator: (val) =>
+            // val!.isEmpty ? 'Required field, Please fill in.' : null,
+            validator: widget.validator,
             controller: widget.controller,
+            onChanged: (val){
+              // password = val;
+              // setState(() {
+              //
+              // });
+            },
             obscureText: obscure,
             style: widget.style,
             enabled: widget.enabled,

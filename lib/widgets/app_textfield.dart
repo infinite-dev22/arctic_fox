@@ -13,6 +13,7 @@ class AppTextField extends StatelessWidget {
   final TextStyle? style;
   final bool enabled;
   final String? title;
+  final TextInputType? keyBoardType;
   final String? Function(String?)? validator;
 
   const AppTextField({
@@ -26,7 +27,8 @@ class AppTextField extends StatelessWidget {
     this.style,
     this.enabled = true,
     this.title,
-    this.validator
+    this.validator,
+    this.keyBoardType,
   });
 
   @override
@@ -77,7 +79,7 @@ class AppTextField extends StatelessWidget {
                 fontSize: 16.sp,
               ),
             ),
-            keyboardType: TextInputType.emailAddress,
+            keyboardType: keyBoardType ?? TextInputType.emailAddress,
             // maxLines: 10,
           ),
         ),

@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/controllers/property_options/property_details_options_controller.dart';
+import 'package:smart_rent/controllers/tenants/tenant_controller.dart';
 import 'package:smart_rent/screens/tenant/tenant_details_screen.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 import 'package:smart_rent/utils/extra.dart';
@@ -20,7 +21,9 @@ import 'package:wtf_sliding_sheet/wtf_sliding_sheet.dart';
 
 class TenantTabScreen extends StatefulWidget {
   final PropertyDetailsOptionsController propertyDetailsOptionsController;
-  const TenantTabScreen({super.key, required this.propertyDetailsOptionsController});
+
+  const TenantTabScreen(
+      {super.key, required this.propertyDetailsOptionsController});
 
   @override
   State<TenantTabScreen> createState() => _TenantTabScreenState();
@@ -59,8 +62,49 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
   final TextEditingController discountController = TextEditingController();
   final TextEditingController amountController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
+  final TextEditingController date1Controller = TextEditingController();
+  final TextEditingController date2Controller = TextEditingController();
 
   final TextEditingController searchController = TextEditingController();
+
+  final Rx<DateTime> selectedDate1 = Rx<DateTime>(DateTime.now());
+  final Rx<DateTime> selectedDate2 = Rx<DateTime>(DateTime.now());
+
+  final TenantController tenantController = Get.put(TenantController());
+  final _formKey = GlobalKey<FormState>();
+
+  Future<void> _selectDate1(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: selectedDate1.value,
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+
+    if (picked != null) {
+      selectedDate1(picked);
+      date1Controller.text =
+      '${selectedDate1.value.day}/${selectedDate1.value.month}/${selectedDate1
+          .value.year}';
+    }
+  }
+
+  Future<void> _selectDate2(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: selectedDate2.value,
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+
+    if (picked != null && picked != selectedDate1.value) {
+      selectedDate2(picked);
+      date2Controller.text =
+      '${selectedDate2.value.day}/${selectedDate2.value.month}/${selectedDate2
+          .value.year}';
+    }
+  }
+
 
   void showAsBottomSheet(BuildContext context) async {
     final result = await showSlidingBottomSheet(
@@ -79,96 +123,116 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 5.w,
                       vertical: 1.h),
-                  child:  SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Text('Fill In Tenant Fileds', style: AppTheme.darkBlueText1,),
-                        SizedBox(height: 1.h,),
+                  child: SingleChildScrollView(
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          Text('Fill In Tenant Fileds', style: AppTheme
+                              .darkBlueText1,),
+                          SizedBox(height: 1.h,),
 
-                        CustomGenericDropdown<String>(
-                          hintText: 'Select Tenant',
-                          menuItems: widget.propertyDetailsOptionsController.tenantList,
-                          onChanged: (value){
-
-                          },
-                        ),
-
-                        CustomGenericDropdown<String>(
-                          hintText: 'Select Unit',
-                          menuItems: widget.propertyDetailsOptionsController.levelList,
-                          onChanged: (value){
-
-                          },
-                        ),
-
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SizedBox(
-                              width: 42.5.w,
-                              child: CustomGenericDropdown<String>(
-                                hintText: 'From',
-                                menuItems: [],
-                                onChanged: (value){
-
-                                },
-                              ),
-                            ),
-
-                            SizedBox(
-                              width: 42.5.w,
-                              child: CustomGenericDropdown<String>(
-                                hintText: 'To',
-                                menuItems: [],
-                                onChanged: (value){
-
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              child: AppTextField(
-                                controller: amountController,
-                                hintText: 'Amount',
-                                obscureText: false,
-                              ),
-                              width: 42.5.w,
-                            ),
-
-                            SizedBox(
-                              child: AppTextField(
-                                controller: discountController,
-                                hintText: 'Discount',
-                                obscureText: false,
-                              ),
-                              width: 42.5.w,
-                            ),
-
-                          ],
-                        ),
-
-
-
-                        SizedBox(height: 2.h,),
-
-                        AppButton(
-                          title: 'Add Tenant',
-                          color: AppTheme.primaryColor,
-                          function: (){
-                            Get.back();
-                            Get.snackbar('SUCCESS', 'Tenant added to your property',
-                              titleText: Text('SUCCESS', style: AppTheme.greenTitle1,),
+                          Obx(() {
+                            return CustomApiGenericDropdown(
+                              hintText: 'Select Tenant',
+                              menuItems: tenantController.tenantList.value,
+                              onChanged: (value){
+                                tenantController.setTenantId(value!.id);
+                              },
                             );
-                          },
-                        ),
+                          }),
 
-                      ],
+                          Obx(() {
+                            return CustomApiUnitDropdown(
+                              hintText: 'Select Unit',
+                              menuItems: tenantController.unitList.value,
+                              onChanged: (value) {
+                                tenantController.setUnitId(value!.id);
+                              },
+                            );
+                          }),
+
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SizedBox(
+                                width: 42.5.w,
+                                child: AppTextField(
+                                  onTap: () {
+                                    _selectDate1(context);
+                                  },
+                                  controller: date1Controller,
+                                  hintText: "From",
+                                  obscureText: false,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 42.5.w,
+                                child: AppTextField(
+                                  onTap: () {
+                                    _selectDate2(context);
+                                  },
+                                  controller: date2Controller,
+                                  hintText: "To",
+                                  obscureText: false,
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          SizedBox(height: 1.h,),
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                child: AppTextField(
+                                  controller: amountController,
+                                  hintText: 'Amount',
+                                  obscureText: false,
+                                ),
+                                width: 42.5.w,
+                              ),
+
+                              SizedBox(
+                                child: AppTextField(
+                                  controller: discountController,
+                                  hintText: 'Discount',
+                                  obscureText: false,
+                                ),
+                                width: 42.5.w,
+                              ),
+
+                            ],
+                          ),
+
+
+                          SizedBox(height: 2.h,),
+
+                          AppButton(
+                            title: 'Add Tenant',
+                            color: AppTheme.primaryColor,
+                            function: () {
+                              if(_formKey.currentState!.validate()){
+                                tenantController.addTenantToUnit(
+                                    tenantController.tenantId.value,
+                                    "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
+                                    tenantController.unitId.value,
+                                    selectedDate1.value,
+                                    selectedDate2.value,
+                                    int.parse(amountController.text.toString()),
+                                    int.parse(discountController.text.toString()),
+                                );
+                              } else {
+
+                              }
+                            },
+                          ),
+
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -190,7 +254,6 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Padding(
       padding: EdgeInsets.only(top: 5.h),
       child: Column(
@@ -204,9 +267,9 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
               SizedBox(
                 width: 50.w,
                 child: AppTextField(
-                    controller: searchController,
-                    hintText: 'Search',
-                    obscureText: false,
+                  controller: searchController,
+                  hintText: 'Search',
+                  obscureText: false,
                 ),
               ),
 
@@ -216,7 +279,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                 child: AppButton(
                     title: 'Add Tenant',
                     color: AppTheme.primaryColor,
-                    function: (){
+                    function: () {
                       showAsBottomSheet(context);
                     }),
               ),
@@ -225,31 +288,35 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
           ),
 
           ListView.builder(
-            physics: NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: listSample.length,
-              itemBuilder: (context, index){
-              var list = listSample[index];
-              return Padding(
-                padding: EdgeInsets.only(bottom: 1.h),
-                child: Card(
-                  child: ListTile(
-                    onTap: (){
-                      Get.to(() => TenantDetailsScreen(), transition: Transition.rightToLeftWithFade);
-                    },
-                    leading: ClipRRect(
-                      borderRadius: BorderRadius.circular(10.sp),
-                      child: Image.asset('assets/avatar/rian.jpg',
-                        fit: BoxFit.cover,
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: listSample.length,
+              itemBuilder: (context, index) {
+                var list = listSample[index];
+                return Padding(
+                  padding: EdgeInsets.only(bottom: 1.h),
+                  child: Card(
+                    child: ListTile(
+                      onTap: () {
+                        Get.to(() => TenantDetailsScreen(),
+                            transition: Transition.rightToLeftWithFade);
+                      },
+                      leading: ClipRRect(
+                        borderRadius: BorderRadius.circular(10.sp),
+                        child: Image.asset('assets/avatar/rian.jpg',
+                          fit: BoxFit.cover,
+                        ),
                       ),
+                      title: Text(list['first'].toString() + ' ' +
+                          list['last'].toString(), style: AppTheme.appTitle3,),
+                      subtitle: Text('${amountFormatter.format(
+                          list['amount'].toString())}/=',
+                        style: AppTheme.greenTitle2,),
+                      trailing: Text('Unit $index', style: AppTheme.subText,),
                     ),
-                    title: Text(list['first'].toString() + ' ' + list['last'].toString(), style: AppTheme.appTitle3,),
-                    subtitle: Text('${amountFormatter.format(list['amount'].toString())}/=', style: AppTheme.greenTitle2,),
-                    trailing: Text('Unit $index', style: AppTheme.subText,),
                   ),
-                ),
-              );
-          })
+                );
+              })
 
         ],
       ),

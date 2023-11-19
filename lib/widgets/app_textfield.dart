@@ -15,6 +15,7 @@ class AppTextField extends StatelessWidget {
   final String? title;
   final TextInputType? keyBoardType;
   final String? Function(String?)? validator;
+  final VoidCallback? onTap;
 
   const AppTextField({
     super.key,
@@ -29,6 +30,7 @@ class AppTextField extends StatelessWidget {
     this.title,
     this.validator,
     this.keyBoardType,
+    this.onTap
   });
 
   @override
@@ -42,6 +44,7 @@ class AppTextField extends StatelessWidget {
         SizedBox(
           height: 8.5.h,
           child: TextFormField(
+            onTap: onTap,
             // validator: (val) =>
             // val!.isEmpty ? 'Required field, Please fill in.' : null,
             validator: validator,

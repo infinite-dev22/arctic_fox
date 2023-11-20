@@ -67,6 +67,7 @@ dependencies:
   json_table: ^2.0.1
   wtf_sliding_sheet: ^1.1.2
   supabase_flutter: ^1.10.25
+  uuid: ^4.2.1
 #  supabase: ^1.11.11
 #  supabase_flutter: ^1.10.25
 #  elegant_notification: ^1.11.2

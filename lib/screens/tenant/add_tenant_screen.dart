@@ -1,13 +1,16 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/controllers/tenants/tenant_controller.dart';
+import 'package:smart_rent/models/business/business_type_model.dart';
 import 'package:smart_rent/models/general/smart_model.dart';
 import 'package:smart_rent/models/salutation/salutation_model.dart';
 import 'package:smart_rent/models/tenant/tenant_type_model.dart';
@@ -17,6 +20,7 @@ import 'package:smart_rent/widgets/app_drop_downs.dart';
 import 'package:smart_rent/widgets/app_image_header.dart';
 import 'package:smart_rent/widgets/app_max_textfield.dart';
 import 'package:smart_rent/widgets/app_textfield.dart';
+import 'package:smart_rent/widgets/tenant_profile_contact_form.dart';
 
 
 class AddTenantScreen extends StatefulWidget {
@@ -34,7 +38,16 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
   final TextEditingController phoneNoController = TextEditingController();
 
 
+  final TextEditingController contactFirstNameController = TextEditingController();
+  final TextEditingController contactLastNameController = TextEditingController();
+  final TextEditingController contactNinController = TextEditingController();
+  final TextEditingController contactDesignationController = TextEditingController();
+  final TextEditingController contactPhoneController = TextEditingController();
+  final TextEditingController contactEmailController = TextEditingController();
+
+
   final _formKey = GlobalKey<FormState>();
+  final _contactFormKey = GlobalKey<FormState>();
 
   var typeList = [
     'Individual',
@@ -77,6 +90,31 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    firstNameController.dispose();
+    surnameNameController.dispose();
+    otherNameController.dispose();
+    phoneNoController.dispose();
+
+    contactEmailController.dispose();
+    contactPhoneController.dispose();
+    contactNinController.dispose();
+    contactDesignationController.dispose();
+    contactLastNameController.dispose();
+    contactFirstNameController.dispose();
+  }
+
+  String generateCustomRandomId() {
+    int randomPart = Random().nextInt(10000);
+
+    String uniqueId = "T-${randomPart.toString()}";
+
+    return uniqueId;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppImageHeader(
@@ -109,6 +147,67 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                   );
                 }),
 
+                // Obx(() {
+                //   return tenantController.tenantTypeId.value == 1 ? Text(
+                //       'Individual') : tenantController.tenantTypeId.value == 2
+                //       ? Text('Company')
+                //       : Container();
+                // }),
+
+
+                Obx(() {
+                  return tenantController.tenantTypeId.value == 1 ? Container()
+                      :  tenantController.tenantTypeId.value == 2 ? Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Checkbox(
+                        value: tenantController.isAddContactPerson.value,
+                        onChanged: (value) {
+                          tenantController.addContactPerson(value!);
+                        },
+                        activeColor: AppTheme.primaryColor,
+                      ),
+
+                      tenantController.isAddContactPerson.value
+                          ? Text(
+                        'remove Contact Person', style: AppTheme.subTextBold2,)
+                          : Text(
+                        'add Contact Person', style: AppTheme.subTextBold2,)
+                    ],
+                  ) : Container();
+                }),
+
+
+                Obx(() {
+                  return tenantController.isAddContactPerson.value
+                  && tenantController.tenantTypeId.value == 2
+                      ? TenantProfileContactForm(
+                    contactKey: _contactFormKey,
+                    contactFirstNameController: contactFirstNameController,
+                    contactLastNameController: contactLastNameController,
+                    contactNinController: contactNinController,
+                    contactDesignationController: contactDesignationController,
+                    contactPhoneController: contactPhoneController,
+                    contactEmailController: contactEmailController,
+                  ) : Container();
+                }),
+
+                Obx(() {
+                  return tenantController.isAddContactPerson.value ? SizedBox(
+                    height: 1.h,) : Container();
+                }),
+
+
+                Obx(() {
+                  return CustomApiGenericDropdown<BusinessTypeModel>(
+                    hintText: "Business Type",
+                    menuItems: tenantController.businessList.value,
+                    onChanged: (value) {
+                      tenantController.setBusinessTypeId(value!.id);
+                    },
+                  );
+                }),
 
                 Obx(() {
                   return CustomApiGenericDropdown<SalutationModel>(
@@ -253,18 +352,50 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                   title: 'Submit',
                   color: AppTheme.primaryColor,
                   function: () {
-                    if (_formKey.currentState!.validate()) {
-                      tenantController.addTenant(
-                          "${firstNameController.text.trim()} ${surnameNameController.text.trim()}",
-                          12,
-                          tenantController.tenantTypeId.value,
-                          "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
-                          tenantController.nationalityId.value,
-                      );
 
+                    if(tenantController.isAddContactPerson.isFalse && tenantController.tenantId.value == 1){
+                      if (_formKey.currentState!.validate()) {
+
+                        Get.snackbar('Posting Individual', 'Adding Individual Tenant');
+                        // tenantController.addIndividualTenant(
+                        //   "${firstNameController.text
+                        //       .trim()} ${surnameNameController.text.trim()}",
+                        //   12,
+                        //   tenantController.tenantTypeId.value,
+                        //   "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
+                        //   tenantController.nationalityId.value,
+                        // );
+                      } else {
+
+                      }
                     } else {
 
+                      if (_formKey.currentState!.validate() && _contactFormKey.currentState!.validate()) {
+
+
+                        // tenantController.addCompanyTenant(
+                        //     "${firstNameController.text
+                        //         .trim()} ${surnameNameController.text.trim()}",
+                        //     12,
+                        //     tenantController.tenantTypeId.value,
+                        //   tenantController.businessTypeId.value,
+                        //     "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
+                        //     tenantController.nationalityId.value,
+                        //     contactFirstNameController.text.trim().toString(),
+                        //   contactLastNameController.text.trim().toString(),
+                        //   contactNinController.text.trim().toString(),
+                        //   contactDesignationController.text.trim().toString(),
+                        //   phoneNoController.text.trim().toString(),
+                        //   contactEmailController.text.trim().toString(),
+                        // );
+
+                      } else {
+
+                      }
+
                     }
+
+
                   },
                 ),
 

@@ -1,12 +1,16 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smart_rent/config/app_config.dart';
+import 'package:smart_rent/models/business/business_type_model.dart';
 import 'package:smart_rent/models/nationality/nationality_model.dart';
 import 'package:smart_rent/models/salutation/salutation_model.dart';
 import 'package:smart_rent/models/tenant/tenant_model.dart';
 import 'package:smart_rent/models/tenant/tenant_type_model.dart';
 import 'package:smart_rent/models/unit/unit_model.dart';
 import 'package:smart_rent/styles/app_theme.dart';
+import 'package:uuid/uuid.dart';
 
 class TenantController extends GetxController {
 
@@ -15,11 +19,18 @@ class TenantController extends GetxController {
   RxList<TenantTypeModel> tenantTypeList = <TenantTypeModel>[].obs;
   RxList<UnitModel> unitList = <UnitModel>[].obs;
   RxList<TenantModel> tenantList = <TenantModel>[].obs;
+  RxList<BusinessTypeModel> businessList = <BusinessTypeModel>[].obs;
+
+  var isAddContactPerson = false.obs;
+  var isAddNextOfKin = false.obs;
 
   var nationalityId = 0.obs;
   var tenantTypeId = 0.obs;
   var unitId = 0.obs;
   var tenantId = 0.obs;
+  var businessTypeId = 0.obs;
+
+  var uuid = Uuid();
 
   @override
   void onInit() {
@@ -30,7 +41,13 @@ class TenantController extends GetxController {
     fetchAllSalutations();
     fetchAllTenants();
     fetchAllUnits();
+    fetchAllBusinessTypes();
 
+  }
+
+  addContactPerson(bool value){
+    isAddContactPerson.toggle();
+    print(value);
   }
 
   setNationalityId(int id){
@@ -52,6 +69,12 @@ class TenantController extends GetxController {
     tenantId.value = id;
     print('New Tenant Id is $id');
   }
+
+  setBusinessTypeId(int id){
+    businessTypeId.value = id;
+    print('New Business Type Id is $id');
+  }
+
 
   void fetchAllNationalities() async {
 
@@ -138,6 +161,26 @@ class TenantController extends GetxController {
 
   }
 
+  void fetchAllBusinessTypes() async {
+
+    try {
+
+      final response = await AppConfig().supaBaseClient.from('business_types').select();
+      final data = response as List<dynamic>;
+      print(response);
+      print(response.length);
+      print(data.length);
+      print(data);
+
+      return businessList.assignAll(
+          data.map((json) => BusinessTypeModel.fromJson(json)).toList());
+
+    } catch (error) {
+      print('Error fetching Business Types: $error');
+    }
+
+
+  }
 
   void fetchAllUnits() async {
 
@@ -161,9 +204,11 @@ class TenantController extends GetxController {
   }
 
 
-  addTenant(String name, int organisationId, int tenantTypeId, String createdBy,
+  addIndividualTenant(String name, int organisationId, int tenantTypeId, String createdBy,
       int nationId,
       ) async {
+
+    String uniqueId = uuid.v4();
 
     try {
       final response =  await AppConfig().supaBaseClient.from('tenants').insert(
@@ -174,7 +219,7 @@ class TenantController extends GetxController {
             "tenant_type_id": tenantTypeId,
             "created_by" : createdBy,
           }
-      ).then((property) {
+      ).then((indTenant) {
         Get.back();
         Get.snackbar('SUCCESS', 'Tenant added to your list',
           titleText: Text(
@@ -189,6 +234,124 @@ class TenantController extends GetxController {
     } catch (error) {
       print('Error adding tenant: $error');
     }
+
+
+  }
+
+  addCompanyTenant(String name, int organisationId, int tenantTypeId, int businessTypeId, String createdBy,
+      int nationId, String? contactFirstName, String? contactLastName,
+      String? contactNin, String? contactDesignation, String? contactPhone, String? contactEmail,
+      ) async {
+
+    String uniqueId = uuid.v4();
+
+
+    try {
+      final response =  await AppConfig().supaBaseClient.from('tenants').insert(
+          {
+            "tenant_no" : uniqueId,
+            "business_type_id" : businessTypeId,
+            "name" : name,
+            "nation_id": nationId,
+            "organisation_id": organisationId,
+            "tenant_type_id": tenantTypeId,
+            "created_by" : createdBy,
+          }
+      );
+
+      // await AppConfig().supaBaseClient.from('tenants').select('id').like('tenant_no', uniqueId.toString()).execute().then((response) {
+      //   if (response.data == null) {
+      //     print('Error: ${response.toString()}');
+      //   } else {
+      //     // Assuming there is only one row matching the condition
+      //     final tableId = response.data[0]['id'];
+      //
+      //     print('Table ID: $tableId');
+      //   }
+      // });
+
+
+      final data = await AppConfig().supaBaseClient.from('tenants')
+          .select('id')
+          .like('tenant_no', uniqueId.toString()).execute();
+
+      print(data);
+      print(data.data[0]['id']);
+
+      if(isAddContactPerson.isFalse) {
+        Get.back();
+        Get.snackbar('SUCCESS', 'Tenant added to your list',
+          titleText: Text(
+            'SUCCESS', style: AppTheme.greenTitle1,),
+        );
+      } else {
+
+        await AppConfig().supaBaseClient.from('tenant_profile_contacts').insert(
+            {
+              "tenant_id" : data.data[0]['id'],
+              "first_name" : contactFirstName,
+              "last_name" : contactLastName,
+              "nin" : contactNin,
+              "contact" : contactPhone,
+              "email" : contactEmail,
+              "designation": contactDesignation,
+              "created_by" : "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
+            }
+        );
+
+      }
+
+    } catch (error) {
+      print('Error adding tenant: $error');
+    }
+
+
+    // try {
+    //   final response =  await AppConfig().supaBaseClient.from('tenants').insert(
+    //       {
+    //         "tenant_no" : uniqueId,
+    //         "business_type_id" : businessTypeId,
+    //         "name" : name,
+    //         "nation_id": nationId,
+    //         "organisation_id": organisationId,
+    //         "tenant_type_id": tenantTypeId,
+    //         "created_by" : createdBy,
+    //       }
+    //   ).then((compTenant) async{
+    //     print("My Value Is " + compTenant);
+    //
+    //     if(isAddContactPerson.isFalse) {
+    //       Get.back();
+    //       Get.snackbar('SUCCESS', 'Tenant added to your list',
+    //         titleText: Text(
+    //           'SUCCESS', style: AppTheme.greenTitle1,),
+    //       );
+    //     } else {
+    //
+    //       await AppConfig().supaBaseClient.from('tenant_profile_contacts').insert(
+    //           {
+    //             "tenant_id" : compTenant['id'],
+    //             "first_name" : contactFirstName,
+    //             "last_name" : contactLastName,
+    //             "nin" : contactNin,
+    //             "contact" : contactPhone,
+    //             "email" : contactEmail,
+    //             "created_by" : "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
+    //           }
+    //       );
+    //
+    //     }
+    //
+    //   });
+    //
+    //   if (response.error != null) {
+    //     throw response.error;
+    //   }
+    //
+    // } catch (error) {
+    //   print('Error adding tenant: $error');
+    // }
+
 
 
   }
@@ -209,7 +372,7 @@ class TenantController extends GetxController {
             "from_date" : date1,
             "to_date" : date2,
           }
-      ).then((property) {
+      ).then((tenant) {
         Get.back();
         Get.snackbar('SUCCESS', 'Tenant added to unit',
           titleText: Text(

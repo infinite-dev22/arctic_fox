@@ -115,6 +115,8 @@ class AppTheme{
     fontWeight: FontWeight.w700,
   );
 
+
+
   static TextStyle get buttonText => GoogleFonts.hind(
     color: whiteColor,
     fontSize: 18.sp,

@@ -249,9 +249,127 @@ class TenantController extends GetxController {
 
   }
 
-  addCompanyTenant(String name, int organisationId, int tenantTypeId, int businessTypeId, String createdBy,
-      int nationId, String? contactFirstName, String? contactLastName,
-      String? contactNin, String? contactDesignation, String? contactPhone, String? contactEmail,
+  // addCompanyTenant(String name, int organisationId, int tenantTypeId, int businessTypeId, String createdBy,
+  //     int nationId, String? contactFirstName, String? contactLastName,
+  //     String? contactNin, String? contactDesignation, String? contactPhone, String? contactEmail,
+  //     ) async {
+  //
+  //   String uniqueId = uuid.v4();
+  //
+  //
+  //   try {
+  //     final response =  await AppConfig().supaBaseClient.from('tenants').insert(
+  //         {
+  //           "tenant_no" : uniqueId,
+  //           "business_type_id" : businessTypeId,
+  //           "name" : name,
+  //           "nation_id": nationId,
+  //           "organisation_id": organisationId,
+  //           "tenant_type_id": tenantTypeId,
+  //           "created_by" : createdBy,
+  //         }
+  //     );
+  //
+  //     // await AppConfig().supaBaseClient.from('tenants').select('id').like('tenant_no', uniqueId.toString()).execute().then((response) {
+  //     //   if (response.data == null) {
+  //     //     print('Error: ${response.toString()}');
+  //     //   } else {
+  //     //     // Assuming there is only one row matching the condition
+  //     //     final tableId = response.data[0]['id'];
+  //     //
+  //     //     print('Table ID: $tableId');
+  //     //   }
+  //     // });
+  //
+  //
+  //     final data = await AppConfig().supaBaseClient.from('tenants')
+  //         .select('id')
+  //         .like('tenant_no', uniqueId.toString()).execute();
+  //
+  //     print(data);
+  //     print(data.data[0]['id']);
+  //
+  //     if(isAddContactPerson.isFalse) {
+  //       Get.back();
+  //       Get.snackbar('SUCCESS', 'Tenant added to your list',
+  //         titleText: Text(
+  //           'SUCCESS', style: AppTheme.greenTitle1,),
+  //       );
+  //     } else {
+  //
+  //       await AppConfig().supaBaseClient.from('tenant_profile_contacts').insert(
+  //           {
+  //             "tenant_id" : data.data[0]['id'],
+  //             "first_name" : contactFirstName,
+  //             "last_name" : contactLastName,
+  //             "nin" : contactNin,
+  //             "contact" : contactPhone,
+  //             "email" : contactEmail,
+  //             "designation": contactDesignation,
+  //             "created_by" : "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
+  //           }
+  //       );
+  //
+  //     }
+  //
+  //   } catch (error) {
+  //     print('Error adding tenant: $error');
+  //   }
+  //
+  //
+  //   // try {
+  //   //   final response =  await AppConfig().supaBaseClient.from('tenants').insert(
+  //   //       {
+  //   //         "tenant_no" : uniqueId,
+  //   //         "business_type_id" : businessTypeId,
+  //   //         "name" : name,
+  //   //         "nation_id": nationId,
+  //   //         "organisation_id": organisationId,
+  //   //         "tenant_type_id": tenantTypeId,
+  //   //         "created_by" : createdBy,
+  //   //       }
+  //   //   ).then((compTenant) async{
+  //   //     print("My Value Is " + compTenant);
+  //   //
+  //   //     if(isAddContactPerson.isFalse) {
+  //   //       Get.back();
+  //   //       Get.snackbar('SUCCESS', 'Tenant added to your list',
+  //   //         titleText: Text(
+  //   //           'SUCCESS', style: AppTheme.greenTitle1,),
+  //   //       );
+  //   //     } else {
+  //   //
+  //   //       await AppConfig().supaBaseClient.from('tenant_profile_contacts').insert(
+  //   //           {
+  //   //             "tenant_id" : compTenant['id'],
+  //   //             "first_name" : contactFirstName,
+  //   //             "last_name" : contactLastName,
+  //   //             "nin" : contactNin,
+  //   //             "contact" : contactPhone,
+  //   //             "email" : contactEmail,
+  //   //             "created_by" : "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
+  //   //           }
+  //   //       );
+  //   //
+  //   //     }
+  //   //
+  //   //   });
+  //   //
+  //   //   if (response.error != null) {
+  //   //     throw response.error;
+  //   //   }
+  //   //
+  //   // } catch (error) {
+  //   //   print('Error adding tenant: $error');
+  //   // }
+  //
+  //
+  // }
+
+
+  addPersonalTenant(String name, int organisationId, int tenantTypeId, int businessTypeId, String createdBy,
+      int nationId,
+      String nin,  String phone, String email, String? description, String dob, String gender,
       ) async {
 
     String uniqueId = uuid.v4();
@@ -267,6 +385,123 @@ class TenantController extends GetxController {
             "organisation_id": organisationId,
             "tenant_type_id": tenantTypeId,
             "created_by" : createdBy,
+            "description" : description,
+          }
+      );
+
+      // await AppConfig().supaBaseClient.from('tenants').select('id').like('tenant_no', uniqueId.toString()).execute().then((response) {
+      //   if (response.data == null) {
+      //     print('Error: ${response.toString()}');
+      //   } else {
+      //     // Assuming there is only one row matching the condition
+      //     final tableId = response.data[0]['id'];
+      //
+      //     print('Table ID: $tableId');
+      //   }
+      // });
+
+
+      final data = await AppConfig().supaBaseClient.from('tenants')
+          .select('id')
+          .like('tenant_no', uniqueId.toString()).execute();
+
+      print(data);
+      print(data.data[0]['id']);
+
+      await AppConfig().supaBaseClient.from('tenant_profiles').insert(
+          {
+            "tenant_id" : data.data[0]['id'],
+            // "first_name" : firstName,
+            // "last_name" : lastName,
+            "nin" : nin,
+            "contact" : phone,
+            "email" : email,
+            "description": description,
+            "created_by" : "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
+            "gender" : gender,
+            "date_of_birth" : dob,
+
+          }
+      ).then((value) {
+        Get.back();
+        Get.snackbar('Success', 'Added Company With Contact');
+      });
+
+
+    } catch (error) {
+      print('Error adding tenant: $error');
+    }
+
+
+    // try {
+    //   final response =  await AppConfig().supaBaseClient.from('tenants').insert(
+    //       {
+    //         "tenant_no" : uniqueId,
+    //         "business_type_id" : businessTypeId,
+    //         "name" : name,
+    //         "nation_id": nationId,
+    //         "organisation_id": organisationId,
+    //         "tenant_type_id": tenantTypeId,
+    //         "created_by" : createdBy,
+    //       }
+    //   ).then((compTenant) async{
+    //     print("My Value Is " + compTenant);
+    //
+    //     if(isAddContactPerson.isFalse) {
+    //       Get.back();
+    //       Get.snackbar('SUCCESS', 'Tenant added to your list',
+    //         titleText: Text(
+    //           'SUCCESS', style: AppTheme.greenTitle1,),
+    //       );
+    //     } else {
+    //
+    //       await AppConfig().supaBaseClient.from('tenant_profile_contacts').insert(
+    //           {
+    //             "tenant_id" : compTenant['id'],
+    //             "first_name" : contactFirstName,
+    //             "last_name" : contactLastName,
+    //             "nin" : contactNin,
+    //             "contact" : contactPhone,
+    //             "email" : contactEmail,
+    //             "created_by" : "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
+    //           }
+    //       );
+    //
+    //     }
+    //
+    //   });
+    //
+    //   if (response.error != null) {
+    //     throw response.error;
+    //   }
+    //
+    // } catch (error) {
+    //   print('Error adding tenant: $error');
+    // }
+
+
+  }
+
+
+  addCompanyTenantWithContact(String name, int organisationId, int tenantTypeId, int businessTypeId, String createdBy,
+      int nationId, String? contactFirstName, String? contactLastName,
+      String? contactNin, String? contactDesignation, String? contactPhone, String? contactEmail, String? description,
+      ) async {
+
+    String uniqueId = uuid.v4();
+
+
+    try {
+      final response =  await AppConfig().supaBaseClient.from('tenants').insert(
+          {
+            "tenant_no" : uniqueId,
+            "business_type_id" : businessTypeId,
+            "name" : name,
+            "nation_id": nationId,
+            "organisation_id": organisationId,
+            "tenant_type_id": tenantTypeId,
+            "created_by" : createdBy,
+            "description" : description,
           }
       );
 
@@ -308,7 +543,10 @@ class TenantController extends GetxController {
               "designation": contactDesignation,
               "created_by" : "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
             }
-        );
+        ).then((value) {
+          Get.back();
+          Get.snackbar('Success', 'Added Company With Contact');
+        });
 
       }
 
@@ -364,8 +602,72 @@ class TenantController extends GetxController {
     // }
 
 
+  }
+
+
+  addCompanyTenantWithoutContact(String name, int organisationId, int tenantTypeId, int businessTypeId, String createdBy,
+      int nationId, String? description,
+      ) async {
+
+    String uniqueId = uuid.v4();
+
+
+    try {
+      final response =  await AppConfig().supaBaseClient.from('tenants').insert(
+          {
+            "tenant_no" : uniqueId,
+            "business_type_id" : businessTypeId,
+            "name" : name,
+            "nation_id": nationId,
+            "organisation_id": organisationId,
+            "tenant_type_id": tenantTypeId,
+            "created_by" : createdBy,
+            "description" : description,
+          }
+      ).then((value) {
+        Get.back();
+        Get.snackbar('Success', 'Added Company Without Contact');
+      });
+
+
+      // final data = await AppConfig().supaBaseClient.from('tenants')
+      //     .select('id')
+      //     .like('tenant_no', uniqueId.toString()).execute();
+      //
+      // print(data);
+      // print(data.data[0]['id']);
+      //
+      // if(isAddContactPerson.isFalse) {
+      //   Get.back();
+      //   Get.snackbar('SUCCESS', 'Tenant added to your list',
+      //     titleText: Text(
+      //       'SUCCESS', style: AppTheme.greenTitle1,),
+      //   );
+      // } else {
+      //
+      //   await AppConfig().supaBaseClient.from('tenant_profile_contacts').insert(
+      //       {
+      //         "tenant_id" : data.data[0]['id'],
+      //         "first_name" : contactFirstName,
+      //         "last_name" : contactLastName,
+      //         "nin" : contactNin,
+      //         "contact" : contactPhone,
+      //         "email" : contactEmail,
+      //         "designation": contactDesignation,
+      //         "created_by" : "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
+      //       }
+      //   );
+      //
+      // }
+
+    } catch (error) {
+      print('Error adding tenant: $error');
+    }
+
+
 
   }
+
 
   addTenantToUnit( int tenantId, String createdBy,
       int unitId, DateTime date1, DateTime date2, int amount, int discount

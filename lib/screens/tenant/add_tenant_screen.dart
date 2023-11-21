@@ -39,6 +39,7 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
   final TextEditingController phoneNoController = TextEditingController();
 
   final TextEditingController companyNameController = TextEditingController();
+  final TextEditingController companyDescriptionController = TextEditingController();
 
   final TextEditingController individualFirstNameController =
   TextEditingController();
@@ -51,6 +52,7 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
   final TextEditingController individualDateOfBirthController =
   TextEditingController();
   final TextEditingController individualNinController = TextEditingController();
+  final TextEditingController individualDescriptionController = TextEditingController();
   final TextEditingController individualGenderController =
   TextEditingController();
 
@@ -105,6 +107,15 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
     RequiredValidator(errorText: 'contact required'),
     MinLengthValidator(10, errorText: 'contact short'),
     MaxLengthValidator(15, errorText: 'contact too long'),
+  ]);
+
+  final iDescriptionValidator = MultiValidator([
+    MaxLengthValidator(500, errorText: 'descrition too long'),
+  ]);
+
+
+  final companyDescriptionValidator = MultiValidator([
+    MaxLengthValidator(500, errorText: 'descrition too long'),
   ]);
 
   //
@@ -405,6 +416,17 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                             );
                           }),
 
+                          AppTextField(
+                            controller: individualDescriptionController,
+                            hintText: 'Description',
+                            obscureText: false,
+                            keyBoardType: TextInputType.text,
+                            validator: iDescriptionValidator,
+                            maxLines: 6,
+                            maxLength: 500,
+                            minLines: 3,
+                          ),
+
                         ],
                       ),
                     ),
@@ -430,6 +452,17 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                             obscureText: false,
                             keyBoardType: TextInputType.text,
                             validator: companyNameValidator,
+                          ),
+
+                          AppTextField(
+                            controller: companyDescriptionController,
+                            hintText: 'Description',
+                            obscureText: false,
+                            keyBoardType: TextInputType.text,
+                            validator: companyDescriptionValidator,
+                            maxLines: 6,
+                            maxLength: 500,
+                            minLines: 3,
                           ),
 
                           Obx(() {
@@ -596,6 +629,23 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                       if (_formKey.currentState!.validate() && _individualFormKey.currentState!.validate()) {
                         Get.snackbar(
                             'Posting Individual', 'Adding Individual Tenant');
+
+                        tenantController.addPersonalTenant(
+                            "${firstNameController.text
+                                .trim()} ${surnameNameController.text.trim()}",
+                            12,
+                            tenantController.tenantTypeId.value,
+                            tenantController.businessTypeId.value,
+                            "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
+                            tenantController.nationalityId.value,
+                            individualNinController.text.toString(),
+                            individualPhoneNameController.text.toString(),
+                            individualEmailNameController.text.toString(),
+                            individualDescriptionController.text.toString(),
+                            myDateOfBirth.value.toString(),
+                            tenantController.newGender.value,
+                        );
+
                         // tenantController.addIndividualTenant(
                         //   "${firstNameController.text
                         //       .trim()} ${surnameNameController.text.trim()}",
@@ -614,21 +664,15 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                             _companyFormKey.currentState!.validate()) {
                           Get.snackbar(
                               'Posting Company', 'No Company Contact');
-                          // tenantController.addCompanyTenant(
-                          //     "${firstNameController.text
-                          //         .trim()} ${surnameNameController.text.trim()}",
-                          //     12,
-                          //     tenantController.tenantTypeId.value,
-                          //   tenantController.businessTypeId.value,
-                          //     "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
-                          //     tenantController.nationalityId.value,
-                          //     contactFirstNameController.text.trim().toString(),
-                          //   contactLastNameController.text.trim().toString(),
-                          //   contactNinController.text.trim().toString(),
-                          //   contactDesignationController.text.trim().toString(),
-                          //   phoneNoController.text.trim().toString(),
-                          //   contactEmailController.text.trim().toString(),
-                          // );
+                          tenantController.addCompanyTenantWithoutContact(
+                              companyNameController.text.toString(),
+                              12,
+                              tenantController.tenantTypeId.value,
+                            tenantController.businessTypeId.value,
+                              "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
+                              tenantController.nationalityId.value,
+                            companyDescriptionController.text.toString(),
+                          );
                         } else {
                           Fluttertoast.showToast(msg: 'Fill in fields');
                         }
@@ -638,21 +682,22 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                             _companyFormKey.currentState!.validate() && _contactFormKey.currentState!.validate()) {
                           Get.snackbar(
                               'Posting Company', 'With Company Contact');
-                          // tenantController.addCompanyTenant(
-                          //     "${firstNameController.text
-                          //         .trim()} ${surnameNameController.text.trim()}",
-                          //     12,
-                          //     tenantController.tenantTypeId.value,
-                          //   tenantController.businessTypeId.value,
-                          //     "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
-                          //     tenantController.nationalityId.value,
-                          //     contactFirstNameController.text.trim().toString(),
-                          //   contactLastNameController.text.trim().toString(),
-                          //   contactNinController.text.trim().toString(),
-                          //   contactDesignationController.text.trim().toString(),
-                          //   phoneNoController.text.trim().toString(),
-                          //   contactEmailController.text.trim().toString(),
-                          // );
+                          tenantController.addCompanyTenantWithContact(
+                              "${firstNameController.text
+                                  .trim()} ${surnameNameController.text.trim()}",
+                              12,
+                              tenantController.tenantTypeId.value,
+                            tenantController.businessTypeId.value,
+                              "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
+                              tenantController.nationalityId.value,
+                              contactFirstNameController.text.trim().toString(),
+                            contactLastNameController.text.trim().toString(),
+                            contactNinController.text.trim().toString(),
+                            contactDesignationController.text.trim().toString(),
+                            contactPhoneController.text.trim().toString(),
+                            contactEmailController.text.trim().toString(),
+                            companyDescriptionController.text.toString(),
+                          );
                         } else {
                           Fluttertoast.showToast(msg: 'Fill in fields');
                         }

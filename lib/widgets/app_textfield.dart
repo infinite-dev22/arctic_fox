@@ -16,6 +16,9 @@ class AppTextField extends StatelessWidget {
   final TextInputType? keyBoardType;
   final String? Function(String?)? validator;
   final VoidCallback? onTap;
+  final int? maxLines;
+  final int? maxLength;
+  final int? minLines;
 
   const AppTextField({
     super.key,
@@ -30,7 +33,10 @@ class AppTextField extends StatelessWidget {
     this.title,
     this.validator,
     this.keyBoardType,
-    this.onTap
+    this.onTap,
+    this.maxLines,
+    this.maxLength,
+    this.minLines,
   });
 
   @override
@@ -44,6 +50,9 @@ class AppTextField extends StatelessWidget {
         SizedBox(
           height: 8.5.h,
           child: TextFormField(
+            minLines: minLines,
+            maxLength: maxLength,
+            maxLines: maxLines,
             onTap: onTap,
             // validator: (val) =>
             // val!.isEmpty ? 'Required field, Please fill in.' : null,

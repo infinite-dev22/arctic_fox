@@ -29,8 +29,14 @@ class TenantController extends GetxController {
   var unitId = 0.obs;
   var tenantId = 0.obs;
   var businessTypeId = 0.obs;
+  var newGender = ''.obs;
 
   var uuid = Uuid();
+
+  var genderList = [
+    'Male',
+    'Female',
+  ].obs;
 
   @override
   void onInit() {
@@ -43,6 +49,11 @@ class TenantController extends GetxController {
     fetchAllUnits();
     fetchAllBusinessTypes();
 
+  }
+
+  setNewGender(String gender){
+    newGender.value = gender;
+    print(gender);
   }
 
   addContactPerson(bool value){

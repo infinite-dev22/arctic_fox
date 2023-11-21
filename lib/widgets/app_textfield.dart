@@ -81,6 +81,7 @@ class AppTextField extends StatelessWidget {
                 color: Colors.grey,
                 fontSize: 16.sp,
               ),
+
             ),
             keyboardType: keyBoardType ?? TextInputType.emailAddress,
             // maxLines: 10,

@@ -208,7 +208,7 @@ class CustomGenericDropdown<T> extends StatelessWidget {
           child: DropdownButtonFormField2<T>(
             isExpanded: true,
             decoration: InputDecoration(
-              contentPadding: const EdgeInsets.symmetric(vertical: 16),
+              contentPadding:  EdgeInsets.symmetric(vertical: 0.5.h),
               filled: true,
               fillColor: AppTheme.fillColor,
               border: OutlineInputBorder(
@@ -272,12 +272,18 @@ class CustomApiGenericDropdown<T extends SmartModel> extends StatelessWidget {
         required this.hintText,
         required this.menuItems,
         this.onChanged,
-        this.defaultValue});
+        this.height,
+        this.defaultValue,
+        this.validator,
+
+      });
 
   final String hintText;
   final List<T> menuItems;
   final T? defaultValue;
   final Function(T?)? onChanged;
+  final double? height;
+  final String? Function(T?)? validator;
 
   @override
   Widget build(BuildContext context) {
@@ -288,11 +294,11 @@ class CustomApiGenericDropdown<T extends SmartModel> extends StatelessWidget {
     return Column(
       children: [
         SizedBox(
-          height: 6.5.h,
+          height: height ?? 8.5.h,
           child: DropdownButtonFormField2<T>(
             isExpanded: true,
             decoration: InputDecoration(
-              contentPadding: const EdgeInsets.symmetric(vertical: 16),
+              contentPadding:  EdgeInsets.symmetric(vertical: 0.5.h),
               filled: true,
               fillColor: AppTheme.fillColor,
               border: OutlineInputBorder(
@@ -343,7 +349,7 @@ class CustomApiGenericDropdown<T extends SmartModel> extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(height: 10),
+        // const SizedBox(height: 10),
       ],
     );
   }
@@ -372,7 +378,7 @@ class CustomApiTenantTypeDropdown<T extends SmartTenantTypeModel> extends Statel
     return Column(
       children: [
         SizedBox(
-          height: 6.5.h,
+          height: 8.5.h,
           child: DropdownButtonFormField2<T>(
             isExpanded: true,
             decoration: InputDecoration(
@@ -624,7 +630,7 @@ class CustomApiNationalityDropdown<T extends SmartNationalityModel> extends Stat
     return Column(
       children: [
         SizedBox(
-          height: 6.5.h,
+          height: 8.5.h,
           child: DropdownButtonFormField2<T>(
             isExpanded: true,
             decoration: InputDecoration(

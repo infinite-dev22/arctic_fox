@@ -10,8 +10,22 @@ class TenantProfileContactForm extends StatelessWidget {
   final TextEditingController contactDesignationController;
   final TextEditingController contactPhoneController;
   final TextEditingController contactEmailController;
+  final String? Function(String?)? firstNameValidator;
+  final String? Function(String?)? lastNameValidator;
+  final String? Function(String?)? designationValidator;
+  final String? Function(String?)? ninValidator;
+  final String? Function(String?)? phoneValidator;
+  final String? Function(String?)? emailValidator;
   final GlobalKey<FormState> contactKey;
-  const TenantProfileContactForm({super.key, required this.contactFirstNameController, required this.contactLastNameController, required this.contactNinController, required this.contactDesignationController, required this.contactPhoneController, required this.contactEmailController, required this.contactKey});
+  const TenantProfileContactForm({super.key,
+    required this.contactFirstNameController,
+    required this.contactLastNameController,
+    required this.contactNinController,
+    required this.contactDesignationController,
+    required this.contactPhoneController,
+    required this.contactEmailController,
+    required this.contactKey, this.firstNameValidator, this.lastNameValidator, this.designationValidator, this.ninValidator, this.phoneValidator, this.emailValidator,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +49,8 @@ class TenantProfileContactForm extends StatelessWidget {
                         controller: contactFirstNameController,
                         hintText: 'First Name',
                         obscureText: false,
+                        validator: firstNameValidator,
+                        keyBoardType: TextInputType.text,
                       ),
                     ),
 
@@ -44,6 +60,8 @@ class TenantProfileContactForm extends StatelessWidget {
                         controller: contactLastNameController,
                         hintText: 'Surname',
                         obscureText: false,
+                        validator: lastNameValidator,
+                        keyBoardType: TextInputType.text,
                       ),
                     ),
                   ],
@@ -53,6 +71,8 @@ class TenantProfileContactForm extends StatelessWidget {
                   controller: contactDesignationController,
                   hintText: 'Designation',
                   obscureText: false,
+                  validator: designationValidator,
+                  keyBoardType: TextInputType.text,
                 ),
 
                 AppTextField(
@@ -60,6 +80,8 @@ class TenantProfileContactForm extends StatelessWidget {
                   hintText: 'NIN',
                   obscureText: false,
                   keyBoardType: TextInputType.text,
+                  validator: ninValidator,
+
                 ),
 
                 AppTextField(
@@ -67,6 +89,7 @@ class TenantProfileContactForm extends StatelessWidget {
                   hintText: 'Contact',
                   obscureText: false,
                   keyBoardType: TextInputType.number,
+                  validator: phoneValidator,
                 ),
 
                 AppTextField(
@@ -74,6 +97,7 @@ class TenantProfileContactForm extends StatelessWidget {
                   hintText: 'Email',
                   obscureText: false,
                   keyBoardType: TextInputType.emailAddress,
+                  validator: emailValidator,
                 ),
 
               ],

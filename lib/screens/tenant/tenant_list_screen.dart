@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:skeletonizer/skeletonizer.dart';
+import 'package:smart_rent/controllers/tenants/tenant_controller.dart';
 import 'package:smart_rent/screens/tenant/add_tenant_screen.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 import 'package:smart_rent/widgets/app_header.dart';
@@ -17,11 +19,19 @@ class TenantListScreen extends StatefulWidget {
 }
 
 class _TenantListScreenState extends State<TenantListScreen> {
+  final TenantController tenantController = Get.put(TenantController());
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:AppImageHeader(
-          title: 'assets/auth/logo.png',
+      appBar: AppImageHeader(
+        title: 'assets/auth/logo.png',
         isTitleCentred: true,
       ),
 
@@ -47,23 +57,28 @@ class _TenantListScreenState extends State<TenantListScreen> {
                     ),
                   ),
                   Bounceable(
-                    onTap: (){
-                      Get.to(() => AddTenantScreen(), transition: Transition.downToUp);
-                    },
+                      onTap: () {
+                        Get.to(() => AddTenantScreen(),
+                            transition: Transition.downToUp);
+                      },
                       child: Image.asset('assets/home/add.png')),
                 ],
               ),
 
-              ListView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: 30,
-                  itemBuilder: (context, index){
-                    return Padding(
-                      padding: EdgeInsets.only(top: 1.h),
-                      child: SlideInUp(child: TenantCardWidget()),
-                    );
-                  }),
+              Obx(() {
+                return tenantController.isTenantListLoading.value
+                    ? Center(child: CircularProgressIndicator())
+                    : ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: tenantController.tenantList.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: EdgeInsets.only(top: 1.h),
+                        child: SlideInUp(child: TenantCardWidget(tenantController: tenantController, index: index,)),
+                      );
+                    });
+              }),
 
             ],
           ),

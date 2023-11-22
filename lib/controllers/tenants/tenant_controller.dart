@@ -30,6 +30,7 @@ class TenantController extends GetxController {
   var tenantId = 0.obs;
   var businessTypeId = 0.obs;
   var newGender = ''.obs;
+  var isTenantListLoading = false.obs;
 
   var uuid = Uuid();
 
@@ -45,7 +46,8 @@ class TenantController extends GetxController {
     fetchAllTenantTypes();
     fetchAllNationalities();
     fetchAllSalutations();
-    fetchAllTenants();
+    // fetchAllTenants();
+    listenToTenantChanges();
     fetchAllUnits();
     fetchAllBusinessTypes();
 
@@ -152,21 +154,23 @@ class TenantController extends GetxController {
 
 
   void fetchAllTenants() async {
-
+    isTenantListLoading(true);
     try {
 
-      final response = await AppConfig().supaBaseClient.from('tenants').select();
+      final response = await AppConfig().supaBaseClient.from('tenants').select().order('created_at', ascending: false);
       final data = response as List<dynamic>;
       print(response);
       print(response.length);
       print(data.length);
       print(data);
+      isTenantListLoading(false);
 
       return tenantList.assignAll(
           data.map((json) => TenantModel.fromJson(json)).toList());
 
     } catch (error) {
       print('Error fetching Tenants: $error');
+      isTenantListLoading(false);
     }
 
 
@@ -366,8 +370,16 @@ class TenantController extends GetxController {
   //
   // }
 
+  deleteTenant(int id) async{
 
-  addPersonalTenant(String name, int organisationId, int tenantTypeId, int businessTypeId, String createdBy,
+    await AppConfig().supaBaseClient
+        .from('tenants')
+        .delete()
+        .match({ 'id': id });
+    fetchAllTenants();
+  }
+
+  Future<void> addPersonalTenant(String name, int organisationId, int tenantTypeId, int businessTypeId, String createdBy,
       int nationId,
       String nin,  String phone, String email, String? description, String dob, String gender,
       ) async {
@@ -422,10 +434,16 @@ class TenantController extends GetxController {
             "date_of_birth" : dob,
 
           }
-      ).then((value) {
-        Get.back();
-        Get.snackbar('Success', 'Added Company With Contact');
-      });
+      );
+      // fetchAllTenants();
+      Get.back();
+      Get.snackbar('Success', 'Added Company With Contact');
+
+      //     .then((value) {
+      //   // fetchAllTenants();
+      //   Get.back();
+      //   Get.snackbar('Success', 'Added Company With Contact');
+      // });
 
 
     } catch (error) {
@@ -483,7 +501,7 @@ class TenantController extends GetxController {
   }
 
 
-  addCompanyTenantWithContact(String name, int organisationId, int tenantTypeId, int businessTypeId, String createdBy,
+  Future<void> addCompanyTenantWithContact(String name, int organisationId, int tenantTypeId, int businessTypeId, String createdBy,
       int nationId, String? contactFirstName, String? contactLastName,
       String? contactNin, String? contactDesignation, String? contactPhone, String? contactEmail, String? description,
       ) async {
@@ -525,6 +543,7 @@ class TenantController extends GetxController {
       print(data.data[0]['id']);
 
       if(isAddContactPerson.isFalse) {
+        // fetchAllTenants();
         Get.back();
         Get.snackbar('SUCCESS', 'Tenant added to your list',
           titleText: Text(
@@ -543,10 +562,15 @@ class TenantController extends GetxController {
               "designation": contactDesignation,
               "created_by" : "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
             }
-        ).then((value) {
-          Get.back();
-          Get.snackbar('Success', 'Added Company With Contact');
-        });
+        );
+        // fetchAllTenants();
+        Get.back();
+        // Get.snackbar('Success', 'Added Company With Contact');
+
+        //     .then((value) {
+        //   Get.back();
+        //   Get.snackbar('Success', 'Added Company With Contact');
+        // });
 
       }
 
@@ -554,58 +578,10 @@ class TenantController extends GetxController {
       print('Error adding tenant: $error');
     }
 
-
-    // try {
-    //   final response =  await AppConfig().supaBaseClient.from('tenants').insert(
-    //       {
-    //         "tenant_no" : uniqueId,
-    //         "business_type_id" : businessTypeId,
-    //         "name" : name,
-    //         "nation_id": nationId,
-    //         "organisation_id": organisationId,
-    //         "tenant_type_id": tenantTypeId,
-    //         "created_by" : createdBy,
-    //       }
-    //   ).then((compTenant) async{
-    //     print("My Value Is " + compTenant);
-    //
-    //     if(isAddContactPerson.isFalse) {
-    //       Get.back();
-    //       Get.snackbar('SUCCESS', 'Tenant added to your list',
-    //         titleText: Text(
-    //           'SUCCESS', style: AppTheme.greenTitle1,),
-    //       );
-    //     } else {
-    //
-    //       await AppConfig().supaBaseClient.from('tenant_profile_contacts').insert(
-    //           {
-    //             "tenant_id" : compTenant['id'],
-    //             "first_name" : contactFirstName,
-    //             "last_name" : contactLastName,
-    //             "nin" : contactNin,
-    //             "contact" : contactPhone,
-    //             "email" : contactEmail,
-    //             "created_by" : "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
-    //           }
-    //       );
-    //
-    //     }
-    //
-    //   });
-    //
-    //   if (response.error != null) {
-    //     throw response.error;
-    //   }
-    //
-    // } catch (error) {
-    //   print('Error adding tenant: $error');
-    // }
-
-
   }
 
 
-  addCompanyTenantWithoutContact(String name, int organisationId, int tenantTypeId, int businessTypeId, String createdBy,
+  Future<void> addCompanyTenantWithoutContact(String name, int organisationId, int tenantTypeId, int businessTypeId, String createdBy,
       int nationId, String? description,
       ) async {
 
@@ -624,50 +600,38 @@ class TenantController extends GetxController {
             "created_by" : createdBy,
             "description" : description,
           }
-      ).then((value) {
-        Get.back();
-        Get.snackbar('Success', 'Added Company Without Contact');
-      });
+      );
+      // fetchAllTenants();
+      Get.back();
+      Get.snackbar('Success', 'Added Company Without Contact');
 
 
-      // final data = await AppConfig().supaBaseClient.from('tenants')
-      //     .select('id')
-      //     .like('tenant_no', uniqueId.toString()).execute();
-      //
-      // print(data);
-      // print(data.data[0]['id']);
-      //
-      // if(isAddContactPerson.isFalse) {
+
+      //     .then((value) {
       //   Get.back();
-      //   Get.snackbar('SUCCESS', 'Tenant added to your list',
-      //     titleText: Text(
-      //       'SUCCESS', style: AppTheme.greenTitle1,),
-      //   );
-      // } else {
-      //
-      //   await AppConfig().supaBaseClient.from('tenant_profile_contacts').insert(
-      //       {
-      //         "tenant_id" : data.data[0]['id'],
-      //         "first_name" : contactFirstName,
-      //         "last_name" : contactLastName,
-      //         "nin" : contactNin,
-      //         "contact" : contactPhone,
-      //         "email" : contactEmail,
-      //         "designation": contactDesignation,
-      //         "created_by" : "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
-      //       }
-      //   );
-      //
-      // }
+      //   Get.snackbar('Success', 'Added Company Without Contact');
+      // });
+
+
+
 
     } catch (error) {
       print('Error adding tenant: $error');
     }
 
 
-
   }
 
+  void listenToTenantChanges() {
+    // Set up real-time listener
+    AppConfig().supaBaseClient
+        .from('tenants')
+        .stream(primaryKey: ['id'])
+        .listen((List<Map<String, dynamic>> data) {
+      fetchAllTenants();
+    });
+
+  }
 
   addTenantToUnit( int tenantId, String createdBy,
       int unitId, DateTime date1, DateTime date2, int amount, int discount

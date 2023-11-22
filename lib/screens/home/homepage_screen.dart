@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/controllers/complaints/complaints_controller.dart';
+import 'package:smart_rent/controllers/tenants/tenant_controller.dart';
 import 'package:smart_rent/screens/property/property_list_screen.dart';
 import 'package:smart_rent/screens/tenant/tenant_list_screen.dart';
 import 'package:smart_rent/styles/app_theme.dart';
@@ -15,7 +16,10 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ComplaintsController complaintsController = Get.put(ComplaintsController());
+    final ComplaintsController complaintsController = Get.put(
+        ComplaintsController());
+    final TenantController tenantController = Get.put(
+        TenantController(), permanent: true);
     return Scaffold(
       appBar: AppHeader(
         title: 'Dashboard',
@@ -42,14 +46,21 @@ class HomePage extends StatelessWidget {
                     color: AppTheme.greenCardColor, total: 8,
                     title: 'Total Property',
                     function: () {
-                      Get.to(() => PropertyListScreen(), transition: Transition.zoom);
+                      Get.to(() => PropertyListScreen(),
+                          transition: Transition.zoom);
                     },),
-                  HomeCardWidget1(
-                    color: AppTheme.redCardColor, total: 8,
-                    title: 'Total Tenants',
-                    function: () {
-                      Get.to(() => TenantListScreen(), transition: Transition.zoom);
-                    },),
+                  Obx(() {
+                    return HomeCardWidget1(
+                      color: AppTheme.redCardColor,
+                      total: tenantController.tenantList.value.length,
+                      title: 'Total Tenants',
+                      function: () {
+                        Get.to(() =>
+                            TenantListScreen(
+                              tenantController: tenantController,),
+                            transition: Transition.zoom);
+                      },);
+                  }),
                 ],
               ),
 
@@ -58,8 +69,16 @@ class HomePage extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  HomeCardWidget2(image: 'assets/home/wallet.png', title: 'Payment Received', number: 25001, function: (){}, isAmount: true,),
-                  HomeCardWidget2(image: 'assets/home/eye.png', title: 'Total Views', number: 1500055, function: (){}, isAmount: false,),
+                  HomeCardWidget2(image: 'assets/home/wallet.png',
+                    title: 'Payment Received',
+                    number: 25001,
+                    function: () {},
+                    isAmount: true,),
+                  HomeCardWidget2(image: 'assets/home/eye.png',
+                    title: 'Total Views',
+                    number: 1500055,
+                    function: () {},
+                    isAmount: false,),
                 ],
               ),
 
@@ -76,7 +95,6 @@ class HomePage extends StatelessWidget {
 
     );
   }
-
 
 
 }

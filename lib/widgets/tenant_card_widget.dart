@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:smart_rent/controllers/tenants/tenant_controller.dart';
 import 'package:smart_rent/screens/tenant/tenant_details_screen.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 
 class TenantCardWidget extends StatelessWidget {
-  const TenantCardWidget({super.key});
+  final TenantController tenantController;
+  final int index;
+  const TenantCardWidget({super.key, required this.tenantController, required this.index});
 
   @override
   Widget build(BuildContext context) {
@@ -32,8 +35,8 @@ class TenantCardWidget extends StatelessWidget {
                     children: [
                       Bounceable(
                           child: Image.asset('assets/tenant/delete.png'),
-                        onTap: (){
-
+                        onTap: ()async{
+                            tenantController.deleteTenant(tenantController.tenantList[index].id);
                         },
                       ),
                       SizedBox(width: 3.w,),
@@ -50,7 +53,7 @@ class TenantCardWidget extends StatelessWidget {
               ],
             ),
 
-            Text('Madam Jupiter', style: AppTheme.darkBlueTitle,),
+            Text(tenantController.tenantList[index].name, style: AppTheme.darkBlueTitle,),
             Bounceable(
               onTap: (){
                 Get.to(() => TenantDetailsScreen());

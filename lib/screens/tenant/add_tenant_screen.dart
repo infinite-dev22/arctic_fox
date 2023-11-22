@@ -292,7 +292,7 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                     children: [
                       Obx(() {
                         return CustomApiTenantTypeDropdown(
-                          hintText: 'Individual',
+                          hintText: 'Select Tenant Type',
                           menuItems: tenantController.tenantTypeList.value,
                           onChanged: (value) {
                             tenantController.setTenantTypeId(value!.id);
@@ -302,7 +302,9 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
 
 
                       Obx(() {
-                        return CustomApiGenericDropdown<BusinessTypeModel>(
+                        return tenantController.tenantTypeId.value == 0
+                            ? Container()
+                            : CustomApiGenericDropdown<BusinessTypeModel>(
                           hintText: "Business Type",
                           menuItems: tenantController.businessList.value,
                           onChanged: (value) {
@@ -312,7 +314,9 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                       }),
 
                       Obx(() {
-                        return CustomApiNationalityDropdown(
+                        return tenantController.tenantTypeId.value == 0
+                            ? Container()
+                            : CustomApiNationalityDropdown(
                           hintText: 'Country',
                           menuItems: tenantController.nationalityList.value,
                           onChanged: (value) {
@@ -620,17 +624,17 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
               AppButton(
                 title: 'Submit',
                 color: AppTheme.primaryColor,
-                function: () {
+                function: () async{
 
                   if (tenantController.tenantTypeId.value == 0) {
                     Fluttertoast.showToast(msg: 'Select Tenant Type');
                   } else {
                     if (tenantController.tenantTypeId.value == 1) {
                       if (_formKey.currentState!.validate() && _individualFormKey.currentState!.validate()) {
-                        Get.snackbar(
-                            'Posting Individual', 'Adding Individual Tenant');
+                        // Get.snackbar(
+                        //     'Posting Individual', 'Adding Individual Tenant');
 
-                        tenantController.addPersonalTenant(
+                        await tenantController.addPersonalTenant(
                             "${firstNameController.text
                                 .trim()} ${surnameNameController.text.trim()}",
                             12,
@@ -645,6 +649,8 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                             myDateOfBirth.value.toString(),
                             tenantController.newGender.value,
                         );
+
+                        Get.back();
 
                         // tenantController.addIndividualTenant(
                         //   "${firstNameController.text
@@ -662,9 +668,9 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
 
                         if (_formKey.currentState!.validate() &&
                             _companyFormKey.currentState!.validate()) {
-                          Get.snackbar(
-                              'Posting Company', 'No Company Contact');
-                          tenantController.addCompanyTenantWithoutContact(
+                          // Get.snackbar(
+                          //     'Posting Company', 'No Company Contact');
+                          await tenantController.addCompanyTenantWithoutContact(
                               companyNameController.text.toString(),
                               12,
                               tenantController.tenantTypeId.value,
@@ -673,6 +679,9 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                               tenantController.nationalityId.value,
                             companyDescriptionController.text.toString(),
                           );
+
+                          Get.back();
+
                         } else {
                           Fluttertoast.showToast(msg: 'Fill in fields');
                         }
@@ -680,11 +689,10 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                       } else {
                         if (_formKey.currentState!.validate() &&
                             _companyFormKey.currentState!.validate() && _contactFormKey.currentState!.validate()) {
-                          Get.snackbar(
-                              'Posting Company', 'With Company Contact');
-                          tenantController.addCompanyTenantWithContact(
-                              "${firstNameController.text
-                                  .trim()} ${surnameNameController.text.trim()}",
+                          // Get.snackbar(
+                          //     'Posting Company', 'With Company Contact');
+                          await tenantController.addCompanyTenantWithContact(
+                              companyNameController.text.toString(),
                               12,
                               tenantController.tenantTypeId.value,
                             tenantController.businessTypeId.value,
@@ -698,6 +706,9 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                             contactEmailController.text.trim().toString(),
                             companyDescriptionController.text.toString(),
                           );
+
+                          Get.back();
+
                         } else {
                           Fluttertoast.showToast(msg: 'Fill in fields');
                         }

@@ -67,6 +67,8 @@ class TenantProfileContactForm extends StatelessWidget {
                   ],
                 ),
 
+                SizedBox(height: 1.h,),
+
                 AppTextField(
                   controller: contactDesignationController,
                   hintText: 'Designation',
@@ -74,6 +76,8 @@ class TenantProfileContactForm extends StatelessWidget {
                   validator: designationValidator,
                   keyBoardType: TextInputType.text,
                 ),
+
+                SizedBox(height: 1.h,),
 
                 AppTextField(
                   controller: contactNinController,
@@ -84,6 +88,8 @@ class TenantProfileContactForm extends StatelessWidget {
 
                 ),
 
+                SizedBox(height: 1.h,),
+
                 AppTextField(
                   controller: contactPhoneController,
                   hintText: 'Contact',
@@ -91,6 +97,8 @@ class TenantProfileContactForm extends StatelessWidget {
                   keyBoardType: TextInputType.number,
                   validator: phoneValidator,
                 ),
+
+                SizedBox(height: 1.h,),
 
                 AppTextField(
                   controller: contactEmailController,

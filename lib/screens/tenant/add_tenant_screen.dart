@@ -348,6 +348,9 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                               height: 6.5.h,
                             );
                           }),
+
+                          SizedBox(height: 1.h,),
+
                           Row(
                             mainAxisAlignment:
                             MainAxisAlignment.spaceBetween,
@@ -376,6 +379,8 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                             ],
                           ),
 
+                          SizedBox(height: 1.h,),
+
                           AppTextField(
                             controller: individualEmailNameController,
                             hintText: 'Email',
@@ -384,6 +389,8 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                             validator: iEmailValidator,
                           ),
 
+                          SizedBox(height: 1.h,),
+
                           AppTextField(
                             controller: individualPhoneNameController,
                             hintText: 'Contact',
@@ -391,6 +398,8 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                             keyBoardType: TextInputType.number,
                             validator: iPhoneValidator,
                           ),
+
+                          SizedBox(height: 1.h,),
 
                           AppTextField(
                             controller: individualDateOfBirthController,
@@ -401,6 +410,8 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                             },
                           ),
 
+                          SizedBox(height: 1.h,),
+
                           AppTextField(
                             controller: individualNinController,
                             hintText: 'NIN',
@@ -408,6 +419,8 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                             keyBoardType: TextInputType.text,
                             validator: iNinValidator,
                           ),
+
+                          SizedBox(height: 1.h,),
 
                           Obx(() {
                             return CustomGenericDropdown<String>(
@@ -420,6 +433,8 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                             );
                           }),
 
+                          SizedBox(height: 1.h,),
+
                           AppTextField(
                             controller: individualDescriptionController,
                             hintText: 'Description',
@@ -427,7 +442,6 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                             keyBoardType: TextInputType.text,
                             validator: iDescriptionValidator,
                             maxLines: 6,
-                            maxLength: 500,
                             minLines: 3,
                           ),
 
@@ -458,6 +472,8 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                             validator: companyNameValidator,
                           ),
 
+                          SizedBox(height: 1.h,),
+
                           AppTextField(
                             controller: companyDescriptionController,
                             hintText: 'Description',
@@ -465,7 +481,7 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                             keyBoardType: TextInputType.text,
                             validator: companyDescriptionValidator,
                             maxLines: 6,
-                            maxLength: 500,
+                            // maxLength: 500,
                             minLines: 3,
                           ),
 
@@ -482,11 +498,11 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                               title: tenantController.isAddContactPerson.value
                                   ? Text(
                                 'remove Contact Person',
-                                style: AppTheme.subTextBold2,
+                                style: AppTheme.subTextBold1,
                               )
                                   : Text(
                                 'add Contact Person',
-                                style: AppTheme.subTextBold2,
+                                style: AppTheme.subTextBold1,
                               ),
                             )
                                 : Container();
@@ -720,6 +736,11 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
 
                 },
               ),
+
+              SizedBox(
+                height: 2.h,
+              ),
+
             ],
           ),
         ),

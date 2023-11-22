@@ -12,14 +12,15 @@ import 'package:smart_rent/widgets/app_image_header.dart';
 import 'package:smart_rent/widgets/tenant_card_widget.dart';
 
 class TenantListScreen extends StatefulWidget {
-  const TenantListScreen({super.key});
+  final TenantController tenantController;
+  const TenantListScreen({super.key, required this.tenantController});
 
   @override
   State<TenantListScreen> createState() => _TenantListScreenState();
 }
 
 class _TenantListScreenState extends State<TenantListScreen> {
-  final TenantController tenantController = Get.put(TenantController());
+  // final TenantController tenantController = Get.put(TenantController(), permanent: true);
 
   @override
   void initState() {
@@ -66,16 +67,16 @@ class _TenantListScreenState extends State<TenantListScreen> {
               ),
 
               Obx(() {
-                return tenantController.isTenantListLoading.value
+                return widget.tenantController.isTenantListLoading.value
                     ? Center(child: CircularProgressIndicator())
                     : ListView.builder(
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    itemCount: tenantController.tenantList.length,
+                    itemCount: widget.tenantController.tenantList.length,
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: EdgeInsets.only(top: 1.h),
-                        child: SlideInUp(child: TenantCardWidget(tenantController: tenantController, index: index,)),
+                        child: SlideInUp(child: TenantCardWidget(tenantController: widget.tenantController, index: index,)),
                       );
                     });
               }),

@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/controllers/tenants/tenant_controller.dart';
 import 'package:smart_rent/screens/tenant/add_tenant_screen.dart';
+import 'package:smart_rent/screens/tenant/update_company_tenant_with%20contact_screen.dart';
+import 'package:smart_rent/screens/tenant/update_individual_tenant_screen.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 import 'package:smart_rent/widgets/app_header.dart';
 import 'package:smart_rent/widgets/app_image_header.dart';
@@ -73,9 +75,19 @@ class _TenantListScreenState extends State<TenantListScreen> {
                     shrinkWrap: true,
                     itemCount: widget.tenantController.tenantList.length,
                     itemBuilder: (context, index) {
+                      var tenant = widget.tenantController.tenantList[index];
                       return Padding(
                         padding: EdgeInsets.only(top: 1.h),
-                        child: SlideInUp(child: TenantCardWidget(tenantController: widget.tenantController, index: index,)),
+                        child: SlideInUp(child: TenantCardWidget(
+                          tenantController: widget.tenantController,
+                          index: index,
+                          editFunction: () {
+                          if(  tenant.tenantTypeId == 2){
+                            Get.to(() => UpdateCompanyTenantWithContactScreen(tenantModel: tenant));
+                          } else {
+                            Get.to(() => UpdateIndividualTenantScreen(tenantModel: tenant));
+                          }
+                          },)),
                       );
                     });
               }),

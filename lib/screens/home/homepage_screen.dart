@@ -19,7 +19,7 @@ class HomePage extends StatelessWidget {
     final ComplaintsController complaintsController = Get.put(
         ComplaintsController());
     final TenantController tenantController = Get.put(
-        TenantController(), permanent: true);
+        TenantController(),);
     return Scaffold(
       appBar: AppHeader(
         title: 'Dashboard',

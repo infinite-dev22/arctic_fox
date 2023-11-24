@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dotted_border/dotted_border.dart';
+import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
@@ -73,6 +74,8 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
   final TenantController tenantController = Get.put(TenantController());
   final _formKey = GlobalKey<FormState>();
 
+  late SingleValueDropDownController _cnt;
+
   Future<void> _selectDate1(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -133,12 +136,21 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                           SizedBox(height: 1.h,),
 
                           Obx(() {
-                            return CustomApiGenericDropdown(
+                            return CustomApiGenericTenantModelDropdown(
                               hintText: 'Select Tenant',
                               menuItems: tenantController.tenantList.value,
-                              onChanged: (value){
+                              onChanged: (value) {
                                 tenantController.setTenantId(value!.id);
                               },
+                            );
+                          }),
+
+
+                          Obx(() {
+                            return SearchableTenantDropDown(
+                              hintText: 'Search More Tenants',
+                              menuItems: tenantController.tenantList.value,
+                              controller: _cnt,
                             );
                           }),
 
@@ -215,15 +227,15 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                             title: 'Add Tenant',
                             color: AppTheme.primaryColor,
                             function: () {
-                              if(_formKey.currentState!.validate()){
+                              if (_formKey.currentState!.validate()) {
                                 tenantController.addTenantToUnit(
-                                    tenantController.tenantId.value,
-                                    "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
-                                    tenantController.unitId.value,
-                                    selectedDate1.value,
-                                    selectedDate2.value,
-                                    int.parse(amountController.text.toString()),
-                                    int.parse(discountController.text.toString()),
+                                  tenantController.tenantId.value,
+                                  "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
+                                  tenantController.unitId.value,
+                                  selectedDate1.value,
+                                  selectedDate2.value,
+                                  int.parse(amountController.text.toString()),
+                                  int.parse(discountController.text.toString()),
                                 );
                               } else {
 
@@ -250,6 +262,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
     // TODO: implement initState
     super.initState();
     _image = File('');
+    _cnt = SingleValueDropDownController();
   }
 
   @override

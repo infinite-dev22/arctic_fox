@@ -182,6 +182,64 @@ class SearchableDropDown<T> extends StatelessWidget {
 
 
 
+class SearchableTenantDropDown<T extends SmartTenantModel> extends StatelessWidget {
+  const SearchableTenantDropDown(
+      {super.key,
+        required this.hintText,
+        required this.menuItems,
+        this.onChanged,
+        this.defaultValue,
+        required this.controller});
+
+  final String hintText;
+  final List<T> menuItems;
+  final T? defaultValue;
+  final Function(dynamic)? onChanged;
+  final SingleValueDropDownController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return _buildBody();
+  }
+
+  _buildBody() {
+    return Container(
+      height: 50,
+      margin: const EdgeInsets.only(bottom: 10),
+      child: DropDownTextField(
+        controller: controller,
+        enableSearch: true,
+        dropdownColor: Colors.white,
+        textFieldDecoration: InputDecoration(
+          filled: true,
+          fillColor: AppTheme.fillColor,
+          hintText: 'Select $hintText',
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide.none,
+          ),
+        ),
+        searchDecoration: InputDecoration(hintText: "Search $hintText"),
+        validator: (value) {
+          if (value == null) {
+            return "Required field";
+          } else {
+            return null;
+          }
+        },
+        dropDownItemCount: 6,
+        autovalidateMode: AutovalidateMode.always,
+        dropDownList: menuItems
+            .map(
+                (item) => DropDownValueModel(value: item, name: item.getName()))
+            .toList(),
+        onChanged: onChanged,
+      ),
+    );
+  }
+}
+
+
 class CustomGenericDropdown<T> extends StatelessWidget {
   const CustomGenericDropdown(
       {super.key,
@@ -296,6 +354,7 @@ class CustomApiGenericDropdown<T extends SmartModel> extends StatelessWidget {
         SizedBox(
           height: height ?? 8.5.h,
           child: DropdownButtonFormField2<T>(
+            value: defaultValue,
             isExpanded: true,
             decoration: InputDecoration(
               contentPadding:  EdgeInsets.symmetric(vertical: 0.5.h),
@@ -355,6 +414,187 @@ class CustomApiGenericDropdown<T extends SmartModel> extends StatelessWidget {
   }
 }
 
+class CustomUpdateApiGenericDropdown<T extends SmartModel> extends StatelessWidget {
+  const CustomUpdateApiGenericDropdown(
+      {super.key,
+        required this.hintText,
+        required this.menuItems,
+        this.onChanged,
+        this.height,
+        this.defaultValue,
+        this.validator,
+
+      });
+
+  final String hintText;
+  final List<T> menuItems;
+  final T? defaultValue;
+  final Function(T?)? onChanged;
+  final double? height;
+  final String? Function(T?)? validator;
+
+  @override
+  Widget build(BuildContext context) {
+    return _buildBody();
+  }
+
+  _buildBody() {
+    return Column(
+      children: [
+        SizedBox(
+          height: height ?? 8.5.h,
+          child: DropdownButtonFormField2<T>(
+            value: defaultValue,
+            isExpanded: true,
+            decoration: InputDecoration(
+              contentPadding:  EdgeInsets.symmetric(vertical: 0.5.h),
+              filled: true,
+              fillColor: AppTheme.fillColor,
+              border: OutlineInputBorder(
+                borderSide: BorderSide.none,
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            hint: Text(
+              hintText,
+              style:
+              const TextStyle(color: AppTheme.inActiveColor, fontSize: 15),
+            ),
+            items: menuItems
+                .map((item) => DropdownMenuItem<T>(
+              value: item,
+              child: Text(
+                item.getName(),
+                style: const TextStyle(
+                  fontSize: 14,
+                ),
+              ),
+            ))
+                .toList(),
+
+            // validator: (value) {
+            //   if (value == null) {
+            //     return 'Please select a $hintText';
+            //   }
+            //   return null;
+            // },
+
+            onChanged: onChanged,
+            buttonStyleData: const ButtonStyleData(
+              padding: EdgeInsets.only(right: 8),
+            ),
+            iconStyleData: const IconStyleData(
+              icon: Icon(
+                Icons.arrow_drop_down,
+                color: Colors.black45,
+              ),
+              iconSize: 24,
+            ),
+            dropdownStyleData: DropdownStyleData(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+              ),
+            ),
+            menuItemStyleData: const MenuItemStyleData(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+            ),
+          ),
+        ),
+        // const SizedBox(height: 10),
+      ],
+    );
+  }
+}
+
+
+class CustomApiGenericTenantModelDropdown<T extends SmartTenantModel> extends StatelessWidget {
+  const CustomApiGenericTenantModelDropdown(
+      {super.key,
+        required this.hintText,
+        required this.menuItems,
+        this.onChanged,
+        this.height,
+        this.defaultValue,
+        this.validator,
+
+      });
+
+  final String hintText;
+  final List<T> menuItems;
+  final T? defaultValue;
+  final Function(T?)? onChanged;
+  final double? height;
+  final String? Function(T?)? validator;
+
+  @override
+  Widget build(BuildContext context) {
+    return _buildBody();
+  }
+
+  _buildBody() {
+    return Column(
+      children: [
+        SizedBox(
+          height: height ?? 8.5.h,
+          child: DropdownButtonFormField2<T>(
+            isExpanded: true,
+            decoration: InputDecoration(
+              contentPadding:  EdgeInsets.symmetric(vertical: 0.5.h),
+              filled: true,
+              fillColor: AppTheme.fillColor,
+              border: OutlineInputBorder(
+                borderSide: BorderSide.none,
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            hint: Text(
+              hintText,
+              style:
+              const TextStyle(color: AppTheme.inActiveColor, fontSize: 15),
+            ),
+            items: menuItems
+                .map((item) => DropdownMenuItem<T>(
+              value: item,
+              child: Text(
+                item.getName(),
+                style: const TextStyle(
+                  fontSize: 14,
+                ),
+              ),
+            ))
+                .toList(),
+            validator: (value) {
+              if (value == null) {
+                return 'Please select a $hintText';
+              }
+              return null;
+            },
+            onChanged: onChanged,
+            buttonStyleData: const ButtonStyleData(
+              padding: EdgeInsets.only(right: 8),
+            ),
+            iconStyleData: const IconStyleData(
+              icon: Icon(
+                Icons.arrow_drop_down,
+                color: Colors.black45,
+              ),
+              iconSize: 24,
+            ),
+            dropdownStyleData: DropdownStyleData(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+              ),
+            ),
+            menuItemStyleData: const MenuItemStyleData(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+            ),
+          ),
+        ),
+        // const SizedBox(height: 10),
+      ],
+    );
+  }
+}
 
 class CustomApiTenantTypeDropdown<T extends SmartTenantTypeModel> extends StatelessWidget {
   const CustomApiTenantTypeDropdown(
@@ -664,6 +904,91 @@ class CustomApiNationalityDropdown<T extends SmartNationalityModel> extends Stat
               }
               return null;
             },
+            onChanged: onChanged,
+            buttonStyleData: const ButtonStyleData(
+              padding: EdgeInsets.only(right: 8),
+            ),
+            iconStyleData: const IconStyleData(
+              icon: Icon(
+                Icons.arrow_drop_down,
+                color: Colors.black45,
+              ),
+              iconSize: 24,
+            ),
+            dropdownStyleData: DropdownStyleData(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+              ),
+            ),
+            menuItemStyleData: const MenuItemStyleData(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+            ),
+          ),
+        ),
+        const SizedBox(height: 10),
+      ],
+    );
+  }
+}
+
+class CustomUpdateApiNationalityDropdown<T extends SmartNationalityModel> extends StatelessWidget {
+  const CustomUpdateApiNationalityDropdown(
+      {super.key,
+        required this.hintText,
+        required this.menuItems,
+        this.onChanged,
+        this.defaultValue});
+
+  final String hintText;
+  final List<T> menuItems;
+  final T? defaultValue;
+  final Function(T?)? onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return _buildBody();
+  }
+
+  _buildBody() {
+    return Column(
+      children: [
+        SizedBox(
+          height: 8.5.h,
+          child: DropdownButtonFormField2<T>(
+            isExpanded: true,
+            decoration: InputDecoration(
+              contentPadding: const EdgeInsets.symmetric(vertical: 16),
+              filled: true,
+              fillColor: AppTheme.fillColor,
+              border: OutlineInputBorder(
+                borderSide: BorderSide.none,
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            hint: Text(
+              hintText,
+              style:
+              const TextStyle(color: AppTheme.inActiveColor, fontSize: 15),
+            ),
+            items: menuItems
+                .map((item) => DropdownMenuItem<T>(
+              value: item,
+              child: Text(
+                item.getCountry(),
+                style: const TextStyle(
+                  fontSize: 14,
+                ),
+              ),
+            ))
+                .toList(),
+
+            // validator: (value) {
+            //   if (value == null) {
+            //     return 'Please select a $hintText';
+            //   }
+            //   return null;
+            // },
+
             onChanged: onChanged,
             buttonStyleData: const ButtonStyleData(
               padding: EdgeInsets.only(right: 8),

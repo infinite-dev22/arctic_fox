@@ -9,7 +9,8 @@ import 'package:smart_rent/styles/app_theme.dart';
 class TenantCardWidget extends StatelessWidget {
   final TenantController tenantController;
   final int index;
-  const TenantCardWidget({super.key, required this.tenantController, required this.index});
+  final VoidCallback editFunction;
+  const TenantCardWidget({super.key, required this.tenantController, required this.index, required this.editFunction});
 
   @override
   Widget build(BuildContext context) {
@@ -42,9 +43,7 @@ class TenantCardWidget extends StatelessWidget {
                       SizedBox(width: 3.w,),
                       Bounceable(
                           child: Image.asset('assets/tenant/edit.png'),
-                        onTap: (){
-
-                        },
+                        onTap: editFunction,
                       ),
 
                     ],

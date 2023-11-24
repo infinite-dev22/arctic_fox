@@ -38,3 +38,15 @@ abstract class SmartNationalityModel {
   // String getCode();
   // String getSymbol();
 }
+
+abstract class SmartTenantModel {
+
+  int getId();
+  String getName();
+  int getTenantTypeId();
+  int getNationId();
+  String getTenantNo();
+  int getBusinessTypeId();
+  String getDescription();
+
+}

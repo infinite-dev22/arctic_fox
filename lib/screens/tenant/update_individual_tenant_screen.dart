@@ -28,13 +28,16 @@ import 'package:smart_rent/widgets/tenant_profile_contact_form.dart';
 
 class UpdateIndividualTenantScreen extends StatefulWidget {
   final TenantModel tenantModel;
+
   const UpdateIndividualTenantScreen({super.key, required this.tenantModel});
 
   @override
-  State<UpdateIndividualTenantScreen> createState() => _UpdateIndividualTenantScreenState();
+  State<UpdateIndividualTenantScreen> createState() =>
+      _UpdateIndividualTenantScreenState();
 }
 
-class _UpdateIndividualTenantScreenState extends State<UpdateIndividualTenantScreen> {
+class _UpdateIndividualTenantScreenState
+    extends State<UpdateIndividualTenantScreen> {
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController surnameNameController = TextEditingController();
   final TextEditingController otherNameController = TextEditingController();
@@ -43,30 +46,13 @@ class _UpdateIndividualTenantScreenState extends State<UpdateIndividualTenantScr
   final TextEditingController companyNameController = TextEditingController();
   final TextEditingController companyDescriptionController = TextEditingController();
 
-  final TextEditingController individualFirstNameController =
-  TextEditingController();
-  final TextEditingController individualLastNameController =
-  TextEditingController();
-  final TextEditingController individualEmailNameController =
-  TextEditingController();
-  final TextEditingController individualPhoneNameController =
-  TextEditingController();
-  final TextEditingController individualDateOfBirthController =
-  TextEditingController();
-  final TextEditingController individualNinController = TextEditingController();
-  final TextEditingController individualDescriptionController = TextEditingController();
-  final TextEditingController individualGenderController =
-  TextEditingController();
-
-  final TextEditingController contactFirstNameController =
-  TextEditingController();
-  final TextEditingController contactLastNameController =
-  TextEditingController();
-  final TextEditingController contactNinController = TextEditingController();
-  final TextEditingController contactDesignationController =
-  TextEditingController();
-  final TextEditingController contactPhoneController = TextEditingController();
-  final TextEditingController contactEmailController = TextEditingController();
+  late TextEditingController individualNameController;
+  late TextEditingController individualEmailNameController;
+  late TextEditingController individualPhoneNameController;
+  late TextEditingController individualDateOfBirthController;
+  late TextEditingController individualNinController;
+  late TextEditingController individualDescriptionController;
+  late TextEditingController individualGenderController;
 
   final Rx<DateTime> myDateOfBirth = Rx<DateTime>(DateTime.now());
 
@@ -234,6 +220,23 @@ class _UpdateIndividualTenantScreenState extends State<UpdateIndividualTenantScr
     // TODO: implement initState
     _image = File('');
     super.initState();
+    tenantController.getIndividualTenantBusinessDetails(widget.tenantModel.id);
+    tenantController.getIndividualTenantCountryDetails(widget.tenantModel.id);
+    tenantController.getIndividualTenantProfile(widget.tenantModel.id);
+    individualDescriptionController = TextEditingController(
+        text: tenantController.uIndividualDescription.value.toString());
+    individualDateOfBirthController = TextEditingController(
+        text: tenantController.uIndividualDateOfBirth.value.toString());
+    individualEmailNameController = TextEditingController(
+        text: tenantController.uIndividualEmail.value.toString());
+    individualPhoneNameController = TextEditingController(
+        text: tenantController.uIndividualContact.value.toString());
+    individualNinController = TextEditingController(
+        text: tenantController.uIndividualNin.value.toString());
+    individualNameController = TextEditingController(
+        text: tenantController.uIndividualName.value.toString());
+    individualGenderController = TextEditingController(
+        text: tenantController.uIndividualGender.value.toString());
   }
 
   @override
@@ -244,13 +247,6 @@ class _UpdateIndividualTenantScreenState extends State<UpdateIndividualTenantScr
     surnameNameController.dispose();
     otherNameController.dispose();
     phoneNoController.dispose();
-
-    contactEmailController.dispose();
-    contactPhoneController.dispose();
-    contactNinController.dispose();
-    contactDesignationController.dispose();
-    contactLastNameController.dispose();
-    contactFirstNameController.dispose();
   }
 
   String generateCustomRandomId() {
@@ -297,19 +293,21 @@ class _UpdateIndividualTenantScreenState extends State<UpdateIndividualTenantScr
 
 
                       Obx(() {
-                        return  CustomUpdateApiGenericDropdown<BusinessTypeModel>(
-                          hintText: "Business Type",
+                        return CustomUpdateApiGenericDropdown<
+                            BusinessTypeModel>(
+                          hintText: tenantController.uIndividualBusinessType
+                              .value,
                           menuItems: tenantController.businessList.value,
                           onChanged: (value) {
                             tenantController.setBusinessTypeId(value!.id);
                           },
-                          defaultValue: tenantController.businessList.first,
                         );
                       }),
 
                       Obx(() {
                         return CustomUpdateApiNationalityDropdown(
-                          hintText: 'Country',
+                          hintText: tenantController.uIndividualCountryType
+                              .value,
                           menuItems: tenantController.nationalityList.value,
                           onChanged: (value) {
                             tenantController.setNationalityId(value!.id);
@@ -321,125 +319,158 @@ class _UpdateIndividualTenantScreenState extends State<UpdateIndividualTenantScr
                 ),
               ),
 
-               SlideInUp(
-                  child: Container(
-                    child: Form(
-                      key: _individualFormKey,
-                      child: Column(
-                        children: [
-                          Text('Personal Details', style: AppTheme.appTitle3,),
-                          Obx(() {
-                            return CustomApiGenericDropdown<
-                                SalutationModel>(
-                              hintText: 'Mr',
-                              menuItems:
-                              tenantController.salutationList.value,
-                              onChanged: (value) {},
-                              height: 6.5.h,
-                            );
-                          }),
+              SlideInUp(
+                child: Container(
+                  child: Form(
+                    key: _individualFormKey,
+                    child: Column(
+                      children: [
+                        Text('Personal Details', style: AppTheme.appTitle3,),
+                        Obx(() {
+                          return CustomApiGenericDropdown<
+                              SalutationModel>(
+                            hintText: 'Mr',
+                            menuItems:
+                            tenantController.salutationList.value,
+                            onChanged: (value) {},
+                            height: 6.5.h,
+                          );
+                        }),
 
-                          SizedBox(height: 1.h,),
+                        SizedBox(height: 1.h,),
 
-                          Row(
-                            mainAxisAlignment:
-                            MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              SizedBox(
-                                width: 42.5.w,
-                                child: AppTextField(
-                                  controller: firstNameController,
-                                  hintText: 'First Name',
-                                  obscureText: false,
-                                  keyBoardType: TextInputType.text,
-                                  validator: iFirstNameValidator,
-                                ),
-                              ),
-                              SizedBox(
-                                width: 42.5.w,
-                                child: AppTextField(
-                                  controller: surnameNameController,
-                                  hintText: 'Surname',
-                                  obscureText: false,
-                                  keyBoardType: TextInputType.text,
-                                  validator: iLastNameValidator,
-                                ),
-                              ),
-                            ],
-                          ),
+                        // Row(
+                        //   mainAxisAlignment:
+                        //   MainAxisAlignment.spaceBetween,
+                        //   crossAxisAlignment: CrossAxisAlignment.center,
+                        //   children: [
+                        //     SizedBox(
+                        //       width: 42.5.w,
+                        //       child: AppTextField(
+                        //         controller: firstNameController,
+                        //         hintText: 'First Name',
+                        //         obscureText: false,
+                        //         keyBoardType: TextInputType.text,
+                        //         validator: iFirstNameValidator,
+                        //       ),
+                        //     ),
+                        //     SizedBox(
+                        //       width: 42.5.w,
+                        //       child: AppTextField(
+                        //         controller: surnameNameController,
+                        //         hintText: 'Surname',
+                        //         obscureText: false,
+                        //         keyBoardType: TextInputType.text,
+                        //         validator: iLastNameValidator,
+                        //       ),
+                        //     ),
+                        //   ],
+                        // ),
 
-                          SizedBox(height: 1.h,),
+                        Obx(() {
+                          return AppTextField(
+                            controller: TextEditingController(
+                                text: tenantController.uIndividualName.value
+                                    .toString()),
+                            hintText: 'Name',
+                            obscureText: false,
+                            keyBoardType: TextInputType.text,
+                            validator: iLastNameValidator,
+                          );
+                        }),
 
-                          AppTextField(
-                            controller: individualEmailNameController,
+                        SizedBox(height: 1.h,),
+
+                        Obx(() {
+                          return AppTextField(
+                            controller: TextEditingController(
+                                text: tenantController.uIndividualEmail.value
+                                    .toString()),
                             hintText: 'Email',
                             obscureText: false,
                             keyBoardType: TextInputType.emailAddress,
                             validator: iEmailValidator,
-                          ),
+                          );
+                        }),
 
-                          SizedBox(height: 1.h,),
+                        SizedBox(height: 1.h,),
 
-                          AppTextField(
-                            controller: individualPhoneNameController,
+                        Obx(() {
+                          return AppTextField(
+                            controller: TextEditingController(
+                                text: tenantController.uIndividualContact.value
+                                    .toString()),
                             hintText: 'Contact',
                             obscureText: false,
                             keyBoardType: TextInputType.number,
                             validator: iPhoneValidator,
-                          ),
+                          );
+                        }),
 
-                          SizedBox(height: 1.h,),
+                        SizedBox(height: 1.h,),
 
-                          AppTextField(
-                            controller: individualDateOfBirthController,
+                        Obx(() {
+                          return AppTextField(
+                            controller: TextEditingController(
+                                text: tenantController.uIndividualDateOfBirth
+                                    .value.toString()),
                             hintText: 'D.O.B',
                             obscureText: false,
-                            onTap: (){
+                            onTap: () {
                               _selectDateOfBirth(context);
                             },
-                          ),
+                          );
+                        }),
 
-                          SizedBox(height: 1.h,),
+                        SizedBox(height: 1.h,),
 
-                          AppTextField(
-                            controller: individualNinController,
+                        Obx(() {
+                          return AppTextField(
+                            controller: TextEditingController(
+                                text: tenantController.uIndividualNin.value
+                                    .toString()),
                             hintText: 'NIN',
                             obscureText: false,
                             keyBoardType: TextInputType.text,
                             validator: iNinValidator,
-                          ),
+                          );
+                        }),
 
-                          SizedBox(height: 1.h,),
+                        SizedBox(height: 1.h,),
 
-                          Obx(() {
-                            return CustomGenericDropdown<String>(
-                              hintText: 'Gender',
-                              menuItems: tenantController.genderList.value,
-                              onChanged: (value){
-                                tenantController.setNewGender(value.toString());
-                              },
+                        Obx(() {
+                          return CustomGenericDropdown<String>(
+                            hintText: tenantController.uIndividualGender.value
+                                .toString(),
+                            menuItems: tenantController.genderList.value,
+                            onChanged: (value) {
+                              tenantController.setNewGender(value.toString());
+                            },
 
-                            );
-                          }),
+                          );
+                        }),
 
-                          SizedBox(height: 1.h,),
+                        SizedBox(height: 1.h,),
 
-                          AppTextField(
-                            controller: individualDescriptionController,
+                        Obx(() {
+                          return AppTextField(
+                            controller: TextEditingController(
+                                text: tenantController.uIndividualDescription.value
+                                    .toString()),
                             hintText: 'Description',
                             obscureText: false,
                             keyBoardType: TextInputType.text,
                             validator: iDescriptionValidator,
                             maxLines: 6,
                             minLines: 3,
-                          ),
+                          );
+                        }),
 
-                        ],
-                      ),
+                      ],
                     ),
                   ),
                 ),
+              ),
 
 
               SizedBox(
@@ -532,7 +563,6 @@ class _UpdateIndividualTenantScreenState extends State<UpdateIndividualTenantScr
               // ),
 
 
-
               SizedBox(
                 height: 2.h,
               ),
@@ -540,100 +570,17 @@ class _UpdateIndividualTenantScreenState extends State<UpdateIndividualTenantScr
               AppButton(
                 title: 'Submit',
                 color: AppTheme.primaryColor,
-                function: () async{
+                function: () async {
+                  if (_formKey.currentState!.validate() &&
+                      _companyFormKey.currentState!.validate() &&
+                      _contactFormKey.currentState!.validate()) {
+                    // Get.snackbar(
+                    //     'Posting Company', 'With Company Contact');
 
-                  if (tenantController.tenantTypeId.value == 0) {
-                    Fluttertoast.showToast(msg: 'Select Tenant Type');
+
                   } else {
-                    if (tenantController.tenantTypeId.value == 1) {
-                      if (_formKey.currentState!.validate() && _individualFormKey.currentState!.validate()) {
-                        // Get.snackbar(
-                        //     'Posting Individual', 'Adding Individual Tenant');
-
-                        await tenantController.addPersonalTenant(
-                          "${firstNameController.text
-                              .trim()} ${surnameNameController.text.trim()}",
-                          12,
-                          tenantController.tenantTypeId.value,
-                          tenantController.businessTypeId.value,
-                          "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
-                          tenantController.nationalityId.value,
-                          individualNinController.text.toString(),
-                          individualPhoneNameController.text.toString(),
-                          individualEmailNameController.text.toString(),
-                          individualDescriptionController.text.toString(),
-                          myDateOfBirth.value.toString(),
-                          tenantController.newGender.value,
-                        );
-
-                        Get.back();
-
-                        // tenantController.addIndividualTenant(
-                        //   "${firstNameController.text
-                        //       .trim()} ${surnameNameController.text.trim()}",
-                        //   12,
-                        //   tenantController.tenantTypeId.value,
-                        //   "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
-                        //   tenantController.nationalityId.value,
-                        // );
-                      } else {
-                        Fluttertoast.showToast(msg: 'Fill required fields');
-                      }
-                    } else {
-                      if(tenantController.isAddContactPerson.isFalse){
-
-                        if (_formKey.currentState!.validate() &&
-                            _companyFormKey.currentState!.validate()) {
-                          // Get.snackbar(
-                          //     'Posting Company', 'No Company Contact');
-                          await tenantController.addCompanyTenantWithoutContact(
-                            companyNameController.text.toString(),
-                            12,
-                            tenantController.tenantTypeId.value,
-                            tenantController.businessTypeId.value,
-                            "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
-                            tenantController.nationalityId.value,
-                            companyDescriptionController.text.toString(),
-                          );
-
-                          Get.back();
-
-                        } else {
-                          Fluttertoast.showToast(msg: 'Fill in fields');
-                        }
-
-                      } else {
-                        if (_formKey.currentState!.validate() &&
-                            _companyFormKey.currentState!.validate() && _contactFormKey.currentState!.validate()) {
-                          // Get.snackbar(
-                          //     'Posting Company', 'With Company Contact');
-                          await tenantController.addCompanyTenantWithContact(
-                            companyNameController.text.toString(),
-                            12,
-                            tenantController.tenantTypeId.value,
-                            tenantController.businessTypeId.value,
-                            "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
-                            tenantController.nationalityId.value,
-                            contactFirstNameController.text.trim().toString(),
-                            contactLastNameController.text.trim().toString(),
-                            contactNinController.text.trim().toString(),
-                            contactDesignationController.text.trim().toString(),
-                            contactPhoneController.text.trim().toString(),
-                            contactEmailController.text.trim().toString(),
-                            companyDescriptionController.text.toString(),
-                          );
-
-                          Get.back();
-
-                        } else {
-                          Fluttertoast.showToast(msg: 'Fill in fields');
-                        }
-                      }
-
-                    }
+                    Fluttertoast.showToast(msg: 'Fill in fields');
                   }
-
-
                 },
               ),
 

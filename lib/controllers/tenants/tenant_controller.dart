@@ -38,6 +38,7 @@ class TenantController extends GetxController {
   var isTenantListLoading = false.obs;
   var isSpecificTenantLoading = false.obs;
   var isContactDetailsLoading = false.obs;
+  var isIndividualTenantDetailsLoading = false.obs;
 
 
   var uCompanyNin = ''.obs;
@@ -47,15 +48,31 @@ class TenantController extends GetxController {
   var uCompanyContact = ''.obs;
   var uCompanyEmail = ''.obs;
 
+  var uIndividualNin = ''.obs;
+  var uIndividualFirstName = ''.obs;
+  var uIndividualSurname = ''.obs;
+  var uIndividualName = ''.obs;
+  var uIndividualDateOfBirth = ''.obs;
+  var uIndividualContact = ''.obs;
+  var uIndividualEmail = ''.obs;
+  var uIndividualDescription = ''.obs;
+
   var uCompanyBusinessType = ''.obs;
   var uCompanyCountryType = ''.obs;
   var uCompanyTenantDescription = ''.obs;
   var uCompanyBusinessTypeId = 0.obs;
 
+  var uIndividualBusinessType = ''.obs;
+  var uIndividualCountryType = ''.obs;
+  var uIndividualGender = ''.obs;
+  var uIndividualTenantDescription = ''.obs;
+  var uIndividualBusinessTypeId = 0.obs;
+
   var iBusinessType = ''.obs;
   var iCountryType = ''.obs;
   var iDescription = ''.obs;
   var iBusinessTypeId = 0.obs;
+
 
   var uuid = Uuid();
 
@@ -794,6 +811,35 @@ class TenantController extends GetxController {
 
   }
 
+  getIndividualTenantProfile(int id) async {
+    isIndividualTenantDetailsLoading(true);
+
+    try {
+      // Fetch the specific row based on ID
+      final response = await AppConfig().supaBaseClient.from('tenant_profiles').select().eq('tenant_id', id).execute();
+      isIndividualTenantDetailsLoading(false);
+      // Print the retrieved data
+      print('CONTAC TABLE RESPONSE == ${response.data}');
+
+      // uIndividualName.value = response.data[0]['name'];
+      uIndividualDescription.value = response.data[0]['description'];
+      uIndividualContact.value = response.data[0]['contact'];
+      uIndividualEmail.value = response.data[0]['email'];
+      uIndividualNin.value = response.data[0]['nin'];
+      uIndividualDateOfBirth.value = response.data[0]['date_of_birth'];
+      uIndividualGender.value = response.data[0]['gender'];
+
+      // print('MY Contact RESPONSE == ${response.data}');
+      print(uIndividualContact);
+      // print('MY CONTACT IS ${response.data[0]['contact']}');
+
+
+    } catch (e) {
+      isIndividualTenantDetailsLoading(false);
+      print('Error: $e');
+    }
+
+  }
 
   getCompanyTenantBusinessDetails(int id) async {
     // isSpecificTenantLoading(true);
@@ -823,6 +869,36 @@ class TenantController extends GetxController {
 
   }
 
+  getIndividualTenantBusinessDetails(int id) async {
+    // isSpecificTenantLoading(true);
+
+    try {
+      // Fetch the specific row based on ID
+      final response = await AppConfig().supaBaseClient.from('tenants').select().eq('id', id).execute();
+
+      final businessTypeResponse = await AppConfig().supaBaseClient.from('business_types').select().eq('id', response.data[0]['business_type_id']).execute();
+
+      // final data = await AppConfig().supaBaseClient.from('business_types')
+      //     .select('id')
+      //     .like('id', response.data[0]['business_type_id']).execute();
+
+      print(businessTypeResponse.data);
+      // print('Tenants TABLE RESPONSE == ${response.data}');
+      print('Tenants TABLE RESPONSE == ${businessTypeResponse.data[0]['name']}');
+      print('Tenants TABLE row id == ${businessTypeResponse.data[0]['id']}');
+
+      uIndividualBusinessType.value = businessTypeResponse.data[0]['name'];
+      uIndividualBusinessTypeId.value = businessTypeResponse.data[0]['id'];
+      uIndividualName.value = response.data[0]['name'];
+
+    } catch (e) {
+      // isSpecificTenantLoading(false);
+      print('Error: $e');
+    }
+
+  }
+
+
   getCompanyTenantCountryDetails(int id) async {
     // isSpecificTenantLoading(true);
 
@@ -848,6 +924,30 @@ class TenantController extends GetxController {
 
   }
 
+  getIndividualTenantCountryDetails(int id) async {
+    // isSpecificTenantLoading(true);
+
+    try {
+      // Fetch the specific row based on ID
+      final response = await AppConfig().supaBaseClient.from('tenants').select().eq('id', id).execute();
+
+      final countryTypeResponse = await AppConfig().supaBaseClient.from('currency_types').select().eq('id', response.data[0]['nation_id']).execute();
+
+      // final data = await AppConfig().supaBaseClient.from('business_types')
+      //     .select('id')
+      //     .like('id', response.data[0]['business_type_id']).execute();
+
+
+      print('Tenants TABLE row id == ${countryTypeResponse.data[0]['id']}');
+
+      uIndividualCountryType.value = countryTypeResponse.data[0]['country'];
+
+    } catch (e) {
+      // isSpecificTenantLoading(false);
+      print('Error: $e');
+    }
+
+  }
 
 
   getIndividualTenantDetails(int id) async {

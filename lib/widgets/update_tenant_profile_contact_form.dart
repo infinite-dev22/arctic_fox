@@ -1,5 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/controllers/tenants/tenant_controller.dart';
 import 'package:smart_rent/widgets/app_textfield.dart';
@@ -19,6 +20,7 @@ class UpdateTenantProfileContactForm extends StatelessWidget {
   final String? Function(String?)? phoneValidator;
   final String? Function(String?)? emailValidator;
   final GlobalKey<FormState> contactKey;
+
   const UpdateTenantProfileContactForm({super.key,
     // required this.contactFirstNameController,
     // required this.contactLastNameController,
@@ -47,25 +49,33 @@ class UpdateTenantProfileContactForm extends StatelessWidget {
 
                     SizedBox(
                       width: 40.w,
-                      child: AppTextField(
-                        controller: TextEditingController(text: tenantController.uCompanyFirstName.value),
-                        hintText:  'First Name',
-                        obscureText: false,
-                        validator: firstNameValidator,
-                        keyBoardType: TextInputType.text,
-                      ),
+                      child: Obx(() {
+                        return AppTextField(
+                          controller: TextEditingController(
+                              text: tenantController
+                                  .uCompanyFirstName.value.toString()),
+                          hintText: 'First Name',
+                          obscureText: false,
+                          validator: firstNameValidator,
+                          keyBoardType: TextInputType.text,
+                        );
+                      }),
                     ),
 
-                    SizedBox(
-                      width: 40.w,
-                      child: AppTextField(
-                        controller: TextEditingController(text: tenantController.uCompanySurname.value),
-                        hintText: 'Surname',
-                        obscureText: false,
-                        validator: lastNameValidator,
-                        keyBoardType: TextInputType.text,
-                      ),
-                    ),
+                    Obx(() {
+                      return SizedBox(
+                        width: 40.w,
+                        child: AppTextField(
+                          controller: TextEditingController(
+                              text: tenantController
+                                  .uCompanySurname.value.toString()),
+                          hintText: 'Surname',
+                          obscureText: false,
+                          validator: lastNameValidator,
+                          keyBoardType: TextInputType.text,
+                        ),
+                      );
+                    }),
 
                   ],
 
@@ -73,45 +83,59 @@ class UpdateTenantProfileContactForm extends StatelessWidget {
 
                 SizedBox(height: 1.h,),
 
-                AppTextField(
-                  controller: TextEditingController(text: tenantController.uCompanyDesignation.value),
+                Obx(() {
+                  return AppTextField(
+                    controller: TextEditingController(
+                        text: tenantController.uCompanyDesignation.value
+                            .toString()),
 
-                  hintText: 'Designation',
-                  obscureText: false,
-                  validator: designationValidator,
-                  keyBoardType: TextInputType.text,
-                ),
-
-                SizedBox(height: 1.h,),
-
-                AppTextField(
-                  controller: TextEditingController(text: tenantController.uCompanyNin.value),
-                  hintText: 'NIN',
-                  obscureText: false,
-                  keyBoardType: TextInputType.text,
-                  validator: ninValidator,
-
-                ),
+                    hintText: 'Designation',
+                    obscureText: false,
+                    validator: designationValidator,
+                    keyBoardType: TextInputType.text,
+                  );
+                }),
 
                 SizedBox(height: 1.h,),
 
-                AppTextField(
-                  controller: TextEditingController(text: tenantController.uCompanyContact.value),
-                  hintText: 'Contact',
-                  obscureText: false,
-                  keyBoardType: TextInputType.number,
-                  validator: phoneValidator,
-                ),
+                Obx(() {
+                  return AppTextField(
+                    controller: TextEditingController(
+                        text: tenantController.uCompanyNin.value.toString()),
+                    hintText: 'NIN',
+                    obscureText: false,
+                    keyBoardType: TextInputType.text,
+                    validator: ninValidator,
+
+                  );
+                }),
 
                 SizedBox(height: 1.h,),
 
-                AppTextField(
-                  controller: TextEditingController(text: tenantController.uCompanyEmail.value),
-                  hintText: 'Email',
-                  obscureText: false,
-                  keyBoardType: TextInputType.emailAddress,
-                  validator: emailValidator,
-                ),
+                Obx(() {
+                  return AppTextField(
+                    controller: TextEditingController(
+                        text: tenantController.uCompanyContact.value
+                            .toString()),
+                    hintText: 'Contact',
+                    obscureText: false,
+                    keyBoardType: TextInputType.number,
+                    validator: phoneValidator,
+                  );
+                }),
+
+                SizedBox(height: 1.h,),
+
+                Obx(() {
+                  return AppTextField(
+                    controller: TextEditingController(
+                        text: tenantController.uCompanyEmail.value.toString()),
+                    hintText: 'Email',
+                    obscureText: false,
+                    keyBoardType: TextInputType.emailAddress,
+                    validator: emailValidator,
+                  );
+                }),
 
               ],
             ),

@@ -8,9 +8,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/controllers/property_options/property_details_options_controller.dart';
 import 'package:smart_rent/controllers/tenants/tenant_controller.dart';
+import 'package:smart_rent/models/payment_schedule/payment_schedule_model.dart';
 import 'package:smart_rent/screens/tenant/tenant_details_screen.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 import 'package:smart_rent/utils/extra.dart';
@@ -31,7 +33,6 @@ class TenantTabScreen extends StatefulWidget {
 }
 
 class _TenantTabScreenState extends State<TenantTabScreen> {
-
   String imageError = '';
 
   final ImagePicker _picker = ImagePicker();
@@ -52,19 +53,23 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
     }
   }
 
-
   final listSample = [
     {'first': 'vincent', 'last': 'west', 'amount': 50000},
     {'first': 'mark', 'last': 'jonathan', 'amount': 130000},
     {'first': 'ryan', 'last': 'jupiter', 'amount': 45000},
   ];
 
-
   final TextEditingController discountController = TextEditingController();
   final TextEditingController amountController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController date1Controller = TextEditingController();
   final TextEditingController date2Controller = TextEditingController();
+
+  final TextEditingController dailyController = TextEditingController();
+  final TextEditingController weeklyController = TextEditingController();
+  final TextEditingController monthlyController = TextEditingController();
+  final TextEditingController yearlyController = TextEditingController();
+  final TextEditingController lumpSumController = TextEditingController();
 
   final TextEditingController searchController = TextEditingController();
 
@@ -87,8 +92,9 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
     if (picked != null) {
       selectedDate1(picked);
       date1Controller.text =
-      '${selectedDate1.value.day}/${selectedDate1.value.month}/${selectedDate1
-          .value.year}';
+          '${DateFormat('E, d MMM yyyy').format(selectedDate1.value)}';
+      date2Controller.text =
+          '${DateFormat('E, d MMM yyyy').format(selectedDate1.value.add(Duration(days: 30)))}';
     }
   }
 
@@ -103,156 +109,260 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
     if (picked != null && picked != selectedDate1.value) {
       selectedDate2(picked);
       date2Controller.text =
-      '${selectedDate2.value.day}/${selectedDate2.value.month}/${selectedDate2
-          .value.year}';
+          '${DateFormat('E, d MMM yyyy').format(selectedDate2.value)}';
     }
   }
 
-
   void showAsBottomSheet(BuildContext context) async {
-    final result = await showSlidingBottomSheet(
-        context,
-        builder: (context) {
-          return SlidingSheetDialog(
-            elevation: 8,
-            cornerRadius: 15.sp,
-            snapSpec: const SnapSpec(
-              snap: true,
-              snappings: [ 1.0],
-              positioning: SnapPositioning.relativeToAvailableSpace,
-            ),
-            builder: (context, state) {
-              return Material(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 5.w,
-                      vertical: 1.h),
-                  child: SingleChildScrollView(
-                    child: Form(
-                      key: _formKey,
-                      child: Column(
+    final result = await showSlidingBottomSheet(context, builder: (context) {
+      return SlidingSheetDialog(
+        minHeight: 90.h,
+        elevation: 8,
+        cornerRadius: 15.sp,
+        snapSpec: const SnapSpec(
+          snap: true,
+          snappings: [1.0],
+          positioning: SnapPositioning.relativeToAvailableSpace,
+        ),
+        builder: (context, state) {
+          return Material(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 1.h),
+              child: SingleChildScrollView(
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      Text(
+                        'Fill In Tenant Fileds',
+                        style: AppTheme.darkBlueText1,
+                      ),
+                      SizedBox(
+                        height: 1.h,
+                      ),
+                      //
+                      // Obx(() {
+                      //   return CustomApiGenericTenantModelDropdown(
+                      //     hintText: 'Select Tenant',
+                      //     menuItems: tenantController.tenantList.value,
+                      //     onChanged: (value) {
+                      //       tenantController.setTenantId(value!.id);
+                      //     },
+                      //   );
+                      // }),
+
+                      Obx(() {
+                        return SearchableTenantDropDown(
+                          hintText: 'Tenant',
+                          menuItems: tenantController.tenantList.value,
+                          controller: _cnt,
+                        );
+                      }),
+
+                      Obx(() {
+                        return CustomApiUnitDropdown(
+                          hintText: 'Select Unit',
+                          menuItems: tenantController.unitList.value,
+                          onChanged: (value) {
+                            tenantController.setUnitId(value!.id);
+                          },
+                        );
+                      }),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text('Fill In Tenant Fileds', style: AppTheme
-                              .darkBlueText1,),
-                          SizedBox(height: 1.h,),
-
-                          Obx(() {
-                            return CustomApiGenericTenantModelDropdown(
-                              hintText: 'Select Tenant',
-                              menuItems: tenantController.tenantList.value,
-                              onChanged: (value) {
-                                tenantController.setTenantId(value!.id);
-                              },
-                            );
-                          }),
-
-
-                          Obx(() {
-                            return SearchableTenantDropDown(
-                              hintText: 'Search More Tenants',
-                              menuItems: tenantController.tenantList.value,
-                              controller: _cnt,
-                            );
-                          }),
-
-                          Obx(() {
-                            return CustomApiUnitDropdown(
-                              hintText: 'Select Unit',
-                              menuItems: tenantController.unitList.value,
-                              onChanged: (value) {
-                                tenantController.setUnitId(value!.id);
-                              },
-                            );
-                          }),
-
-
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              SizedBox(
-                                width: 42.5.w,
-                                child: AppTextField(
-                                  onTap: () {
-                                    _selectDate1(context);
-                                  },
-                                  controller: date1Controller,
-                                  hintText: "From",
-                                  obscureText: false,
-                                ),
-                              ),
-                              SizedBox(
-                                width: 42.5.w,
-                                child: AppTextField(
-                                  onTap: () {
-                                    _selectDate2(context);
-                                  },
-                                  controller: date2Controller,
-                                  hintText: "To",
-                                  obscureText: false,
-                                ),
-                              ),
-                            ],
+                          SizedBox(
+                            width: 42.5.w,
+                            child: Obx(() {
+                              return CustomApiGenericDropdown<
+                                  PaymentScheduleModel>(
+                                hintText: 'Period',
+                                menuItems: tenantController.paymentList.value,
+                                onChanged: (value) {
+                                  tenantController
+                                      .setPaymentScheduleId(value!.id);
+                                },
+                              );
+                            }),
                           ),
-
-                          SizedBox(height: 1.h,),
-
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              SizedBox(
-                                child: AppTextField(
-                                  controller: amountController,
-                                  hintText: 'Amount',
-                                  obscureText: false,
-                                ),
-                                width: 42.5.w,
-                              ),
-
-                              SizedBox(
-                                child: AppTextField(
-                                  controller: discountController,
-                                  hintText: 'Discount',
-                                  obscureText: false,
-                                ),
-                                width: 42.5.w,
-                              ),
-
-                            ],
+                          SizedBox(
+                            child: Obx(() {
+                              return AppTextField(
+                                controller: tenantController
+                                            .paymentScheduleId.value ==
+                                        1
+                                    ? dailyController
+                                    : tenantController
+                                                .paymentScheduleId.value ==
+                                            2
+                                        ? weeklyController
+                                        : tenantController
+                                                    .paymentScheduleId.value ==
+                                                3
+                                            ? monthlyController
+                                            : tenantController.paymentScheduleId
+                                                        .value ==
+                                                    5
+                                                ? yearlyController
+                                                : tenantController
+                                                            .paymentScheduleId
+                                                            .value ==
+                                                        10
+                                                    ? lumpSumController
+                                                    : TextEditingController(
+                                                        text: null),
+                                hintText: tenantController
+                                            .paymentScheduleId.value ==
+                                        1
+                                    ? 'Enter No. Of Days'
+                                    : tenantController
+                                                .paymentScheduleId.value ==
+                                            2
+                                        ? 'Enter No. Of Weeks'
+                                        : tenantController
+                                                    .paymentScheduleId.value ==
+                                                3
+                                            ? 'Enter No. Of Months'
+                                            : tenantController.paymentScheduleId
+                                                        .value ==
+                                                    5
+                                                ? 'Enter No. Of Years'
+                                                : tenantController
+                                                            .paymentScheduleId
+                                                            .value ==
+                                                        10
+                                                    ? 'Enter No. LumpSum Fee'
+                                                    : 'Specific Period',
+                                obscureText: false,
+                                enabled:
+                                    tenantController.paymentScheduleId.value ==
+                                                1 ||
+                                            tenantController
+                                                    .paymentScheduleId.value ==
+                                                2 ||
+                                            tenantController
+                                                    .paymentScheduleId.value ==
+                                                3 ||
+                                            tenantController
+                                                    .paymentScheduleId.value ==
+                                                5 ||
+                                            tenantController
+                                                    .paymentScheduleId.value ==
+                                                10
+                                        ? true
+                                        : false,
+                              );
+                            }),
+                            width: 42.5.w,
                           ),
-
-
-                          SizedBox(height: 2.h,),
-
-                          AppButton(
-                            title: 'Add Tenant',
-                            color: AppTheme.primaryColor,
-                            function: () {
-                              if (_formKey.currentState!.validate()) {
-                                tenantController.addTenantToUnit(
-                                  tenantController.tenantId.value,
-                                  "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
-                                  tenantController.unitId.value,
-                                  selectedDate1.value,
-                                  selectedDate2.value,
-                                  int.parse(amountController.text.toString()),
-                                  int.parse(discountController.text.toString()),
-                                );
-                              } else {
-
-                              }
-                            },
-                          ),
-
                         ],
                       ),
-                    ),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(
+                            width: 42.5.w,
+                            child: AppTextField(
+                              onTap: () {
+                                _selectDate1(context);
+                              },
+                              controller: date1Controller,
+                              hintText: "From",
+                              obscureText: false,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 42.5.w,
+                            child: AppTextField(
+                              onTap: () {
+                                _selectDate2(context);
+                              },
+                              controller: date2Controller,
+                              hintText: "To",
+                              obscureText: false,
+                              enabled: false,
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      SizedBox(
+                        height: 1.h,
+                      ),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            child: AppTextField(
+                              controller: amountController,
+                              hintText: 'Amount',
+                              obscureText: false,
+                            ),
+                            width: 42.5.w,
+                          ),
+                          SizedBox(
+                            child: AppTextField(
+                              controller: discountController,
+                              hintText: 'Discount',
+                              obscureText: false,
+                            ),
+                            width: 42.5.w,
+                          ),
+                        ],
+                      ),
+
+                      SizedBox(
+                        height: 2.h,
+                      ),
+
+                      AppButton(
+                        title: 'Add Tenant',
+                        color: AppTheme.primaryColor,
+                        function: () {
+                          if (_formKey.currentState!.validate()) {
+                            tenantController.addTenantToUnit(
+                              tenantController.tenantId.value,
+                              "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
+                              tenantController.unitId.value,
+                              selectedDate1.value,
+                              selectedDate2.value,
+                              int.parse(amountController.text.toString()),
+                              int.parse(discountController.text.toString()),
+                            );
+                          } else {}
+                        },
+                      ),
+
+                      SizedBox(
+                        height: 2.h,
+                      ),
+
+                      Obx(() {
+                        return Text(
+                            'Add 3 days == ${DateFormat('E, d MMM yyyy').format(selectedDate1.value.add(Duration(days: 3)))}');
+                      }),
+                      Obx(() {
+                        return Text(
+                            'Add a month == ${DateFormat('E, d MMM yyyy').format(selectedDate1.value.add(Duration(days: 30)))}');
+                      }),
+                      Obx(() {
+                        return Text(
+                            'Add a year == ${DateFormat('E, d MMM yyyy').format(selectedDate1.value.add(Duration(days: 365)))}');
+                      }),
+                    ],
                   ),
                 ),
-              );
-            },
+              ),
+            ),
           );
-        }
-    );
+        },
+      );
+    });
 
     print(result); // This is the result.
   }
@@ -272,10 +382,11 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          SizedBox(height: 3.h,),
+          SizedBox(
+            height: 3.h,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
             children: [
               SizedBox(
                 width: 50.w,
@@ -285,7 +396,6 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                   obscureText: false,
                 ),
               ),
-
               SizedBox(
                 width: 30.w,
                 height: 6.5.h,
@@ -296,10 +406,8 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                       showAsBottomSheet(context);
                     }),
               ),
-
             ],
           ),
-
           ListView.builder(
               physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
@@ -316,24 +424,31 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                       },
                       leading: ClipRRect(
                         borderRadius: BorderRadius.circular(10.sp),
-                        child: Image.asset('assets/avatar/rian.jpg',
+                        child: Image.asset(
+                          'assets/avatar/rian.jpg',
                           fit: BoxFit.cover,
                         ),
                       ),
-                      title: Text(list['first'].toString() + ' ' +
-                          list['last'].toString(), style: AppTheme.appTitle3,),
-                      subtitle: Text('${amountFormatter.format(
-                          list['amount'].toString())}/=',
-                        style: AppTheme.greenTitle2,),
-                      trailing: Text('Unit $index', style: AppTheme.subText,),
+                      title: Text(
+                        list['first'].toString() +
+                            ' ' +
+                            list['last'].toString(),
+                        style: AppTheme.appTitle3,
+                      ),
+                      subtitle: Text(
+                        '${amountFormatter.format(list['amount'].toString())}/=',
+                        style: AppTheme.greenTitle2,
+                      ),
+                      trailing: Text(
+                        'Unit $index',
+                        style: AppTheme.subText,
+                      ),
                     ),
                   ),
                 );
               })
-
         ],
       ),
-
     );
   }
 }

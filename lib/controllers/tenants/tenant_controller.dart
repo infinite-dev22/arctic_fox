@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:smart_rent/config/app_config.dart';
 import 'package:smart_rent/models/business/business_type_model.dart';
 import 'package:smart_rent/models/nationality/nationality_model.dart';
+import 'package:smart_rent/models/payment_schedule/payment_schedule_model.dart';
 import 'package:smart_rent/models/salutation/salutation_model.dart';
 import 'package:smart_rent/models/tenant/tenant_model.dart';
 import 'package:smart_rent/models/tenant/tenant_profile_model.dart';
@@ -22,6 +23,8 @@ class TenantController extends GetxController {
   RxList<UnitModel> unitList = <UnitModel>[].obs;
   RxList<TenantModel> tenantList = <TenantModel>[].obs;
   RxList<BusinessTypeModel> businessList = <BusinessTypeModel>[].obs;
+
+  RxList<PaymentScheduleModel> paymentList = <PaymentScheduleModel>[].obs;
 
 
   var companyProfileWithContact = TenantProfileContactModel().obs;
@@ -72,6 +75,7 @@ class TenantController extends GetxController {
   var iCountryType = ''.obs;
   var iDescription = ''.obs;
   var iBusinessTypeId = 0.obs;
+  var paymentScheduleId = 0.obs;
 
 
   var uuid = Uuid();
@@ -92,7 +96,7 @@ class TenantController extends GetxController {
     listenToTenantChanges();
     fetchAllUnits();
     fetchAllBusinessTypes();
-
+    fetchAllPayments();
 
   }
 
@@ -129,6 +133,32 @@ class TenantController extends GetxController {
   setBusinessTypeId(int id){
     businessTypeId.value = id;
     print('New Business Type Id is $id');
+  }
+
+  setPaymentScheduleId(int id){
+    paymentScheduleId.value = id;
+    print('New Payment Schedule Id is $id');
+  }
+
+
+  fetchAllPayments() async {
+
+    try {
+
+      final response = await AppConfig().supaBaseClient.from('payment_schedules').select();
+      final data = response as List<dynamic>;
+      print(response);
+      print(response.length);
+      print(data.length);
+      print(data);
+
+      return paymentList.assignAll(
+          data.map((json) => PaymentScheduleModel.fromJson(json)).toList());
+
+    } catch (error) {
+      print('Error fetching payments: $error');
+    }
+
   }
 
 

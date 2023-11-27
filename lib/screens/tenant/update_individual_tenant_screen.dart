@@ -46,7 +46,7 @@ class _UpdateIndividualTenantScreenState
   final TextEditingController companyNameController = TextEditingController();
   final TextEditingController companyDescriptionController = TextEditingController();
 
-  late TextEditingController individualNameController;
+  late TextEditingController? individualNameController;
   late TextEditingController individualEmailNameController;
   late TextEditingController individualPhoneNameController;
   late TextEditingController individualDateOfBirthController;
@@ -369,9 +369,11 @@ class _UpdateIndividualTenantScreenState
 
                         Obx(() {
                           return AppTextField(
-                            controller: TextEditingController(
-                                text: tenantController.uIndividualName.value
-                                    .toString()),
+                            controller: individualNameController ??
+                                TextEditingController(
+                                  text: tenantController.uIndividualName.value
+                                      .toString(),
+                                ),
                             hintText: 'Name',
                             obscureText: false,
                             keyBoardType: TextInputType.text,
@@ -455,7 +457,8 @@ class _UpdateIndividualTenantScreenState
                         Obx(() {
                           return AppTextField(
                             controller: TextEditingController(
-                                text: tenantController.uIndividualDescription.value
+                                text: tenantController.uIndividualDescription
+                                    .value
                                     .toString()),
                             hintText: 'Description',
                             obscureText: false,
@@ -571,16 +574,30 @@ class _UpdateIndividualTenantScreenState
                 title: 'Submit',
                 color: AppTheme.primaryColor,
                 function: () async {
-                  if (_formKey.currentState!.validate() &&
-                      _companyFormKey.currentState!.validate() &&
-                      _contactFormKey.currentState!.validate()) {
-                    // Get.snackbar(
-                    //     'Posting Company', 'With Company Contact');
+                  print('MY name controller == $individualNameController');
+                  print('MY name api == ${tenantController.uIndividualName
+                      .value}');
 
-
-                  } else {
-                    Fluttertoast.showToast(msg: 'Fill in fields');
-                  }
+                  // if (_formKey.currentState!.validate() &&
+                  //     _companyFormKey.currentState!.validate() &&
+                  //     _contactFormKey.currentState!.validate()) {
+                  //   tenantController.updatePersonalTenantDetails(
+                  //       individualTenantId,
+                  //       businessTypeId,
+                  //       name,
+                  //       nationId,
+                  //       description,
+                  //       tenantNo,
+                  //       nin,
+                  //       phone,
+                  //       tenantController.,
+                  //       tenantController.newGender.value,
+                  //     tenantController.uIndividualDateOfBirth.value,
+                  //   );
+                  //
+                  // } else {
+                  //   Fluttertoast.showToast(msg: 'Fill in fields');
+                  // }
                 },
               ),
 

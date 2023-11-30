@@ -414,6 +414,97 @@ class CustomApiGenericDropdown<T extends SmartModel> extends StatelessWidget {
   }
 }
 
+
+class CustomPeriodApiGenericDropdown<T extends SmartPeriodModel> extends StatelessWidget {
+  const CustomPeriodApiGenericDropdown(
+      {super.key,
+        required this.hintText,
+        required this.menuItems,
+        this.onChanged,
+        this.height,
+        this.defaultValue,
+        this.validator,
+
+      });
+
+  final String hintText;
+  final List<T> menuItems;
+  final T? defaultValue;
+  final Function(T?)? onChanged;
+  final double? height;
+  final String? Function(T?)? validator;
+
+  @override
+  Widget build(BuildContext context) {
+    return _buildBody();
+  }
+
+  _buildBody() {
+    return Column(
+      children: [
+        SizedBox(
+          height: height ?? 8.5.h,
+          child: DropdownButtonFormField2<T>(
+            value: defaultValue,
+            isExpanded: true,
+            decoration: InputDecoration(
+              contentPadding:  EdgeInsets.symmetric(vertical: 0.5.h),
+              filled: true,
+              fillColor: AppTheme.fillColor,
+              border: OutlineInputBorder(
+                borderSide: BorderSide.none,
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            hint: Text(
+              hintText,
+              style:
+              const TextStyle(color: AppTheme.inActiveColor, fontSize: 15),
+            ),
+            items: menuItems
+                .map((item) => DropdownMenuItem<T>(
+              value: item,
+              child: Text(
+                item.getName(),
+                style: const TextStyle(
+                  fontSize: 14,
+                ),
+              ),
+            ))
+                .toList(),
+            validator: (value) {
+              if (value == null) {
+                return 'Please select a $hintText';
+              }
+              return null;
+            },
+            onChanged: onChanged,
+            buttonStyleData: const ButtonStyleData(
+              padding: EdgeInsets.only(right: 8),
+            ),
+            iconStyleData: const IconStyleData(
+              icon: Icon(
+                Icons.arrow_drop_down,
+                color: Colors.black45,
+              ),
+              iconSize: 24,
+            ),
+            dropdownStyleData: DropdownStyleData(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+              ),
+            ),
+            menuItemStyleData: const MenuItemStyleData(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+            ),
+          ),
+        ),
+        // const SizedBox(height: 10),
+      ],
+    );
+  }
+}
+
 class CustomUpdateApiGenericDropdown<T extends SmartModel> extends StatelessWidget {
   const CustomUpdateApiGenericDropdown(
       {super.key,

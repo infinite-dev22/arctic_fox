@@ -62,7 +62,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
   final TextEditingController discountController = TextEditingController();
   final TextEditingController amountController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
-  final TextEditingController date1Controller = TextEditingController();
+  late TextEditingController date1Controller;
   final TextEditingController date2Controller = TextEditingController();
 
   final TextEditingController dailyController = TextEditingController();
@@ -93,8 +93,55 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
       selectedDate1(picked);
       date1Controller.text =
           '${DateFormat('E, d MMM yyyy').format(selectedDate1.value)}';
-      date2Controller.text =
-          '${DateFormat('E, d MMM yyyy').format(selectedDate1.value.add(Duration(days: 30)))}';
+      // date2Controller.text =
+      //     '${DateFormat('E, d MMM yyyy').format(selectedDate1.value.add(Duration(days: 30)))}';
+
+      if(tenantController.paymentScheduleId.value == 1) {
+        date2Controller.text =
+        '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day+1))}';
+
+
+      } else if(tenantController.paymentScheduleId.value ==2) {
+        date2Controller.text =
+        '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day+7))}';
+
+      } else if(tenantController.paymentScheduleId.value ==3) {
+        date2Controller.text =
+        '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month+1, selectedDate1.value.day))}';
+
+      } else if(tenantController.paymentScheduleId.value ==4) {
+        date2Controller.text =
+        '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month+4, selectedDate1.value.day))}';
+
+      } else if(tenantController.paymentScheduleId.value ==5) {
+        date2Controller.text =
+        '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year+1, selectedDate1.value.month, selectedDate1.value.day))}';
+
+      } else if(tenantController.paymentScheduleId.value ==6) {
+        date2Controller.text =
+        '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day+14))}';
+
+      } else if(tenantController.paymentScheduleId.value ==8) {
+        date2Controller.text =
+        '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month+6, selectedDate1.value.day))}';
+
+      } else if(tenantController.paymentScheduleId.value ==9) {
+        date2Controller.text =
+        '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month+9, selectedDate1.value.day))}';
+
+      } else if(tenantController.paymentScheduleId.value ==10) {
+        date2Controller.text =
+        '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day))}';
+
+      } else if(tenantController.paymentScheduleId.value ==2) {
+        date2Controller.text =
+        '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month+2, selectedDate1.value.day))}';
+
+      } else {
+
+      }
+
+
     }
   }
 
@@ -173,16 +220,61 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
+
                           SizedBox(
                             width: 42.5.w,
                             child: Obx(() {
-                              return CustomApiGenericDropdown<
-                                  PaymentScheduleModel>(
-                                hintText: 'Period',
+                              return CustomPeriodApiGenericDropdown<PaymentScheduleModel>(
+                                hintText: 'Per Month',
                                 menuItems: tenantController.paymentList.value,
                                 onChanged: (value) {
-                                  tenantController
-                                      .setPaymentScheduleId(value!.id);
+                                  tenantController.setPaymentScheduleId(value!.id);
+
+                                  if(tenantController.paymentScheduleId.value == 1) {
+                                    date2Controller.text =
+                                    '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day+1))}';
+
+
+                                  } else if(tenantController.paymentScheduleId.value ==2) {
+                                    date2Controller.text =
+                                    '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day+7))}';
+
+                                  } else if(tenantController.paymentScheduleId.value ==3) {
+                                    date2Controller.text =
+                                    '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month+1, selectedDate1.value.day))}';
+
+                                  } else if(tenantController.paymentScheduleId.value ==4) {
+                                    date2Controller.text =
+                                    '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month+4, selectedDate1.value.day))}';
+
+                                  } else if(tenantController.paymentScheduleId.value ==5) {
+                                    date2Controller.text =
+                                    '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year+1, selectedDate1.value.month, selectedDate1.value.day))}';
+
+                                  } else if(tenantController.paymentScheduleId.value ==6) {
+                                    date2Controller.text =
+                                    '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day+14))}';
+
+                                  } else if(tenantController.paymentScheduleId.value ==8) {
+                                    date2Controller.text =
+                                    '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month+6, selectedDate1.value.day))}';
+
+                                  } else if(tenantController.paymentScheduleId.value ==9) {
+                                    date2Controller.text =
+                                    '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month+9, selectedDate1.value.day))}';
+
+                                  } else if(tenantController.paymentScheduleId.value ==10) {
+                                    date2Controller.text =
+                                    '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day))}';
+
+                                  } else if(tenantController.paymentScheduleId.value ==11) {
+                                    date2Controller.text =
+                                    '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month+2, selectedDate1.value.day))}';
+
+                                  } else {
+
+                                  }
+
                                 },
                               );
                             }),
@@ -338,22 +430,6 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                         },
                       ),
 
-                      SizedBox(
-                        height: 2.h,
-                      ),
-
-                      Obx(() {
-                        return Text(
-                            'Add 3 days == ${DateFormat('E, d MMM yyyy').format(selectedDate1.value.add(Duration(days: 3)))}');
-                      }),
-                      Obx(() {
-                        return Text(
-                            'Add a month == ${DateFormat('E, d MMM yyyy').format(selectedDate1.value.add(Duration(days: 30)))}');
-                      }),
-                      Obx(() {
-                        return Text(
-                            'Add a year == ${DateFormat('E, d MMM yyyy').format(selectedDate1.value.add(Duration(days: 365)))}');
-                      }),
                     ],
                   ),
                 ),
@@ -373,6 +449,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
     super.initState();
     _image = File('');
     _cnt = SingleValueDropDownController();
+    date1Controller  = TextEditingController(text: '${DateFormat('E, d MMM yyyy').format(selectedDate1.value)}');
   }
 
   @override

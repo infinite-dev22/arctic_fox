@@ -39,6 +39,13 @@ abstract class SmartNationalityModel {
   // String getSymbol();
 }
 
+abstract class SmartPeriodModel {
+  int getId();
+  String getName();
+  int getPeriod();
+
+}
+
 abstract class SmartTenantModel {
 
   int getId();

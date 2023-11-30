@@ -661,7 +661,7 @@ class TenantController extends GetxController {
   }
 
   addTenantToUnit( int tenantId, String createdBy,
-      int unitId, DateTime date1, DateTime date2, int amount, int discount
+      int unitId, String date1, String date2, int amount, int discount
       ) async {
 
     try {
@@ -669,12 +669,13 @@ class TenantController extends GetxController {
           {
             "amount" : amount,
             "discount" : discount,
-            "unit_d": unitId,
+            "unit_id": unitId,
             // "organisation_id": organisationId,
             "tenant_id": tenantId,
             "created_by" : createdBy,
             "from_date" : date1,
             "to_date" : date2,
+            "updated_at" : DateTime.now(),
           }
       ).then((tenant) {
         Get.back();

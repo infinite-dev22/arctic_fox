@@ -19,6 +19,7 @@ class AppTextField extends StatelessWidget {
   final int? maxLines;
   final int? maxLength;
   final int? minLines;
+  final void Function(String)? onChanged;
 
   const AppTextField({
     super.key,
@@ -37,6 +38,7 @@ class AppTextField extends StatelessWidget {
     this.maxLines,
     this.maxLength,
     this.minLines,
+    this.onChanged
   });
 
   @override
@@ -93,9 +95,10 @@ class AppTextField extends StatelessWidget {
 
             ),
             keyboardType: keyBoardType ?? TextInputType.emailAddress,
-            onChanged: (value){
-              print(value);
-            },
+            onChanged: onChanged,
+            // onChanged: (value){
+            //   print(value);
+            // },
             // maxLines: 10,
           ),
         ),

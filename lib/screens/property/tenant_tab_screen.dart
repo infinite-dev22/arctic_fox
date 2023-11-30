@@ -6,6 +6,7 @@ import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -98,47 +99,65 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
       //     '${DateFormat('E, d MMM yyyy').format(selectedDate1.value.add(Duration(days: 30)))}';
 
       if(tenantController.paymentScheduleId.value == 1) {
-        date2Controller.text =
-        '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day+1))}';
+
+        var myDays = int.parse(dailyController.text) * 1;
+
+        if(dailyController.text.toString() == '0'){
+          Fluttertoast.showToast(msg: 'Enter Right Day');
+        } else {
+          print('MY myDays are == ${dailyController.text.toString()}');
+          print('Count myDays ' + myDays.toString());
+          date2Controller.text =
+          '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day + myDays))}';
+        }
 
 
       } else if(tenantController.paymentScheduleId.value ==2) {
-        date2Controller.text =
-        '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day+7))}';
+        var myWeeks = int.parse(weeklyController.text) * 7;
+
+        if(weeklyController.text.toString() == '0'){
+          Fluttertoast.showToast(msg: 'Enter Right week');
+        } else {
+          print('MY WEEKs are == ${weeklyController.text.toString()}');
+          print('Count Weeks ' + myWeeks.toString());
+          date2Controller.text =
+          '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day + myWeeks))}';
+        }
+
 
       } else if(tenantController.paymentScheduleId.value ==3) {
-        date2Controller.text =
-        '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month+1, selectedDate1.value.day))}';
+
+        var myMonths = int.parse(monthlyController.text) * 1;
+
+        if(monthlyController.text.toString() == '0'){
+          Fluttertoast.showToast(msg: 'Enter Right Month');
+        } else {
+          print('MY myMonths are == ${monthlyController.text.toString()}');
+          print('Count myMonths ' + myMonths.toString());
+          date2Controller.text =
+          '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month + myMonths, selectedDate1.value.day))}';
+        }
 
       } else if(tenantController.paymentScheduleId.value ==4) {
-        date2Controller.text =
-        '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day+14))}';
 
-      } else if(tenantController.paymentScheduleId.value ==5) {
-        date2Controller.text =
-        '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month+2, selectedDate1.value.day))}';
+        var myYears = int.parse(yearlyController.text) * 1;
 
-      } else if(tenantController.paymentScheduleId.value ==6) {
-        date2Controller.text =
-        '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month+3, selectedDate1.value.day+14))}';
+        if(yearlyController.text.toString() == '0'){
+          Fluttertoast.showToast(msg: 'Enter Right years');
+        } else {
+          print('MY myYears are == ${yearlyController.text.toString()}');
+          print('Count myYears ' + myYears.toString());
+          date2Controller.text =
+          '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year + myYears, selectedDate1.value.month, selectedDate1.value.day))}';
+        }
 
-      } else if(tenantController.paymentScheduleId.value ==7) {
-        date2Controller.text =
-        '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month+6, selectedDate1.value.day))}';
 
-      } else if(tenantController.paymentScheduleId.value ==8) {
-        date2Controller.text =
-        '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month+9, selectedDate1.value.day))}';
+      } else {
 
-      } else if(tenantController.paymentScheduleId.value ==9) {
-        date2Controller.text =
-        '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year+1, selectedDate1.value.month, selectedDate1.value.day))}';
-
-      }  else {
-
-        date2Controller.text = '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day))}';
+        // date2Controller.text = '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day))}';
 
       }
+
 
 
     }
@@ -233,44 +252,62 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                                 onChanged: (value) {
                                   tenantController.setPaymentScheduleId(value!.id);
 
+
                                   if(tenantController.paymentScheduleId.value == 1) {
-                                    date2Controller.text =
-                                    '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day+1))}';
+
+                                    var myDays = int.parse(dailyController.text) * 1;
+
+                                    if(dailyController.text.toString() == '0'){
+                                      Fluttertoast.showToast(msg: 'Enter Right Day');
+                                    } else {
+                                      print('MY myDays are == ${dailyController.text.toString()}');
+                                      print('Count myDays ' + myDays.toString());
+                                      date2Controller.text =
+                                      '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day + myDays))}';
+                                    }
 
 
                                   } else if(tenantController.paymentScheduleId.value ==2) {
-                                    date2Controller.text =
-                                    '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day+7))}';
+                                    var myWeeks = int.parse(weeklyController.text) * 7;
+
+                                    if(weeklyController.text.toString() == '0'){
+                                      Fluttertoast.showToast(msg: 'Enter Right week');
+                                    } else {
+                                      print('MY WEEKs are == ${weeklyController.text.toString()}');
+                                      print('Count Weeks ' + myWeeks.toString());
+                                      date2Controller.text =
+                                      '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day + myWeeks))}';
+                                    }
+
 
                                   } else if(tenantController.paymentScheduleId.value ==3) {
-                                    date2Controller.text =
-                                    '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month+1, selectedDate1.value.day))}';
+
+                                    var myMonths = int.parse(monthlyController.text) * 1;
+
+                                    if(monthlyController.text.toString() == '0'){
+                                      Fluttertoast.showToast(msg: 'Enter Right Month');
+                                    } else {
+                                      print('MY myMonths are == ${monthlyController.text.toString()}');
+                                      print('Count myMonths ' + myMonths.toString());
+                                      date2Controller.text =
+                                      '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month + myMonths, selectedDate1.value.day))}';
+                                    }
 
                                   } else if(tenantController.paymentScheduleId.value ==4) {
-                                    date2Controller.text =
-                                    '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day+14))}';
 
-                                  } else if(tenantController.paymentScheduleId.value ==5) {
-                                    date2Controller.text =
-                                    '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month+2, selectedDate1.value.day))}';
+                                    var myYears = int.parse(yearlyController.text) * 1;
 
-                                  } else if(tenantController.paymentScheduleId.value ==6) {
-                                    date2Controller.text =
-                                    '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month+3, selectedDate1.value.day+14))}';
+                                    if(yearlyController.text.toString() == '0'){
+                                      Fluttertoast.showToast(msg: 'Enter Right years');
+                                    } else {
+                                      print('MY myYears are == ${yearlyController.text.toString()}');
+                                      print('Count myYears ' + myYears.toString());
+                                      date2Controller.text =
+                                      '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year + myYears, selectedDate1.value.month, selectedDate1.value.day))}';
+                                    }
 
-                                  } else if(tenantController.paymentScheduleId.value ==7) {
-                                    date2Controller.text =
-                                    '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month+6, selectedDate1.value.day))}';
 
-                                  } else if(tenantController.paymentScheduleId.value ==8) {
-                                    date2Controller.text =
-                                    '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month+9, selectedDate1.value.day))}';
-
-                                  } else if(tenantController.paymentScheduleId.value ==9) {
-                                    date2Controller.text =
-                                    '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year+1, selectedDate1.value.month, selectedDate1.value.day))}';
-
-                                  }  else {
+                                  } else {
 
                                     // date2Controller.text = '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day))}';
 
@@ -319,14 +356,9 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                                             ? monthlyController
                                             : tenantController.paymentScheduleId
                                                         .value ==
-                                                    5
+                                                    4
                                                 ? yearlyController
-                                                : tenantController
-                                                            .paymentScheduleId
-                                                            .value ==
-                                                        10
-                                                    ? lumpSumController
-                                                    : TextEditingController(
+                                               : TextEditingController(
                                                         text: null),
                                 hintText: tenantController
                                             .paymentScheduleId.value ==
@@ -340,20 +372,76 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                                                     .paymentScheduleId.value ==
                                                 3
                                             ? 'Enter No. Of Months'
-                                            : tenantController.paymentScheduleId
-                                                        .value ==
-                                                    5
-                                                ? 'Enter No. Of Years'
-                                                : tenantController
+                                           : tenantController
                                                             .paymentScheduleId
                                                             .value ==
-                                                        10
-                                                    ? 'Enter No. LumpSum Fee'
+                                                        4
+                                                    ? 'Enter No. Of Years'
                                                     : 'Specific Period',
                                 obscureText: false,
-                                enabled: tenantController.paymentScheduleId.value == 10
-                                        ? true
-                                        : false,
+                                onChanged: (value){
+
+                                  if(tenantController.paymentScheduleId.value == 1) {
+
+                                    var myDays = int.parse(dailyController.text) * 1;
+
+                                    if(dailyController.text.toString() == '0'){
+                                      Fluttertoast.showToast(msg: 'Enter Right Day');
+                                    } else {
+                                      print('MY myDays are == ${dailyController.text.toString()}');
+                                      print('Count myDays ' + myDays.toString());
+                                      date2Controller.text =
+                                      '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day + myDays))}';
+                                    }
+
+
+                                  } else if(tenantController.paymentScheduleId.value ==2) {
+                                    var myWeeks = int.parse(weeklyController.text) * 7;
+
+                                    if(weeklyController.text.toString() == '0'){
+                                      Fluttertoast.showToast(msg: 'Enter Right week');
+                                    } else {
+                                      print('MY WEEKs are == ${weeklyController.text.toString()}');
+                                      print('Count Weeks ' + myWeeks.toString());
+                                      date2Controller.text =
+                                      '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day + myWeeks))}';
+                                    }
+
+
+                                  } else if(tenantController.paymentScheduleId.value ==3) {
+
+                                    var myMonths = int.parse(monthlyController.text) * 1;
+
+                                    if(monthlyController.text.toString() == '0'){
+                                      Fluttertoast.showToast(msg: 'Enter Right Month');
+                                    } else {
+                                      print('MY myMonths are == ${monthlyController.text.toString()}');
+                                      print('Count myMonths ' + myMonths.toString());
+                                      date2Controller.text =
+                                      '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month + myMonths, selectedDate1.value.day))}';
+                                    }
+
+                                  } else if(tenantController.paymentScheduleId.value ==4) {
+
+                                    var myYears = int.parse(yearlyController.text) * 1;
+
+                                    if(yearlyController.text.toString() == '0'){
+                                      Fluttertoast.showToast(msg: 'Enter Right years');
+                                    } else {
+                                      print('MY myYears are == ${yearlyController.text.toString()}');
+                                      print('Count myYears ' + myYears.toString());
+                                      date2Controller.text =
+                                      '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year + myYears, selectedDate1.value.month, selectedDate1.value.day))}';
+                                    }
+
+
+                                  } else {
+
+                                    // date2Controller.text = '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day))}';
+
+                                  }
+
+                                },
                               );
                             }),
                             width: 42.5.w,
@@ -463,47 +551,108 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
     date1Controller  = TextEditingController(text: '${DateFormat('E, d MMM yyyy').format(selectedDate1.value)}');
 
     if(tenantController.paymentScheduleId.value == 1) {
-      date2Controller.text =
-      '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day+1))}';
+
+      var myDays = int.parse(dailyController.text) * 1;
+
+      if(dailyController.text.toString() == '0'){
+        Fluttertoast.showToast(msg: 'Enter Right Day');
+      } else {
+        print('MY myDays are == ${dailyController.text.toString()}');
+        print('Count myDays ' + myDays.toString());
+        date2Controller.text =
+        '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day + myDays))}';
+      }
 
 
     } else if(tenantController.paymentScheduleId.value ==2) {
-      date2Controller.text =
-      '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day+7))}';
+      var myWeeks = int.parse(weeklyController.text) * 7;
+
+      if(weeklyController.text.toString() == '0'){
+        Fluttertoast.showToast(msg: 'Enter Right week');
+      } else {
+        print('MY WEEKs are == ${weeklyController.text.toString()}');
+        print('Count Weeks ' + myWeeks.toString());
+        date2Controller.text =
+        '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day + myWeeks))}';
+      }
+
 
     } else if(tenantController.paymentScheduleId.value ==3) {
-      date2Controller.text =
-      '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month+1, selectedDate1.value.day))}';
+
+      var myMonths = int.parse(monthlyController.text) * 1;
+
+      if(monthlyController.text.toString() == '0'){
+        Fluttertoast.showToast(msg: 'Enter Right Month');
+      } else {
+        print('MY myMonths are == ${monthlyController.text.toString()}');
+        print('Count myMonths ' + myMonths.toString());
+        date2Controller.text =
+        '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month + myMonths, selectedDate1.value.day))}';
+      }
 
     } else if(tenantController.paymentScheduleId.value ==4) {
-      date2Controller.text =
-      '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day+14))}';
 
-    } else if(tenantController.paymentScheduleId.value ==5) {
-      date2Controller.text =
-      '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month+2, selectedDate1.value.day))}';
+      var myYears = int.parse(yearlyController.text) * 1;
 
-    } else if(tenantController.paymentScheduleId.value ==6) {
-      date2Controller.text =
-      '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month+3, selectedDate1.value.day+14))}';
+      if(yearlyController.text.toString() == '0'){
+        Fluttertoast.showToast(msg: 'Enter Right years');
+      } else {
+        print('MY myYears are == ${yearlyController.text.toString()}');
+        print('Count myYears ' + myYears.toString());
+        date2Controller.text =
+        '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year + myYears, selectedDate1.value.month, selectedDate1.value.day))}';
+      }
 
-    } else if(tenantController.paymentScheduleId.value ==7) {
-      date2Controller.text =
-      '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month+6, selectedDate1.value.day))}';
 
-    } else if(tenantController.paymentScheduleId.value ==8) {
-      date2Controller.text =
-      '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month+9, selectedDate1.value.day))}';
+    } else {
 
-    } else if(tenantController.paymentScheduleId.value ==9) {
-      date2Controller.text =
-      '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year+1, selectedDate1.value.month, selectedDate1.value.day))}';
-
-    }  else {
-
-      date2Controller.text = '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day))}';
+      date2Controller.text = '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day+1))}';
 
     }
+
+
+    // if(tenantController.paymentScheduleId.value == 1) {
+    //   date2Controller.text =
+    //   '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day+1))}';
+    //
+    //
+    // } else if(tenantController.paymentScheduleId.value ==2) {
+    //   date2Controller.text =
+    //   '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day+7))}';
+    //
+    // } else if(tenantController.paymentScheduleId.value ==3) {
+    //   date2Controller.text =
+    //   '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month+1, selectedDate1.value.day))}';
+    //
+    // } else if(tenantController.paymentScheduleId.value ==4) {
+    //   date2Controller.text =
+    //   '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day+14))}';
+    //
+    // } else if(tenantController.paymentScheduleId.value ==5) {
+    //   date2Controller.text =
+    //   '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month+2, selectedDate1.value.day))}';
+    //
+    // } else if(tenantController.paymentScheduleId.value ==6) {
+    //   date2Controller.text =
+    //   '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month+3, selectedDate1.value.day+14))}';
+    //
+    // } else if(tenantController.paymentScheduleId.value ==7) {
+    //   date2Controller.text =
+    //   '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month+6, selectedDate1.value.day))}';
+    //
+    // } else if(tenantController.paymentScheduleId.value ==8) {
+    //   date2Controller.text =
+    //   '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month+9, selectedDate1.value.day))}';
+    //
+    // } else if(tenantController.paymentScheduleId.value ==9) {
+    //   date2Controller.text =
+    //   '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year+1, selectedDate1.value.month, selectedDate1.value.day))}';
+    //
+    // }  else {
+    //
+    //   date2Controller.text = '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day))}';
+    //
+    // }
 
   }
 

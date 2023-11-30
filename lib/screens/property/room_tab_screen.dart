@@ -166,11 +166,24 @@ class _RoomTabScreenState extends State<RoomTabScreen> {
                               ),
                             ),
 
+                            // SizedBox(
+                            //   width: 42.5.w,
+                            //   child: Obx(() {
+                            //     return CustomApiGenericDropdown<
+                            //         PaymentScheduleModel>(
+                            //       hintText: 'Per Month',
+                            //       menuItems: unitController.paymentList.value,
+                            //       onChanged: (value) {
+                            //         unitController.setPaymentScheduleId(value!.id);
+                            //       },
+                            //     );
+                            //   }),
+                            // ),
+
                             SizedBox(
                               width: 42.5.w,
                               child: Obx(() {
-                                return CustomApiGenericDropdown<
-                                    PaymentScheduleModel>(
+                                return CustomPeriodApiGenericDropdown<PaymentScheduleModel>(
                                   hintText: 'Per Month',
                                   menuItems: unitController.paymentList.value,
                                   onChanged: (value) {

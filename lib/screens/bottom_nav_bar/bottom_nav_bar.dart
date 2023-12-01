@@ -7,6 +7,7 @@ import 'package:smart_rent/screens/chat/chat_screen.dart';
 import 'package:smart_rent/screens/find/find_screen.dart';
 import 'package:smart_rent/screens/home/homepage_screen.dart';
 import 'package:smart_rent/screens/profile/profile_screen.dart';
+import 'package:smart_rent/styles/app_theme.dart';
 
 
 class BottomNavBar extends StatelessWidget {
@@ -27,6 +28,7 @@ class BottomNavBar extends StatelessWidget {
     return Obx(() {
       return Scaffold(
         // extendBody: true,
+        backgroundColor: AppTheme.appBgColor,
         body: screens[bottomNavBarController.currentIndex.value],
         bottomNavigationBar: ClipRRect(
           borderRadius: BorderRadius.only(topLeft: Radius.circular(20.sp), topRight: Radius.circular(20.sp)),

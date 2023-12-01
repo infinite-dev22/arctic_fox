@@ -69,6 +69,7 @@ dependencies:
   supabase_flutter: ^1.10.25
   uuid: ^4.2.1
   intl: ^0.18.1
+  date_picker_plus: ^1.1.4
 
 #  supabase: ^1.11.11
 #  supabase_flutter: ^1.10.25

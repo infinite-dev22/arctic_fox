@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:animate_do/animate_do.dart';
+import 'package:date_picker_plus/date_picker_plus.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,6 +12,7 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/controllers/tenants/tenant_controller.dart';
 import 'package:smart_rent/models/business/business_type_model.dart';
@@ -210,18 +212,24 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
 
 
   Future<void> _selectDateOfBirth(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
+    // final DateTime? picked = await showDatePicker(
+    //   context: context,
+    //   initialDate: myDateOfBirth.value,
+    //   firstDate: DateTime(1900),
+    //   lastDate: DateTime.now(),
+    // );
+
+    final DateTime? picked = await showDatePickerDialog(
       context: context,
       initialDate: myDateOfBirth.value,
-      firstDate: DateTime(1900),
-      lastDate: DateTime.now(),
+      minDate: DateTime(2000),
+      maxDate: DateTime.now(),
     );
 
     if (picked != null) {
       myDateOfBirth(picked);
       individualDateOfBirthController.text =
-      '${myDateOfBirth.value.day}/${myDateOfBirth.value.month}/${myDateOfBirth
-          .value.year}';
+      '${DateFormat('MM/dd/yyyy').format(myDateOfBirth.value)}';
     }
   }
 
@@ -262,6 +270,7 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppTheme.appBgColor,
       appBar: AppImageHeader(
         title: 'assets/auth/logo.png',
         isTitleCentred: true,

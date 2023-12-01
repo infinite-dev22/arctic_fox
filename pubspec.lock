@@ -169,6 +169,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.6"
+  date_picker_plus:
+    dependency: "direct main"
+    description:
+      name: date_picker_plus
+      sha256: "0825dbfa628a270cf4d65cb9658cbb5816b649d46a5ed6012194e38e03aa3c3b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.4"
   dio:
     dependency: transitive
     description:

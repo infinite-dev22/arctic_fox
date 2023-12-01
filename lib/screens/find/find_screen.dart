@@ -8,6 +8,7 @@ class FindScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppTheme.appBgColor,
       body: SafeArea(
         child: Column(
           children: [

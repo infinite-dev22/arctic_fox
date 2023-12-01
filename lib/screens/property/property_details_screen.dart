@@ -50,6 +50,7 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> with Tick
     return DefaultTabController(
       length: 4,
       child: Scaffold(
+        backgroundColor: AppTheme.appBgColor,
         extendBodyBehindAppBar: true,
             body: NestedScrollView(
             body: Padding(

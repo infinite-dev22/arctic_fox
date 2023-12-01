@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart_rent/styles/app_theme.dart';
 
 class PropertyTabOptionsWidget extends StatefulWidget {
   const PropertyTabOptionsWidget({super.key});
@@ -13,6 +14,7 @@ class _PropertyTabOptionsWidgetState extends State<PropertyTabOptionsWidget> {
     return DefaultTabController(
       length: 3,
       child: Scaffold(
+        backgroundColor: AppTheme.appBgColor,
         appBar: AppBar(
           bottom: TabBar(
             tabs: [

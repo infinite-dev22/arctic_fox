@@ -85,7 +85,7 @@ class AppTextField extends StatelessWidget {
                 borderSide: borderSide,
                 borderRadius: BorderRadius.circular(15.sp),
               ),
-              fillColor: fillColor,
+              fillColor: AppTheme.textBoxColor,
               filled: true,
               hintText: hintText,
               hintStyle: TextStyle(
@@ -188,7 +188,7 @@ class AppDateTextField extends StatelessWidget {
                 borderSide: borderSide,
                 borderRadius: BorderRadius.circular(15.sp),
               ),
-              fillColor: fillColor,
+              fillColor: AppTheme.textBoxColor,
               filled: true,
               hintText: hintText,
               hintStyle: TextStyle(

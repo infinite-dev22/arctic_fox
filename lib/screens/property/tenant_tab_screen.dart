@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:date_picker_plus/date_picker_plus.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,7 @@ import 'package:smart_rent/widgets/app_button.dart';
 import 'package:smart_rent/widgets/app_drop_downs.dart';
 import 'package:smart_rent/widgets/app_max_textfield.dart';
 import 'package:smart_rent/widgets/app_textfield.dart';
+import 'package:smart_rent/widgets/custom_accordion.dart';
 import 'package:wtf_sliding_sheet/wtf_sliding_sheet.dart';
 
 class TenantTabScreen extends StatefulWidget {
@@ -84,17 +86,24 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
   late SingleValueDropDownController _cnt;
 
   Future<void> _selectDate1(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: selectedDate1.value,
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
+    // final DateTime? picked = await showDatePicker(
+    //   context: context,
+    //   initialDate: selectedDate1.value,
+    //   firstDate: DateTime(2000),
+    //   lastDate: DateTime(2101),
+    // );
+
+    final DateTime? picked = await showDatePickerDialog(
+        context: context,
+        initialDate: selectedDate1.value,
+        minDate: DateTime(2000),
+        maxDate: DateTime(2101),
     );
 
     if (picked != null) {
       selectedDate1(picked);
       date1Controller.text =
-          '${DateFormat('E, d MMM yyyy').format(selectedDate1.value)}';
+          '${DateFormat('MM/dd/yyyy').format(selectedDate1.value)}';
       // date2Controller.text =
       //     '${DateFormat('E, d MMM yyyy').format(selectedDate1.value.add(Duration(days: 30)))}';
 
@@ -108,7 +117,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
           print('MY myDays are == ${dailyController.text.toString()}');
           print('Count myDays ' + myDays.toString());
           date2Controller.text =
-          '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day + myDays))}';
+          '${DateFormat('MM/dd/yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day + myDays))}';
         }
 
 
@@ -121,7 +130,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
           print('MY WEEKs are == ${weeklyController.text.toString()}');
           print('Count Weeks ' + myWeeks.toString());
           date2Controller.text =
-          '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day + myWeeks))}';
+          '${DateFormat('MM/dd/yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day + myWeeks))}';
         }
 
 
@@ -135,7 +144,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
           print('MY myMonths are == ${monthlyController.text.toString()}');
           print('Count myMonths ' + myMonths.toString());
           date2Controller.text =
-          '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month + myMonths, selectedDate1.value.day))}';
+          '${DateFormat('MM/dd/yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month + myMonths, selectedDate1.value.day))}';
         }
 
       } else if(tenantController.paymentScheduleId.value ==4) {
@@ -148,7 +157,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
           print('MY myYears are == ${yearlyController.text.toString()}');
           print('Count myYears ' + myYears.toString());
           date2Controller.text =
-          '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year + myYears, selectedDate1.value.month, selectedDate1.value.day))}';
+          '${DateFormat('MM/dd/yyyy').format(DateTime(selectedDate1.value.year + myYears, selectedDate1.value.month, selectedDate1.value.day))}';
         }
 
 
@@ -174,7 +183,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
     if (picked != null && picked != selectedDate1.value) {
       selectedDate2(picked);
       date2Controller.text =
-          '${DateFormat('E, d MMM yyyy').format(selectedDate2.value)}';
+          '${DateFormat('MM/dd/yyyy').format(selectedDate2.value)}';
     }
   }
 
@@ -198,10 +207,42 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                   key: _formKey,
                   child: Column(
                     children: [
-                      Text(
-                        'Fill In Tenant Fileds',
-                        style: AppTheme.darkBlueText1,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                        Bounceable(
+                          onTap: (){
+                            Get.back();
+                          },
+                            child: Text('Cancel', style: TextStyle(
+                              color: Colors.red,
+                            ),)),
+
+                          Text(
+                            'Fill In Tenant Fileds',
+                            style: AppTheme.darkBlueText1,
+                          ),
+
+                        Bounceable(
+                          onTap: ()async{
+                            if (_formKey.currentState!.validate()) {
+                              tenantController.addTenantToUnit(
+                                tenantController.tenantId.value,
+                                "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
+                                tenantController.unitId.value,
+                                selectedDate1.value.toString(),
+                                date2Controller.text.trim().toString(),
+                                int.parse(amountController.text.toString()),
+                                int.parse(discountController.text.toString()),
+                              );
+                            } else {}
+                          },
+                            child: Text('Add', style: TextStyle(
+                              color: AppTheme.primaryColor
+                            ),)),
+                        ],
                       ),
+
                       SizedBox(
                         height: 1.h,
                       ),
@@ -263,7 +304,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                                       print('MY myDays are == ${dailyController.text.toString()}');
                                       print('Count myDays ' + myDays.toString());
                                       date2Controller.text =
-                                      '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day + myDays))}';
+                                      '${DateFormat('MM/dd/yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day + myDays))}';
                                     }
 
 
@@ -276,7 +317,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                                       print('MY WEEKs are == ${weeklyController.text.toString()}');
                                       print('Count Weeks ' + myWeeks.toString());
                                       date2Controller.text =
-                                      '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day + myWeeks))}';
+                                      '${DateFormat('MM/dd/yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day + myWeeks))}';
                                     }
 
 
@@ -290,7 +331,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                                       print('MY myMonths are == ${monthlyController.text.toString()}');
                                       print('Count myMonths ' + myMonths.toString());
                                       date2Controller.text =
-                                      '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month + myMonths, selectedDate1.value.day))}';
+                                      '${DateFormat('MM/dd/yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month + myMonths, selectedDate1.value.day))}';
                                     }
 
                                   } else if(tenantController.paymentScheduleId.value ==4) {
@@ -303,7 +344,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                                       print('MY myYears are == ${yearlyController.text.toString()}');
                                       print('Count myYears ' + myYears.toString());
                                       date2Controller.text =
-                                      '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year + myYears, selectedDate1.value.month, selectedDate1.value.day))}';
+                                      '${DateFormat('MM/dd/yyyy').format(DateTime(selectedDate1.value.year + myYears, selectedDate1.value.month, selectedDate1.value.day))}';
                                     }
 
 
@@ -391,7 +432,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                                       print('MY myDays are == ${dailyController.text.toString()}');
                                       print('Count myDays ' + myDays.toString());
                                       date2Controller.text =
-                                      '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day + myDays))}';
+                                      '${DateFormat('MM/dd/yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day + myDays))}';
                                     }
 
 
@@ -404,7 +445,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                                       print('MY WEEKs are == ${weeklyController.text.toString()}');
                                       print('Count Weeks ' + myWeeks.toString());
                                       date2Controller.text =
-                                      '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day + myWeeks))}';
+                                      '${DateFormat('MM/dd/yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day + myWeeks))}';
                                     }
 
 
@@ -418,7 +459,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                                       print('MY myMonths are == ${monthlyController.text.toString()}');
                                       print('Count myMonths ' + myMonths.toString());
                                       date2Controller.text =
-                                      '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month + myMonths, selectedDate1.value.day))}';
+                                      '${DateFormat('MM/dd/yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month + myMonths, selectedDate1.value.day))}';
                                     }
 
                                   } else if(tenantController.paymentScheduleId.value ==4) {
@@ -431,7 +472,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                                       print('MY myYears are == ${yearlyController.text.toString()}');
                                       print('Count myYears ' + myYears.toString());
                                       date2Controller.text =
-                                      '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year + myYears, selectedDate1.value.month, selectedDate1.value.day))}';
+                                      '${DateFormat('MM/dd/yyyy').format(DateTime(selectedDate1.value.year + myYears, selectedDate1.value.month, selectedDate1.value.day))}';
                                     }
 
 
@@ -449,35 +490,25 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                         ],
                       ),
 
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(
-                            width: 42.5.w,
-                            child: AppTextField(
-                              title: 'From',
-                              onTap: () {
-                                _selectDate1(context);
-                              },
-                              controller: date1Controller,
-                              hintText: "From",
-                              obscureText: false,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 42.5.w,
-                            child: AppTextField(
-                              title: '',
-                              onTap: () {
-                                _selectDate2(context);
-                              },
-                              controller: date2Controller,
-                              hintText: "To",
-                              obscureText: false,
-                              enabled: false,
-                            ),
-                          ),
-                        ],
+                      AppTextField(
+                        title: 'From',
+                        onTap: () {
+                          _selectDate1(context);
+                        },
+                        controller: date1Controller,
+                        hintText: "From",
+                        obscureText: false,
+                      ),
+                      AppTextField(
+                        title: 'To',
+                        onTap: () {
+                          _selectDate2(context);
+                        },
+                        controller: date2Controller,
+
+                        hintText: "To",
+                        obscureText: false,
+                        enabled: false,
                       ),
 
                       SizedBox(
@@ -511,23 +542,25 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                         height: 2.h,
                       ),
 
-                      AppButton(
-                        title: 'Add Tenant',
-                        color: AppTheme.primaryColor,
-                        function: () {
-                          if (_formKey.currentState!.validate()) {
-                            tenantController.addTenantToUnit(
-                              tenantController.tenantId.value,
-                              "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
-                              tenantController.unitId.value,
-                              selectedDate1.value.toString(),
-                              date2Controller.text.trim().toString(),
-                              int.parse(amountController.text.toString()),
-                              int.parse(discountController.text.toString()),
-                            );
-                          } else {}
-                        },
-                      ),
+                      // AppButton(
+                      //   title: 'Add Tenant',
+                      //   color: AppTheme.primaryColor,
+                      //   function: () {
+                      //     if (_formKey.currentState!.validate()) {
+                      //       tenantController.addTenantToUnit(
+                      //         tenantController.tenantId.value,
+                      //         "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
+                      //         tenantController.unitId.value,
+                      //         selectedDate1.value.toString(),
+                      //         date2Controller.text.trim().toString(),
+                      //         int.parse(amountController.text.toString()),
+                      //         int.parse(discountController.text.toString()),
+                      //       );
+                      //     } else {}
+                      //   },
+                      // ),
+
+                      // DateAccordion(dateController: date1Controller),
 
                     ],
                   ),
@@ -548,7 +581,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
     super.initState();
     _image = File('');
     _cnt = SingleValueDropDownController();
-    date1Controller  = TextEditingController(text: '${DateFormat('E, d MMM yyyy').format(selectedDate1.value)}');
+    date1Controller  = TextEditingController(text: '${DateFormat('MM/dd/yyyy').format(selectedDate1.value)}');
 
     if(tenantController.paymentScheduleId.value == 1) {
 
@@ -560,12 +593,12 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
         print('MY myDays are == ${dailyController.text.toString()}');
         print('Count myDays ' + myDays.toString());
         date2Controller.text =
-        '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day + myDays))}';
+        '${DateFormat('MM/dd/yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day + myDays))}';
       }
 
 
     } else if(tenantController.paymentScheduleId.value ==2) {
-      var myWeeks = int.parse(weeklyController.text) * 7;
+      int myWeeks = int.parse(weeklyController.text) * 7;
 
       if(weeklyController.text.toString() == '0'){
         Fluttertoast.showToast(msg: 'Enter Right week');
@@ -573,7 +606,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
         print('MY WEEKs are == ${weeklyController.text.toString()}');
         print('Count Weeks ' + myWeeks.toString());
         date2Controller.text =
-        '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day + myWeeks))}';
+        '${DateFormat('MM/dd/yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day + myWeeks))}';
       }
 
 
@@ -587,7 +620,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
         print('MY myMonths are == ${monthlyController.text.toString()}');
         print('Count myMonths ' + myMonths.toString());
         date2Controller.text =
-        '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month + myMonths, selectedDate1.value.day))}';
+        '${DateFormat('MM/dd/yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month + myMonths, selectedDate1.value.day))}';
       }
 
     } else if(tenantController.paymentScheduleId.value ==4) {
@@ -600,13 +633,13 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
         print('MY myYears are == ${yearlyController.text.toString()}');
         print('Count myYears ' + myYears.toString());
         date2Controller.text =
-        '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year + myYears, selectedDate1.value.month, selectedDate1.value.day))}';
+        '${DateFormat('MM/dd/yyyy').format(DateTime(selectedDate1.value.year + myYears, selectedDate1.value.month, selectedDate1.value.day))}';
       }
 
 
     } else {
 
-      date2Controller.text = '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day+1))}';
+      date2Controller.text = '${DateFormat('MM/dd/yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day+1))}';
 
     }
 

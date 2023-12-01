@@ -175,7 +175,8 @@ class _RoomOptionWidgetState extends State<RoomOptionWidget> {
                         AppMaxTextField(
                             controller: descriptionController,
                             hintText: 'Description',
-                            obscureText: false
+                            obscureText: false,
+                          fillColor: AppTheme.textBoxColor,
                         ),
 
                         SizedBox(height: 2.h,),

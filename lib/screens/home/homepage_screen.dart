@@ -21,6 +21,7 @@ class HomePage extends StatelessWidget {
     final TenantController tenantController = Get.put(
         TenantController(),);
     return Scaffold(
+      backgroundColor: AppTheme.appBgColor,
       appBar: AppHeader(
         title: 'Dashboard',
         leading: Container(),

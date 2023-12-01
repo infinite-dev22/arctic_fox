@@ -25,6 +25,7 @@ class _PropertyListScreenState extends State<PropertyListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppTheme.appBgColor,
       appBar: AppImageHeader(
         isTitleCentred: true,
         leading: Text(''),
@@ -64,6 +65,7 @@ class _PropertyListScreenState extends State<PropertyListScreen> {
                 function: (){
                     Get.to(() => AddPropertyScreen(), transition: Transition.downToUp);
                 },
+                fillColor: AppTheme.textBoxColor,
 
               ),
 

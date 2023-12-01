@@ -19,6 +19,7 @@ class _InitialScreenState extends State<InitialScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppTheme.appBgColor,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

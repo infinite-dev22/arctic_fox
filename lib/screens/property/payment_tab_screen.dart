@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/controllers/property_options/property_details_options_controller.dart';
@@ -54,7 +55,31 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                   child:  SingleChildScrollView(
                     child: Column(
                       children: [
-                        Text('Fill In Payment Fileds', style: AppTheme.darkBlueText1,),
+
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Bounceable(
+                                onTap: (){
+                                  Get.back();
+                                },
+                                child: Text('Cancel', style: TextStyle(
+                                  color: Colors.red,
+                                ),)),
+
+                  Text('Fill In Payment Fileds', style: AppTheme.darkBlueText1,),
+                            Bounceable(
+                                onTap: ()async{
+                                    Get.back();
+                                    Get.snackbar('SUCCESS', 'Payment added to your property',
+                                    titleText: Text('SUCCESS', style: AppTheme.greenTitle1,),
+                                  );
+                                },
+                                child: Text('Add', style: TextStyle(
+                                    color: AppTheme.primaryColor
+                                ),)),
+                          ],
+                        ),
                         SizedBox(height: 1.h,),
 
                         CustomGenericDropdown<String>(
@@ -110,16 +135,16 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
 
                         SizedBox(height: 2.h,),
 
-                        AppButton(
-                          title: 'Add Payment',
-                          color: AppTheme.primaryColor,
-                          function: (){
-                            Get.back();
-                            Get.snackbar('SUCCESS', 'Payment added to your property',
-                              titleText: Text('SUCCESS', style: AppTheme.greenTitle1,),
-                            );
-                          },
-                        ),
+                        // AppButton(
+                        //   title: 'Add Payment',
+                        //   color: AppTheme.primaryColor,
+                        //   function: (){
+                        //     Get.back();
+                        //     Get.snackbar('SUCCESS', 'Payment added to your property',
+                        //       titleText: Text('SUCCESS', style: AppTheme.greenTitle1,),
+                        //     );
+                        //   },
+                        // ),
 
                       ],
                     ),

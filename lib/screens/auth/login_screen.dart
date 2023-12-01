@@ -33,6 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     userController.listenToChanges();
     return Scaffold(
+      backgroundColor: AppTheme.appBgColor,
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 1.h),
@@ -63,6 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       title: 'PASSWORD',
                       controller: passwordController,
                       hintText: 'password',
+                      fillColor: AppTheme.textBoxColor,
                     ),
 
                     SizedBox(height: 5.h,),

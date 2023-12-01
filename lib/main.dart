@@ -5,6 +5,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/config/app_config.dart';
 import 'package:smart_rent/screens/auth/initial_screen.dart';
 import 'package:smart_rent/screens/home/homepage_screen.dart';
+import 'package:smart_rent/styles/app_theme.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async{

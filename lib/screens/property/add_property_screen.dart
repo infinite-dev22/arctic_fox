@@ -86,6 +86,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppTheme.appBgColor,
       appBar: AppImageHeader(
         title: 'assets/auth/logo.png',
         isTitleCentred: true,
@@ -174,7 +175,8 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
               AppMaxTextField(
                   controller: descriptionController,
                   hintText: 'Description',
-                  obscureText: false
+                  obscureText: false,
+                fillColor: AppTheme.textBoxColor,
               ),
 
               SizedBox(height: 1.h,),

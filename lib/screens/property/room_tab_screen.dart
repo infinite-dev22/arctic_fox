@@ -85,8 +85,43 @@ class _RoomTabScreenState extends State<RoomTabScreen> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        Text('Fill In Unit Fileds', style: AppTheme
-                            .darkBlueText1,),
+
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Bounceable(
+                                onTap: (){
+                                  Get.back();
+                                },
+                                child: Text('Cancel', style: TextStyle(
+                                  color: Colors.red,
+                                ),)),
+
+                            Text('Fill In Unit Fileds', style: AppTheme
+                                .darkBlueText1,),
+
+                            Bounceable(
+                                onTap: ()async{
+                                  unitController.addUnit(
+                                    unitController.floorId.value,
+                                    unitController.currencyId.value,
+                                    unitController.unitTypeId.value,
+                                    unitController.paymentScheduleId.value,
+                                    sizeController.text.trim(),
+                                    "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
+                                    int.parse(roomNumberController.text.trim().toString()),
+                                    int.parse(amountController.text.trim().toString()),
+                                    descriptionController.text.trim().toString(),
+                                  );
+                                },
+                                child: Text('Add', style: TextStyle(
+                                    color: AppTheme.primaryColor
+                                ),)),
+
+                          ],
+                        ),
+
+
                         SizedBox(height: 1.h,),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -234,7 +269,8 @@ class _RoomTabScreenState extends State<RoomTabScreen> {
                         AppMaxTextField(
                             controller: descriptionController,
                             hintText: 'Description',
-                            obscureText: false
+                            obscureText: false,
+                          fillColor: AppTheme.textBoxColor,
                         ),
 
                         // SizedBox(height: 2.h,),
@@ -323,23 +359,23 @@ class _RoomTabScreenState extends State<RoomTabScreen> {
 
                         SizedBox(height: 2.h,),
 
-                        AppButton(
-                          title: 'Add Unit',
-                          color: AppTheme.primaryColor,
-                          function: () {
-                            unitController.addUnit(
-                                unitController.floorId.value,
-                                unitController.currencyId.value,
-                                unitController.unitTypeId.value,
-                                unitController.paymentScheduleId.value,
-                                sizeController.text.trim(),
-                                "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
-                                int.parse(roomNumberController.text.trim().toString()),
-                                int.parse(amountController.text.trim().toString()),
-                                descriptionController.text.trim().toString(),
-                            );
-                          },
-                        ),
+                        // AppButton(
+                        //   title: 'Add Unit',
+                        //   color: AppTheme.primaryColor,
+                        //   function: () {
+                        //     unitController.addUnit(
+                        //         unitController.floorId.value,
+                        //         unitController.currencyId.value,
+                        //         unitController.unitTypeId.value,
+                        //         unitController.paymentScheduleId.value,
+                        //         sizeController.text.trim(),
+                        //         "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
+                        //         int.parse(roomNumberController.text.trim().toString()),
+                        //         int.parse(amountController.text.trim().toString()),
+                        //         descriptionController.text.trim().toString(),
+                        //     );
+                        //   },
+                        // ),
 
                       ],
                     ),

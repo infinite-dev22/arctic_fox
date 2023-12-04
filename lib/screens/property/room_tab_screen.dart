@@ -67,9 +67,12 @@ class _RoomTabScreenState extends State<RoomTabScreen> {
 
   void showAsBottomSheet(BuildContext context) async {
     final result = await showSlidingBottomSheet(
+
         context,
         builder: (context) {
           return SlidingSheetDialog(
+            duration: Duration(microseconds: 1),
+            minHeight: 90.h,
             elevation: 8,
             cornerRadius: 15.sp,
             snapSpec: const SnapSpec(

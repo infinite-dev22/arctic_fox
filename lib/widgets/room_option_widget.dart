@@ -304,22 +304,24 @@ class _RoomOptionWidgetState extends State<RoomOptionWidget> {
         title: Text('Unit ${widget.roomModel.roomNumber}', style: AppTheme.subTextBold,),
         subtitle: Text('Level ${widget.roomModel.level}', style: AppTheme.subText,),
         trailing: Column(
-          mainAxisSize: MainAxisSize.min,
+          // mainAxisSize: MainAxisSize.min,
           children: [
             Text('${amountFormatter.format(widget.roomModel.amount.toString())}/=', style: AppTheme.appTitle3),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(widget.roomModel.status.toString(), style: TextStyle(
-                  color: widget.roomModel.status.toString() == 'available' ? Colors.green : Colors.red,
-                ),),
-                SizedBox(width: 5.w,),
-                Bounceable(
-                  onTap: (){
-                    showRoomEditBottomSheet(context);
-                  },
-                    child: Image.asset('assets/tenant/delete.png', width: 3.w,)),
-              ],
+            Expanded(
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(widget.roomModel.status.toString(), style: TextStyle(
+                    color: widget.roomModel.status.toString() == 'available' ? Colors.green : Colors.red,
+                  ),),
+                  SizedBox(width: 5.w,),
+                  Bounceable(
+                    onTap: (){
+                      showRoomEditBottomSheet(context);
+                    },
+                      child: Image.asset('assets/tenant/delete.png', width: 3.w,)),
+                ],
+              ),
             ),
           ],
         ),

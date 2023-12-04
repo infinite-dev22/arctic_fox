@@ -31,7 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    userController.listenToChanges();
+    // userController.listenToChanges();
     return Scaffold(
       backgroundColor: AppTheme.appBgColor,
       body: SafeArea(
@@ -58,7 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       obscureText: false,
                     ),
 
-                    SizedBox(height: 3.h,),
+                    // SizedBox(height: 3.h,),
 
                     AppPasswordTextField(
                       title: 'PASSWORD',
@@ -67,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       fillColor: AppTheme.textBoxColor,
                     ),
 
-                    SizedBox(height: 5.h,),
+                    SizedBox(height: 2.h,),
 
                     AppButton(
                         title: 'Sign in',
@@ -110,16 +110,16 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                     ),
 
-                    Obx(() {
-                      return userController.userList.isEmpty ? Center(child: Text('No Users'),)
-                          : ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: userController.userList.length,
-                          itemBuilder: (context, index) {
-                            var user = userController.userList[index];
-                            return Text(user.email);
-                          });
-                    })
+                    // Obx(() {
+                    //   return userController.userList.isEmpty ? Center(child: Text('No Users'),)
+                    //       : ListView.builder(
+                    //       shrinkWrap: true,
+                    //       itemCount: userController.userList.length,
+                    //       itemBuilder: (context, index) {
+                    //         var user = userController.userList[index];
+                    //         return Text(user.email);
+                    //       });
+                    // })
 
                   ],
                 ),

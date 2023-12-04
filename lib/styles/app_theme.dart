@@ -5,9 +5,16 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 
 class AppTheme{
 
-  static const secondaryColor = Color(0xFFCBE1F3);
 
+  static const primary = Color(0xFF1467CB); // 183D5D
+  static const secondary = Color(0xFFCBE1F3);
+  static const shadowColor = Colors.black;
   static const appBgColor = Color(0xFFF2F1F6);
+
+  // static const secondaryColor = Color(0xFFCBE1F3);
+
+  // static const appBgColor = Color(0xFFF2F1F6);
+  // static const appBgColor = Color(0xFF1467CB);
   static const textBoxColor = Colors.white;
   static const whiteColor = Colors.white;
 
@@ -30,7 +37,7 @@ class AppTheme{
   static const gray70Color = Color(0xFF232326);
   static const orange1 = Color(0xFFF2994A);
   static const blackGrey = Color(0xff3a4b50ad);
-  static const shadowColor = Colors.black;
+  // static const shadowColor = Colors.black;
   static const greenColor = Colors.green;
   static const purpleColor1 = Colors.deepPurpleAccent;
 

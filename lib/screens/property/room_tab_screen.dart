@@ -67,7 +67,6 @@ class _RoomTabScreenState extends State<RoomTabScreen> {
 
   void showAsBottomSheet(BuildContext context) async {
     final result = await showSlidingBottomSheet(
-
         context,
         builder: (context) {
           return SlidingSheetDialog(
@@ -82,6 +81,7 @@ class _RoomTabScreenState extends State<RoomTabScreen> {
             ),
             builder: (context, state) {
               return Material(
+                color: AppTheme.appBgColor,
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 5.w,
                       vertical: 1.h),
@@ -190,84 +190,122 @@ class _RoomTabScreenState extends State<RoomTabScreen> {
 
                         SizedBox(height: 1.h,),
 
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-
-                            SizedBox(
-                              width: 42.5.w,
-                              child: AppTextField(
-                                controller: sizeController,
-                                hintText: 'Square Meters',
-                                obscureText: false,
-                              ),
-                            ),
-
-                            // SizedBox(
-                            //   width: 42.5.w,
-                            //   child: Obx(() {
-                            //     return CustomApiGenericDropdown<
-                            //         PaymentScheduleModel>(
-                            //       hintText: 'Per Month',
-                            //       menuItems: unitController.paymentList.value,
-                            //       onChanged: (value) {
-                            //         unitController.setPaymentScheduleId(value!.id);
-                            //       },
-                            //     );
-                            //   }),
-                            // ),
-
-                            SizedBox(
-                              width: 42.5.w,
-                              child: Obx(() {
-                                return CustomPeriodApiGenericDropdown<PaymentScheduleModel>(
-                                  hintText: 'Per Month',
-                                  menuItems: unitController.paymentList.value,
-                                  onChanged: (value) {
-                                    unitController.setPaymentScheduleId(value!.id);
-                                  },
-                                );
-                              }),
-                            ),
-
-                          ],
+                        AppTextField(
+                          controller: sizeController,
+                          hintText: 'Square Meters',
+                          obscureText: false,
                         ),
+
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //   crossAxisAlignment: CrossAxisAlignment.center,
+                        //   children: [
+                        //
+                        //     // SizedBox(
+                        //     //   width: 42.5.w,
+                        //     //   child: AppTextField(
+                        //     //     controller: sizeController,
+                        //     //     hintText: 'Square Meters',
+                        //     //     obscureText: false,
+                        //     //   ),
+                        //     // ),
+                        //
+                        //     // SizedBox(
+                        //     //   width: 42.5.w,
+                        //     //   child: Obx(() {
+                        //     //     return CustomApiGenericDropdown<
+                        //     //         PaymentScheduleModel>(
+                        //     //       hintText: 'Per Month',
+                        //     //       menuItems: unitController.paymentList.value,
+                        //     //       onChanged: (value) {
+                        //     //         unitController.setPaymentScheduleId(value!.id);
+                        //     //       },
+                        //     //     );
+                        //     //   }),
+                        //     // ),
+                        //
+                        //     // SizedBox(
+                        //     //   width: 42.5.w,
+                        //     //   child: Obx(() {
+                        //     //     return CustomPeriodApiGenericDropdown<PaymentScheduleModel>(
+                        //     //       hintText: 'Per Month',
+                        //     //       menuItems: unitController.paymentList.value,
+                        //     //       onChanged: (value) {
+                        //     //         unitController.setPaymentScheduleId(value!.id);
+                        //     //       },
+                        //     //     );
+                        //     //   }),
+                        //     // ),
+                        //
+                        //   ],
+                        // ),
 
                         SizedBox(height: 1.h,),
 
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
+                        Obx(() {
+                          return CustomPeriodApiGenericDropdown<PaymentScheduleModel>(
+                            hintText: 'Per Month',
+                            menuItems: unitController.paymentList.value,
+                            onChanged: (value) {
+                              unitController.setPaymentScheduleId(value!.id);
+                            },
+                          );
+                        }),
 
-                            SizedBox(
-                              width: 42.5.w,
-                              child: Obx(() {
-                                return CustomApiCurrencyDropdown<
-                                    CurrencyModel>(
-                                  hintText: 'Currency',
-                                  menuItems: unitController.currencyList.value,
-                                  onChanged: (value) {
-                                    unitController.setCurrencyId(value!.id);
-                                  },
-                                );
-                              }),
-                            ),
+                        // SizedBox(height: 1.h,),
 
-                            SizedBox(
-                              child: AppTextField(
-                                controller: amountController,
-                                hintText: 'Amount',
-                                obscureText: false,
-                                keyBoardType: TextInputType.number,
-                              ),
-                              width: 42.5.w,
-                            ),
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //   crossAxisAlignment: CrossAxisAlignment.center,
+                        //   children: [
+                        //
+                        //     SizedBox(
+                        //       width: 42.5.w,
+                        //       child: Obx(() {
+                        //         return CustomApiCurrencyDropdown<
+                        //             CurrencyModel>(
+                        //           hintText: 'Currency',
+                        //           menuItems: unitController.currencyList.value,
+                        //           onChanged: (value) {
+                        //             unitController.setCurrencyId(value!.id);
+                        //           },
+                        //         );
+                        //       }),
+                        //     ),
+                        //
+                        //     SizedBox(
+                        //       child: AppTextField(
+                        //         controller: amountController,
+                        //         hintText: 'Amount',
+                        //         obscureText: false,
+                        //         keyBoardType: TextInputType.number,
+                        //       ),
+                        //       width: 42.5.w,
+                        //     ),
+                        //
+                        //
+                        //   ],
+                        // ),
 
+                        Obx(() {
+                          return CustomApiCurrencyDropdown<
+                              CurrencyModel>(
+                            hintText: 'Currency',
+                            menuItems: unitController.currencyList.value,
+                            onChanged: (value) {
+                              unitController.setCurrencyId(value!.id);
+                            },
+                          );
+                        }),
 
-                          ],
+                        AppTextField(
+                          controller: amountController,
+                          hintText: 'Amount',
+                          obscureText: false,
+                          keyBoardType: TextInputType.number,
                         ),
+
+                        SizedBox(height: 1,),
 
                         AppMaxTextField(
                             controller: descriptionController,

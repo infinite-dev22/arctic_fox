@@ -33,8 +33,8 @@ class AppMaxTextField extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(title ?? '', style: AppTheme.appFieldTitle,),
-        SizedBox(height: 1.h,),
+        // Text(title ?? '', style: AppTheme.appFieldTitle,),
+        // SizedBox(height: 1.h,),
         SizedBox(
           height: 13.h,
           child: TextFormField(

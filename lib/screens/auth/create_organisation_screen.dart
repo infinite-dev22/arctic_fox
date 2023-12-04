@@ -65,7 +65,7 @@ class _CreateOrganisationScreenState extends State<CreateOrganisationScreen> {
                       validator: businessNameValidator,
                     ),
 
-                    SizedBox(height: 3.h,),
+                    // SizedBox(height: 3.h,),
 
 
                     AppTextField(
@@ -77,7 +77,7 @@ class _CreateOrganisationScreenState extends State<CreateOrganisationScreen> {
                     ),
 
 
-                    SizedBox(height: 5.h,),
+                    SizedBox(height: 3.h,),
 
                     AppButton(
                       title: 'Next',

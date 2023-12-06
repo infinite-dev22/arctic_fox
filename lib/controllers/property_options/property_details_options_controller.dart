@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:smart_rent/config/app_config.dart';
 import 'package:smart_rent/models/property/floor_model.dart';
 import 'package:smart_rent/models/property/room_model.dart';
 import 'package:smart_rent/models/property_options/floor_option_widget_model.dart';
 import 'package:smart_rent/models/property_options/room_option_widget.dart';
+import 'package:smart_rent/models/unit/unit_model.dart';
 
 class PropertyDetailsOptionsController extends GetxController {
 
   var selectedIndex = 100.obs;
 
   RxList<FloorOptionModel> floorDataList = <FloorOptionModel>[].obs;
-  RxList<RoomOptionModel> roomDataList = <RoomOptionModel>[].obs;
+  // RxList<RoomOptionModel> roomDataList = <RoomOptionModel>[].obs;
+  RxList<UnitModel> roomList = <UnitModel>[].obs;
 
   var isFloorList = false.obs;
   var isRoomList = false.obs;
+  var isUnitLoading =  false.obs;
 
   var floorList = [
     FloorModel(floorName: 'Level 1'),
@@ -21,12 +25,19 @@ class PropertyDetailsOptionsController extends GetxController {
     FloorModel(floorName: 'Level 3'),
   ];
 
-  var roomList = [
-    RoomModel(roomNumber: 14, level: 2, amount: 300000, status: 'available'),
-    RoomModel(roomNumber: 1, level: 5, amount: 100000, status: 'occupied'),
-    RoomModel(roomNumber: 7, level: 1, amount: 28000, status: 'available'),
-    RoomModel(roomNumber: 25, level: 6, amount: 59000, status: 'occupied'),
-  ];
+  // var roomList = [
+  //   RoomModel(roomNumber: 14, level: 2, amount: 300000, status: 'available'),
+  //   RoomModel(roomNumber: 1, level: 5, amount: 100000, status: 'occupied'),
+  //   RoomModel(roomNumber: 7, level: 1, amount: 28000, status: 'available'),
+  //   RoomModel(roomNumber: 25, level: 6, amount: 59000, status: 'occupied'),
+  // ];
+
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+
+  }
 
   var options = [
     'Floors',
@@ -62,6 +73,7 @@ class PropertyDetailsOptionsController extends GetxController {
     'ryan jupiter'
 
   ];
+
 
 
   changeSelectedIndex(index) {
@@ -116,6 +128,29 @@ class PropertyDetailsOptionsController extends GetxController {
 
     }
   }
+
+  void fetchAllPropertyUnits() async {
+    isUnitLoading(true);
+    try {
+
+      final response = await AppConfig().supaBaseClient.from('units').select().order('created_at', ascending: false);
+      final data = response as List<dynamic>;
+      print('MY UNITS ARE ${response}');
+      print(response.length);
+      print(data.length);
+      print(data);
+      isUnitLoading(false);
+
+      return roomList.assignAll(
+          data.map((json) => UnitModel.fromJson(json)).toList());
+
+    } catch (error) {
+      print('Error fetching Units: $error');
+      isUnitLoading(false);
+    }
+
+  }
+
 
 
 }

@@ -11,6 +11,7 @@ abstract class SmartTenantTypeModel {
 abstract class SmartUnitModel {
   int getId();
   String getUnitNumber();
+
 }
 
 abstract class SmartSalutationModel {

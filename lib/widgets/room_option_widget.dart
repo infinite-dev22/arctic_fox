@@ -9,7 +9,9 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/controllers/property_options/property_details_options_controller.dart';
+import 'package:smart_rent/controllers/units/unit_controller.dart';
 import 'package:smart_rent/models/property/room_model.dart';
+import 'package:smart_rent/models/unit/unit_model.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 import 'package:smart_rent/utils/extra.dart';
 import 'package:smart_rent/widgets/app_button.dart';
@@ -20,10 +22,11 @@ import 'package:wtf_sliding_sheet/wtf_sliding_sheet.dart';
 
 
 class RoomOptionWidget extends StatefulWidget {
+  final UnitController? unitController;
   final PropertyDetailsOptionsController propertyDetailsOptionsController;
-  final RoomModel roomModel;
+  final UnitModel roomModel;
   final int index;
-  const RoomOptionWidget({super.key, required this.roomModel, required this.index, required this.propertyDetailsOptionsController});
+  const RoomOptionWidget({super.key, required this.roomModel, required this.index, required this.propertyDetailsOptionsController,  this.unitController});
 
   @override
   State<RoomOptionWidget> createState() => _RoomOptionWidgetState();
@@ -52,13 +55,16 @@ class _RoomOptionWidgetState extends State<RoomOptionWidget> {
   }
 
 
-  final TextEditingController roomNameController = TextEditingController();
-  final TextEditingController roomNumberController = TextEditingController();
-  final TextEditingController sizeController = TextEditingController();
-  final TextEditingController amountController = TextEditingController();
-  final TextEditingController descriptionController = TextEditingController();
 
-  void showRoomEditBottomSheet(BuildContext context) async {
+
+  void showRoomEditBottomSheet(BuildContext context, int amount) async {
+
+    final TextEditingController roomNameController = TextEditingController();
+    final TextEditingController roomNumberController = TextEditingController();
+    final TextEditingController sizeController = TextEditingController();
+    final TextEditingController amountController = TextEditingController(text:  amount.toString());
+    final TextEditingController descriptionController = TextEditingController();
+
     final result = await showSlidingBottomSheet(
         context,
         builder: (context) {
@@ -74,6 +80,7 @@ class _RoomOptionWidgetState extends State<RoomOptionWidget> {
             ),
             builder: (context, state) {
               return Material(
+                color: AppTheme.appBgColor,
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 5.w,
                       vertical: 1.h),
@@ -159,6 +166,7 @@ class _RoomOptionWidgetState extends State<RoomOptionWidget> {
                                 obscureText: false,
                               ),
                               width: 42.5.w,
+
                             ),
 
                             SizedBox(
@@ -299,10 +307,10 @@ class _RoomOptionWidgetState extends State<RoomOptionWidget> {
     return Card(
       child: ListTile(
         leading: CircleAvatar(
-          child: Text(widget.index.toString(), style: AppTheme.subTextBold),
+          child: Text('${widget.index +1}', style: AppTheme.subTextBold),
         ),
-        title: Text('Unit ${widget.roomModel.roomNumber}', style: AppTheme.subTextBold,),
-        subtitle: Text('Level ${widget.roomModel.level}', style: AppTheme.subText,),
+        title: Text('Unit ${widget.roomModel.unitNumber}', style: AppTheme.subTextBold,),
+        subtitle: Text('Level ${widget.roomModel.id}', style: AppTheme.subText,),
         trailing: Column(
           // mainAxisSize: MainAxisSize.min,
           children: [
@@ -311,15 +319,20 @@ class _RoomOptionWidgetState extends State<RoomOptionWidget> {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(widget.roomModel.status.toString(), style: TextStyle(
-                    color: widget.roomModel.status.toString() == 'available' ? Colors.green : Colors.red,
-                  ),),
+                  // Text(widget.roomModel.status.toString(), style: TextStyle(
+                  //   color: widget.roomModel.status.toString() == 'available' ? Colors.green : Colors.red,
+                  // ),),
+                  // Text(widget.roomModel.)
+                  Bounceable(
+                      onTap: (){
+                        showRoomEditBottomSheet(context, widget.roomModel.amount);
+                      }, child: Image.asset('assets/tenant/edit.png', width: 5.w,)),
                   SizedBox(width: 5.w,),
                   Bounceable(
                     onTap: (){
-                      showRoomEditBottomSheet(context);
+                      widget.unitController!.deleteUnit(widget.roomModel.id);
                     },
-                      child: Image.asset('assets/tenant/delete.png', width: 3.w,)),
+                      child: Image.asset('assets/tenant/delete.png', width: 3.5.w,)),
                 ],
               ),
             ),

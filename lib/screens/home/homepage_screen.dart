@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/controllers/complaints/complaints_controller.dart';
 import 'package:smart_rent/controllers/tenants/tenant_controller.dart';
+import 'package:smart_rent/controllers/units/unit_controller.dart';
 import 'package:smart_rent/screens/property/property_list_screen.dart';
 import 'package:smart_rent/screens/tenant/tenant_list_screen.dart';
 import 'package:smart_rent/styles/app_theme.dart';
@@ -20,6 +21,7 @@ class HomePage extends StatelessWidget {
         ComplaintsController());
     final TenantController tenantController = Get.put(
         TenantController(),);
+    final UnitController unitController = Get.put(UnitController(), permanent: true);
     return Scaffold(
       backgroundColor: AppTheme.appBgColor,
       appBar: AppHeader(
@@ -47,7 +49,7 @@ class HomePage extends StatelessWidget {
                     color: AppTheme.greenCardColor, total: 8,
                     title: 'Total Property',
                     function: () {
-                      Get.to(() => PropertyListScreen(),
+                      Get.to(() => PropertyListScreen(unitController: unitController,),
                           transition: Transition.zoom);
                     },),
                   Obx(() {

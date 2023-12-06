@@ -4,6 +4,7 @@ import 'package:smart_rent/config/app_config.dart';
 import 'package:smart_rent/models/currency/currency_model.dart';
 import 'package:smart_rent/models/floor/floor_model.dart';
 import 'package:smart_rent/models/payment_schedule/payment_schedule_model.dart';
+import 'package:smart_rent/models/unit/unit_model.dart';
 import 'package:smart_rent/models/unit/unit_type_model.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 
@@ -13,11 +14,13 @@ class UnitController extends GetxController {
   RxList<FloorModel> floorList = <FloorModel>[].obs;
   RxList<PaymentScheduleModel> paymentList = <PaymentScheduleModel>[].obs;
   RxList<CurrencyModel> currencyList = <CurrencyModel>[].obs;
+  RxList<UnitModel> roomList = <UnitModel>[].obs;
 
   var unitTypeId = 0.obs;
   var paymentScheduleId = 0.obs;
   var floorId = 0.obs;
   var currencyId = 0.obs;
+  var isUnitLoading = false.obs;
 
   @override
   void onInit() {
@@ -27,6 +30,8 @@ class UnitController extends GetxController {
     fetchAllFloors();
     fetchAllPayments();
     fetchAllCurrencies();
+    // fetchAllPropertyUnits();
+    listenToUnitChanges();
   }
 
   setUnitTypeId(int id){
@@ -169,5 +174,52 @@ class UnitController extends GetxController {
 
 
   }
+
+  void fetchAllPropertyUnits() async {
+    isUnitLoading(true);
+    try {
+
+      final response = await AppConfig().supaBaseClient.from('units').select().order('created_at', ascending: false);
+      final data = response as List<dynamic>;
+      print(response);
+      print(response.length);
+      print(data.length);
+      print(data);
+      isUnitLoading(false);
+
+      return roomList.assignAll(
+          data.map((json) => UnitModel.fromJson(json)).toList());
+
+
+    } catch (error) {
+      print('Error fetching Units: $error');
+      isUnitLoading(false);
+    }
+
+    print('I HAVE ${roomList.length} ROOMS');
+
+  }
+
+
+  void listenToUnitChanges() {
+    // Set up real-time listener
+    AppConfig().supaBaseClient
+        .from('units')
+        .stream(primaryKey: ['id'])
+        .listen((List<Map<String, dynamic>> data) {
+     fetchAllPropertyUnits();
+    });
+
+  }
+
+  deleteUnit(int id) async{
+
+    await AppConfig().supaBaseClient
+        .from('units')
+        .delete()
+        .match({ 'id': id });
+    // fetchAllPropertyUnits();
+  }
+
 
 }

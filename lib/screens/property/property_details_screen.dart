@@ -7,6 +7,7 @@ import 'package:photo_view/photo_view_gallery.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/controllers/property_options/property_details_options_controller.dart';
 import 'package:smart_rent/controllers/property_options/property_options_controller.dart';
+import 'package:smart_rent/controllers/units/unit_controller.dart';
 import 'package:smart_rent/screens/property/floor_tab_screen.dart';
 import 'package:smart_rent/screens/property/payment_tab_screen.dart';
 import 'package:smart_rent/screens/property/property_details_tab.dart';
@@ -20,7 +21,8 @@ import 'package:smart_rent/widgets/property_options_widget.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class PropertyDetailsScreen extends StatefulWidget {
-  const PropertyDetailsScreen({super.key});
+  final UnitController unitController;
+  const PropertyDetailsScreen({super.key, required this.unitController});
 
   @override
   State<PropertyDetailsScreen> createState() => _PropertyDetailsScreenState();
@@ -34,7 +36,7 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> with Tick
   // final PropertyOptionsController propertyOptionsController = Get.put(
   //     PropertyOptionsController());
   final PropertyDetailsOptionsController propertyDetailsOptionsController = Get.put(PropertyDetailsOptionsController());
-
+  // final UnitController unitController = Get.put(UnitController(), permanent: true);
   @override
   void initState() {
     // TODO: implement initState
@@ -67,7 +69,9 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> with Tick
                                     children: [
                                       PropertyDetailsTabScreen(propertyDetailsOptionsController: propertyDetailsOptionsController),
                                       // FloorTabScreen(propertyDetailsOptionsController: propertyDetailsOptionsController,),
-                                      RoomTabScreen(propertyDetailsOptionsController: propertyDetailsOptionsController),
+                                      RoomTabScreen(
+                                          unitController: widget.unitController,
+                                          propertyDetailsOptionsController: propertyDetailsOptionsController),
                                       TenantTabScreen(propertyDetailsOptionsController: propertyDetailsOptionsController,),
                                       PaymentTabScreen(propertyDetailsOptionsController: propertyDetailsOptionsController,),
                                     ],

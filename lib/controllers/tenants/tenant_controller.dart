@@ -246,7 +246,6 @@ class TenantController extends GetxController {
       isTenantListLoading(false);
     }
 
-
   }
 
   void fetchAllBusinessTypes() async {

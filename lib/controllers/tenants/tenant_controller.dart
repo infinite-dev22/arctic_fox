@@ -674,7 +674,7 @@ class TenantController extends GetxController {
             "created_by" : createdBy,
             "from_date" : date1,
             "to_date" : date2,
-            "updated_at" : DateTime.now(),
+            // "updated_at" : DateTime.now(),
           }
       ).then((tenant) {
         Get.back();

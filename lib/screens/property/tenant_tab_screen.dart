@@ -79,6 +79,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
 
   final Rx<DateTime> selectedDate1 = Rx<DateTime>(DateTime.now());
   final Rx<DateTime> selectedDate2 = Rx<DateTime>(DateTime.now());
+  final Rx<DateTime> selectedDate3 = Rx<DateTime>(DateTime.now());
 
   final TenantController tenantController = Get.put(TenantController());
   final _formKey = GlobalKey<FormState>();
@@ -229,15 +230,18 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                         Bounceable(
                           onTap: ()async{
                             if (_formKey.currentState!.validate()) {
-                              tenantController.addTenantToUnit(
-                                tenantController.tenantId.value,
-                                "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
-                                tenantController.unitId.value,
-                                selectedDate1.value.toString(),
-                                date2Controller.text.trim().toString(),
-                                int.parse(amountController.text.toString()),
-                                int.parse(discountController.text.toString()),
-                              );
+                              print(selectedDate1.value.toString().runtimeType);
+                              print(date2Controller.text.trim().runtimeType);
+                              print(selectedDate3.value);
+                              // tenantController.addTenantToUnit(
+                              //   tenantController.tenantId.value,
+                              //   "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
+                              //   tenantController.unitId.value,
+                              //   selectedDate1.value.toString(),
+                              //   date2Controller.text.trim().toString(),
+                              //   int.parse(amountController.text.toString()),
+                              //   int.parse(discountController.text.toString()),
+                              // );
                             } else {}
                           },
                             child: Text('Add', style: TextStyle(
@@ -266,8 +270,10 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                           menuItems: tenantController.tenantList.value,
                           controller: _cnt,
                               onChanged: (value) {
-                            print(value);
-                                // tenantController.setTenantId(value!.id);
+                            print(value.value.id);
+                                tenantController.setTenantId(value.value.id);
+                                print('MY TEnant is ${tenantController.tenantId.value}');
+
                               },
                         );
                       }),

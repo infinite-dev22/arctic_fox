@@ -79,7 +79,7 @@ class _RoomTabScreenState extends State<RoomTabScreen> {
             elevation: 8,
             cornerRadius: 15.sp,
             snapSpec: const SnapSpec(
-              snap: true,
+              snap: false,
               snappings: [ 0.9],
               positioning: SnapPositioning.relativeToAvailableSpace,
             ),

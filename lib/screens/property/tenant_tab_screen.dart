@@ -110,7 +110,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
 
       if(tenantController.paymentScheduleId.value == 1) {
 
-        var myDays = int.parse(dailyController.text) * 1;
+        var myDays = dailyController.text.isEmpty ? 1*1 : int.tryParse(dailyController.text)! * 1;
 
         if(dailyController.text.toString() == '0'){
           Fluttertoast.showToast(msg: 'Enter Right Day');
@@ -123,7 +123,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
 
 
       } else if(tenantController.paymentScheduleId.value ==2) {
-        var myWeeks = int.parse(weeklyController.text) * 7;
+        var myWeeks = weeklyController.text.isEmpty ? 1*7 : int.tryParse(weeklyController.text)! * 7;
 
         if(weeklyController.text.toString() == '0'){
           Fluttertoast.showToast(msg: 'Enter Right week');
@@ -137,7 +137,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
 
       } else if(tenantController.paymentScheduleId.value ==3) {
 
-        var myMonths = int.parse(monthlyController.text) * 1;
+        var myMonths = monthlyController.text.isEmpty ? 1*1 : int.tryParse(monthlyController.text)! * 1;
 
         if(monthlyController.text.toString() == '0'){
           Fluttertoast.showToast(msg: 'Enter Right Month');
@@ -150,7 +150,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
 
       } else if(tenantController.paymentScheduleId.value ==4) {
 
-        var myYears = int.parse(yearlyController.text) * 1;
+        var myYears = yearlyController.text.isEmpty ? 1*1 : int.tryParse(yearlyController.text)! * 1;
 
         if(yearlyController.text.toString() == '0'){
           Fluttertoast.showToast(msg: 'Enter Right years');
@@ -344,7 +344,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
 
                                       if(tenantController.paymentScheduleId.value == 1) {
 
-                                        var myDays = int.parse(dailyController.text) * 1;
+                                        var myDays = dailyController.text.isEmpty ? 1*1 : int.tryParse(dailyController.text)! * 1;
 
                                         if(dailyController.text.toString() == '0'){
                                           Fluttertoast.showToast(msg: 'Enter Right Day');
@@ -357,7 +357,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
 
 
                                       } else if(tenantController.paymentScheduleId.value ==2) {
-                                        var myWeeks = int.parse(weeklyController.text) * 7;
+                                        var myWeeks = weeklyController.text.isEmpty ? 1*7 : int.tryParse(weeklyController.text)! * 7;
 
                                         if(weeklyController.text.toString() == '0'){
                                           Fluttertoast.showToast(msg: 'Enter Right week');
@@ -371,7 +371,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
 
                                       } else if(tenantController.paymentScheduleId.value ==3) {
 
-                                        var myMonths = int.parse(monthlyController.text) * 1;
+                                        var myMonths = monthlyController.text.isEmpty ? 1*1 : int.tryParse(monthlyController.text)! * 1;
 
                                         if(monthlyController.text.toString() == '0'){
                                           Fluttertoast.showToast(msg: 'Enter Right Month');
@@ -384,7 +384,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
 
                                       } else if(tenantController.paymentScheduleId.value ==4) {
 
-                                        var myYears = int.parse(yearlyController.text) * 1;
+                                        var myYears = yearlyController.text.isEmpty ? 1*1 : int.tryParse(yearlyController.text)! * 1;
 
                                         if(yearlyController.text.toString() == '0'){
                                           Fluttertoast.showToast(msg: 'Enter Right years');
@@ -473,7 +473,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
 
                                       if(tenantController.paymentScheduleId.value == 1) {
 
-                                        var myDays = int.parse(dailyController.text) * 1;
+                                        var myDays = dailyController.text.isEmpty ? 1*1 : int.tryParse(dailyController.text)! * 1;
 
                                         if(dailyController.text.toString() == '0'){
                                           Fluttertoast.showToast(msg: 'Enter Right Day');
@@ -486,7 +486,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
 
 
                                       } else if(tenantController.paymentScheduleId.value ==2) {
-                                        var myWeeks = int.parse(weeklyController.text) * 7;
+                                        var myWeeks = weeklyController.text.isEmpty ? 1*7 : int.tryParse(weeklyController.text)! * 7;
 
                                         if(weeklyController.text.toString() == '0'){
                                           Fluttertoast.showToast(msg: 'Enter Right week');
@@ -500,7 +500,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
 
                                       } else if(tenantController.paymentScheduleId.value ==3) {
 
-                                        var myMonths = int.parse(monthlyController.text) * 1;
+                                        var myMonths = monthlyController.text.isEmpty ? 1*1 : int.tryParse(monthlyController.text)! * 1;
 
                                         if(monthlyController.text.toString() == '0'){
                                           Fluttertoast.showToast(msg: 'Enter Right Month');
@@ -513,7 +513,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
 
                                       } else if(tenantController.paymentScheduleId.value ==4) {
 
-                                        var myYears = int.parse(yearlyController.text) * 1;
+                                        var myYears = yearlyController.text.isEmpty ? 1*1 : int.tryParse(yearlyController.text)! * 1;
 
                                         if(yearlyController.text.toString() == '0'){
                                           Fluttertoast.showToast(msg: 'Enter Right years');
@@ -653,7 +653,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
 
     if(tenantController.paymentScheduleId.value == 1) {
 
-      var myDays = int.parse(dailyController.text) * 1;
+      var myDays = dailyController.text.isEmpty ? 1*1 : int.tryParse(dailyController.text)! * 1;
 
       if(dailyController.text.toString() == '0'){
         Fluttertoast.showToast(msg: 'Enter Right Day');
@@ -666,7 +666,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
 
 
     } else if(tenantController.paymentScheduleId.value ==2) {
-      int myWeeks = int.parse(weeklyController.text) * 7;
+      int myWeeks = weeklyController.text.isEmpty ? 1*7 : int.tryParse(weeklyController.text)! * 7;
 
       if(weeklyController.text.toString() == '0'){
         Fluttertoast.showToast(msg: 'Enter Right week');
@@ -680,7 +680,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
 
     } else if(tenantController.paymentScheduleId.value ==3) {
 
-      var myMonths = int.parse(monthlyController.text) * 1;
+      var myMonths = monthlyController.text.isEmpty ? 1*1 : int.tryParse(monthlyController.text)! * 1;
 
       if(monthlyController.text.toString() == '0'){
         Fluttertoast.showToast(msg: 'Enter Right Month');
@@ -693,7 +693,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
 
     } else if(tenantController.paymentScheduleId.value ==4) {
 
-      var myYears = int.parse(yearlyController.text) * 1;
+      var myYears = yearlyController.text.isEmpty ? 1*1 : int.tryParse(yearlyController.text)! * 1;
 
       if(yearlyController.text.toString() == '0'){
         Fluttertoast.showToast(msg: 'Enter Right years');

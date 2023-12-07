@@ -127,7 +127,7 @@ class _PropertyOptionsWidgetState extends State<PropertyOptionsWidget> {
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: [
                                                   SizedBox(
-                                                    child: AppTextField(
+                                                    child: AuthTextField(
                                                         controller: floorData
                                                             .textController,
                                                         hintText: 'Floor Name',

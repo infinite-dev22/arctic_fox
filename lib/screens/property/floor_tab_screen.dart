@@ -87,7 +87,7 @@ class FloorTabScreen extends StatelessWidget {
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
                                                 SizedBox(
-                                                  child: AppTextField(
+                                                  child: AuthTextField(
                                                       controller: floorData
                                                           .textController,
                                                       hintText: 'Floor Name',

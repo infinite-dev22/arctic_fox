@@ -72,6 +72,8 @@ class _RoomTabScreenState extends State<RoomTabScreen> {
         context,
         builder: (context) {
           return SlidingSheetDialog(
+            extendBody: false,
+            maxWidth: 90.h,
             duration: Duration(microseconds: 1),
             minHeight: 90.h,
             elevation: 8,
@@ -88,7 +90,7 @@ class _RoomTabScreenState extends State<RoomTabScreen> {
                   children: [
 
                     Material(
-                      elevation: 10,
+                      elevation: 1,
                       child: Container(
                         width: MediaQuery
                             .of(context)
@@ -104,15 +106,21 @@ class _RoomTabScreenState extends State<RoomTabScreen> {
                           padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Bounceable(
                                   onTap: () {
+                                    roomNameController.clear();
+                                   roomNumberController.clear();
+                                    sizeController.clear();
+                                 amountController.clear();
+                               descriptionController.clear();
+                                  unitNumberController.clear();
                                     Get.back();
                                   },
                                   child: Text('Cancel', style: TextStyle(
                                     color: Colors.red,
-                                    fontSize: 20.sp,
+                                    fontSize: 17.5.sp,
                                   ),)),
 
                               Text('Fill In Unit Fields', style: AppTheme
@@ -137,7 +145,7 @@ class _RoomTabScreenState extends State<RoomTabScreen> {
                                   },
                                   child: Text('Add', style: TextStyle(
                                     color: AppTheme.primaryColor,
-                                    fontSize: 20.sp,
+                                    fontSize: 17.5.sp,
                                   ),)),
 
                             ],
@@ -196,7 +204,7 @@ class _RoomTabScreenState extends State<RoomTabScreen> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 SizedBox(
-                                  child: AppTextField(
+                                  child: AuthTextField(
                                     controller: roomNameController,
                                     hintText: 'Unit Name',
                                     obscureText: false,
@@ -206,7 +214,7 @@ class _RoomTabScreenState extends State<RoomTabScreen> {
                                 ),
 
                                 SizedBox(
-                                  child: AppTextField(
+                                  child: AuthTextField(
                                     controller: roomNumberController,
                                     hintText: 'Unit Number',
                                     obscureText: false,
@@ -220,7 +228,7 @@ class _RoomTabScreenState extends State<RoomTabScreen> {
 
                             SizedBox(height: 1.h,),
 
-                            AppTextField(
+                            AuthTextField(
                               controller: sizeController,
                               hintText: 'Square Meters',
                               obscureText: false,
@@ -329,7 +337,7 @@ class _RoomTabScreenState extends State<RoomTabScreen> {
                               );
                             }),
 
-                            AppTextField(
+                            AuthTextField(
                               controller: amountController,
                               hintText: 'Amount',
                               obscureText: false,

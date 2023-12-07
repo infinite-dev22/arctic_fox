@@ -69,6 +69,8 @@ class _RoomOptionWidgetState extends State<RoomOptionWidget> {
         context,
         builder: (context) {
           return SlidingSheetDialog(
+            extendBody: false,
+            maxWidth: 90.h,
             duration: Duration(microseconds: 1),
             minHeight: 90.h,
             elevation: 8,
@@ -85,7 +87,7 @@ class _RoomOptionWidgetState extends State<RoomOptionWidget> {
                   children: [
 
                     Material(
-                      elevation: 10,
+                      elevation: 1,
                       child: Container(
                         width: MediaQuery
                             .of(context)
@@ -109,7 +111,7 @@ class _RoomOptionWidgetState extends State<RoomOptionWidget> {
                                   },
                                   child: Text('Cancel', style: TextStyle(
                                     color: Colors.red,
-                                    fontSize: 20.sp,
+                                    fontSize: 17.5.sp,
                                   ),)),
 
                               Text('Edit Unit', style: AppTheme
@@ -124,7 +126,7 @@ class _RoomOptionWidgetState extends State<RoomOptionWidget> {
                                   },
                                   child: Text('Update', style: TextStyle(
                                     color: AppTheme.primaryColor,
-                                    fontSize: 20.sp,
+                                    fontSize: 17.5.sp,
                                   ),)),
 
 
@@ -178,7 +180,7 @@ class _RoomOptionWidgetState extends State<RoomOptionWidget> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 SizedBox(
-                                  child: AppTextField(
+                                  child: AuthTextField(
                                     controller: roomNameController,
                                     hintText: 'Unit Name',
                                     obscureText: false,
@@ -187,10 +189,11 @@ class _RoomOptionWidgetState extends State<RoomOptionWidget> {
                                 ),
 
                                 SizedBox(
-                                  child: AppTextField(
+                                  child: AuthTextField(
                                     controller: roomNumberController,
                                     hintText: 'Unit Number',
                                     obscureText: false,
+                                    keyBoardType: TextInputType.number,
                                   ),
                                   width: 42.5.w,
                                 ),
@@ -200,7 +203,7 @@ class _RoomOptionWidgetState extends State<RoomOptionWidget> {
 
                             SizedBox(height: 1.h,),
 
-                            AppTextField(
+                            AuthTextField(
                               controller: sizeController,
                               hintText: 'Square Meters',
                               obscureText: false,
@@ -217,6 +220,7 @@ class _RoomOptionWidgetState extends State<RoomOptionWidget> {
                                     controller: amountController,
                                     hintText: 'Amount',
                                     obscureText: false,
+                                    keyBoardType: TextInputType.number,
                                   ),
                                   width: 42.5.w,
 

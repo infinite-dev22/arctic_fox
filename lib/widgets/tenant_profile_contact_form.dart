@@ -45,22 +45,22 @@ class TenantProfileContactForm extends StatelessWidget {
 
                     SizedBox(
                       width: 40.w,
-                      child: AppTextField(
+                      child: AuthTextField(
                         controller: contactFirstNameController,
                         hintText: 'First Name',
                         obscureText: false,
-                        validator: firstNameValidator,
+                        // validator: firstNameValidator,
                         keyBoardType: TextInputType.text,
                       ),
                     ),
 
                     SizedBox(
                       width: 40.w,
-                      child: AppTextField(
+                      child: AuthTextField(
                         controller: contactLastNameController,
                         hintText: 'Surname',
                         obscureText: false,
-                        validator: lastNameValidator,
+                        // validator: lastNameValidator,
                         keyBoardType: TextInputType.text,
                       ),
                     ),
@@ -69,43 +69,43 @@ class TenantProfileContactForm extends StatelessWidget {
 
                 SizedBox(height: 1.h,),
 
-                AppTextField(
+                AuthTextField(
                   controller: contactDesignationController,
                   hintText: 'Designation',
                   obscureText: false,
-                  validator: designationValidator,
+                  // validator: designationValidator,
                   keyBoardType: TextInputType.text,
                 ),
 
                 SizedBox(height: 1.h,),
 
-                AppTextField(
+                AuthTextField(
                   controller: contactNinController,
                   hintText: 'NIN',
                   obscureText: false,
                   keyBoardType: TextInputType.text,
-                  validator: ninValidator,
+                  // validator: ninValidator,
 
                 ),
 
                 SizedBox(height: 1.h,),
 
-                AppTextField(
+                AuthTextField(
                   controller: contactPhoneController,
                   hintText: 'Contact',
                   obscureText: false,
                   keyBoardType: TextInputType.number,
-                  validator: phoneValidator,
+                  // validator: phoneValidator,
                 ),
 
                 SizedBox(height: 1.h,),
 
-                AppTextField(
+                AuthTextField(
                   controller: contactEmailController,
                   hintText: 'Email',
                   obscureText: false,
                   keyBoardType: TextInputType.emailAddress,
-                  validator: emailValidator,
+                  // validator: emailValidator,
                 ),
 
               ],

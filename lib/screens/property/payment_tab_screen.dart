@@ -40,6 +40,8 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
         context,
         builder: (context) {
           return SlidingSheetDialog(
+            extendBody: false,
+            maxWidth: 90.h,
             color: AppTheme.appBgColor,
             duration: Duration(microseconds: 1),
             minHeight: 90.h,
@@ -57,7 +59,7 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                   children: [
 
                     Material(
-                      elevation: 10,
+                      elevation: 1,
                       child: Container(
                         width: MediaQuery
                             .of(context)
@@ -81,7 +83,7 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                                   },
                                   child: Text('Cancel', style: TextStyle(
                                     color: Colors.red,
-                                    fontSize: 20.sp,
+                                    fontSize: 17.5.sp,
                                   ),)),
 
                               Text('Fill In Payment Fields', style: AppTheme
@@ -96,7 +98,7 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                                   },
                                   child: Text('Add', style: TextStyle(
                                     color: AppTheme.primaryColor,
-                                    fontSize: 20.sp,
+                                    fontSize: 17.5.sp,
                                   ),)),
 
                             ],
@@ -177,18 +179,20 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
 
                             SizedBox(height: 1.h,),
 
-                            AppTextField(
+                            AuthTextField(
                               controller: paidController,
                               hintText: 'Paid',
                               obscureText: false,
+                              keyBoardType: TextInputType.number,
                             ),
 
                             SizedBox(height: 1.h,),
 
-                            AppTextField(
+                            AuthTextField(
                               controller: balanceController,
                               hintText: 'Balance',
                               obscureText: false,
+                              keyBoardType: TextInputType.number,
                             ),
 
 
@@ -239,7 +243,7 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
             children: [
               SizedBox(
                 width: 50.w,
-                child: AppTextField(
+                child: AuthTextField(
                   controller: searchController,
                   hintText: 'Search',
                   obscureText: false,

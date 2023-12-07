@@ -191,6 +191,8 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
   void showAsBottomSheet(BuildContext context) async {
     final result = await showSlidingBottomSheet(context, builder: (context) {
       return SlidingSheetDialog(
+        extendBody: false,
+        maxWidth: 90.h,
         color: AppTheme.appBgColor,
         duration: Duration(microseconds: 1),
         minHeight: 90.h,
@@ -208,7 +210,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
               children: [
 
                 Material(
-                  elevation: 10,
+                  elevation: 1,
                   child: Container(
                     width: MediaQuery
                         .of(context)
@@ -228,11 +230,20 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                         children: [
                           Bounceable(
                               onTap: () {
+
+                                descriptionController.clear();
+                               dailyController.clear();
+                            weeklyController.clear();
+                                 monthlyController.clear();
+                                yearlyController.clear();
+                                lumpSumController.clear();
+                                amountController.clear();
+                                discountController.clear();
                                 Get.back();
                               },
                               child: Text('Cancel', style: TextStyle(
                                 color: Colors.red,
-                                fontSize: 20.sp,
+                                fontSize: 17.5.sp,
                               ),)),
 
                           Text('Fill In Tenant Fields', style: AppTheme
@@ -258,7 +269,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                               },
                               child: Text('Add', style: TextStyle(
                                 color: AppTheme.primaryColor,
-                                fontSize: 20.sp,
+                                fontSize: 17.5.sp,
                               ),)),
 
 
@@ -402,7 +413,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                                   10
                                   ? SizedBox(
                                 child: Obx(() {
-                                  return AppTextField(
+                                  return AuthTextField(
                                     controller:  tenantController
                                         .paymentScheduleId
                                         .value ==
@@ -419,7 +430,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
 
                               SizedBox(
                                 child: Obx(() {
-                                  return AppTextField(
+                                  return AuthTextField(
                                     controller: tenantController
                                                 .paymentScheduleId.value ==
                                             1
@@ -457,6 +468,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                                                         ? 'Enter No. Of Years'
                                                         : 'Specific Period',
                                     obscureText: false,
+                                    keyBoardType: TextInputType.number,
                                     onChanged: (value){
 
                                       if(tenantController.paymentScheduleId.value == 1) {
@@ -528,8 +540,19 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                           ),
                           SizedBox(height: 1.h,),
 
-                          Text('From', style: AppTheme.appFieldTitle,),
-                          AuthTextField(
+                          // Text('From', style: AppTheme.appFieldTitle,),
+                          //
+                          // AuthTextField(
+                          //   onTap: () {
+                          //     _selectDate1(context);
+                          //   },
+                          //   controller: date1Controller,
+                          //   hintText: "From",
+                          //   obscureText: false,
+                          // ),
+
+                          DateTextField(
+                            style: TextStyle(color: Colors.transparent),
                             onTap: () {
                               _selectDate1(context);
                             },
@@ -537,10 +560,11 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                             hintText: "From",
                             obscureText: false,
                           ),
+
                           SizedBox(height: 1.h,),
 
-                          Text('To', style: AppTheme.appFieldTitle,),
-                          AuthTextField(
+                          DateTextField(
+                            style: TextStyle(color: Colors.transparent),
                             onTap: () {
                               _selectDate2(context);
                             },
@@ -560,18 +584,20 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               SizedBox(
-                                child: AppTextField(
+                                child: AuthTextField(
                                   controller: amountController,
                                   hintText: 'Amount',
                                   obscureText: false,
+                                  keyBoardType: TextInputType.number,
                                 ),
                                 width: 42.5.w,
                               ),
                               SizedBox(
-                                child: AppTextField(
+                                child: AuthTextField(
                                   controller: discountController,
                                   hintText: 'Discount',
                                   obscureText: false,
+                                  keyBoardType: TextInputType.number,
                                 ),
                                 width: 42.5.w,
                               ),

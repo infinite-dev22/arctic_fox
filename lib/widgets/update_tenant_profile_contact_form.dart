@@ -50,13 +50,13 @@ class UpdateTenantProfileContactForm extends StatelessWidget {
                     SizedBox(
                       width: 40.w,
                       child: Obx(() {
-                        return AppTextField(
+                        return AuthTextField(
                           controller: TextEditingController(
                               text: tenantController
                                   .uCompanyFirstName.value.toString()),
                           hintText: 'First Name',
                           obscureText: false,
-                          validator: firstNameValidator,
+                          // validator: firstNameValidator,
                           keyBoardType: TextInputType.text,
                         );
                       }),
@@ -65,13 +65,13 @@ class UpdateTenantProfileContactForm extends StatelessWidget {
                     Obx(() {
                       return SizedBox(
                         width: 40.w,
-                        child: AppTextField(
+                        child: AuthTextField(
                           controller: TextEditingController(
                               text: tenantController
                                   .uCompanySurname.value.toString()),
                           hintText: 'Surname',
                           obscureText: false,
-                          validator: lastNameValidator,
+                          // validator: lastNameValidator,
                           keyBoardType: TextInputType.text,
                         ),
                       );
@@ -84,14 +84,14 @@ class UpdateTenantProfileContactForm extends StatelessWidget {
                 SizedBox(height: 1.h,),
 
                 Obx(() {
-                  return AppTextField(
+                  return AuthTextField(
                     controller: TextEditingController(
                         text: tenantController.uCompanyDesignation.value
                             .toString()),
 
                     hintText: 'Designation',
                     obscureText: false,
-                    validator: designationValidator,
+                    // validator: designationValidator,
                     keyBoardType: TextInputType.text,
                   );
                 }),
@@ -99,13 +99,13 @@ class UpdateTenantProfileContactForm extends StatelessWidget {
                 SizedBox(height: 1.h,),
 
                 Obx(() {
-                  return AppTextField(
+                  return AuthTextField(
                     controller: TextEditingController(
                         text: tenantController.uCompanyNin.value.toString()),
                     hintText: 'NIN',
                     obscureText: false,
                     keyBoardType: TextInputType.text,
-                    validator: ninValidator,
+                    // validator: ninValidator,
 
                   );
                 }),
@@ -113,27 +113,27 @@ class UpdateTenantProfileContactForm extends StatelessWidget {
                 SizedBox(height: 1.h,),
 
                 Obx(() {
-                  return AppTextField(
+                  return AuthTextField(
                     controller: TextEditingController(
                         text: tenantController.uCompanyContact.value
                             .toString()),
                     hintText: 'Contact',
                     obscureText: false,
                     keyBoardType: TextInputType.number,
-                    validator: phoneValidator,
+                    // validator: phoneValidator,
                   );
                 }),
 
                 SizedBox(height: 1.h,),
 
                 Obx(() {
-                  return AppTextField(
+                  return AuthTextField(
                     controller: TextEditingController(
                         text: tenantController.uCompanyEmail.value.toString()),
                     hintText: 'Email',
                     obscureText: false,
                     keyBoardType: TextInputType.emailAddress,
-                    validator: emailValidator,
+                    // validator: emailValidator,
                   );
                 }),
 

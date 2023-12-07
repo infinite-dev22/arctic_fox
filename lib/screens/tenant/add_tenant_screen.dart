@@ -369,22 +369,22 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                             children: [
                               SizedBox(
                                 width: 42.5.w,
-                                child: AppTextField(
+                                child: AuthTextField(
                                   controller: firstNameController,
                                   hintText: 'First Name',
                                   obscureText: false,
                                   keyBoardType: TextInputType.text,
-                                  validator: iFirstNameValidator,
+                                  // validator: iFirstNameValidator,
                                 ),
                               ),
                               SizedBox(
                                 width: 42.5.w,
-                                child: AppTextField(
+                                child: AuthTextField(
                                   controller: surnameNameController,
                                   hintText: 'Surname',
                                   obscureText: false,
                                   keyBoardType: TextInputType.text,
-                                  validator: iLastNameValidator,
+                                  // validator: iLastNameValidator,
                                 ),
                               ),
                             ],
@@ -402,17 +402,17 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
 
                           SizedBox(height: 1.h,),
 
-                          AppTextField(
+                          AuthTextField(
                             controller: individualPhoneNameController,
                             hintText: 'Contact',
                             obscureText: false,
                             keyBoardType: TextInputType.number,
-                            validator: iPhoneValidator,
+                            // validator: iPhoneValidator,
                           ),
 
                           SizedBox(height: 1.h,),
 
-                          AppTextField(
+                          AuthTextField(
                             controller: individualDateOfBirthController,
                             hintText: 'D.O.B',
                             obscureText: false,
@@ -423,12 +423,12 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
 
                           SizedBox(height: 1.h,),
 
-                          AppTextField(
+                          AuthTextField(
                             controller: individualNinController,
                             hintText: 'NIN',
                             obscureText: false,
                             keyBoardType: TextInputType.text,
-                            validator: iNinValidator,
+                            // validator: iNinValidator,
                           ),
 
                           SizedBox(height: 1.h,),
@@ -478,12 +478,12 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                         children: [
                           Text('Company Details', style: AppTheme.appTitle3,),
 
-                          AppTextField(
+                          AuthTextField(
                             controller: companyNameController,
                             hintText: 'Business Name',
                             obscureText: false,
                             keyBoardType: TextInputType.text,
-                            validator: companyNameValidator,
+                            // validator: companyNameValidator,
                           ),
 
                           SizedBox(height: 1.h,),

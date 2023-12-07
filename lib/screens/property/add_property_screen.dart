@@ -101,7 +101,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text('Add Property', style: AppTheme.appTitle5,),
-              AppTextField(
+              AuthTextField(
                 controller: titleController,
                 hintText: 'Property title',
                 obscureText: false,
@@ -152,7 +152,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                 children: [
                   SizedBox(
                     width: 42.5.w,
-                    child: AppTextField(
+                    child: AuthTextField(
                       controller: locationController,
                       hintText: 'Location',
                       obscureText: false,
@@ -161,7 +161,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
 
                   SizedBox(
                     width: 42.5.w,
-                    child: AppTextField(
+                    child: AuthTextField(
                       controller: sqmController,
                       hintText: 'sqm',
                       obscureText: false,

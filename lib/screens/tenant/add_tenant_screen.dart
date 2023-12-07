@@ -322,6 +322,8 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                         );
                       }),
 
+                      SizedBox(height: 1.h,),
+
                       Obx(() {
                         return tenantController.tenantTypeId.value == 0
                             ? Container()
@@ -442,17 +444,20 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                             );
                           }),
 
-                          SizedBox(height: 1.h,),
 
-                          AppTextField(
-                            controller: individualDescriptionController,
-                            hintText: 'Description',
-                            obscureText: false,
-                            keyBoardType: TextInputType.text,
-                            validator: iDescriptionValidator,
-                            maxLines: 6,
-                            minLines: 3,
+                          AuthTextField(
+                              controller: individualDescriptionController,
+                          hintText: 'Description',
+                              obscureText: false,
                           ),
+
+                          // AppTextField(
+                          //   controller: individualDescriptionController,
+                          //   hintText: 'Description',
+                          //   obscureText: false,
+                          //   keyBoardType: TextInputType.text,
+                          //   validator: iDescriptionValidator,
+                          // ),
 
                         ],
                       ),
@@ -483,15 +488,10 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
 
                           SizedBox(height: 1.h,),
 
-                          AppTextField(
+                          AuthTextField(
                             controller: companyDescriptionController,
                             hintText: 'Description',
                             obscureText: false,
-                            keyBoardType: TextInputType.text,
-                            validator: companyDescriptionValidator,
-                            maxLines: 6,
-                            // maxLength: 500,
-                            minLines: 3,
                           ),
 
                           Obx(() {
@@ -642,9 +642,9 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                     : Container();
               }),
 
-              SizedBox(
-                height: 2.h,
-              ),
+              // SizedBox(
+              //   height: 2.h,
+              // ),
 
               AppButton(
                 title: 'Submit',

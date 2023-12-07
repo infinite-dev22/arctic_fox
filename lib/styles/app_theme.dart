@@ -11,6 +11,11 @@ class AppTheme{
   static const shadowColor = Colors.black;
   static const appBgColor = Color(0xFFF2F1F6);
 
+  static const darker = Color(0xFF3E4249);
+  static const red = Color(0xFFff4b60);
+  static const gray = Color(0xFF68686B);
+  static const gray45 = Color(0xFFB5B5B6);
+
   // static const secondaryColor = Color(0xFFCBE1F3);
 
   // static const appBgColor = Color(0xFFF2F1F6);

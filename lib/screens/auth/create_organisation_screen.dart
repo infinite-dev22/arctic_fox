@@ -57,23 +57,17 @@ class _CreateOrganisationScreenState extends State<CreateOrganisationScreen> {
 
                     Text('Create Organization' , style: AppTheme.appTitle2,),
 
-                    AppTextField(
-                      title: 'Business Name',
+                    AuthTextField(
                       controller: businessNameController,
-                      hintText: 'business',
-                      obscureText: false,
-                      validator: businessNameValidator,
+                        hintText: 'Business Name',
+                        obscureText: false,
                     ),
+                    SizedBox(height: 1.h,),
 
-                    // SizedBox(height: 3.h,),
-
-
-                    AppTextField(
-                      title: 'Description',
+                    AuthTextField(
                       controller: descriptionController,
-                      hintText: 'description',
+                      hintText: 'Description',
                       obscureText: false,
-                      validator: descriptionValidator,
                     ),
 
 
@@ -83,14 +77,29 @@ class _CreateOrganisationScreenState extends State<CreateOrganisationScreen> {
                       title: 'Next',
                       color: AppTheme.primaryColor,
                       function: (){
-                        if(_formKey.currentState!.validate()){
+
+                        if(businessNameController.text.isEmpty && descriptionController.text.isEmpty){
+                          Fluttertoast.showToast(msg: 'Fill all Fields');
+                        } else {
+
                           Get.to(() => CompleteSignUpScreen(
                             businessName: businessNameController.text.toString(),
                             description: descriptionController.text.toString(),
                           ), transition: Transition.rightToLeftWithFade);
-                        } else {
-                          Fluttertoast.showToast(msg: 'Fill all Fields');
+
+                          businessNameController.clear();
+                          descriptionController.clear();
+
                         }
+
+                        // if(_formKey.currentState!.validate()){
+                        //   Get.to(() => CompleteSignUpScreen(
+                        //     businessName: businessNameController.text.toString(),
+                        //     description: descriptionController.text.toString(),
+                        //   ), transition: Transition.rightToLeftWithFade);
+                        // } else {
+                        //   Fluttertoast.showToast(msg: 'Fill all Fields');
+                        // }
                       },
                     ),
                     SizedBox(height: 1.h,),

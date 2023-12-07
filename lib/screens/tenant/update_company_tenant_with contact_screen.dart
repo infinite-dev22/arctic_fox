@@ -262,6 +262,8 @@ class _UpdateCompanyTenantWithContactScreenState
                         );
                       }),
 
+                      SizedBox(height: 1.h,),
+
                       Obx(() {
                         return CustomUpdateApiNationalityDropdown(
                           hintText: tenantController.uCompanyCountryType.value,
@@ -284,26 +286,28 @@ class _UpdateCompanyTenantWithContactScreenState
                       children: [
                         Text('Company Details', style: AppTheme.appTitle3,),
 
-                        AppTextField(
-                          controller: companyNameController,
-                          hintText: 'Business Name',
-                          obscureText: false,
-                          keyBoardType: TextInputType.text,
-                          validator: companyNameValidator,
+                        // AppTextField(
+                        //   controller: companyNameController,
+                        //   hintText: 'Business Name',
+                        //   obscureText: false,
+                        //   keyBoardType: TextInputType.text,
+                        //   validator: companyNameValidator,
+                        // ),
+
+                        AuthTextField(
+                            controller: companyNameController,
+                            hintText: 'Business Name',
+                            obscureText: false,
                         ),
 
                         SizedBox(height: 1.h,),
 
-                        AppTextField(
+                        AuthTextField(
                           controller: companyDescriptionController,
                           hintText: 'Description',
                           obscureText: false,
-                          keyBoardType: TextInputType.text,
-                          validator: companyDescriptionValidator,
-                          maxLines: 6,
-                          // maxLength: 500,
-                          minLines: 3,
                         ),
+
 
                         // Obx(() {
                         //   return tenantController.tenantTypeId.value == 1

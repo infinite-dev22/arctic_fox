@@ -262,11 +262,11 @@ class CustomGenericDropdown<T> extends StatelessWidget {
     return Column(
       children: [
         SizedBox(
-          height: 6.5.h,
+          height: 50,
           child: DropdownButtonFormField2<T>(
             isExpanded: true,
             decoration: InputDecoration(
-              contentPadding:  EdgeInsets.symmetric(vertical: 0.5.h),
+              contentPadding:  EdgeInsets.symmetric(vertical: 16),
               filled: true,
               fillColor: AppTheme.textBoxColor,
               border: OutlineInputBorder(
@@ -317,7 +317,7 @@ class CustomGenericDropdown<T> extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(height: 10),
+        // const SizedBox(height: 10),
       ],
     );
   }
@@ -352,12 +352,12 @@ class CustomApiGenericDropdown<T extends SmartModel> extends StatelessWidget {
     return Column(
       children: [
         SizedBox(
-          height: height ?? 8.5.h,
+          height: 50,
           child: DropdownButtonFormField2<T>(
             value: defaultValue,
             isExpanded: true,
             decoration: InputDecoration(
-              contentPadding:  EdgeInsets.symmetric(vertical: 0.5.h),
+              contentPadding:  EdgeInsets.symmetric(vertical: 16),
               filled: true,
               fillColor: AppTheme.textBoxColor,
               border: OutlineInputBorder(
@@ -443,12 +443,12 @@ class CustomPeriodApiGenericDropdown<T extends SmartPeriodModel> extends Statele
     return Column(
       children: [
         SizedBox(
-          height: height ?? 8.5.h,
+          height: 50,
           child: DropdownButtonFormField2<T>(
             value: defaultValue,
             isExpanded: true,
             decoration: InputDecoration(
-              contentPadding:  EdgeInsets.symmetric(vertical: 0.5.h),
+              contentPadding:  EdgeInsets.symmetric(vertical: 16),
               filled: true,
               fillColor: AppTheme.textBoxColor,
               border: OutlineInputBorder(
@@ -533,12 +533,12 @@ class CustomUpdateApiGenericDropdown<T extends SmartModel> extends StatelessWidg
     return Column(
       children: [
         SizedBox(
-          height: height ?? 8.5.h,
+          height: 50,
           child: DropdownButtonFormField2<T>(
             value: defaultValue,
             isExpanded: true,
             decoration: InputDecoration(
-              contentPadding:  EdgeInsets.symmetric(vertical: 0.5.h),
+              contentPadding:  EdgeInsets.symmetric(vertical: 16),
               filled: true,
               fillColor: AppTheme.textBoxColor,
               border: OutlineInputBorder(
@@ -626,11 +626,11 @@ class CustomApiGenericTenantModelDropdown<T extends SmartTenantModel> extends St
     return Column(
       children: [
         SizedBox(
-          height: height ?? 8.5.h,
+          height: 50,
           child: DropdownButtonFormField2<T>(
             isExpanded: true,
             decoration: InputDecoration(
-              contentPadding:  EdgeInsets.symmetric(vertical: 0.5.h),
+              contentPadding:  EdgeInsets.symmetric(vertical: 16),
               filled: true,
               fillColor: AppTheme.textBoxColor,
               border: OutlineInputBorder(
@@ -709,7 +709,7 @@ class CustomApiTenantTypeDropdown<T extends SmartTenantTypeModel> extends Statel
     return Column(
       children: [
         SizedBox(
-          height: 8.5.h,
+          height: 50,
           child: DropdownButtonFormField2<T>(
             isExpanded: true,
             decoration: InputDecoration(
@@ -793,7 +793,7 @@ class CustomApiUnitDropdown<T extends SmartUnitModel> extends StatelessWidget {
     return Column(
       children: [
         SizedBox(
-          height: 6.5.h,
+          height: 50,
           child: DropdownButtonFormField2<T>(
             isExpanded: true,
             decoration: InputDecoration(
@@ -877,7 +877,7 @@ class CustomApiCurrencyDropdown<T extends SmartCurrencyModel> extends StatelessW
     return Column(
       children: [
         SizedBox(
-          height: 6.5.h,
+          height: 50,
           child: DropdownButtonFormField2<T>(
             isExpanded: true,
             decoration: InputDecoration(
@@ -961,7 +961,7 @@ class CustomApiNationalityDropdown<T extends SmartNationalityModel> extends Stat
     return Column(
       children: [
         SizedBox(
-          height: 8.5.h,
+          height: 50,
           child: DropdownButtonFormField2<T>(
             isExpanded: true,
             decoration: InputDecoration(
@@ -1044,7 +1044,7 @@ class CustomUpdateApiNationalityDropdown<T extends SmartNationalityModel> extend
     return Column(
       children: [
         SizedBox(
-          height: 8.5.h,
+          height: 50,
           child: DropdownButtonFormField2<T>(
             isExpanded: true,
             decoration: InputDecoration(

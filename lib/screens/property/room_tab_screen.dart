@@ -78,7 +78,7 @@ class _RoomTabScreenState extends State<RoomTabScreen> {
             cornerRadius: 15.sp,
             snapSpec: const SnapSpec(
               snap: true,
-              snappings: [ 1.0],
+              snappings: [ 0.9],
               positioning: SnapPositioning.relativeToAvailableSpace,
             ),
             builder: (context, state) {
@@ -115,7 +115,7 @@ class _RoomTabScreenState extends State<RoomTabScreen> {
                                     fontSize: 20.sp,
                                   ),)),
 
-                              Text('Fill In Unit Fileds', style: AppTheme
+                              Text('Fill In Unit Fields', style: AppTheme
                                   .darkBlueTitle2,),
 
                               Bounceable(
@@ -189,6 +189,7 @@ class _RoomTabScreenState extends State<RoomTabScreen> {
                               ],
                             ),
 
+                            SizedBox(height: 1.h,),
 
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -282,7 +283,7 @@ class _RoomTabScreenState extends State<RoomTabScreen> {
                               );
                             }),
 
-                            // SizedBox(height: 1.h,),
+                            SizedBox(height: 1.h,),
 
                             // Row(
                             //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -335,7 +336,7 @@ class _RoomTabScreenState extends State<RoomTabScreen> {
                               keyBoardType: TextInputType.number,
                             ),
 
-                            SizedBox(height: 2.h,),
+                            SizedBox(height: 1.h,),
 
                             AppMaxTextField(
                               controller: descriptionController,
@@ -428,7 +429,7 @@ class _RoomTabScreenState extends State<RoomTabScreen> {
                             //   ),),
                             // ),
 
-                            SizedBox(height: 2.h,),
+                            SizedBox(height: 1.h,),
 
                             // AppButton(
                             //   title: 'Add Unit',
@@ -499,7 +500,7 @@ class _RoomTabScreenState extends State<RoomTabScreen> {
               children: [
                 SizedBox(
                   width: 50.w,
-                  child: AppTextField(
+                  child: AuthTextField(
                     controller: searchController,
                     hintText: 'Search',
                     obscureText: false,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -92,42 +93,42 @@ class _CompleteSignUpScreenState extends State<CompleteSignUpScreen> {
                     children: [
                       SizedBox(
                         width: 42.5.w,
-                        child: AppTextField(
+                        child: AuthTextField(
                             controller: firstNameEditingController,
                             hintText: 'Firstname',
                             obscureText: false,
-                          validator: firstNameValidator,
 
                         ),
                       ),
 
                       SizedBox(
                         width: 42.5.w,
-                        child: AppTextField(
+                        child: AuthTextField(
                           controller: lastNameEditingController,
                           hintText: 'Lastname',
                           obscureText: false,
-                          validator: lastNameValidator,
+
                         ),
                       ),
 
                     ],
                   ),
 
-                  SizedBox(height: 3.h,),
+                  SizedBox(height: 1.h,),
 
-                  AppTextField(
+                  AuthTextField(
                     isEmail: true,
                     controller: emailEditingController,
                     hintText: 'Email',
                     obscureText: false,
-                    validator: emailValidator,
+
                   ),
+                  SizedBox(height: 1.h,),
 
                   AppPasswordTextField(
                       controller: passwordEditingController,
                       hintText: 'Password',
-                    validator: passwordValidator,
+                    // validator: passwordValidator,
                   ),
 
                   // AppPasswordTextField(
@@ -147,17 +148,19 @@ class _CompleteSignUpScreenState extends State<CompleteSignUpScreen> {
                   //   },
                   // ),
 
-                  SizedBox(height: 3.h,),
 
                   AppButton(
                       title: 'Submit',
                       color: AppTheme.primaryColor,
-                      function: (){
+                      function: () async{
 
-                        if(_formKey.currentState!.validate()){
-                          // userController.signUpUser(UserModel(email: widget.description, password: widget.businessName));
+                        if(firstNameEditingController.text.isEmpty && lastNameEditingController.text.isEmpty &&
+                            emailEditingController.text.isEmpty && passwordEditingController.text.isEmpty
+                        ) {
+                          Fluttertoast.showToast(msg: 'fill in all fields');
 
-                          userController.createUser(
+                        } else {
+                          await userController.createUser(
                             emailEditingController.text.trim().toString(),
                             passwordEditingController.text.trim().toString(),
                             widget.businessName.toString(),
@@ -166,27 +169,32 @@ class _CompleteSignUpScreenState extends State<CompleteSignUpScreen> {
                             lastNameEditingController.text.trim().toString(),
                           );
 
-                          // userController.signUpUser(
-                          //     emailEditingController.text.trim().toString(),
-                          //     passwordEditingController.text.trim().toString(),
-                          //     firstNameEditingController.text.trim().toString(),
-                          //     lastNameEditingController.text.trim().toString(),
-                          //     widget.businessName.toString(),
-                          //     widget.description.toString(),
-                          // );
-
-                          // Get.off(() => BottomNavBar(), transition: Transition.rightToLeftWithFade);
-                          // Get.snackbar('SUCCESS', 'Account created successfully',
-                          //   titleText: Text('SUCCESS', style: AppTheme.greenTitle1,),
-                          // );
-
-                        } else {
+                          emailEditingController.clear();
+                          passwordEditingController.clear();
+                          firstNameEditingController.clear();
+                          lastNameEditingController.clear();
 
                         }
 
+                        // if(_formKey.currentState!.validate()){
+                        //   // userController.signUpUser(UserModel(email: widget.description, password: widget.businessName));
+                        //
+                        //   userController.createUser(
+                        //     emailEditingController.text.trim().toString(),
+                        //     passwordEditingController.text.trim().toString(),
+                        //     widget.businessName.toString(),
+                        //     widget.description.toString(),
+                        //     firstNameEditingController.text.trim().toString(),
+                        //     lastNameEditingController.text.trim().toString(),
+                        //   );
+                        //
+                        // } else {
+                        //
+                        // }
+
                       }),
 
-                  SizedBox(height: 5.h,),
+                  SizedBox(height: 3.h,),
 
                   Center(child: Bounceable(
                       onTap: (){

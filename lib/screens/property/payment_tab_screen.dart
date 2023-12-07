@@ -47,112 +47,170 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
             cornerRadius: 15.sp,
             snapSpec: const SnapSpec(
               snap: true,
-              snappings: [ 1.0],
+              snappings: [ 0.9],
               positioning: SnapPositioning.relativeToAvailableSpace,
             ),
             builder: (context, state) {
               return Material(
                 color: AppTheme.appBgColor,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 5.w,
-                      vertical: 1.h),
-                  child:  SingleChildScrollView(
-                    child: Column(
-                      children: [
+                child: Column(
+                  children: [
 
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Bounceable(
-                                onTap: (){
-                                  Get.back();
-                                },
-                                child: Text('Cancel', style: TextStyle(
-                                  color: Colors.red,
-                                ),)),
+                    Material(
+                      elevation: 10,
+                      child: Container(
+                        width: MediaQuery
+                            .of(context)
+                            .size
+                            .width,
+                        height: 7.5.h,
+                        decoration: BoxDecoration(
+                            boxShadow: [
 
-                  Text('Fill In Payment Fileds', style: AppTheme.darkBlueText1,),
-                            Bounceable(
-                                onTap: ()async{
+                            ]
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Bounceable(
+                                  onTap: () {
+                                    Get.back();
+                                  },
+                                  child: Text('Cancel', style: TextStyle(
+                                    color: Colors.red,
+                                    fontSize: 20.sp,
+                                  ),)),
+
+                              Text('Fill In Payment Fields', style: AppTheme
+                                  .darkBlueTitle2,),
+
+                              Bounceable(
+                                  onTap: ()async{
                                     Get.back();
                                     Get.snackbar('SUCCESS', 'Payment added to your property',
-                                    titleText: Text('SUCCESS', style: AppTheme.greenTitle1,),
-                                  );
-                                },
-                                child: Text('Add', style: TextStyle(
-                                    color: AppTheme.primaryColor
-                                ),)),
-                          ],
+                                      titleText: Text('SUCCESS', style: AppTheme.greenTitle1,),
+                                    );
+                                  },
+                                  child: Text('Add', style: TextStyle(
+                                    color: AppTheme.primaryColor,
+                                    fontSize: 20.sp,
+                                  ),)),
+
+                            ],
+                          ),
                         ),
-                        SizedBox(height: 1.h,),
-
-                        CustomGenericDropdown<String>(
-                          hintText: 'Select Unit',
-                          menuItems: widget.propertyDetailsOptionsController.unitList,
-                          onChanged: (value){
-
-                          },
-                        ),
-
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SizedBox(
-                              width: 42.5.w,
-                              child: CustomGenericDropdown<String>(
-                                hintText: 'From',
-                                menuItems: [],
-                                onChanged: (value){
-
-                                },
-                              ),
-                            ),
-
-                            SizedBox(
-                              width: 42.5.w,
-                              child: CustomGenericDropdown<String>(
-                                hintText: 'To',
-                                menuItems: [],
-                                onChanged: (value){
-
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-
-                        AppTextField(
-                          controller: paidController,
-                          hintText: 'Paid',
-                          obscureText: false,
-                        ),
-
-                        SizedBox(height: 2.h,),
-
-                        AppTextField(
-                          controller: balanceController,
-                          hintText: 'Balance',
-                          obscureText: false,
-                        ),
-
-
-
-                        SizedBox(height: 2.h,),
-
-                        // AppButton(
-                        //   title: 'Add Payment',
-                        //   color: AppTheme.primaryColor,
-                        //   function: (){
-                        //     Get.back();
-                        //     Get.snackbar('SUCCESS', 'Payment added to your property',
-                        //       titleText: Text('SUCCESS', style: AppTheme.greenTitle1,),
-                        //     );
-                        //   },
-                        // ),
-
-                      ],
+                      ),
                     ),
-                  ),
+
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 5.w,
+                          vertical: 1.h),
+                      child:  SingleChildScrollView(
+                        child: Column(
+                          children: [
+
+                      //       Row(
+                      //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //         children: [
+                      //           Bounceable(
+                      //               onTap: (){
+                      //                 Get.back();
+                      //               },
+                      //               child: Text('Cancel', style: TextStyle(
+                      //                 color: Colors.red,
+                      //               ),)),
+                      //
+                      // Text('Fill In Payment Fileds', style: AppTheme.darkBlueText1,),
+                      //           Bounceable(
+                      //               onTap: ()async{
+                      //                   Get.back();
+                      //                   Get.snackbar('SUCCESS', 'Payment added to your property',
+                      //                   titleText: Text('SUCCESS', style: AppTheme.greenTitle1,),
+                      //                 );
+                      //               },
+                      //               child: Text('Add', style: TextStyle(
+                      //                   color: AppTheme.primaryColor
+                      //               ),)),
+                      //         ],
+                      //       ),
+                            SizedBox(height: 1.h,),
+
+                            CustomGenericDropdown<String>(
+                              hintText: 'Select Unit',
+                              menuItems: widget.propertyDetailsOptionsController.unitList,
+                              onChanged: (value){
+
+                              },
+                            ),
+
+                            SizedBox(height: 1.h,),
+
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                SizedBox(
+                                  width: 42.5.w,
+                                  child: CustomGenericDropdown<String>(
+                                    hintText: 'From',
+                                    menuItems: [],
+                                    onChanged: (value){
+
+                                    },
+                                  ),
+                                ),
+
+                                SizedBox(
+                                  width: 42.5.w,
+                                  child: CustomGenericDropdown<String>(
+                                    hintText: 'To',
+                                    menuItems: [],
+                                    onChanged: (value){
+
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+
+                            SizedBox(height: 1.h,),
+
+                            AppTextField(
+                              controller: paidController,
+                              hintText: 'Paid',
+                              obscureText: false,
+                            ),
+
+                            SizedBox(height: 1.h,),
+
+                            AppTextField(
+                              controller: balanceController,
+                              hintText: 'Balance',
+                              obscureText: false,
+                            ),
+
+
+
+                            SizedBox(height: 1.h,),
+
+                            // AppButton(
+                            //   title: 'Add Payment',
+                            //   color: AppTheme.primaryColor,
+                            //   function: (){
+                            //     Get.back();
+                            //     Get.snackbar('SUCCESS', 'Payment added to your property',
+                            //       titleText: Text('SUCCESS', style: AppTheme.greenTitle1,),
+                            //     );
+                            //   },
+                            // ),
+
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               );
             },

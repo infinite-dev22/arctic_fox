@@ -107,7 +107,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                 obscureText: false,
               ),
 
-              // SizedBox(height: 1.h,),
+              SizedBox(height: 1.h,),
 
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -145,7 +145,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                 ],
               ),
 
-              // SizedBox(height: 1.h,),
+              SizedBox(height: 1.h,),
 
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -172,6 +172,8 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                 ],
               ),
 
+              SizedBox(height: 1.h,),
+
               AppMaxTextField(
                   controller: descriptionController,
                   hintText: 'Description',
@@ -179,7 +181,6 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                 fillColor: AppTheme.textBoxColor,
               ),
 
-              SizedBox(height: 1.h,),
 
               // SizedBox(
               //   height: 15.h,

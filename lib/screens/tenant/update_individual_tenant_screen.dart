@@ -305,6 +305,8 @@ class _UpdateIndividualTenantScreenState
                         );
                       }),
 
+                      SizedBox(height: 1.h,),
+
                       Obx(() {
                         return CustomUpdateApiNationalityDropdown(
                           hintText: tenantController.uIndividualCountryType
@@ -368,52 +370,70 @@ class _UpdateIndividualTenantScreenState
                         //   ],
                         // ),
 
-                        Obx(() {
-                          return AppTextField(
-                            controller: individualNameController ??
-                                TextEditingController(
-                                  text: tenantController.uIndividualName.value
-                                      .toString(),
-                                ),
-                            hintText: 'Name',
-                            obscureText: false,
-                            keyBoardType: TextInputType.text,
-                            validator: iLastNameValidator,
-                          );
-                        }),
+                        // Obx(() {
+                        //   return AppTextField(
+                        //     controller: individualNameController ??
+                        //         TextEditingController(
+                        //           text: tenantController.uIndividualName.value
+                        //               .toString(),
+                        //         ),
+                        //     hintText: 'Name',
+                        //     obscureText: false,
+                        //     keyBoardType: TextInputType.text,
+                        //     validator: iLastNameValidator,
+                        //   );
+                        // }),
+
+                        AuthTextField(
+                          controller: individualNameController ??
+                              TextEditingController(
+                                text: tenantController.uIndividualName.value
+                                    .toString(),
+                              ),
+                          hintText: 'Name',
+                          obscureText: false,
+                        ),
 
                         SizedBox(height: 1.h,),
 
+                        // Obx(() {
+                        //   return AppTextField(
+                        //     controller: TextEditingController(
+                        //         text: tenantController.uIndividualEmail.value
+                        //             .toString()),
+                        //     hintText: 'Email',
+                        //     obscureText: false,
+                        //     keyBoardType: TextInputType.emailAddress,
+                        //     validator: iEmailValidator,
+                        //   );
+                        // }),
+
                         Obx(() {
-                          return AppTextField(
+                          return AuthTextField(
                             controller: TextEditingController(
                                 text: tenantController.uIndividualEmail.value
                                     .toString()),
                             hintText: 'Email',
                             obscureText: false,
-                            keyBoardType: TextInputType.emailAddress,
-                            validator: iEmailValidator,
                           );
                         }),
 
                         SizedBox(height: 1.h,),
 
                         Obx(() {
-                          return AppTextField(
+                          return AuthTextField(
                             controller: TextEditingController(
                                 text: tenantController.uIndividualContact.value
                                     .toString()),
                             hintText: 'Contact',
                             obscureText: false,
-                            keyBoardType: TextInputType.number,
-                            validator: iPhoneValidator,
                           );
                         }),
 
                         SizedBox(height: 1.h,),
 
                         Obx(() {
-                          return AppTextField(
+                          return AuthTextField(
                             controller: TextEditingController(
                                 text: tenantController.uIndividualDateOfBirth
                                     .value.toString()),
@@ -428,14 +448,12 @@ class _UpdateIndividualTenantScreenState
                         SizedBox(height: 1.h,),
 
                         Obx(() {
-                          return AppTextField(
+                          return AuthTextField(
                             controller: TextEditingController(
                                 text: tenantController.uIndividualNin.value
                                     .toString()),
                             hintText: 'NIN',
                             obscureText: false,
-                            keyBoardType: TextInputType.text,
-                            validator: iNinValidator,
                           );
                         }),
 
@@ -456,17 +474,14 @@ class _UpdateIndividualTenantScreenState
                         SizedBox(height: 1.h,),
 
                         Obx(() {
-                          return AppTextField(
+                          return AuthTextField(
                             controller: TextEditingController(
                                 text: tenantController.uIndividualDescription
                                     .value
                                     .toString()),
                             hintText: 'Description',
                             obscureText: false,
-                            keyBoardType: TextInputType.text,
-                            validator: iDescriptionValidator,
-                            maxLines: 6,
-                            minLines: 3,
+
                           );
                         }),
 

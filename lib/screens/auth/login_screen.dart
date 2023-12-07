@@ -51,17 +51,15 @@ class _LoginScreenState extends State<LoginScreen> {
 
                     Text('Sign in', style: AppTheme.appTitleLarge,),
 
-                    AppTextField(
-                      title: 'YOUR EMAIL',
+                    AuthTextField(
                       controller: emailController,
-                      hintText: 'email',
-                      obscureText: false,
+                        hintText: 'Your Email',
+                        obscureText: false,
                     ),
 
-                    // SizedBox(height: 3.h,),
+                    SizedBox(height: 1.h,),
 
                     AppPasswordTextField(
-                      title: 'PASSWORD',
                       controller: passwordController,
                       hintText: 'password',
                       fillColor: AppTheme.textBoxColor,
@@ -73,29 +71,37 @@ class _LoginScreenState extends State<LoginScreen> {
                         title: 'Sign in',
                         color: AppTheme.primaryColor,
                         function: () async {
-                          if (_formKey.currentState!.validate()) {
+                          Get.off(() => BottomNavBar());
+                          emailController.clear();
+                          passwordController.clear();
+                          Get.snackbar('SUCCESS', 'Logged in successfully',
+                            titleText: Text(
+                              'SUCCESS', style: AppTheme.greenTitle1,),
+                          );
+                          // if (_formKey.currentState!.validate()) {
+                          //
+                          //   // userController.insertUser(UserModel(
+                          //   //     email: emailController.text.toString(),
+                          //   //   password: passwordController.text.toString(),
+                          //   // ));
+                          //
+                          //   // await AppConfig().supaBaseClient.from('users')
+                          //   //     .insert(({
+                          //   //   'email': emailController.text.toString(),
+                          //   //   'password': passwordController.text.toString(),
+                          //   // }))
+                          //   //     .then((value) {});
+                          //
+                          //   Get.off(() => BottomNavBar());
+                          //   Get.snackbar('SUCCESS', 'Logged in successfully',
+                          //     titleText: Text(
+                          //       'SUCCESS', style: AppTheme.greenTitle1,),
+                          //   );
+                          //
+                          // } else {
+                          //
+                          // }
 
-                            // userController.insertUser(UserModel(
-                            //     email: emailController.text.toString(),
-                            //   password: passwordController.text.toString(),
-                            // ));
-
-                            // await AppConfig().supaBaseClient.from('users')
-                            //     .insert(({
-                            //   'email': emailController.text.toString(),
-                            //   'password': passwordController.text.toString(),
-                            // }))
-                            //     .then((value) {});
-
-                            Get.off(() => BottomNavBar());
-                            Get.snackbar('SUCCESS', 'Logged in successfully',
-                              titleText: Text(
-                                'SUCCESS', style: AppTheme.greenTitle1,),
-                            );
-
-                          } else {
-
-                          }
                         }),
 
                     SizedBox(height: 5.h,),

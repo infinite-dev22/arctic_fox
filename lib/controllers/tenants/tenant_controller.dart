@@ -11,6 +11,7 @@ import 'package:smart_rent/models/salutation/salutation_model.dart';
 import 'package:smart_rent/models/tenant/tenant_model.dart';
 import 'package:smart_rent/models/tenant/tenant_profile_model.dart';
 import 'package:smart_rent/models/tenant/tenant_type_model.dart';
+import 'package:smart_rent/models/tenant/tenant_unit_model.dart';
 import 'package:smart_rent/models/unit/unit_model.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 import 'package:uuid/uuid.dart';
@@ -23,6 +24,8 @@ class TenantController extends GetxController {
   RxList<UnitModel> unitList = <UnitModel>[].obs;
   RxList<TenantModel> tenantList = <TenantModel>[].obs;
   RxList<BusinessTypeModel> businessList = <BusinessTypeModel>[].obs;
+  RxList<TenantUnitModel> tenantUnitList = <TenantUnitModel>[].obs;
+
 
   RxList<PaymentScheduleModel> paymentList = <PaymentScheduleModel>[].obs;
 
@@ -39,6 +42,7 @@ class TenantController extends GetxController {
   var businessTypeId = 0.obs;
   var newGender = ''.obs;
   var isTenantListLoading = false.obs;
+  var isTenantUnitListLoading = false.obs;
   var isSpecificTenantLoading = false.obs;
   var isContactDetailsLoading = false.obs;
   var isIndividualTenantDetailsLoading = false.obs;
@@ -244,6 +248,28 @@ class TenantController extends GetxController {
     } catch (error) {
       print('Error fetching Tenants: $error');
       isTenantListLoading(false);
+    }
+
+  }
+
+  void fetchAllTenantUnits() async {
+    isTenantUnitListLoading(true);
+    try {
+
+      final response = await AppConfig().supaBaseClient.from('tenant_units').select().order('created_at', ascending: false);
+      final data = response as List<dynamic>;
+      print(response);
+      print(response.length);
+      print(data.length);
+      print(data);
+      isTenantUnitListLoading(false);
+
+      return tenantList.assignAll(
+          data.map((json) => TenantModel.fromJson(json)).toList());
+
+    } catch (error) {
+      print('Error fetching Tenants: $error');
+      isTenantUnitListLoading(false);
     }
 
   }
@@ -523,6 +549,56 @@ class TenantController extends GetxController {
     }
 
 
+
+  }
+
+
+  Future<void> getTenantUnits() async {
+    isTenantUnitListLoading(true);
+
+    // final data = await AppConfig().supaBaseClient.from('tenant_units')
+    //     .select('id')
+    //     .like('tenant_id', tenantId.toString()).execute();
+
+
+    // final unitResponse = await AppConfig().supaBaseClient.from('units').select().eq('id', data);
+
+    try {
+
+      final response = await AppConfig().supaBaseClient.from('tenant_units').select().eq('tenant_id', tenantId);
+      final unitResponse = await AppConfig().supaBaseClient.from('tenant_units').select('unit_id').eq('tenant_id', tenantId);
+      final data = response as List<dynamic>;
+      final unitData = unitResponse as List<dynamic>;
+
+      print(response);
+      print(unitResponse);
+      print(unitData.map((e) => e['unit_id']).toList());
+
+      final containedResponse = await AppConfig().supaBaseClient
+          .from('units')
+          .select()
+          .in_('id', unitData.map((e) => e['unit_id']).toList());
+
+      print('My Contained Data is ${containedResponse}');
+      final getAllUnitData = containedResponse as List<dynamic>;
+
+
+      print(getAllUnitData);
+
+      print(response.length);
+      print(data.length);
+      print(data);
+      isTenantUnitListLoading(false);
+      print(tenantUnitList.value);
+      return tenantUnitList.assignAll(
+          data.map((json) => TenantUnitModel.fromJson(json)).toList());
+
+    } catch (error) {
+      print('Error fetching Tenant Units: $error');
+      isTenantUnitListLoading(false);
+    }
+
+    print('My TenantUnitList $tenantUnitList');
 
   }
 

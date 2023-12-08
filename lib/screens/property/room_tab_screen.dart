@@ -123,7 +123,7 @@ class _RoomTabScreenState extends State<RoomTabScreen> {
                                     fontSize: 17.5.sp,
                                   ),)),
 
-                              Text('Fill In Unit Fields', style: AppTheme
+                              Text('Add Unit', style: AppTheme
                                   .darkBlueTitle2,),
 
                               Bounceable(

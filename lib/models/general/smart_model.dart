@@ -58,3 +58,16 @@ abstract class SmartTenantModel {
   String getDescription();
 
 }
+
+
+abstract class SmartTenantUnitModel {
+
+  int getId();
+  int getTenantId();
+  int getUnitId();
+  int getAmount();
+  int getDiscount();
+
+
+}
+

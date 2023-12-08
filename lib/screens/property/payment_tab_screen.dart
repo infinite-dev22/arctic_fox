@@ -1,10 +1,14 @@
 import 'dart:convert';
 
+import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/controllers/property_options/property_details_options_controller.dart';
+import 'package:smart_rent/controllers/tenants/tenant_controller.dart';
+import 'package:smart_rent/controllers/units/unit_controller.dart';
+import 'package:smart_rent/models/tenant/tenant_model.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 import 'package:smart_rent/utils/extra.dart';
 import 'package:smart_rent/widgets/app_button.dart';
@@ -13,8 +17,11 @@ import 'package:smart_rent/widgets/app_textfield.dart';
 import 'package:wtf_sliding_sheet/wtf_sliding_sheet.dart';
 
 class PaymentTabScreen extends StatefulWidget {
+  final UnitController unitController;
   final PropertyDetailsOptionsController propertyDetailsOptionsController;
-  const PaymentTabScreen({super.key, required this.propertyDetailsOptionsController});
+
+  const PaymentTabScreen(
+      {super.key, required this.propertyDetailsOptionsController, required this.unitController});
 
   @override
   State<PaymentTabScreen> createState() => _PaymentTabScreenState();
@@ -24,16 +31,30 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
 
   final listSample = [
     {'tenant': 'vincent west', 'unit': '4', 'amount': 50000, 'period': 'month'},
-    {'tenant': 'jonathan mark', 'unit': '25', 'amount': 130000, 'period': 'weeks'},
-    {'tenant': 'ryan jupiter', 'unit': '61', 'amount': 250000, 'period': 'years'},
+    {
+      'tenant': 'jonathan mark',
+      'unit': '25',
+      'amount': 130000,
+      'period': 'weeks'
+    },
+    {
+      'tenant': 'ryan jupiter',
+      'unit': '61',
+      'amount': 250000,
+      'period': 'years'
+    },
 
   ];
+
+  final TenantController tenantController = Get.put(TenantController());
 
   final TextEditingController paidController = TextEditingController();
   final TextEditingController amountController = TextEditingController();
   final TextEditingController balanceController = TextEditingController();
 
   final TextEditingController searchController = TextEditingController();
+
+  late SingleValueDropDownController tenantDropdownCont;
 
   void showAsBottomSheet(BuildContext context) async {
     final result = await showSlidingBottomSheet(
@@ -68,11 +89,11 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                         height: 7.5.h,
                         decoration: BoxDecoration(
                             boxShadow: [
-
                             ]
                         ),
                         child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 5.w, vertical: 2.h),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -86,14 +107,16 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                                     fontSize: 17.5.sp,
                                   ),)),
 
-                              Text('Fill In Payment Fields', style: AppTheme
+                              Text('Add Payment', style: AppTheme
                                   .darkBlueTitle2,),
 
                               Bounceable(
-                                  onTap: ()async{
+                                  onTap: () async {
                                     Get.back();
-                                    Get.snackbar('SUCCESS', 'Payment added to your property',
-                                      titleText: Text('SUCCESS', style: AppTheme.greenTitle1,),
+                                    Get.snackbar('SUCCESS',
+                                      'Payment added to your property',
+                                      titleText: Text('SUCCESS',
+                                        style: AppTheme.greenTitle1,),
                                     );
                                   },
                                   child: Text('Add', style: TextStyle(
@@ -110,43 +133,61 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 5.w,
                           vertical: 1.h),
-                      child:  SingleChildScrollView(
+                      child: SingleChildScrollView(
                         child: Column(
                           children: [
 
-                      //       Row(
-                      //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //         children: [
-                      //           Bounceable(
-                      //               onTap: (){
-                      //                 Get.back();
-                      //               },
-                      //               child: Text('Cancel', style: TextStyle(
-                      //                 color: Colors.red,
-                      //               ),)),
-                      //
-                      // Text('Fill In Payment Fileds', style: AppTheme.darkBlueText1,),
-                      //           Bounceable(
-                      //               onTap: ()async{
-                      //                   Get.back();
-                      //                   Get.snackbar('SUCCESS', 'Payment added to your property',
-                      //                   titleText: Text('SUCCESS', style: AppTheme.greenTitle1,),
-                      //                 );
-                      //               },
-                      //               child: Text('Add', style: TextStyle(
-                      //                   color: AppTheme.primaryColor
-                      //               ),)),
-                      //         ],
-                      //       ),
+                            //       Row(
+                            //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            //         children: [
+                            //           Bounceable(
+                            //               onTap: (){
+                            //                 Get.back();
+                            //               },
+                            //               child: Text('Cancel', style: TextStyle(
+                            //                 color: Colors.red,
+                            //               ),)),
+                            //
+                            // Text('Fill In Payment Fileds', style: AppTheme.darkBlueText1,),
+                            //           Bounceable(
+                            //               onTap: ()async{
+                            //                   Get.back();
+                            //                   Get.snackbar('SUCCESS', 'Payment added to your property',
+                            //                   titleText: Text('SUCCESS', style: AppTheme.greenTitle1,),
+                            //                 );
+                            //               },
+                            //               child: Text('Add', style: TextStyle(
+                            //                   color: AppTheme.primaryColor
+                            //               ),)),
+                            //         ],
+                            //       ),
                             SizedBox(height: 1.h,),
 
-                            CustomGenericDropdown<String>(
-                              hintText: 'Select Unit',
-                              menuItems: widget.propertyDetailsOptionsController.unitList,
-                              onChanged: (value){
 
-                              },
-                            ),
+                            Obx(() {
+                              return SearchableTenantDropDown<TenantModel>(
+                                hintText: 'Tenant',
+                                menuItems: tenantController.tenantList.value,
+                                controller: tenantDropdownCont,
+                                onChanged: (value) {
+                                  print(value.value.id);
+                                  tenantController.setTenantId(value.value.id);
+                                  print(
+                                      'MY TEnant is ${tenantController.tenantId
+                                          .value}');
+                                },
+                              );
+                            }),
+
+                            Obx(() {
+                              return CustomApiUnitDropdown(
+                                hintText: 'Unit',
+                                menuItems: tenantController.unitList.value,
+                                onChanged: (value) {
+                                  tenantController.setUnitId(value!.id);
+                                },
+                              );
+                            }),
 
                             SizedBox(height: 1.h,),
 
@@ -158,7 +199,7 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                                   child: CustomGenericDropdown<String>(
                                     hintText: 'From',
                                     menuItems: [],
-                                    onChanged: (value){
+                                    onChanged: (value) {
 
                                     },
                                   ),
@@ -169,7 +210,7 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                                   child: CustomGenericDropdown<String>(
                                     hintText: 'To',
                                     menuItems: [],
-                                    onChanged: (value){
+                                    onChanged: (value) {
 
                                     },
                                   ),
@@ -196,19 +237,27 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                             ),
 
 
-
                             SizedBox(height: 1.h,),
-
+                            //
                             // AppButton(
                             //   title: 'Add Payment',
                             //   color: AppTheme.primaryColor,
-                            //   function: (){
-                            //     Get.back();
-                            //     Get.snackbar('SUCCESS', 'Payment added to your property',
-                            //       titleText: Text('SUCCESS', style: AppTheme.greenTitle1,),
-                            //     );
+                            //   function: () async {
+                            //     tenantController.getTenantUnits();
                             //   },
                             // ),
+                            //
+                            // Obx(() {
+                            //   return tenantController.isTenantUnitListLoading.value
+                            //       ? Center(child: CircularProgressIndicator(),)
+                            //       : ListView.builder(
+                            //     itemCount: tenantController.tenantUnitList.length,
+                            //       shrinkWrap: true,
+                            //       itemBuilder: (context, index) {
+                            //         var unit = tenantController.tenantUnitList[index];
+                            //         return Card(child: Text(unit.amount.toString()));
+                            //       });
+                            // }),
 
                           ],
                         ),
@@ -225,11 +274,16 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
     print(result); // This is the result.
   }
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    tenantDropdownCont = SingleValueDropDownController();
+  }
+
 
   @override
   Widget build(BuildContext context) {
-
-
     return Padding(
       padding: EdgeInsets.only(top: 5.h),
       child: Column(
@@ -256,7 +310,7 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                 child: AppButton(
                     title: 'Add Payment',
                     color: AppTheme.primaryColor,
-                    function: (){
+                    function: () {
                       showAsBottomSheet(context);
                     }),
               ),
@@ -265,26 +319,29 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
           ),
 
           ListView.builder(
-            shrinkWrap: true,
-            itemCount: listSample.length,
-              itemBuilder: (context, index){
-              var payment = listSample[index];
+              shrinkWrap: true,
+              itemCount: listSample.length,
+              itemBuilder: (context, index) {
+                var payment = listSample[index];
 
-              return Card(
-                child: ListTile(
-                  title: Text(payment['tenant'].toString(), style: AppTheme.appTitle3,),
-                  subtitle: Text('Unit ${payment['unit']}', style: AppTheme.subText,),
-                  trailing: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text('${amountFormatter.format(payment['amount'].toString())}/=', style: AppTheme.greenTitle1,),
-                      Text('for ${index+1} ${payment['period'].toString()}')
-                    ],
+                return Card(
+                  child: ListTile(
+                    title: Text(
+                      payment['tenant'].toString(), style: AppTheme.appTitle3,),
+                    subtitle: Text(
+                      'Unit ${payment['unit']}', style: AppTheme.subText,),
+                    trailing: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('${amountFormatter.format(payment['amount']
+                            .toString())}/=', style: AppTheme.greenTitle1,),
+                        Text('for ${index + 1} ${payment['period'].toString()}')
+                      ],
+                    ),
                   ),
-                ),
-              );
-          }),
+                );
+              }),
 
 
         ],

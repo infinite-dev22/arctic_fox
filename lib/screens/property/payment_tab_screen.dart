@@ -54,8 +54,8 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
   final TextEditingController amountController = TextEditingController();
   final TextEditingController balanceController = TextEditingController();
 
-   TextEditingController date1Controller = TextEditingController();
-   TextEditingController date2Controller = TextEditingController();
+  TextEditingController date1Controller = TextEditingController();
+  TextEditingController date2Controller = TextEditingController();
 
   final Rx<DateTime> selectedDate1 = Rx<DateTime>(DateTime.now());
   final Rx<DateTime> selectedDate2 = Rx<DateTime>(DateTime.now());
@@ -184,63 +184,85 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                                   print(
                                       'MY TEnant is ${tenantController.tenantId
                                           .value}');
-                                  tenantController.getTenantUnits(null).then((value) {
-
-                                    amountController.text = tenantController.tenantUnitAmount.toString();
-                                    print('MY Amount Controller sis == ${tenantController.specificTenantUnits.value.first.amount}');
-                                    date1Controller.text = tenantController.tenantUnitList.value.first.fromDate;
-                                    date2Controller.text = tenantController.tenantUnitList.value.first.toDate;
+                                  tenantController.getTenantUnits(null).then((
+                                      value) {
+                                    amountController.text =
+                                        tenantController.tenantUnitAmount
+                                            .toString();
+                                    print(
+                                        'MY Amount Controller sis == ${tenantController
+                                            .specificTenantUnits.value.first
+                                            .amount}');
+                                    date1Controller.text =
+                                        tenantController.tenantUnitList.value
+                                            .first.fromDate;
+                                    date2Controller.text =
+                                        tenantController.tenantUnitList.value
+                                            .first.toDate;
 
                                     print('DATE1 = ${date1Controller.text}');
                                     print('DATE2 = ${date2Controller.text}');
-
-
                                   });
-
                                 },
                               );
                             }),
 
                             Obx(() {
                               return CustomApiUnitDropdown(
-                                hintText: tenantController.unitNumber.value.isEmpty ? 'Unit' : tenantController.unitNumber.value,
-                                menuItems: tenantController.specificTenantUnits.value,
+                                hintText: tenantController.unitNumber.value
+                                    .isEmpty ? 'Unit' : tenantController
+                                    .unitNumber.value,
+                                menuItems: tenantController.specificTenantUnits
+                                    .value,
                                 onChanged: (value) {
                                   tenantController.setUnitId(value!.id);
-                                  tenantController.setAmountForSpecificTenantUnit(value);
-                                  amountController.text = tenantController.tenantUnitAmount.toString();
+                                  tenantController
+                                      .setAmountForSpecificTenantUnit(value);
+                                  amountController.text =
+                                      tenantController.tenantUnitAmount
+                                          .toString();
                                 },
 
                               );
                             }),
 
-                            SizedBox(height: 1.h,),
+                            // SizedBox(height: 1.h,),
 
-                            DateTextField2(
-                              style: TextStyle(color: Colors.transparent),
-                              onTap: () {
-                                // _selectDate1(context);
-                              },
-                              controller: date1Controller,
-                              hintText: "From",
-                              obscureText: false,
-                              tenantController: tenantController,
-                            ),
+                            Obx(() {
+                              return tenantController.tenantUnitList.value
+                                  .isEmpty ? Container() : DateTextField2(
+                                style: TextStyle(color: Colors.transparent),
+                                onTap: () {
+                                  // _selectDate1(context);
+                                },
+                                controller: date1Controller,
+                                hintText: "From",
+                                obscureText: false,
+                                tenantController: tenantController,
+                              );
+                            }),
 
-                            SizedBox(height: 1.h,),
+                            Obx(() {
+                              return tenantController.tenantUnitList.value
+                                  .isEmpty ? Container() : SizedBox(
+                                height: 1.h,);
+                            }),
 
-                            DateTextField2(
-                              style: TextStyle(color: Colors.transparent),
-                              onTap: () {
-                                // _selectDate2(context);
-                              },
-                              controller: date2Controller,
+                            Obx(() {
+                              return tenantController.tenantUnitList.value
+                                  .isEmpty ? Container() : DateTextField2(
+                                style: TextStyle(color: Colors.transparent),
+                                onTap: () {
+                                  // _selectDate2(context);
+                                },
+                                controller: date2Controller,
 
-                              hintText: "To",
-                              obscureText: false,
-                              enabled: false,
-                              tenantController: tenantController,
-                            ),
+                                hintText: "To",
+                                obscureText: false,
+                                enabled: false,
+                                tenantController: tenantController,
+                              );
+                            }),
 
                             // SizedBox(
                             //   height: 1.h,
@@ -274,7 +296,9 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                             //   ],
                             // ),
 
-                            SizedBox(height: 1.h,),
+                            Obx(() {
+                              return tenantController.tenantUnitList.value.isEmpty ? Container() : SizedBox(height: 1.h,);
+                            }),
 
                             AuthTextField(
                               controller: amountController,
@@ -309,19 +333,24 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                               title: 'Add Payment',
                               color: AppTheme.primaryColor,
                               function: () async {
-                                tenantController.getTenantUnits(null);
+                                print(date1Controller.text);
+                                // tenantController.getTenantUnits(null);
                               },
                             ),
 
                             Obx(() {
-                              return tenantController.isTenantUnitListLoading.value
+                              return tenantController.isTenantUnitListLoading
+                                  .value
                                   ? Center(child: CircularProgressIndicator(),)
                                   : ListView.builder(
-                                itemCount: tenantController.tenantUnitList.length,
+                                  itemCount: tenantController.tenantUnitList
+                                      .length,
                                   shrinkWrap: true,
                                   itemBuilder: (context, index) {
-                                    var unit = tenantController.tenantUnitList[index];
-                                    return Card(child: Text(unit.amount.toString()));
+                                    var unit = tenantController
+                                        .tenantUnitList[index];
+                                    return Card(
+                                        child: Text(unit.amount.toString()));
                                   });
                             }),
 
@@ -345,7 +374,9 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
     // TODO: implement initState
     super.initState();
     tenantDropdownCont = SingleValueDropDownController();
-    selectedDate2.value = DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day);
+    selectedDate2.value = DateTime(
+        selectedDate1.value.year, selectedDate1.value.month,
+        selectedDate1.value.day);
     // date1Controller  = TextEditingController(text: '${DateFormat('MM/dd/yyyy').format(selectedDate1.value)}');
     // date2Controller = TextEditingController();
   }

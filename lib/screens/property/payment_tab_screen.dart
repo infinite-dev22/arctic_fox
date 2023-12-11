@@ -4,11 +4,13 @@ import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/controllers/property_options/property_details_options_controller.dart';
 import 'package:smart_rent/controllers/tenants/tenant_controller.dart';
 import 'package:smart_rent/controllers/units/unit_controller.dart';
 import 'package:smart_rent/models/tenant/tenant_model.dart';
+import 'package:smart_rent/models/unit/unit_model.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 import 'package:smart_rent/utils/extra.dart';
 import 'package:smart_rent/widgets/app_button.dart';
@@ -51,6 +53,13 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
   final TextEditingController paidController = TextEditingController();
   final TextEditingController amountController = TextEditingController();
   final TextEditingController balanceController = TextEditingController();
+
+   TextEditingController date1Controller = TextEditingController();
+   TextEditingController date2Controller = TextEditingController();
+
+  final Rx<DateTime> selectedDate1 = Rx<DateTime>(DateTime.now());
+  final Rx<DateTime> selectedDate2 = Rx<DateTime>(DateTime.now());
+  final Rx<DateTime> selectedDate3 = Rx<DateTime>(DateTime.now());
 
   final TextEditingController searchController = TextEditingController();
 
@@ -175,47 +184,103 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                                   print(
                                       'MY TEnant is ${tenantController.tenantId
                                           .value}');
+                                  tenantController.getTenantUnits(null).then((value) {
+
+                                    amountController.text = tenantController.tenantUnitAmount.toString();
+                                    print('MY Amount Controller sis == ${tenantController.specificTenantUnits.value.first.amount}');
+                                    date1Controller.text = tenantController.tenantUnitList.value.first.fromDate;
+                                    date2Controller.text = tenantController.tenantUnitList.value.first.toDate;
+
+                                    print('DATE1 = ${date1Controller.text}');
+                                    print('DATE2 = ${date2Controller.text}');
+
+
+                                  });
+
                                 },
                               );
                             }),
 
                             Obx(() {
                               return CustomApiUnitDropdown(
-                                hintText: 'Unit',
-                                menuItems: tenantController.unitList.value,
+                                hintText: tenantController.unitNumber.value.isEmpty ? 'Unit' : tenantController.unitNumber.value,
+                                menuItems: tenantController.specificTenantUnits.value,
                                 onChanged: (value) {
                                   tenantController.setUnitId(value!.id);
+                                  tenantController.setAmountForSpecificTenantUnit(value);
+                                  amountController.text = tenantController.tenantUnitAmount.toString();
                                 },
+
                               );
                             }),
 
                             SizedBox(height: 1.h,),
 
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                SizedBox(
-                                  width: 42.5.w,
-                                  child: CustomGenericDropdown<String>(
-                                    hintText: 'From',
-                                    menuItems: [],
-                                    onChanged: (value) {
+                            DateTextField2(
+                              style: TextStyle(color: Colors.transparent),
+                              onTap: () {
+                                // _selectDate1(context);
+                              },
+                              controller: date1Controller,
+                              hintText: "From",
+                              obscureText: false,
+                              tenantController: tenantController,
+                            ),
 
-                                    },
-                                  ),
-                                ),
+                            SizedBox(height: 1.h,),
 
-                                SizedBox(
-                                  width: 42.5.w,
-                                  child: CustomGenericDropdown<String>(
-                                    hintText: 'To',
-                                    menuItems: [],
-                                    onChanged: (value) {
+                            DateTextField2(
+                              style: TextStyle(color: Colors.transparent),
+                              onTap: () {
+                                // _selectDate2(context);
+                              },
+                              controller: date2Controller,
 
-                                    },
-                                  ),
-                                ),
-                              ],
+                              hintText: "To",
+                              obscureText: false,
+                              enabled: false,
+                              tenantController: tenantController,
+                            ),
+
+                            // SizedBox(
+                            //   height: 1.h,
+                            // ),
+                            //
+                            //
+                            // Row(
+                            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            //   children: [
+                            //     SizedBox(
+                            //       width: 42.5.w,
+                            //       child: CustomGenericDropdown<String>(
+                            //         hintText: 'From',
+                            //         menuItems: [],
+                            //         onChanged: (value) {
+                            //
+                            //         },
+                            //       ),
+                            //     ),
+                            //
+                            //     SizedBox(
+                            //       width: 42.5.w,
+                            //       child: CustomGenericDropdown<String>(
+                            //         hintText: 'To',
+                            //         menuItems: [],
+                            //         onChanged: (value) {
+                            //
+                            //         },
+                            //       ),
+                            //     ),
+                            //   ],
+                            // ),
+
+                            SizedBox(height: 1.h,),
+
+                            AuthTextField(
+                              controller: amountController,
+                              hintText: 'Amount',
+                              obscureText: false,
+                              keyBoardType: TextInputType.number,
                             ),
 
                             SizedBox(height: 1.h,),
@@ -226,6 +291,7 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                               obscureText: false,
                               keyBoardType: TextInputType.number,
                             ),
+
 
                             SizedBox(height: 1.h,),
 
@@ -238,26 +304,26 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
 
 
                             SizedBox(height: 1.h,),
-                            //
-                            // AppButton(
-                            //   title: 'Add Payment',
-                            //   color: AppTheme.primaryColor,
-                            //   function: () async {
-                            //     tenantController.getTenantUnits();
-                            //   },
-                            // ),
-                            //
-                            // Obx(() {
-                            //   return tenantController.isTenantUnitListLoading.value
-                            //       ? Center(child: CircularProgressIndicator(),)
-                            //       : ListView.builder(
-                            //     itemCount: tenantController.tenantUnitList.length,
-                            //       shrinkWrap: true,
-                            //       itemBuilder: (context, index) {
-                            //         var unit = tenantController.tenantUnitList[index];
-                            //         return Card(child: Text(unit.amount.toString()));
-                            //       });
-                            // }),
+
+                            AppButton(
+                              title: 'Add Payment',
+                              color: AppTheme.primaryColor,
+                              function: () async {
+                                tenantController.getTenantUnits(null);
+                              },
+                            ),
+
+                            Obx(() {
+                              return tenantController.isTenantUnitListLoading.value
+                                  ? Center(child: CircularProgressIndicator(),)
+                                  : ListView.builder(
+                                itemCount: tenantController.tenantUnitList.length,
+                                  shrinkWrap: true,
+                                  itemBuilder: (context, index) {
+                                    var unit = tenantController.tenantUnitList[index];
+                                    return Card(child: Text(unit.amount.toString()));
+                                  });
+                            }),
 
                           ],
                         ),
@@ -279,6 +345,9 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
     // TODO: implement initState
     super.initState();
     tenantDropdownCont = SingleValueDropDownController();
+    selectedDate2.value = DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day);
+    // date1Controller  = TextEditingController(text: '${DateFormat('MM/dd/yyyy').format(selectedDate1.value)}');
+    // date2Controller = TextEditingController();
   }
 
 

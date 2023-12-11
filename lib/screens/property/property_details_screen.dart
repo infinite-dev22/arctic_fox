@@ -7,6 +7,7 @@ import 'package:photo_view/photo_view_gallery.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/controllers/property_options/property_details_options_controller.dart';
 import 'package:smart_rent/controllers/property_options/property_options_controller.dart';
+import 'package:smart_rent/controllers/tenants/tenant_controller.dart';
 import 'package:smart_rent/controllers/units/unit_controller.dart';
 import 'package:smart_rent/screens/property/floor_tab_screen.dart';
 import 'package:smart_rent/screens/property/payment_tab_screen.dart';
@@ -21,8 +22,9 @@ import 'package:smart_rent/widgets/property_options_widget.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class PropertyDetailsScreen extends StatefulWidget {
+  final TenantController tenantController;
   final UnitController unitController;
-  const PropertyDetailsScreen({super.key, required this.unitController});
+  const PropertyDetailsScreen({super.key, required this.unitController, required this.tenantController});
 
   @override
   State<PropertyDetailsScreen> createState() => _PropertyDetailsScreenState();
@@ -76,6 +78,7 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> with Tick
                                       PaymentTabScreen(
                                         propertyDetailsOptionsController: propertyDetailsOptionsController,
                                         unitController: widget.unitController,
+
                                       ),
                                     ],
                                   ),

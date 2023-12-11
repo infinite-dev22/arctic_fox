@@ -795,6 +795,7 @@ class CustomApiUnitDropdown<T extends SmartUnitModel> extends StatelessWidget {
         SizedBox(
           height: 50,
           child: DropdownButtonFormField2<T>(
+            key: UniqueKey(),
             isExpanded: true,
             decoration: InputDecoration(
               contentPadding: const EdgeInsets.symmetric(vertical: 16),

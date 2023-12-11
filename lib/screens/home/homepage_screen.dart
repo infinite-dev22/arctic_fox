@@ -49,7 +49,7 @@ class HomePage extends StatelessWidget {
                     color: AppTheme.greenCardColor, total: 8,
                     title: 'Total Property',
                     function: () {
-                      Get.to(() => PropertyListScreen(unitController: unitController,),
+                      Get.to(() => PropertyListScreen(unitController: unitController, tenantController: tenantController,),
                           transition: Transition.zoom);
                     },),
                   Obx(() {

@@ -25,10 +25,14 @@ class TenantController extends GetxController {
   RxList<TenantModel> tenantList = <TenantModel>[].obs;
   RxList<BusinessTypeModel> businessList = <BusinessTypeModel>[].obs;
   RxList<TenantUnitModel> tenantUnitList = <TenantUnitModel>[].obs;
+  RxList<UnitModel> specificTenantUnits = <UnitModel>[].obs;
 
 
   RxList<PaymentScheduleModel> paymentList = <PaymentScheduleModel>[].obs;
 
+
+  var tenantUnitAmount = 0.obs;
+  var unitNumber = ''.obs;
 
   var companyProfileWithContact = TenantProfileContactModel().obs;
 
@@ -129,6 +133,11 @@ class TenantController extends GetxController {
     print('New Unit Id is $id');
   }
 
+  setUnitNumber(String number){
+    unitNumber.value = number;
+    print('New Unit Number is $number');
+  }
+
   setTenantId(int id){
     tenantId.value = id;
     print('New Tenant Id is $id');
@@ -144,6 +153,16 @@ class TenantController extends GetxController {
     print('New Payment Schedule Id is $id');
   }
 
+  setFromDate(String date1){
+    tenantUnitList.value.first.fromDate = date1;
+
+    print('NEEWWEEST DATE ==${date1}');
+  }
+
+  setAmountForSpecificTenantUnit(UnitModel? unitModel){
+    tenantUnitAmount.value = unitModel == null ? specificTenantUnits.value.first.amount : unitModel.amount;
+    print('Tenant Unit Amount == ${tenantUnitAmount.value}');
+}
 
   fetchAllPayments() async {
 
@@ -553,7 +572,7 @@ class TenantController extends GetxController {
   }
 
 
-  Future<void> getTenantUnits() async {
+  Future<void> getTenantUnits(UnitModel? unitModel) async {
     isTenantUnitListLoading(true);
 
     // final data = await AppConfig().supaBaseClient.from('tenant_units')
@@ -581,8 +600,14 @@ class TenantController extends GetxController {
 
       print('My Contained Data is ${containedResponse}');
       final getAllUnitData = containedResponse as List<dynamic>;
+      specificTenantUnits.assignAll(
+          getAllUnitData.map((unit) => UnitModel.fromJson(unit)).toList());
 
-
+      print('SPEcific tenants ==${specificTenantUnits.value}');
+      // tenantUnitAmount.value = unitModel!.amount ?? specificTenantUnits.value.first.amount;
+      setAmountForSpecificTenantUnit(unitModel);
+      setUnitNumber(specificTenantUnits.value.first.unitNumber);
+      print('SPEcific amount ==${tenantUnitAmount.value}');
       print(getAllUnitData);
 
       print(response.length);

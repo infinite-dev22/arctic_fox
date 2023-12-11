@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:smart_rent/controllers/tenants/tenant_controller.dart';
 import 'package:smart_rent/controllers/units/unit_controller.dart';
 import 'package:smart_rent/screens/property/add_property_screen.dart';
 import 'package:smart_rent/screens/property/property_details_screen.dart';
@@ -13,8 +14,9 @@ import 'package:smart_rent/widgets/app_search_textfield.dart';
 import 'package:smart_rent/widgets/property_card_widget.dart';
 
 class PropertyListScreen extends StatefulWidget {
+  final TenantController tenantController;
   final UnitController unitController;
-  const PropertyListScreen({super.key, required this.unitController});
+  const PropertyListScreen({super.key, required this.unitController, required this.tenantController});
 
   @override
   State<PropertyListScreen> createState() => _PropertyListScreenState();
@@ -80,7 +82,7 @@ class _PropertyListScreenState extends State<PropertyListScreen> {
                   return Bounceable(
                     onTap: (){
 
-                      Get.to(() => PropertyDetailsScreen(unitController: widget.unitController,));
+                      Get.to(() => PropertyDetailsScreen(unitController: widget.unitController, tenantController: widget.tenantController,));
                     },
                       child: SlideInUp(child: PropertyCardWidget()));
               }),

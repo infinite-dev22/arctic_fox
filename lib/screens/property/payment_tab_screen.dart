@@ -327,32 +327,32 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                             ),
 
 
-                            SizedBox(height: 1.h,),
-
-                            AppButton(
-                              title: 'Add Payment',
-                              color: AppTheme.primaryColor,
-                              function: () async {
-                                print(date1Controller.text);
-                                // tenantController.getTenantUnits(null);
-                              },
-                            ),
-
-                            Obx(() {
-                              return tenantController.isTenantUnitListLoading
-                                  .value
-                                  ? Center(child: CircularProgressIndicator(),)
-                                  : ListView.builder(
-                                  itemCount: tenantController.tenantUnitList
-                                      .length,
-                                  shrinkWrap: true,
-                                  itemBuilder: (context, index) {
-                                    var unit = tenantController
-                                        .tenantUnitList[index];
-                                    return Card(
-                                        child: Text(unit.amount.toString()));
-                                  });
-                            }),
+                            // SizedBox(height: 1.h,),
+                            //
+                            // AppButton(
+                            //   title: 'Add Payment',
+                            //   color: AppTheme.primaryColor,
+                            //   function: () async {
+                            //     print(date1Controller.text);
+                            //     // tenantController.getTenantUnits(null);
+                            //   },
+                            // ),
+                            //
+                            // Obx(() {
+                            //   return tenantController.isTenantUnitListLoading
+                            //       .value
+                            //       ? Center(child: CircularProgressIndicator(),)
+                            //       : ListView.builder(
+                            //       itemCount: tenantController.tenantUnitList
+                            //           .length,
+                            //       shrinkWrap: true,
+                            //       itemBuilder: (context, index) {
+                            //         var unit = tenantController
+                            //             .tenantUnitList[index];
+                            //         return Card(
+                            //             child: Text(unit.amount.toString()));
+                            //       });
+                            // }),
 
                           ],
                         ),

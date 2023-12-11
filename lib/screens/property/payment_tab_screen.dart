@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:date_picker_plus/date_picker_plus.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
@@ -64,6 +65,11 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
   final TextEditingController searchController = TextEditingController();
 
   late SingleValueDropDownController tenantDropdownCont;
+
+
+  final Rx<String> fitUnit = Rx<String>('');
+  final Rx<int> fitValue = Rx<int>(0);
+
 
   void showAsBottomSheet(BuildContext context) async {
     final result = await showSlidingBottomSheet(
@@ -200,9 +206,72 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                                         tenantController.tenantUnitList.value
                                             .first.toDate;
 
+                                    selectedDate1.value = DateTime.parse(
+                                        tenantController.tenantUnitList.value
+                                            .first.fromDate);
+                                    selectedDate2.value = DateTime.parse(
+                                        tenantController.tenantUnitList.value
+                                            .first.toDate);
+
                                     print('DATE1 = ${date1Controller.text}');
                                     print('DATE2 = ${date2Controller.text}');
+
+                                    print('RX DATE1 = ${selectedDate1}');
+                                    print('RX DATE2 = ${selectedDate2}');
+
+                                    // Define two DateTime objects representing the two dates
+                                    // DateTime date1 = DateTime(2023, 1, 11);
+                                    // DateTime date2 = DateTime(2024, 1, 11);
+
+                                    // Calculate the duration between the two dates
+                                    Duration difference = selectedDate2.value
+                                        .difference(selectedDate1.value);
+                                    // Duration difference = DateTime.parse(date1Controller.text).difference(DateTime.parse(date2Controller.text));
+
+                                    // Extract individual components (days, weeks, months, years) from the duration
+                                    int daysDifference = difference.inDays;
+                                    int weeksDifference = difference.inDays ~/
+                                        7; // 7 days in a week
+                                    int monthsDifference = difference.inDays ~/
+                                        30; // Assuming an average of 30 days in a month
+                                    int yearsDifference = difference.inDays ~/
+                                        365; // Assuming an average of 365 days in a year
+
+                                    // Determine the best fit unit
+                                    String bestFitUnit;
+                                    int bestFitValue;
+
+                                    if (yearsDifference > 0) {
+                                      bestFitUnit = 'year';
+                                      bestFitValue = yearsDifference;
+                                      fitUnit.value = bestFitUnit;
+                                      fitValue.value = bestFitValue;
+                                    } else if (monthsDifference > 0) {
+                                      bestFitUnit = 'month';
+                                      bestFitValue = monthsDifference;
+                                      fitUnit.value = bestFitUnit;
+                                      fitValue.value = bestFitValue;
+                                    } else if (weeksDifference > 0) {
+                                      bestFitUnit = 'week';
+                                      bestFitValue = weeksDifference;
+                                      fitUnit.value = bestFitUnit;
+                                      fitValue.value = bestFitValue;
+                                    } else {
+                                      bestFitUnit = 'day';
+                                      bestFitValue = daysDifference;
+                                      fitUnit.value = bestFitUnit;
+                                      fitValue.value = bestFitValue;
+                                    }
+
+
+                                    print(
+                                        'Best fit difference: $fitValue $fitUnit(s)');
                                   });
+
+                                  amountController.text = (int.parse(tenantController
+                                      .specificTenantUnits.value.first
+                                      .amount
+                                      .toString()) * fitValue.value).toString();
                                 },
                               );
                             }),
@@ -218,9 +287,8 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                                   tenantController.setUnitId(value!.id);
                                   tenantController
                                       .setAmountForSpecificTenantUnit(value);
-                                  amountController.text =
-                                      tenantController.tenantUnitAmount
-                                          .toString();
+                                  amountController.text = (int.parse(tenantController.tenantUnitAmount
+                                      .toString()) * fitValue.value).toString();
                                 },
 
                               );
@@ -297,34 +365,85 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                             // ),
 
                             Obx(() {
-                              return tenantController.tenantUnitList.value.isEmpty ? Container() : SizedBox(height: 1.h,);
+                              return tenantController.tenantUnitList.value
+                                  .isEmpty ? Container() : SizedBox(
+                                height: 1.h,);
                             }),
 
-                            AuthTextField(
-                              controller: amountController,
-                              hintText: 'Amount',
-                              obscureText: false,
-                              keyBoardType: TextInputType.number,
-                            ),
+                            Obx(() {
+                              return AmountTextField(
+                                controller: amountController,
+                                hintText: 'Amount',
+                                obscureText: false,
+                                keyBoardType: TextInputType.number,
+                                enabled: false,
+                                suffix: fitValue.value == 0 ? '' : '$fitValue $fitUnit',
+                              );
+                            }),
 
                             SizedBox(height: 1.h,),
 
-                            AuthTextField(
-                              controller: paidController,
-                              hintText: 'Paid',
-                              obscureText: false,
-                              keyBoardType: TextInputType.number,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                SizedBox(
+                                  child: AuthTextField(
+                                    controller: paidController,
+                                    hintText: 'Paid',
+                                    obscureText: false,
+                                    keyBoardType: TextInputType.number,
+                                    onChanged: (value) {
+                                      var myPaid = int.parse(value);
+                                      print(myPaid);
+                                      balanceController.text =
+                                          (int.parse(amountController.text) - myPaid)
+                                              .toString();
+                                      print('MY Balance == ${balanceController}');
+                                    },
+                                  ),
+                                  width: 40.w,
+                                ),
+
+
+
+                                SizedBox(
+                                  width: 40.w,
+                                  child: AuthTextField(
+                                    controller: balanceController,
+                                    hintText: 'Balance',
+                                    obscureText: false,
+                                    keyBoardType: TextInputType.number,
+                                    enabled: false,
+                                  ),
+                                ),
+                              ],
                             ),
 
-
-                            SizedBox(height: 1.h,),
-
-                            AuthTextField(
-                              controller: balanceController,
-                              hintText: 'Balance',
-                              obscureText: false,
-                              keyBoardType: TextInputType.number,
-                            ),
+                            // AuthTextField(
+                            //   controller: paidController,
+                            //   hintText: 'Paid',
+                            //   obscureText: false,
+                            //   keyBoardType: TextInputType.number,
+                            //   onChanged: (value) {
+                            //     var myPaid = int.parse(value);
+                            //     print(myPaid);
+                            //     balanceController.text =
+                            //         (int.parse(amountController.text) - myPaid)
+                            //             .toString();
+                            //     print('MY Balance == ${balanceController}');
+                            //   },
+                            // ),
+                            //
+                            //
+                            // SizedBox(height: 1.h,),
+                            //
+                            // AuthTextField(
+                            //   controller: balanceController,
+                            //   hintText: 'Balance',
+                            //   obscureText: false,
+                            //   keyBoardType: TextInputType.number,
+                            //   enabled: false,
+                            // ),
 
 
                             // SizedBox(height: 1.h,),
@@ -333,10 +452,46 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                             //   title: 'Add Payment',
                             //   color: AppTheme.primaryColor,
                             //   function: () async {
-                            //     print(date1Controller.text);
-                            //     // tenantController.getTenantUnits(null);
+                            //     //
+                            //     // // Define two DateTime objects representing the two dates
+                            //     // // DateTime date1 = DateTime(2023, 1, 11);
+                            //     // // DateTime date2 = DateTime(2024, 1, 11);
+                            //     //
+                            //     // // Calculate the duration between the two dates
+                            //     // Duration difference = selectedDate2.value.difference(selectedDate1.value);
+                            //     // // Duration difference = DateTime.parse(date1Controller.text).difference(DateTime.parse(date2Controller.text));
+                            //     //
+                            //     // // Extract individual components (days, weeks, months, years) from the duration
+                            //     // int daysDifference = difference.inDays;
+                            //     // int weeksDifference = difference.inDays ~/ 7; // 7 days in a week
+                            //     // int monthsDifference = difference.inDays ~/ 30; // Assuming an average of 30 days in a month
+                            //     // int yearsDifference = difference.inDays ~/ 365; // Assuming an average of 365 days in a year
+                            //     //
+                            //     // // Determine the best fit unit
+                            //     // String bestFitUnit;
+                            //     // int bestFitValue;
+                            //     //
+                            //     // if (yearsDifference > 0) {
+                            //     //   bestFitUnit = 'year';
+                            //     //   bestFitValue = yearsDifference;
+                            //     // } else if (monthsDifference > 0) {
+                            //     //   bestFitUnit = 'month';
+                            //     //   bestFitValue = monthsDifference;
+                            //     // } else if (weeksDifference > 0) {
+                            //     //   bestFitUnit = 'week';
+                            //     //   bestFitValue = weeksDifference;
+                            //     // } else {
+                            //     //   bestFitUnit = 'day';
+                            //     //   bestFitValue = daysDifference;
+                            //     // }
+                            //     //
+                            //     // print('Best fit difference: $bestFitValue $bestFitUnit(s)');
+                            //     // // print(date1Controller.text);
+                            //     // // tenantController.getTenantUnits(null);
                             //   },
                             // ),
+
+
                             //
                             // Obx(() {
                             //   return tenantController.isTenantUnitListLoading
@@ -381,6 +536,14 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
     // date2Controller = TextEditingController();
   }
 
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    paidController.dispose();
+    amountController.dispose();
+    balanceController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -260,7 +260,7 @@ class _UpdateIndividualTenantScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.appBgColor,
+      backgroundColor: AppTheme.whiteColor,
       appBar: AppImageHeader(
         title: 'assets/auth/logo.png',
         isTitleCentred: true,

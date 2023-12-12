@@ -85,7 +85,7 @@ class _RoomTabScreenState extends State<RoomTabScreen> {
             ),
             builder: (context, state) {
               return Material(
-                color: AppTheme.appBgColor,
+                color: AppTheme.whiteColor,
                 child: Column(
                   children: [
 
@@ -350,7 +350,7 @@ class _RoomTabScreenState extends State<RoomTabScreen> {
                               controller: descriptionController,
                               hintText: 'Description',
                               obscureText: false,
-                              fillColor: AppTheme.textBoxColor,
+                              fillColor: AppTheme.appBgColor,
                             ),
 
                             // SizedBox(height: 2.h,),
@@ -507,7 +507,7 @@ class _RoomTabScreenState extends State<RoomTabScreen> {
 
               children: [
                 SizedBox(
-                  width: 50.w,
+                  width: 75.w,
                   child: AuthTextField(
                     controller: searchController,
                     hintText: 'Search',
@@ -515,16 +515,22 @@ class _RoomTabScreenState extends State<RoomTabScreen> {
                   ),
                 ),
 
-                SizedBox(
-                  width: 30.w,
-                  height: 6.5.h,
-                  child: AppButton(
-                      title: 'Add Unit',
-                      color: AppTheme.primaryColor,
-                      function: () {
-                        showAsBottomSheet(context);
-                      }),
-                ),
+                Align(alignment: Alignment.centerRight, child: Bounceable(
+                    onTap: (){
+                              showAsBottomSheet(context);
+                    },
+                    child: Image.asset('assets/home/add.png', color: AppTheme.primaryColor,))),
+
+                // SizedBox(
+                //   width: 30.w,
+                //   height: 6.5.h,
+                //   child: AppButton(
+                //       title: 'Add Unit',
+                //       color: AppTheme.primaryColor,
+                //       function: () {
+                //         showAsBottomSheet(context);
+                //       }),
+                // ),
 
               ],
             ),

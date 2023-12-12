@@ -87,7 +87,8 @@ class AppTextField extends StatelessWidget {
                 borderSide: borderSide,
                 borderRadius: BorderRadius.circular(15.sp),
               ),
-              fillColor: AppTheme.textBoxColor,
+              // fillColor: AppTheme.textBoxColor,
+              fillColor: AppTheme.appBgColor,
               filled: true,
               hintText: hintText,
               hintStyle: TextStyle(
@@ -173,7 +174,8 @@ class AuthTextField extends StatelessWidget {
             borderSide: borderSide,
             borderRadius: BorderRadius.circular(10),
           ),
-          fillColor: fillColor,
+          // fillColor: fillColor,
+          fillColor: AppTheme.appBgColor,
           filled: true,
           hintText: hintText,
           hintStyle: const TextStyle(
@@ -254,7 +256,8 @@ class AmountTextField extends StatelessWidget {
             borderSide: borderSide,
             borderRadius: BorderRadius.circular(10),
           ),
-          fillColor: fillColor,
+          // fillColor: fillColor,
+          fillColor: AppTheme.appBgColor,
           filled: true,
           hintText: hintText,
           hintStyle: const TextStyle(
@@ -336,7 +339,8 @@ class DateTextField extends StatelessWidget {
             borderSide: borderSide,
             borderRadius: BorderRadius.circular(10),
           ),
-          fillColor: fillColor,
+          // fillColor: fillColor,
+          fillColor: AppTheme.appBgColor,
           filled: true,
           hintText: hintText,
           hintStyle: const TextStyle(

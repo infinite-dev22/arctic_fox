@@ -270,7 +270,7 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.appBgColor,
+      backgroundColor: AppTheme.whiteColor,
       appBar: AppImageHeader(
         title: 'assets/auth/logo.png',
         isTitleCentred: true,
@@ -444,6 +444,7 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                             );
                           }),
 
+                          SizedBox(height: 1.h,),
 
                           AuthTextField(
                               controller: individualDescriptionController,

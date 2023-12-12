@@ -1,6 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:smart_rent/styles/app_theme.dart';
 import 'package:smart_rent/widgets/app_textfield.dart';
 
 class TenantProfileContactForm extends StatelessWidget {
@@ -30,6 +31,7 @@ class TenantProfileContactForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: AppTheme.whiteColor,
       elevation: 20,
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 2.h),

@@ -86,7 +86,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.appBgColor,
+      backgroundColor: AppTheme.whiteColor,
       appBar: AppImageHeader(
         title: 'assets/auth/logo.png',
         isTitleCentred: true,
@@ -178,7 +178,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                   controller: descriptionController,
                   hintText: 'Description',
                   obscureText: false,
-                fillColor: AppTheme.textBoxColor,
+                fillColor: AppTheme.appBgColor,
               ),
 
 

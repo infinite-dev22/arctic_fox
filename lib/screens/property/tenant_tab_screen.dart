@@ -201,7 +201,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
       return SlidingSheetDialog(
         extendBody: false,
         maxWidth: 90.h,
-        color: AppTheme.appBgColor,
+        color: AppTheme.whiteColor,
         duration: Duration(microseconds: 1),
         minHeight: 90.h,
         elevation: 8,
@@ -213,7 +213,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
         ),
         builder: (context, state) {
           return Material(
-            color: AppTheme.appBgColor,
+            color: AppTheme.whiteColor,
             child: Column(
               children: [
 
@@ -801,23 +801,31 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               SizedBox(
-                width: 50.w,
+                width: 75.w,
                 child: AuthTextField(
                   controller: searchController,
                   hintText: 'Search',
                   obscureText: false,
                 ),
               ),
-              SizedBox(
-                width: 30.w,
-                height: 6.5.h,
-                child: AppButton(
-                    title: 'Add Tenant',
-                    color: AppTheme.primaryColor,
-                    function: () {
-                      showAsBottomSheet(context);
-                    }),
-              ),
+
+              Align(alignment: Alignment.centerRight, child: Bounceable(
+                  onTap: (){
+                            showAsBottomSheet(context);
+                  },
+                  child: Image.asset('assets/home/add.png', color: AppTheme.primaryColor,))),
+
+              // SizedBox(
+              //   width: 30.w,
+              //   height: 6.5.h,
+              //   child: AppButton(
+              //       title: 'Add Tenant',
+              //       color: AppTheme.primaryColor,
+              //       function: () {
+              //         showAsBottomSheet(context);
+              //       }),
+              // ),
+
             ],
           ),
           ListView.builder(

@@ -69,7 +69,7 @@ class _CompleteSignUpScreenState extends State<CompleteSignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.appBgColor,
+      backgroundColor: AppTheme.whiteColor,
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 5.w),
@@ -128,6 +128,7 @@ class _CompleteSignUpScreenState extends State<CompleteSignUpScreen> {
                   AppPasswordTextField(
                       controller: passwordEditingController,
                       hintText: 'Password',
+                    fillColor: AppTheme.appBgColor,
                     // validator: passwordValidator,
                   ),
 

@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:smart_rent/config/app_config.dart';
 import 'package:smart_rent/models/business/business_type_model.dart';
 import 'package:smart_rent/models/nationality/nationality_model.dart';
+import 'package:smart_rent/models/payment/tenant_payment_model.dart';
 import 'package:smart_rent/models/payment_schedule/payment_schedule_model.dart';
 import 'package:smart_rent/models/salutation/salutation_model.dart';
 import 'package:smart_rent/models/tenant/tenant_model.dart';
@@ -26,6 +27,7 @@ class TenantController extends GetxController {
   RxList<BusinessTypeModel> businessList = <BusinessTypeModel>[].obs;
   RxList<TenantUnitModel> tenantUnitList = <TenantUnitModel>[].obs;
   RxList<UnitModel> specificTenantUnits = <UnitModel>[].obs;
+  RxList<TenantPaymentModel> tenantPaymentList = <TenantPaymentModel>[].obs;
 
 
   RxList<PaymentScheduleModel> paymentList = <PaymentScheduleModel>[].obs;
@@ -50,6 +52,7 @@ class TenantController extends GetxController {
   var isSpecificTenantLoading = false.obs;
   var isContactDetailsLoading = false.obs;
   var isIndividualTenantDetailsLoading = false.obs;
+  var isTenantPaymentsLoading = false.obs;
 
 
   var uCompanyNin = ''.obs;
@@ -105,7 +108,7 @@ class TenantController extends GetxController {
     fetchAllUnits();
     fetchAllBusinessTypes();
     fetchAllPayments();
-
+listenToTenantPaymentChanges();
   }
 
   setNewGender(String gender){
@@ -369,6 +372,8 @@ class TenantController extends GetxController {
 
 
   }
+
+
 
   // addCompanyTenant(String name, int organisationId, int tenantTypeId, int businessTypeId, String createdBy,
   //     int nationId, String? contactFirstName, String? contactLastName,
@@ -760,6 +765,17 @@ class TenantController extends GetxController {
 
   }
 
+  void listenToTenantPaymentChanges() {
+    // Set up real-time listener
+    AppConfig().supaBaseClient
+        .from('payments')
+        .stream(primaryKey: ['id'])
+        .listen((List<Map<String, dynamic>> data) {
+      fetchAllTenantPayments();
+    });
+
+  }
+
   addTenantToUnit( int tenantId, String createdBy,
       int unitId, String date1, String date2, int amount, int discount
       ) async {
@@ -1111,5 +1127,64 @@ class TenantController extends GetxController {
 
   }
 
+
+  addTenantPayment(int tenantId, int unitId, String date1, String date2, int amount,
+      int paid, int balance, String createdBy, String updatedBy,
+      ) async {
+
+    try {
+      final response =  await AppConfig().supaBaseClient.from('payments').insert(
+          {
+            "amount" : amount,
+            "paid" : paid,
+            "balance" : balance,
+            "unit_id": unitId,
+            "from_date": date1,
+            "to_date": date2,
+            "tenant_id": tenantId,
+            "created_by" : createdBy,
+            "updated_by" : updatedBy,
+          }
+      ).then((indTenant) {
+        Get.back();
+        Get.snackbar('SUCCESS', 'Tenant payment added',
+          titleText: Text(
+            'SUCCESS', style: AppTheme.greenTitle1,),
+        );
+      });
+
+      if (response.error != null) {
+        throw response.error;
+      }
+
+    } catch (error) {
+      print('Error adding tenant payment: $error');
+    }
+
+
+  }
+
+  void fetchAllTenantPayments() async {
+    isTenantPaymentsLoading(true);
+
+    try {
+
+      final response = await AppConfig().supaBaseClient.from('payments').select().order('created_at');
+      final data = response as List<dynamic>;
+      print(response);
+      print(response.length);
+      print(data.length);
+      print(data);
+      isTenantPaymentsLoading(false);
+      return tenantPaymentList.assignAll(
+          data.map((json) => TenantPaymentModel.fromJson(json)).toList());
+
+    } catch (error) {
+      isTenantPaymentsLoading(false);
+      print('Error fetching tenant payments: $error');
+    }
+
+
+  }
 
 }

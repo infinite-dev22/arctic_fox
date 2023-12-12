@@ -17,7 +17,7 @@ class PropertyCardWidget extends StatelessWidget {
           height: 25.h,
           width: 90.w,
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: AppTheme.appBgColor,
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(15.sp),
                 topRight: Radius.circular(15.sp),

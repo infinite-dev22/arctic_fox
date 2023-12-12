@@ -17,6 +17,7 @@ import 'package:smart_rent/utils/extra.dart';
 import 'package:smart_rent/widgets/app_button.dart';
 import 'package:smart_rent/widgets/app_drop_downs.dart';
 import 'package:smart_rent/widgets/app_textfield.dart';
+import 'package:smart_rent/widgets/payment_card_widget.dart';
 import 'package:wtf_sliding_sheet/wtf_sliding_sheet.dart';
 
 class PaymentTabScreen extends StatefulWidget {
@@ -71,14 +72,17 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
   final Rx<int> fitValue = Rx<int>(0);
 
 
+
   void showAsBottomSheet(BuildContext context) async {
+
+
     final result = await showSlidingBottomSheet(
         context,
         builder: (context) {
           return SlidingSheetDialog(
             extendBody: false,
             maxWidth: 90.h,
-            color: AppTheme.appBgColor,
+            color: AppTheme.whiteColor,
             duration: Duration(microseconds: 1),
             minHeight: 90.h,
             elevation: 8,
@@ -89,8 +93,10 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
               positioning: SnapPositioning.relativeToAvailableSpace,
             ),
             builder: (context, state) {
+
               return Material(
-                color: AppTheme.appBgColor,
+                color: AppTheme.whiteColor,
+                // color: Colors.white,
                 child: Column(
                   children: [
 
@@ -127,12 +133,26 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
 
                               Bounceable(
                                   onTap: () async {
-                                    Get.back();
-                                    Get.snackbar('SUCCESS',
-                                      'Payment added to your property',
-                                      titleText: Text('SUCCESS',
-                                        style: AppTheme.greenTitle1,),
+                                    await tenantController.addTenantPayment(
+                                      tenantController.tenantId.value,
+                                      tenantController.unitId.value,
+                                      selectedDate1.value.toIso8601String(),
+                                      selectedDate2.value.toIso8601String(),
+                                      int.parse(amountController.text),
+                                      int.parse(paidController.text),
+                                      int.parse(balanceController.text),
+                                      'f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5',
+                                      'f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5',
                                     );
+
+                                    // Get.back();
+
+                                    // Get.back();
+                                    // Get.snackbar('SUCCESS',
+                                    //   'Payment added to your property',
+                                    //   titleText: Text('SUCCESS',
+                                    //     style: AppTheme.greenTitle1,),
+                                    // );
                                   },
                                   child: Text('Add', style: TextStyle(
                                     color: AppTheme.primaryColor,
@@ -180,6 +200,7 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
 
 
                             Obx(() {
+
                               return SearchableTenantDropDown<TenantModel>(
                                 hintText: 'Tenant',
                                 menuItems: tenantController.tenantList.value,
@@ -242,36 +263,42 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                                     int bestFitValue;
 
                                     if (yearsDifference > 0) {
-                                      bestFitUnit = 'year';
                                       bestFitValue = yearsDifference;
+                                      bestFitUnit = bestFitValue == 1 ? 'year' : 'years';
                                       fitUnit.value = bestFitUnit;
                                       fitValue.value = bestFitValue;
                                     } else if (monthsDifference > 0) {
-                                      bestFitUnit = 'month';
                                       bestFitValue = monthsDifference;
+                                      bestFitUnit = bestFitValue == 1 ? 'month' : 'months';
                                       fitUnit.value = bestFitUnit;
                                       fitValue.value = bestFitValue;
                                     } else if (weeksDifference > 0) {
-                                      bestFitUnit = 'week';
                                       bestFitValue = weeksDifference;
+                                      bestFitUnit = bestFitValue == 1 ? 'week' : 'weeks';
                                       fitUnit.value = bestFitUnit;
                                       fitValue.value = bestFitValue;
                                     } else {
-                                      bestFitUnit = 'day';
                                       bestFitValue = daysDifference;
+                                      bestFitUnit = bestFitValue == 1 ? 'day' : 'days';
                                       fitUnit.value = bestFitUnit;
                                       fitValue.value = bestFitValue;
                                     }
 
-
                                     print(
-                                        'Best fit difference: $fitValue $fitUnit(s)');
+                                        'Best fit difference: $fitValue $fitUnit');
+
+                                    amountController.text =
+                                        (int.parse(tenantController
+                                            .specificTenantUnits.value.first
+                                            .amount
+                                            .toString()) * fitValue.value)
+                                            .toString();
+
+                                    print(amountController.text);
+
                                   });
 
-                                  amountController.text = (int.parse(tenantController
-                                      .specificTenantUnits.value.first
-                                      .amount
-                                      .toString()) * fitValue.value).toString();
+
                                 },
                               );
                             }),
@@ -287,8 +314,10 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                                   tenantController.setUnitId(value!.id);
                                   tenantController
                                       .setAmountForSpecificTenantUnit(value);
-                                  amountController.text = (int.parse(tenantController.tenantUnitAmount
-                                      .toString()) * fitValue.value).toString();
+                                  amountController.text = (int.parse(
+                                      tenantController.tenantUnitAmount
+                                          .toString()) * fitValue.value)
+                                      .toString();
                                 },
 
                               );
@@ -377,7 +406,9 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                                 obscureText: false,
                                 keyBoardType: TextInputType.number,
                                 enabled: false,
-                                suffix: fitValue.value == 0 ? '' : '$fitValue $fitUnit',
+                                suffix: fitValue.value == 0
+                                    ? ''
+                                    : '$fitValue $fitUnit',
                               );
                             }),
 
@@ -396,14 +427,15 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                                       var myPaid = int.parse(value);
                                       print(myPaid);
                                       balanceController.text =
-                                          (int.parse(amountController.text) - myPaid)
+                                          (int.parse(amountController.text) -
+                                              myPaid)
                                               .toString();
-                                      print('MY Balance == ${balanceController}');
+                                      print('MY Balance == ${balanceController
+                                          .text}');
                                     },
                                   ),
                                   width: 40.w,
                                 ),
-
 
 
                                 SizedBox(
@@ -547,6 +579,8 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+
     return Padding(
       padding: EdgeInsets.only(top: 5.h),
       child: Column(
@@ -559,7 +593,7 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
 
             children: [
               SizedBox(
-                width: 50.w,
+                width: 75.w,
                 child: AuthTextField(
                   controller: searchController,
                   hintText: 'Search',
@@ -567,44 +601,62 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                 ),
               ),
 
-              SizedBox(
-                width: 32.5.w,
-                height: 6.5.h,
-                child: AppButton(
-                    title: 'Add Payment',
-                    color: AppTheme.primaryColor,
-                    function: () {
-                      showAsBottomSheet(context);
-                    }),
-              ),
+              Align(alignment: Alignment.centerRight, child: Bounceable(
+                  onTap: (){
+                            showAsBottomSheet(context);
+                  },
+                  child: Image.asset('assets/home/add.png', color: AppTheme.primaryColor,))),
+
+              // SizedBox(
+              //   width: 32.5.w,
+              //   height: 6.5.h,
+              //   child: AppButton(
+              //       title: 'Add Payment',
+              //       color: AppTheme.primaryColor,
+              //       function: () {
+              //         showAsBottomSheet(context);
+              //       }),
+              // ),
 
             ],
           ),
 
-          ListView.builder(
-              shrinkWrap: true,
-              itemCount: listSample.length,
-              itemBuilder: (context, index) {
-                var payment = listSample[index];
+          Obx(() {
+            return tenantController.isTenantPaymentsLoading.value
+                ?  Padding(
+              padding: EdgeInsets.symmetric(vertical: 15.h),
+              child: Center(
+                child: Image.asset('assets/auth/logo.png', width: 35.w),),
+            )
+             : ListView.builder(
+              physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: tenantController.tenantPaymentList.length,
+                itemBuilder: (context, index) {
+                  var payment = tenantController.tenantPaymentList[index];
 
-                return Card(
-                  child: ListTile(
-                    title: Text(
-                      payment['tenant'].toString(), style: AppTheme.appTitle3,),
-                    subtitle: Text(
-                      'Unit ${payment['unit']}', style: AppTheme.subText,),
-                    trailing: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text('${amountFormatter.format(payment['amount']
-                            .toString())}/=', style: AppTheme.greenTitle1,),
-                        Text('for ${index + 1} ${payment['period'].toString()}')
-                      ],
-                    ),
-                  ),
-                );
-              }),
+                  return PaymentCardWidget(tenantPaymentModel: payment);
+
+                  // return Card(
+                  //   child: ListTile(
+                  //     title: Text(
+                  //       payment.tenantId.toString(), style: AppTheme.appTitle3,),
+                  //     subtitle: Text(
+                  //       'Unit ${payment.unitId}', style: AppTheme.subText,),
+                  //     trailing: Column(
+                  //       mainAxisSize: MainAxisSize.min,
+                  //       mainAxisAlignment: MainAxisAlignment.center,
+                  //       children: [
+                  //         Text('${amountFormatter.format(payment.amount
+                  //             .toString())}/=', style: AppTheme.greenTitle1,),
+                  //         Text('for ${fitValue.value} ${fitUnit.toString()}')
+                  //       ],
+                  //     ),
+                  //   ),
+                  // );
+
+                });
+          }),
 
 
         ],

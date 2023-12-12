@@ -29,7 +29,7 @@ class _PropertyListScreenState extends State<PropertyListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.appBgColor,
+      backgroundColor: AppTheme.whiteColor,
       appBar: AppImageHeader(
         isTitleCentred: true,
         leading: Text(''),

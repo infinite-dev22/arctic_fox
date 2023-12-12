@@ -39,7 +39,8 @@ class _CreateOrganisationScreenState extends State<CreateOrganisationScreen> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      backgroundColor: AppTheme.appBgColor,
+      // backgroundColor: AppTheme.appBgColor,
+      backgroundColor: AppTheme.whiteColor,
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 1.h),

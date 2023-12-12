@@ -28,7 +28,7 @@ class _TenantDetailsScreenState extends State<TenantDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.appBgColor,
+      backgroundColor: AppTheme.whiteColor,
       appBar: AppImageHeader(
           title: 'assets/auth/logo.png',
         isTitleCentred: true,

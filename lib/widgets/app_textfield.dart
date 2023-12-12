@@ -429,7 +429,8 @@ class DateTextField2 extends StatelessWidget {
             borderSide: borderSide,
             borderRadius: BorderRadius.circular(10),
           ),
-          fillColor: fillColor,
+          // fillColor: fillColor,
+          fillColor: AppTheme.appBgColor,
           filled: true,
           hintText: hintText,
           hintStyle: const TextStyle(

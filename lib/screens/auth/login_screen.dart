@@ -9,6 +9,7 @@ import 'package:smart_rent/screens/auth/signup_screen.dart';
 import 'package:smart_rent/screens/bottom_nav_bar/bottom_nav_bar.dart';
 import 'package:smart_rent/screens/home/homepage_screen.dart';
 import 'package:smart_rent/styles/app_theme.dart';
+import 'package:smart_rent/utils/extra.dart';
 import 'package:smart_rent/widgets/app_button.dart';
 import 'package:smart_rent/widgets/app_password_textfield.dart';
 import 'package:smart_rent/widgets/app_textfield.dart';
@@ -73,13 +74,22 @@ class _LoginScreenState extends State<LoginScreen> {
                         title: 'Sign in',
                         color: AppTheme.primaryColor,
                         function: () async {
-                          Get.off(() => BottomNavBar());
-                          emailController.clear();
-                          passwordController.clear();
-                          Get.snackbar('SUCCESS', 'Logged in successfully',
-                            titleText: Text(
-                              'SUCCESS', style: AppTheme.greenTitle1,),
-                          );
+
+                          await userController.loginUser(emailController.text, passwordController.text).then((value) {
+                            emailController.clear();
+                            passwordController.clear();
+                          });
+
+
+                          // Get.off(() => BottomNavBar());
+                          // emailController.clear();
+                          // passwordController.clear();
+                          // Get.snackbar('SUCCESS', 'Logged in successfully',
+                          //   titleText: Text(
+                          //     'SUCCESS', style: AppTheme.greenTitle1,),
+                          // );
+
+
                           // if (_formKey.currentState!.validate()) {
                           //
                           //   // userController.insertUser(UserModel(

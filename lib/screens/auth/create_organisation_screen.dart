@@ -5,6 +5,7 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/screens/auth/complete_signup_screen.dart';
+import 'package:smart_rent/screens/auth/login_screen.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 import 'package:smart_rent/widgets/app_button.dart';
 import 'package:smart_rent/widgets/app_password_textfield.dart';
@@ -86,10 +87,12 @@ class _CreateOrganisationScreenState extends State<CreateOrganisationScreen> {
                           Get.to(() => CompleteSignUpScreen(
                             businessName: businessNameController.text.toString(),
                             description: descriptionController.text.toString(),
-                          ), transition: Transition.rightToLeftWithFade);
+                          ), transition: Transition.rightToLeftWithFade)!.then((value) {
+                            businessNameController.clear();
+                            descriptionController.clear();
+                            Get.to(LoginScreen());
+                          });
 
-                          businessNameController.clear();
-                          descriptionController.clear();
 
                         }
 

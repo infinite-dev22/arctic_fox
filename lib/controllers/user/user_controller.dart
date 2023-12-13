@@ -5,6 +5,10 @@ import 'package:get/get.dart';
 import 'package:smart_rent/config/app_config.dart';
 import 'package:smart_rent/models/organisation/organisation_model.dart';
 import 'package:smart_rent/models/user/user_model.dart';
+import 'package:smart_rent/models/user/user_profile_model.dart';
+import 'package:smart_rent/screens/auth/initial_screen.dart';
+import 'package:smart_rent/screens/bottom_nav_bar/bottom_nav_bar.dart';
+import 'package:smart_rent/utils/app_prefs.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class UserController extends GetxController {
@@ -13,6 +17,9 @@ class UserController extends GetxController {
   Rx<int> organisationId = Rx<int>(-1);
   Rx<int> userProfileId = Rx<int>(-1);
 
+  var userProfileModel = UserProfileModel().obs;
+  var userFirstname = ''.obs;
+
   RxList<UserModel> userList = <UserModel>[].obs;
 
 
@@ -20,22 +27,57 @@ class UserController extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    fetchAllUsers();
+    getUserProfileData();
   }
 
-  void fetchAllUsers() async {
-    final response = await AppConfig().supaBaseClient.from('users').select();
-    final data = response as List<dynamic>;
+  // void fetchAllUsers() async {
+  //   final response = await AppConfig().supaBaseClient.from('users').select();
+  //   final data = response as List<dynamic>;
+  //
+  //   return userList.assignAll(
+  //       data.map((json) => UserModel.fromJson(json)).toList());
+  // }
 
-    return userList.assignAll(
-        data.map((json) => UserModel.fromJson(json)).toList());
+  // void insertUser(UserModel userModel) async {
+  //   final response = await AppConfig().supaBaseClient.from('users').insert(
+  //       [userModel.toJson()]);
+  //
+  //   fetchAllUsers();
+  // }
+
+  Future<void> getUserProfileData() async {
+
+    try{
+
+      final response = await AppConfig().supaBaseClient.from('organisations').select().eq('user_id', userStorage.read('userId')).execute();
+      print('MY SPECIFIC RESPONSE IS ${response.data[0]['name']}');
+      userFirstname.value = response.data[0]['name'];
+
+      // final response = await AppConfig().supaBaseClient.from('user_profiles').select().eq('user_id', userStorage.read('userId')).execute();
+      // print('MY SPECIFIC RESPONSE IS ${response.data[0]['first_name']}');
+      // userFirstname.value = response.data[0]['first_name'];
+
+
+    }catch(error){
+      print(error);
+    }
+
   }
 
-  void insertUser(UserModel userModel) async {
-    final response = await AppConfig().supaBaseClient.from('users').insert(
-        [userModel.toJson()]);
+  Future<void> logoutUser() async {
+    try{
 
-    fetchAllUsers();
+      await AppConfig().supaBaseClient.auth.signOut().then((value) async{
+        await userStorage.remove('accessToken');
+        await userStorage.remove('userId');
+        await userStorage.remove('accessToken');
+        await userStorage.write('isLoggedIn', false);
+        await userStorage.remove('isLoggedIn');
+        Get.off(() => InitialScreen());
+      });
+    } catch(error) {
+
+    }
   }
 
   Future<void> createUser(String email, String password, String businessName, String description,
@@ -55,12 +97,45 @@ class UserController extends GetxController {
     }
   }
 
+  Future<void> loginUser(String email, String password) async {
+    try{
+
+      final AuthResponse response = await AppConfig().supaBaseClient.auth.signInWithPassword(
+        email: email,
+        password: password,
+      );
+      final Session? session = response.session;
+      final User? user = response.user;
+
+
+      print(session);
+      print(session!.accessToken);
+      print(user);
+
+      if(user != null) {
+        await userStorage.write('isLoggedIn', true);
+        await userStorage.write('accessToken', session.accessToken);
+        await userStorage.write('userId', user.id);
+        await getUserProfileData().then((value) {
+          Get.to(() => BottomNavBar());
+        });
+
+      } else {
+        Fluttertoast.showToast(msg: 'Check your credentials');
+      }
+
+
+    } catch(error){
+      print('Login Error is $error');
+    }
+  }
+
 
   Future<void> createOrganisation( String businessName, String description, String userId,
       String firstName, String lastName
       ) async {
     try {
-      final response = await AppConfig().supaBaseClient.from('organisations').upsert([
+      final response = await AppConfig().supaBaseClient.from('organisations').insert([
         {
           "name" : businessName,
           "description" : description,
@@ -78,6 +153,7 @@ class UserController extends GetxController {
       createUserProfile(businessName, description, userId, firstName, lastName);
     } catch (error) {
       print('Error inserting into Organisations: $error');
+      throw error;
     }
 
   }
@@ -86,7 +162,7 @@ class UserController extends GetxController {
       String firstName, String lastName
       ) async {
     try {
-      final response = await AppConfig().supaBaseClient.from('user_profiles').upsert([
+      final response = await AppConfig().supaBaseClient.from('user_profiles').insert([
         {
           "user_id" : userId,
           "organisation_id" : 1,
@@ -102,6 +178,8 @@ class UserController extends GetxController {
 
       userProfileId.value = response.data?.first['id'] ?? -1;
       print(userProfileId.value.toString());
+
+      Get.off(() => InitialScreen());
 
     } catch (error) {
       print('Error inserting into user Profile: $error');
@@ -152,15 +230,15 @@ class UserController extends GetxController {
 
   }
 
-  void listenToChanges() {
-    // Set up real-time listener
-    AppConfig().supaBaseClient
-        .from('users')
-        .stream(primaryKey: ['id'])
-        .listen((List<Map<String, dynamic>> data) {
-      fetchAllUsers();
-    });
-
-  }
+  // void listenToChanges() {
+  //   // Set up real-time listener
+  //   AppConfig().supaBaseClient
+  //       .from('users')
+  //       .stream(primaryKey: ['id'])
+  //       .listen((List<Map<String, dynamic>> data) {
+  //     fetchAllUsers();
+  //   });
+  //
+  // }
 
 }

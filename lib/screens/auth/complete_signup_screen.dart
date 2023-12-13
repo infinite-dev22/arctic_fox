@@ -161,6 +161,7 @@ class _CompleteSignUpScreenState extends State<CompleteSignUpScreen> {
                           Fluttertoast.showToast(msg: 'fill in all fields');
 
                         } else {
+
                           await userController.createUser(
                             emailEditingController.text.trim().toString(),
                             passwordEditingController.text.trim().toString(),
@@ -168,12 +169,12 @@ class _CompleteSignUpScreenState extends State<CompleteSignUpScreen> {
                             widget.description.toString(),
                             firstNameEditingController.text.trim().toString(),
                             lastNameEditingController.text.trim().toString(),
-                          );
-
-                          emailEditingController.clear();
-                          passwordEditingController.clear();
-                          firstNameEditingController.clear();
-                          lastNameEditingController.clear();
+                          ).then((value) {
+                            emailEditingController.clear();
+                            passwordEditingController.clear();
+                            firstNameEditingController.clear();
+                            lastNameEditingController.clear();
+                          });
 
                         }
 

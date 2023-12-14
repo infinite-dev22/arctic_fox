@@ -74,7 +74,7 @@ class HomePage extends StatelessWidget {
                     SizedBox(
                       width: 2.w,
                     ),
-                    SlideInLeft(
+                    ZoomIn(
                         child: SizedBox(
                           child: Text(
                       '${userController.userFirstname.value} ',

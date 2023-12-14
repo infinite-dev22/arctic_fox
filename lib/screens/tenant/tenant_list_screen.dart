@@ -64,7 +64,20 @@ class _TenantListScreenState extends State<TenantListScreen> {
                         Get.to(() => AddTenantScreen(),
                             transition: Transition.downToUp);
                       },
-                      child: Image.asset('assets/home/add.png')),
+                    child: Container(
+                      width: 10.w,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.sp),
+                        color: AppTheme.primaryColor,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Center(
+                          child: Icon(Icons.add, color: Colors.white,),
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
 

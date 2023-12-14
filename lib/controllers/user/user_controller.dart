@@ -76,7 +76,7 @@ class UserController extends GetxController {
         Get.off(() => InitialScreen());
       });
     } catch(error) {
-
+      Fluttertoast.showToast(msg: error.toString());
     }
   }
 
@@ -125,8 +125,9 @@ class UserController extends GetxController {
       }
 
 
-    } catch(error){
+    }  catch(error){
       print('Login Error is $error');
+      Fluttertoast.showToast(msg: error.toString());
     }
   }
 

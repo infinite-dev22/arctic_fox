@@ -17,6 +17,7 @@ import 'package:smart_rent/controllers/property_options/property_details_options
 import 'package:smart_rent/controllers/tenants/tenant_controller.dart';
 import 'package:smart_rent/models/payment_schedule/payment_schedule_model.dart';
 import 'package:smart_rent/models/tenant/tenant_model.dart';
+import 'package:smart_rent/models/unit/unit_model.dart';
 import 'package:smart_rent/screens/tenant/tenant_details_screen.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 import 'package:smart_rent/utils/extra.dart';
@@ -86,6 +87,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
   final _formKey = GlobalKey<FormState>();
 
   late SingleValueDropDownController _cnt;
+  late SingleValueDropDownController _unitCont;
 
   Future<void> _selectDate1(BuildContext context) async {
     // final DateTime? picked = await showDatePicker(
@@ -259,24 +261,79 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
 
                           Bounceable(
                               onTap: ()async{
-                                if (_formKey.currentState!.validate()) {
-                                  // print(selectedDate1.value.toString().runtimeType);
-                                  // print(date2Controller.text.trim().runtimeType);
-                                  // print('1st date ${selectedDate3.value}');
-                                  // print('2nd date ${DateTime.parse(date2Controller.text)}');
-                                  tenantController.addTenantToUnit(
-                                    tenantController.tenantId.value,
-                                    "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
-                                    tenantController.unitId.value,
-                                    selectedDate1.value.toString(),
-                                    selectedDate2.value.toString(),
-                                    // date2Controller.text.trim().toString(),
-                                    int.parse(amountController.text.toString()),
-                                    int.parse(discountController.text.toString()),
-                                  );
+
+                                if(tenantController.paymentScheduleId.value ==3) {
+
+                                  final startDate = DateTime.now();
+                                  final endDate = startDate.add(Duration(days: 180));
+
+                                  final amount = 6000.0;
+
+                                  List<Map<String, dynamic>> divideAmountMonthly(DateTime startDate, DateTime endDate, double totalAmount) {
+                                    final dividedAmounts = <Map<String, dynamic>>[];
+
+
+                                    final monthsInPeriod = endDate.month - startDate.month + 12 * (endDate.year - startDate.year);
+
+
+                                    final amountPerMonth = totalAmount / monthsInPeriod;
+
+
+                                    for (int i = 0; i < monthsInPeriod; i++) {
+                                      final currentDate = DateTime(startDate.year, startDate.month + i, startDate.day);
+                                      final toDate = DateTime(startDate.year, startDate.month + 2*i, startDate.day);
+                                      final currentAmount = (i == monthsInPeriod - 1) ? totalAmount - (amountPerMonth * i) : amountPerMonth;
+
+                                      final mDividedAmount = {
+                                        'from_date': currentDate.toIso8601String(),
+                                        'to_date': toDate.toIso8601String(),
+                                        'amount': currentAmount,
+                                      };
+
+                                      dividedAmounts.add(mDividedAmount);
+                                      print(dividedAmounts);
+                                    }
+
+                                    return dividedAmounts;
+                                  }
+
+
+                                  final dividedAmounts = divideAmountMonthly(startDate, endDate, amount);
+
+
+                                  print('Divided Amounts: $dividedAmounts');
+
+
+
                                 } else {
 
+
+
                                 }
+
+
+                                // if (_formKey.currentState!.validate()) {
+                                //   // print(selectedDate1.value.toString().runtimeType);
+                                //   // print(date2Controller.text.trim().runtimeType);
+                                //   // print('1st date ${selectedDate3.value}');
+                                //   // print('2nd date ${DateTime.parse(date2Controller.text)}');
+                                //
+                                //   tenantController.addTenantToUnit(
+                                //     tenantController.tenantId.value,
+                                //     "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
+                                //     tenantController.unitId.value,
+                                //     selectedDate1.value.toString(),
+                                //     selectedDate2.value.toString(),
+                                //     // date2Controller.text.trim().toString(),
+                                //     int.parse(amountController.text.toString()),
+                                //     int.parse(discountController.text.toString()),
+                                //   );
+                                //
+                                //
+                                // } else {
+                                //
+                                // }
+
                               },
                               child: Text('Add', style: TextStyle(
                                 color: AppTheme.primaryColor,
@@ -328,15 +385,34 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                             );
                           }),
 
+
                           Obx(() {
-                            return CustomApiUnitDropdown(
+                            return SearchableUnitDropDown<UnitModel>(
                               hintText: 'Unit',
                               menuItems: tenantController.unitList.value,
+                              controller: _unitCont,
                               onChanged: (value) {
-                                tenantController.setUnitId(value!.id);
+                                print(value.value.id);
+                                tenantController.setUnitId(value.value.id);
+                                tenantController.setUnitAmount(value.value.amount);
+                                amountController.text = value.value.amount.toString();
+                                discountController.text = value.value.amount.toString();
+                                print('MY Unit is ${tenantController.unitId.value}');
+                                print('MY Amount is ${tenantController.unitAmount.value}');
+
                               },
                             );
                           }),
+
+                          // Obx(() {
+                          //   return CustomApiUnitDropdown(
+                          //     hintText: 'Unit',
+                          //     menuItems: tenantController.unitList.value,
+                          //     onChanged: (value) {
+                          //       tenantController.setUnitId(value!.id);
+                          //     },
+                          //   );
+                          // }),
 
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -672,6 +748,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
     super.initState();
     _image = File('');
     _cnt = SingleValueDropDownController();
+    _unitCont = SingleValueDropDownController();
     selectedDate2.value = DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day);
     date1Controller  = TextEditingController(text: '${DateFormat('MM/dd/yyyy').format(selectedDate1.value)}');
 
@@ -742,49 +819,6 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
     }
 
 
-    // if(tenantController.paymentScheduleId.value == 1) {
-    //   date2Controller.text =
-    //   '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day+1))}';
-    //
-    //
-    // } else if(tenantController.paymentScheduleId.value ==2) {
-    //   date2Controller.text =
-    //   '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day+7))}';
-    //
-    // } else if(tenantController.paymentScheduleId.value ==3) {
-    //   date2Controller.text =
-    //   '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month+1, selectedDate1.value.day))}';
-    //
-    // } else if(tenantController.paymentScheduleId.value ==4) {
-    //   date2Controller.text =
-    //   '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day+14))}';
-    //
-    // } else if(tenantController.paymentScheduleId.value ==5) {
-    //   date2Controller.text =
-    //   '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month+2, selectedDate1.value.day))}';
-    //
-    // } else if(tenantController.paymentScheduleId.value ==6) {
-    //   date2Controller.text =
-    //   '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month+3, selectedDate1.value.day+14))}';
-    //
-    // } else if(tenantController.paymentScheduleId.value ==7) {
-    //   date2Controller.text =
-    //   '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month+6, selectedDate1.value.day))}';
-    //
-    // } else if(tenantController.paymentScheduleId.value ==8) {
-    //   date2Controller.text =
-    //   '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month+9, selectedDate1.value.day))}';
-    //
-    // } else if(tenantController.paymentScheduleId.value ==9) {
-    //   date2Controller.text =
-    //   '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year+1, selectedDate1.value.month, selectedDate1.value.day))}';
-    //
-    // }  else {
-    //
-    //   date2Controller.text = '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day))}';
-    //
-    // }
-
   }
 
   @override
@@ -813,7 +847,20 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                   onTap: (){
                             showAsBottomSheet(context);
                   },
-                  child: Image.asset('assets/home/add.png', color: AppTheme.primaryColor,))),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.sp),
+                    color: AppTheme.primaryColor,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Center(
+                      child: Icon(Icons.add, color: Colors.white,),
+                    ),
+                  ),
+                ),
+              ),
+              ),
 
               // SizedBox(
               //   width: 30.w,

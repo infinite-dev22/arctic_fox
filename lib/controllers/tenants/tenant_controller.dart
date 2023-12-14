@@ -45,6 +45,7 @@ class TenantController extends GetxController {
   var tenantTypeId = 0.obs;
   var unitId = 0.obs;
   var tenantId = 0.obs;
+  var unitAmount = 0.obs;
   var businessTypeId = 0.obs;
   var newGender = ''.obs;
   var isTenantListLoading = false.obs;
@@ -139,6 +140,11 @@ listenToTenantPaymentChanges();
   setUnitNumber(String number){
     unitNumber.value = number;
     print('New Unit Number is $number');
+  }
+
+  setUnitAmount(int amount){
+    unitAmount.value = amount;
+    print('New Unit Amount is $amount');
   }
 
   setTenantId(int id){
@@ -1099,8 +1105,6 @@ listenToTenantPaymentChanges();
 
   getIndividualTenantDetails(int id) async {
     // isSpecificTenantLoading(true);
-
-
 
     try {
       // Fetch the specific row based on ID

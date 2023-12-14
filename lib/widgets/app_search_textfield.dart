@@ -86,7 +86,20 @@ class AppSearchTextField extends StatelessWidget {
 
         Align(alignment: Alignment.centerRight, child: Bounceable(
           onTap: function,
-            child: Image.asset('assets/home/add.png'))),
+          child: Container(
+            width: 10.w,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10.sp),
+              color: AppTheme.primaryColor,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                child: Icon(Icons.add, color: Colors.white,),
+              ),
+            ),
+          ),
+        )),
 
         Text('Your properties', style: AppTheme.appTitle1,),
         Text('243 properties', style: AppTheme.subText,),

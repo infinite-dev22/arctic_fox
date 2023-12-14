@@ -519,7 +519,19 @@ class _RoomTabScreenState extends State<RoomTabScreen> {
                     onTap: (){
                               showAsBottomSheet(context);
                     },
-                    child: Image.asset('assets/home/add.png', color: AppTheme.primaryColor,))),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.sp),
+                      color: AppTheme.primaryColor,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Center(
+                        child: Icon(Icons.add, color: Colors.white,),
+                      ),
+                    ),
+                  ),
+                )),
 
                 // SizedBox(
                 //   width: 30.w,

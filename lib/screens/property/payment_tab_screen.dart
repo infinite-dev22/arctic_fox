@@ -67,6 +67,7 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
   final TextEditingController searchController = TextEditingController();
 
   late SingleValueDropDownController tenantDropdownCont;
+  late SingleValueDropDownController _unitCont;
 
 
   final Rx<String> fitUnit = Rx<String>('');
@@ -303,26 +304,56 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                                 );
                               }),
 
-                              Obx(() {
-                                return CustomApiUnitDropdown(
-                                  hintText: tenantController.unitNumber.value
-                                      .isEmpty ? 'Unit' : tenantController
-                                      .unitNumber.value,
-                                  menuItems: tenantController
-                                      .specificTenantUnits
-                                      .value,
-                                  onChanged: (value) {
-                                    tenantController.setUnitId(value!.id);
-                                    tenantController
-                                        .setAmountForSpecificTenantUnit(value);
-                                    amountController.text = (int.parse(
-                                        tenantController.tenantUnitAmount
-                                            .toString()) * fitValue.value)
-                                        .toString();
-                                  },
+                              // Obx(() {
+                              //   return CustomApiUnitDropdown(
+                              //     hintText: tenantController.unitNumber.value
+                              //         .isEmpty ? 'Unit' : tenantController
+                              //         .unitNumber.value,
+                              //     menuItems: tenantController
+                              //         .specificTenantUnits
+                              //         .value,
+                              //     onChanged: (value) {
+                              //       tenantController.setUnitId(value!.id);
+                              //       tenantController
+                              //           .setAmountForSpecificTenantUnit(value);
+                              //       amountController.text = (int.parse(
+                              //           tenantController.tenantUnitAmount
+                              //               .toString()) * fitValue.value)
+                              //           .toString();
+                              //     },
+                              //
+                              //   );
+                              // }),
 
+
+                              Obx(() {
+                                return SearchableUnitDropDown<UnitModel>(
+                                      hintText: tenantController.unitNumber.value
+                                          .isEmpty ? 'Unit' : tenantController
+                                          .unitNumber.value,
+                                  menuItems: tenantController.unitList.value,
+                                  controller: _unitCont,
+                                  onChanged: (value) {
+                                    print(value.value.id);
+                                    tenantController.setUnitId(value.value.id);
+                                          tenantController
+                                              .setAmountForSpecificTenantUnit(value.value);
+                                          amountController.text = (int.parse(
+                                              tenantController.tenantUnitAmount
+                                                  .toString()) * fitValue.value)
+                                              .toString();
+
+                                    // tenantController.setUnitAmount(value.value.amount);
+                                    // amountController.text = value.value.amount.toString();
+                                    // discountController.text = value.value.amount.toString();
+                                    print('MY Unit is ${tenantController.unitId.value}');
+                                    print('MY Amount is ${tenantController.unitAmount.value}');
+
+                                  },
                                 );
                               }),
+
+
 
                               // SizedBox(height: 1.h,),
 
@@ -563,6 +594,7 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
     // TODO: implement initState
     super.initState();
     tenantDropdownCont = SingleValueDropDownController();
+    _unitCont = SingleValueDropDownController();
     selectedDate2.value = DateTime(
         selectedDate1.value.year, selectedDate1.value.month,
         selectedDate1.value.day);
@@ -604,8 +636,19 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                   onTap: () {
                     showAsBottomSheet(context);
                   },
-                  child: Image.asset(
-                    'assets/home/add.png', color: AppTheme.primaryColor,))),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.sp),
+                      color: AppTheme.primaryColor,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Center(
+                        child: Icon(Icons.add, color: Colors.white,),
+                      ),
+                    ),
+                  ),
+              )),
 
               // SizedBox(
               //   width: 32.5.w,

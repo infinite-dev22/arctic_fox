@@ -609,6 +609,7 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
     paidController.dispose();
     amountController.dispose();
     balanceController.dispose();
+    _unitCont.dispose();
   }
 
   @override
@@ -675,16 +676,18 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
               child: Center(
                 child: Image.asset('assets/auth/logo.png', width: 35.w),),
             )
-                : ListView.builder(
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: tenantController.tenantPaymentList.length,
-                itemBuilder: (context, index) {
-                  var payment = tenantController.tenantPaymentList[index];
+                : Expanded(
+                  child: ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: tenantController.tenantPaymentList.length,
+                  itemBuilder: (context, index) {
+                    var payment = tenantController.tenantPaymentList[index];
 
-                  return PaymentCardWidget(tenantPaymentModel: payment);
+                    return PaymentCardWidget(tenantPaymentModel: payment);
 
-                });
+                  }),
+                );
           }),
 
 

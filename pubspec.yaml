@@ -71,6 +71,8 @@ dependencies:
   intl: ^0.18.1
   date_picker_plus: ^1.1.4
   overlay_loader_with_app_icon: ^0.0.3
+  file_picker: ^6.1.1
+  easy_data_table: ^0.0.3
 
 #  supabase: ^1.11.11
 #  supabase_flutter: ^1.10.25

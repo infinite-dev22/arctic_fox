@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:date_picker_plus/date_picker_plus.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
@@ -39,6 +40,30 @@ class TenantTabScreen extends StatefulWidget {
 }
 
 class _TenantTabScreenState extends State<TenantTabScreen> {
+  // File? tenantImage;
+  PlatformFile? tenantFile;
+  PlatformFile? tenantFile1;
+
+  pickAddTenantFile() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+
+    if (result != null) {
+      File file = File(result.files.single.path!);
+
+      var tempFile = File(file.path);
+      setState(() {
+        tenantFile = result.files.first;
+        tempFile = file;
+      });
+
+      print(tenantFile!.path);
+      print(tenantFile!.name);
+      print(tempFile.path);
+    } else {
+      // User canceled the picker
+    }
+  }
+
   String imageError = '';
 
   final ImagePicker _picker = ImagePicker();
@@ -98,88 +123,92 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
     // );
 
     final DateTime? picked = await showDatePickerDialog(
-        context: context,
-        initialDate: selectedDate1.value,
-        minDate: DateTime(2000),
-        maxDate: DateTime(2101),
+      context: context,
+      initialDate: selectedDate1.value,
+      minDate: DateTime(2000),
+      maxDate: DateTime(2101),
     );
 
     if (picked != null) {
       selectedDate1(picked);
       date1Controller.text =
-          '${DateFormat('MM/dd/yyyy').format(selectedDate1.value)}';
+      '${DateFormat('MM/dd/yyyy').format(selectedDate1.value)}';
       // date2Controller.text =
       //     '${DateFormat('E, d MMM yyyy').format(selectedDate1.value.add(Duration(days: 30)))}';
 
-      if(tenantController.paymentScheduleId.value == 1) {
+      if (tenantController.paymentScheduleId.value == 1) {
+        var myDays = dailyController.text.isEmpty
+            ? 1 * 1
+            : int.tryParse(dailyController.text)! * 1;
 
-        var myDays = dailyController.text.isEmpty ? 1*1 : int.tryParse(dailyController.text)! * 1;
-
-        if(dailyController.text.toString() == '0'){
+        if (dailyController.text.toString() == '0') {
           Fluttertoast.showToast(msg: 'Enter Right Day');
         } else {
           print('MY myDays are == ${dailyController.text.toString()}');
           print('Count myDays ' + myDays.toString());
-          selectedDate2.value = DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day + myDays);
+          selectedDate2.value = DateTime(selectedDate1.value.year,
+              selectedDate1.value.month, selectedDate1.value.day + myDays);
           date2Controller.text =
-          '${DateFormat('MM/dd/yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day + myDays))}';
+          '${DateFormat('MM/dd/yyyy').format(DateTime(
+              selectedDate1.value.year, selectedDate1.value.month,
+              selectedDate1.value.day + myDays))}';
           print('my seelected date ${selectedDate2.value}');
           print('my date date ${date2Controller.text}');
-
         }
+      } else if (tenantController.paymentScheduleId.value == 2) {
+        var myWeeks = weeklyController.text.isEmpty
+            ? 1 * 7
+            : int.tryParse(weeklyController.text)! * 7;
 
-
-      } else if(tenantController.paymentScheduleId.value ==2) {
-        var myWeeks = weeklyController.text.isEmpty ? 1*7 : int.tryParse(weeklyController.text)! * 7;
-
-        if(weeklyController.text.toString() == '0'){
+        if (weeklyController.text.toString() == '0') {
           Fluttertoast.showToast(msg: 'Enter Right week');
         } else {
           print('MY WEEKs are == ${weeklyController.text.toString()}');
           print('Count Weeks ' + myWeeks.toString());
-          selectedDate2.value = (DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day + myWeeks));
+          selectedDate2.value = (DateTime(selectedDate1.value.year,
+              selectedDate1.value.month, selectedDate1.value.day + myWeeks));
           date2Controller.text =
-          '${DateFormat('MM/dd/yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day + myWeeks))}';
+          '${DateFormat('MM/dd/yyyy').format(DateTime(
+              selectedDate1.value.year, selectedDate1.value.month,
+              selectedDate1.value.day + myWeeks))}';
         }
+      } else if (tenantController.paymentScheduleId.value == 3) {
+        var myMonths = monthlyController.text.isEmpty
+            ? 1 * 1
+            : int.tryParse(monthlyController.text)! * 1;
 
-
-      } else if(tenantController.paymentScheduleId.value ==3) {
-
-        var myMonths = monthlyController.text.isEmpty ? 1*1 : int.tryParse(monthlyController.text)! * 1;
-
-        if(monthlyController.text.toString() == '0'){
+        if (monthlyController.text.toString() == '0') {
           Fluttertoast.showToast(msg: 'Enter Right Month');
         } else {
           print('MY myMonths are == ${monthlyController.text.toString()}');
           print('Count myMonths ' + myMonths.toString());
-          selectedDate2.value = (DateTime(selectedDate1.value.year, selectedDate1.value.month + myMonths, selectedDate1.value.day));
+          selectedDate2.value = (DateTime(selectedDate1.value.year,
+              selectedDate1.value.month + myMonths, selectedDate1.value.day));
           date2Controller.text =
-          '${DateFormat('MM/dd/yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month + myMonths, selectedDate1.value.day))}';
+          '${DateFormat('MM/dd/yyyy').format(DateTime(
+              selectedDate1.value.year, selectedDate1.value.month + myMonths,
+              selectedDate1.value.day))}';
         }
+      } else if (tenantController.paymentScheduleId.value == 4) {
+        var myYears = yearlyController.text.isEmpty
+            ? 1 * 1
+            : int.tryParse(yearlyController.text)! * 1;
 
-      } else if(tenantController.paymentScheduleId.value ==4) {
-
-        var myYears = yearlyController.text.isEmpty ? 1*1 : int.tryParse(yearlyController.text)! * 1;
-
-        if(yearlyController.text.toString() == '0'){
+        if (yearlyController.text.toString() == '0') {
           Fluttertoast.showToast(msg: 'Enter Right years');
         } else {
           print('MY myYears are == ${yearlyController.text.toString()}');
           print('Count myYears ' + myYears.toString());
-          selectedDate2.value = DateTime(selectedDate1.value.year + myYears, selectedDate1.value.month, selectedDate1.value.day);
+          selectedDate2.value = DateTime(selectedDate1.value.year + myYears,
+              selectedDate1.value.month, selectedDate1.value.day);
           date2Controller.text =
-          '${DateFormat('MM/dd/yyyy').format(DateTime(selectedDate1.value.year + myYears, selectedDate1.value.month, selectedDate1.value.day))}';
+          '${DateFormat('MM/dd/yyyy').format(DateTime(
+              selectedDate1.value.year + myYears, selectedDate1.value.month,
+              selectedDate1.value.day))}';
         }
-
-
       } else {
-
         // date2Controller.text = '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day))}';
-
       }
-
-
-
     }
   }
 
@@ -194,7 +223,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
     if (picked != null && picked != selectedDate1.value) {
       selectedDate2(picked);
       date2Controller.text =
-          '${DateFormat('MM/dd/yyyy').format(selectedDate2.value)}';
+      '${DateFormat('MM/dd/yyyy').format(selectedDate2.value)}';
     }
   }
 
@@ -210,7 +239,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
         cornerRadius: 15.sp,
         snapSpec: const SnapSpec(
           snap: true,
-          snappings: [ 0.9],
+          snappings: [0.9],
           positioning: SnapPositioning.relativeToAvailableSpace,
         ),
         builder: (context, state) {
@@ -218,7 +247,6 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
             color: AppTheme.whiteColor,
             child: Column(
               children: [
-
                 Material(
                   elevation: 1,
                   child: Container(
@@ -227,90 +255,298 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                         .size
                         .width,
                     height: 7.5.h,
-                    decoration: BoxDecoration(
-                        boxShadow: [
-
-                        ]
-                    ),
+                    decoration: BoxDecoration(boxShadow: []),
                     child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
+                      padding:
+                      EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Bounceable(
                               onTap: () {
-
                                 descriptionController.clear();
-                               dailyController.clear();
-                            weeklyController.clear();
-                                 monthlyController.clear();
+                                dailyController.clear();
+                                weeklyController.clear();
+                                monthlyController.clear();
                                 yearlyController.clear();
                                 lumpSumController.clear();
                                 amountController.clear();
                                 discountController.clear();
                                 Get.back();
                               },
-                              child: Text('Cancel', style: TextStyle(
-                                color: Colors.red,
-                                fontSize: 17.5.sp,
-                              ),)),
-
-                          Text('Add Tenant', style: AppTheme
-                              .darkBlueTitle2,),
-
+                              child: Text(
+                                'Cancel',
+                                style: TextStyle(
+                                  color: Colors.red,
+                                  fontSize: 17.5.sp,
+                                ),
+                              )),
+                          Text(
+                            'Add Tenant',
+                            style: AppTheme.darkBlueTitle2,
+                          ),
                           Bounceable(
-                              onTap: ()async{
+                              onTap: () async {
+                                if (tenantController.paymentScheduleId.value ==
+                                    3) {
+                                  List<Map<String, dynamic>>
+                                  divideAmountMonthly(DateTime startDate,
+                                      DateTime endDate,
+                                      int totalAmount) {
+                                    final dividedAmounts =
+                                    <Map<String, dynamic>>[];
 
-                                if(tenantController.paymentScheduleId.value ==3) {
+                                    final monthsInPeriod = endDate.month -
+                                        startDate.month +
+                                        12 * (endDate.year - startDate.year);
 
-                                  final startDate = DateTime.now();
-                                  final endDate = startDate.add(Duration(days: 180));
-
-                                  final amount = 6000.0;
-
-                                  List<Map<String, dynamic>> divideAmountMonthly(DateTime startDate, DateTime endDate, double totalAmount) {
-                                    final dividedAmounts = <Map<String, dynamic>>[];
-
-
-                                    final monthsInPeriod = endDate.month - startDate.month + 12 * (endDate.year - startDate.year);
-
-
-                                    final amountPerMonth = totalAmount / monthsInPeriod;
-
+                                    // final amountPerMonth = totalAmount / monthsInPeriod;
 
                                     for (int i = 0; i < monthsInPeriod; i++) {
-                                      final currentDate = DateTime(startDate.year, startDate.month + i, startDate.day);
-                                      final toDate = DateTime(startDate.year, startDate.month + 2*i, startDate.day);
-                                      final currentAmount = (i == monthsInPeriod - 1) ? totalAmount - (amountPerMonth * i) : amountPerMonth;
+                                      final currentDate = DateTime(
+                                          startDate.year,
+                                          startDate.month + i,
+                                          startDate.day);
+                                      // Define the end date of the next period
+                                      final toDate = DateTime(
+                                          currentDate.year,
+                                          currentDate.month + 1,
+                                          currentDate
+                                              .day); // Next period is 30 days
+
+                                      // final currentAmount = (i == monthsInPeriod - 1) ? totalAmount - (amountPerMonth * i) : amountPerMonth;
+
+                                      // final mDividedAmount = {
+                                      //   'from_date': currentDate.toIso8601String(),
+                                      //   'to_date': toDate.toIso8601String(),
+                                      //   'amount': totalAmount,
+                                      // };
 
                                       final mDividedAmount = {
-                                        'from_date': currentDate.toIso8601String(),
-                                        'to_date': toDate.toIso8601String(),
-                                        'amount': currentAmount,
+                                        "amount": totalAmount,
+                                        "paid": 0,
+                                        "balance": totalAmount,
+                                        "unit_id": tenantController.unitId
+                                            .value,
+                                        "from_date": currentDate
+                                            .toIso8601String(),
+                                        "to_date": toDate.toIso8601String(),
+                                        "date_posted": DateTime.now()
+                                            .toIso8601String(),
+                                        "tenant_id": tenantController.tenantId
+                                            .value,
+                                        "created_by": 'f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5',
+                                        "updated_by": 'f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5',
                                       };
 
                                       dividedAmounts.add(mDividedAmount);
-                                      print(dividedAmounts);
+                                      // print(dividedAmounts);
                                     }
 
                                     return dividedAmounts;
                                   }
 
+                                  final dividedAmounts = divideAmountMonthly(
+                                      selectedDate1.value,
+                                      selectedDate2.value,
+                                      int.parse(
+                                          discountController.text.toString()));
 
-                                  final dividedAmounts = divideAmountMonthly(startDate, endDate, amount);
+                                  print(
+                                      'Monthly Divided Amounts: $dividedAmounts');
+                                  print(
+                                      'Monthly Divided Amounts: ${dividedAmounts
+                                          .length}');
+
+                                  await tenantController.addTenantToUnit(
+                                      tenantController.tenantId.value,
+                                      "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
+                                      tenantController.unitId.value,
+                                      selectedDate1.value.toString(),
+                                      selectedDate2.value.toString(),
+                                      // date2Controller.text.trim().toString(),
+                                      int.parse(
+                                          amountController.text.toString()),
+                                      int.parse(
+                                          discountController.text.toString()),
+                                      dividedAmounts
+                                  ).then((value) async {
+                                    tenantController.tenantId.value == 0;
+                                    tenantController.unitId.value == 0;
+                                    selectedDate2.value =
+                                        DateTime(selectedDate1.value.year,
+                                            selectedDate1.value.month,
+                                            selectedDate1.value.day);
+                                    dailyController.clear();
+                                    weeklyController.clear();
+                                    monthlyController.clear();
+                                    yearlyController.clear();
+                                  });
 
 
-                                  print('Divided Amounts: $dividedAmounts');
+                                  // tenantController.addPaymentSchedule(
+                                  //   tenantController.tenantId.value,
+                                  //   tenantController.unitId.value,
+                                  //   selectedDate1.value.toString(),
+                                  //   selectedDate2.value.toString(),
+                                  //   int.parse(
+                                  //       discountController.text.toString()),
+                                  //   0,
+                                  //   int.parse(
+                                  //       discountController.text.toString()),
+                                  //   'f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5',
+                                  //   'f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5',
+                                  // );
 
+                                  // tenantController.addPaymentSchedule(
+                                  //   tenantController.tenantId.value,
+                                  //   "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
+                                  //   tenantController.unitId.value,
+                                  //   selectedDate1.value.toString(),
+                                  //   selectedDate2.value.toString(),
+                                  //   // date2Controller.text.trim().toString(),
+                                  //   int.parse(amountController.text.toString()),
+                                  //   int.parse(discountController.text.toString()),
+                                  // );
 
-
-                                } else {
-
-
-
-                                }
-
+                                  // final startDate = DateTime.now();
+                                  // final endDate = startDate.add(Duration(days: 180));
+                                  //
+                                  // final amount = 6000.0;
+                                  //
+                                  // List<Map<String, dynamic>> divideAmountMonthly(DateTime startDate, DateTime endDate, double totalAmount) {
+                                  //   final dividedAmounts = <Map<String, dynamic>>[];
+                                  //
+                                  //
+                                  //   final monthsInPeriod = endDate.month - startDate.month + 12 * (endDate.year - startDate.year);
+                                  //
+                                  //
+                                  //   final amountPerMonth = totalAmount / monthsInPeriod;
+                                  //
+                                  //
+                                  //   for (int i = 0; i < monthsInPeriod; i++) {
+                                  //
+                                  //
+                                  //     final currentDate = DateTime(startDate.year, startDate.month + i, startDate.day);
+                                  //     // Define the end date of the next period
+                                  //     final toDate = DateTime(currentDate.year, currentDate.month + 1, currentDate.day); // Next period is 30 days
+                                  //
+                                  //     final currentAmount = (i == monthsInPeriod - 1) ? totalAmount - (amountPerMonth * i) : amountPerMonth;
+                                  //
+                                  //     final mDividedAmount = {
+                                  //       'from_date': currentDate.toIso8601String(),
+                                  //       'to_date': toDate.toIso8601String(),
+                                  //       'amount': currentAmount,
+                                  //     };
+                                  //
+                                  //     dividedAmounts.add(mDividedAmount);
+                                  //     // print(dividedAmounts);
+                                  //   }
+                                  //
+                                  //   return dividedAmounts;
+                                  // }
+                                  //
+                                  //
+                                  // final dividedAmounts = divideAmountMonthly(startDate, endDate, amount);
+                                  //
+                                  //
+                                  // print('Divided Amounts: $dividedAmounts');
+                                } else if (tenantController
+                                    .paymentScheduleId.value ==
+                                    1) {
+                                  // List<Map<String, dynamic>> divideAmountMonthly(DateTime startDate, DateTime endDate, double totalAmount) {
+                                  //   final dividedAmounts = <Map<String, dynamic>>[];
+                                  //
+                                  //
+                                  //   // final daysInPeriod = endDate.day - startDate.day + int.parse(dailyController.text.toString()) * (endDate.month - startDate.month);
+                                  //   //
+                                  //   // print('These days $daysInPeriod');
+                                  //   // print('end day $daysInPeriod');
+                                  //   // print('start day $daysInPeriod');
+                                  //   // // print('start day $daysInPeriod');
+                                  //
+                                  //   // final amountPerMonth = totalAmount / daysInPeriod;
+                                  //
+                                  //
+                                  //
+                                  //
+                                  //   for (int i = 0; i < int.parse(amountController.text); i++) {
+                                  //
+                                  //
+                                  //     final currentDate = DateTime(startDate.year, startDate.month, startDate.day + i);
+                                  //     // Define the end date of the next period
+                                  //     final toDate = DateTime(currentDate.year, currentDate.month, currentDate.day + 1); // Next period is 30 days
+                                  //
+                                  //     // final currentAmount = (i == daysInPeriod - 1) ? totalAmount - (amountPerMonth * i) : amountPerMonth;
+                                  //
+                                  //     final mDividedAmount = {
+                                  //       'from_date': currentDate.toIso8601String(),
+                                  //       'to_date': toDate.toIso8601String(),
+                                  //       'amount': totalAmount,
+                                  //     };
+                                  //
+                                  //     dividedAmounts.add(mDividedAmount);
+                                  //     // print(dividedAmounts);
+                                  //   }
+                                  //
+                                  //   return dividedAmounts;
+                                  // }
+                                  //
+                                  //
+                                  // final dividedAmounts = divideAmountMonthly(
+                                  //     selectedDate1.value,
+                                  //     selectedDate2.value,
+                                  //     double.parse(discountController.text.toString()));
+                                  //
+                                  //
+                                  // print('Daily Divided Amounts: $dividedAmounts');
+                                  //
+                                } else if (tenantController
+                                    .paymentScheduleId.value ==
+                                    2) {
+                                  //
+                                  // List<Map<String, dynamic>> divideAmountMonthly(DateTime startDate, DateTime endDate, double totalAmount) {
+                                  //   final dividedAmounts = <Map<String, dynamic>>[];
+                                  //
+                                  //
+                                  //   final weeksInPeriod = endDate.day - startDate.day + 30 * (endDate.month - startDate.month);
+                                  //
+                                  //
+                                  //   // final amountPerMonth = totalAmount / daysInPeriod;
+                                  //
+                                  //
+                                  //   for (int i = 0; i < weeksInPeriod; i++) {
+                                  //
+                                  //
+                                  //     final currentDate = DateTime(startDate.year, startDate.month, startDate.day + i);
+                                  //     // Define the end date of the next period
+                                  //     final toDate = DateTime(currentDate.year, currentDate.month, currentDate.day + 1); // Next period is 30 days
+                                  //
+                                  //     // final currentAmount = (i == daysInPeriod - 1) ? totalAmount - (amountPerMonth * i) : amountPerMonth;
+                                  //
+                                  //     final mDividedAmount = {
+                                  //       'from_date': currentDate.toIso8601String(),
+                                  //       'to_date': toDate.toIso8601String(),
+                                  //       'amount': totalAmount,
+                                  //     };
+                                  //
+                                  //     dividedAmounts.add(mDividedAmount);
+                                  //     // print(dividedAmounts);
+                                  //   }
+                                  //
+                                  //   return dividedAmounts;
+                                  // }
+                                  //
+                                  //
+                                  // final dividedAmounts = divideAmountMonthly(
+                                  //     selectedDate1.value,
+                                  //     selectedDate2.value,
+                                  //     double.parse(discountController.text.toString()));
+                                  //
+                                  //
+                                  // print('Daily Divided Amounts: $dividedAmounts');
+                                } else {}
 
                                 // if (_formKey.currentState!.validate()) {
                                 //   // print(selectedDate1.value.toString().runtimeType);
@@ -333,20 +569,19 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                                 // } else {
                                 //
                                 // }
-
                               },
-                              child: Text('Add', style: TextStyle(
-                                color: AppTheme.primaryColor,
-                                fontSize: 17.5.sp,
-                              ),)),
-
-
+                              child: Text(
+                                'Add',
+                                style: TextStyle(
+                                  color: AppTheme.primaryColor,
+                                  fontSize: 17.5.sp,
+                                ),
+                              )),
                         ],
                       ),
                     ),
                   ),
                 ),
-
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 1.h),
                   child: SingleChildScrollView(
@@ -355,8 +590,6 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-
-
                           SizedBox(
                             height: 1.h,
                           ),
@@ -376,15 +609,15 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                               hintText: 'Tenant',
                               menuItems: tenantController.tenantList.value,
                               controller: _cnt,
-                                  onChanged: (value) {
+                              onChanged: (value) {
                                 print(value.value.id);
-                                    tenantController.setTenantId(value.value.id);
-                                    print('MY TEnant is ${tenantController.tenantId.value}');
-
-                                  },
+                                tenantController.setTenantId(value.value.id);
+                                print(
+                                    'MY TEnant is ${tenantController.tenantId
+                                        .value}');
+                              },
                             );
                           }),
-
 
                           Obx(() {
                             return SearchableUnitDropDown<UnitModel>(
@@ -394,12 +627,18 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                               onChanged: (value) {
                                 print(value.value.id);
                                 tenantController.setUnitId(value.value.id);
-                                tenantController.setUnitAmount(value.value.amount);
-                                amountController.text = value.value.amount.toString();
-                                discountController.text = value.value.amount.toString();
-                                print('MY Unit is ${tenantController.unitId.value}');
-                                print('MY Amount is ${tenantController.unitAmount.value}');
-
+                                tenantController
+                                    .setUnitAmount(value.value.amount);
+                                amountController.text =
+                                    value.value.amount.toString();
+                                discountController.text =
+                                    value.value.amount.toString();
+                                print(
+                                    'MY Unit is ${tenantController.unitId
+                                        .value}');
+                                print(
+                                    'MY Amount is ${tenantController.unitAmount
+                                        .value}');
                               },
                             );
                           }),
@@ -418,96 +657,163 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-
                               SizedBox(
                                 width: 42.5.w,
                                 child: Obx(() {
-                                  return CustomPeriodApiGenericDropdown<PaymentScheduleModel>(
+                                  return CustomPeriodApiGenericDropdown<
+                                      PaymentScheduleModel>(
                                     hintText: 'Per Month',
-                                    menuItems: tenantController.paymentList.value,
+                                    menuItems:
+                                    tenantController.paymentList.value,
                                     onChanged: (value) {
-                                      tenantController.setPaymentScheduleId(value!.id);
+                                      tenantController
+                                          .setPaymentScheduleId(value!.id);
 
+                                      if (tenantController
+                                          .paymentScheduleId.value ==
+                                          1) {
+                                        var myDays =
+                                        dailyController.text.isEmpty
+                                            ? 1 * 1
+                                            : int.tryParse(
+                                            dailyController.text)! *
+                                            1;
 
-                                      if(tenantController.paymentScheduleId.value == 1) {
-
-                                        var myDays = dailyController.text.isEmpty ? 1*1 : int.tryParse(dailyController.text)! * 1;
-
-                                        if(dailyController.text.toString() == '0'){
-                                          Fluttertoast.showToast(msg: 'Enter Right Day');
+                                        if (dailyController.text.toString() ==
+                                            '0') {
+                                          Fluttertoast.showToast(
+                                              msg: 'Enter Right Day');
                                         } else {
-                                          print('MY myDays are == ${dailyController.text.toString()}');
-                                          print('Count myDays ' + myDays.toString());
-                                          selectedDate2.value = DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day + myDays);
+                                          print(
+                                              'MY myDays are == ${dailyController
+                                                  .text.toString()}');
+                                          print('Count myDays ' +
+                                              myDays.toString());
+                                          selectedDate2.value = DateTime(
+                                              selectedDate1.value.year,
+                                              selectedDate1.value.month,
+                                              selectedDate1.value.day + myDays);
                                           date2Controller.text =
-                                          '${DateFormat('MM/dd/yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day + myDays))}';
-                                          print('my seelected date ${selectedDate2.value}');
-                                          print('my date date ${date2Controller.text}');
+                                          '${DateFormat('MM/dd/yyyy').format(
+                                              DateTime(selectedDate1.value.year,
+                                                  selectedDate1.value.month,
+                                                  selectedDate1.value.day +
+                                                      myDays))}';
+                                          print(
+                                              'my seelected date ${selectedDate2
+                                                  .value}');
+                                          print(
+                                              'my date date ${date2Controller
+                                                  .text}');
                                         }
+                                      } else if (tenantController
+                                          .paymentScheduleId.value ==
+                                          2) {
+                                        var myWeeks = weeklyController
+                                            .text.isEmpty
+                                            ? 1 * 7
+                                            : int.tryParse(
+                                            weeklyController.text)! *
+                                            7;
 
-
-                                      } else if(tenantController.paymentScheduleId.value ==2) {
-                                        var myWeeks = weeklyController.text.isEmpty ? 1*7 : int.tryParse(weeklyController.text)! * 7;
-
-                                        if(weeklyController.text.toString() == '0'){
-                                          Fluttertoast.showToast(msg: 'Enter Right week');
+                                        if (weeklyController.text.toString() ==
+                                            '0') {
+                                          Fluttertoast.showToast(
+                                              msg: 'Enter Right week');
                                         } else {
-                                          print('MY WEEKs are == ${weeklyController.text.toString()}');
-                                          print('Count Weeks ' + myWeeks.toString());
-                                          selectedDate2.value = DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day + myWeeks);
+                                          print(
+                                              'MY WEEKs are == ${weeklyController
+                                                  .text.toString()}');
+                                          print('Count Weeks ' +
+                                              myWeeks.toString());
+                                          selectedDate2.value = DateTime(
+                                              selectedDate1.value.year,
+                                              selectedDate1.value.month,
+                                              selectedDate1.value.day +
+                                                  myWeeks);
                                           date2Controller.text =
-                                          '${DateFormat('MM/dd/yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day + myWeeks))}';
+                                          '${DateFormat('MM/dd/yyyy').format(
+                                              DateTime(selectedDate1.value.year,
+                                                  selectedDate1.value.month,
+                                                  selectedDate1.value.day +
+                                                      myWeeks))}';
                                         }
+                                      } else if (tenantController
+                                          .paymentScheduleId.value ==
+                                          3) {
+                                        var myMonths = monthlyController
+                                            .text.isEmpty
+                                            ? 1 * 1
+                                            : int.tryParse(
+                                            monthlyController.text)! *
+                                            1;
 
-
-                                      } else if(tenantController.paymentScheduleId.value ==3) {
-
-                                        var myMonths = monthlyController.text.isEmpty ? 1*1 : int.tryParse(monthlyController.text)! * 1;
-
-                                        if(monthlyController.text.toString() == '0'){
-                                          Fluttertoast.showToast(msg: 'Enter Right Month');
+                                        if (monthlyController.text.toString() ==
+                                            '0') {
+                                          Fluttertoast.showToast(
+                                              msg: 'Enter Right Month');
                                         } else {
-                                          print('MY myMonths are == ${monthlyController.text.toString()}');
-                                          print('Count myMonths ' + myMonths.toString());
-                                          selectedDate2.value = DateTime(selectedDate1.value.year, selectedDate1.value.month + myMonths, selectedDate1.value.day);
+                                          print(
+                                              'MY myMonths are == ${monthlyController
+                                                  .text.toString()}');
+                                          print('Count myMonths ' +
+                                              myMonths.toString());
+                                          selectedDate2.value = DateTime(
+                                              selectedDate1.value.year,
+                                              selectedDate1.value.month +
+                                                  myMonths,
+                                              selectedDate1.value.day);
                                           date2Controller.text =
-                                          '${DateFormat('MM/dd/yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month + myMonths, selectedDate1.value.day))}';
+                                          '${DateFormat('MM/dd/yyyy').format(
+                                              DateTime(selectedDate1.value.year,
+                                                  selectedDate1.value.month +
+                                                      myMonths,
+                                                  selectedDate1.value.day))}';
                                         }
+                                      } else if (tenantController
+                                          .paymentScheduleId.value ==
+                                          4) {
+                                        var myYears = yearlyController
+                                            .text.isEmpty
+                                            ? 1 * 1
+                                            : int.tryParse(
+                                            yearlyController.text)! *
+                                            1;
 
-                                      } else if(tenantController.paymentScheduleId.value ==4) {
-
-                                        var myYears = yearlyController.text.isEmpty ? 1*1 : int.tryParse(yearlyController.text)! * 1;
-
-                                        if(yearlyController.text.toString() == '0'){
-                                          Fluttertoast.showToast(msg: 'Enter Right years');
+                                        if (yearlyController.text.toString() ==
+                                            '0') {
+                                          Fluttertoast.showToast(
+                                              msg: 'Enter Right years');
                                         } else {
-                                          print('MY myYears are == ${yearlyController.text.toString()}');
-                                          print('Count myYears ' + myYears.toString());
-                                          selectedDate2.value = DateTime(selectedDate1.value.year + myYears, selectedDate1.value.month, selectedDate1.value.day);
+                                          print(
+                                              'MY myYears are == ${yearlyController
+                                                  .text.toString()}');
+                                          print('Count myYears ' +
+                                              myYears.toString());
+                                          selectedDate2.value = DateTime(
+                                              selectedDate1.value.year +
+                                                  myYears,
+                                              selectedDate1.value.month,
+                                              selectedDate1.value.day);
                                           date2Controller.text =
-                                          '${DateFormat('MM/dd/yyyy').format(DateTime(selectedDate1.value.year + myYears, selectedDate1.value.month, selectedDate1.value.day))}';
+                                          '${DateFormat('MM/dd/yyyy').format(
+                                              DateTime(selectedDate1.value
+                                                  .year + myYears, selectedDate1
+                                                  .value.month, selectedDate1
+                                                  .value.day))}';
                                         }
-
-
                                       } else {
-
                                         // date2Controller.text = '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day))}';
-
                                       }
-
                                     },
                                   );
                                 }),
                               ),
-
-                              tenantController
-                                  .paymentScheduleId
-                                  .value ==
-                                  10
+                              tenantController.paymentScheduleId.value == 10
                                   ? SizedBox(
                                 child: Obx(() {
                                   return AuthTextField(
-                                    controller:  tenantController
+                                    controller: tenantController
                                         .paymentScheduleId
                                         .value ==
                                         10
@@ -519,117 +825,187 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                                   );
                                 }),
                                 width: 42.5.w,
-                              ) : Container(),
-
+                              )
+                                  : Container(),
                               SizedBox(
                                 child: Obx(() {
                                   return AuthTextField(
                                     controller: tenantController
-                                                .paymentScheduleId.value ==
-                                            1
+                                        .paymentScheduleId.value ==
+                                        1
                                         ? dailyController
                                         : tenantController
-                                                    .paymentScheduleId.value ==
-                                                2
-                                            ? weeklyController
-                                            : tenantController
-                                                        .paymentScheduleId.value ==
-                                                    3
-                                                ? monthlyController
-                                                : tenantController.paymentScheduleId
-                                                            .value ==
-                                                        4
-                                                    ? yearlyController
-                                                   : TextEditingController(
-                                                            text: null),
+                                        .paymentScheduleId.value ==
+                                        2
+                                        ? weeklyController
+                                        : tenantController.paymentScheduleId
+                                        .value ==
+                                        3
+                                        ? monthlyController
+                                        : tenantController
+                                        .paymentScheduleId
+                                        .value ==
+                                        4
+                                        ? yearlyController
+                                        : TextEditingController(
+                                        text: null),
                                     hintText: tenantController
-                                                .paymentScheduleId.value ==
-                                            1
+                                        .paymentScheduleId.value ==
+                                        1
                                         ? 'Enter No. Of Days'
                                         : tenantController
-                                                    .paymentScheduleId.value ==
-                                                2
-                                            ? 'Enter No. Of Weeks'
-                                            : tenantController
-                                                        .paymentScheduleId.value ==
-                                                    3
-                                                ? 'Enter No. Of Months'
-                                               : tenantController
-                                                                .paymentScheduleId
-                                                                .value ==
-                                                            4
-                                                        ? 'Enter No. Of Years'
-                                                        : 'Specific Period',
+                                        .paymentScheduleId.value ==
+                                        2
+                                        ? 'Enter No. Of Weeks'
+                                        : tenantController.paymentScheduleId
+                                        .value ==
+                                        3
+                                        ? 'Enter No. Of Months'
+                                        : tenantController
+                                        .paymentScheduleId
+                                        .value ==
+                                        4
+                                        ? 'Enter No. Of Years'
+                                        : 'Specific Period',
                                     obscureText: false,
                                     keyBoardType: TextInputType.number,
-                                    onChanged: (value){
+                                    onChanged: (value) {
+                                      if (tenantController
+                                          .paymentScheduleId.value ==
+                                          1) {
+                                        var myDays =
+                                        dailyController.text.isEmpty
+                                            ? 1 * 1
+                                            : int.tryParse(
+                                            dailyController.text)! *
+                                            1;
 
-                                      if(tenantController.paymentScheduleId.value == 1) {
-
-                                        var myDays = dailyController.text.isEmpty ? 1*1 : int.tryParse(dailyController.text)! * 1;
-
-                                        if(dailyController.text.toString() == '0'){
-                                          Fluttertoast.showToast(msg: 'Enter Right Day');
+                                        if (dailyController.text.toString() ==
+                                            '0') {
+                                          Fluttertoast.showToast(
+                                              msg: 'Enter Right Day');
                                         } else {
-                                          print('MY myDays are == ${dailyController.text.toString()}');
-                                          print('Count myDays ' + myDays.toString());
-                                          selectedDate2.value = DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day + myDays);
+                                          print(
+                                              'MY myDays are == ${dailyController
+                                                  .text.toString()}');
+                                          print('Count myDays ' +
+                                              myDays.toString());
+                                          selectedDate2.value = DateTime(
+                                              selectedDate1.value.year,
+                                              selectedDate1.value.month,
+                                              selectedDate1.value.day + myDays);
                                           date2Controller.text =
-                                          '${DateFormat('MM/dd/yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day + myDays))}';
-                                          print('my seelected date ${selectedDate2.value}');
-                                          print('my date date ${date2Controller.text}');
+                                          '${DateFormat('MM/dd/yyyy').format(
+                                              DateTime(selectedDate1.value.year,
+                                                  selectedDate1.value.month,
+                                                  selectedDate1.value.day +
+                                                      myDays))}';
+                                          print(
+                                              'my seelected date ${selectedDate2
+                                                  .value}');
+                                          print(
+                                              'my date date ${date2Controller
+                                                  .text}');
                                         }
+                                      } else if (tenantController
+                                          .paymentScheduleId.value ==
+                                          2) {
+                                        var myWeeks = weeklyController
+                                            .text.isEmpty
+                                            ? 1 * 7
+                                            : int.tryParse(
+                                            weeklyController.text)! *
+                                            7;
 
-
-                                      } else if(tenantController.paymentScheduleId.value ==2) {
-                                        var myWeeks = weeklyController.text.isEmpty ? 1*7 : int.tryParse(weeklyController.text)! * 7;
-
-                                        if(weeklyController.text.toString() == '0'){
-                                          Fluttertoast.showToast(msg: 'Enter Right week');
+                                        if (weeklyController.text.toString() ==
+                                            '0') {
+                                          Fluttertoast.showToast(
+                                              msg: 'Enter Right week');
                                         } else {
-                                          print('MY WEEKs are == ${weeklyController.text.toString()}');
-                                          print('Count Weeks ' + myWeeks.toString());
-                                          selectedDate2.value = DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day + myWeeks);
+                                          print(
+                                              'MY WEEKs are == ${weeklyController
+                                                  .text.toString()}');
+                                          print('Count Weeks ' +
+                                              myWeeks.toString());
+                                          selectedDate2.value = DateTime(
+                                              selectedDate1.value.year,
+                                              selectedDate1.value.month,
+                                              selectedDate1.value.day +
+                                                  myWeeks);
                                           date2Controller.text =
-                                          '${DateFormat('MM/dd/yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day + myWeeks))}';
+                                          '${DateFormat('MM/dd/yyyy').format(
+                                              DateTime(selectedDate1.value.year,
+                                                  selectedDate1.value.month,
+                                                  selectedDate1.value.day +
+                                                      myWeeks))}';
                                         }
+                                      } else if (tenantController
+                                          .paymentScheduleId.value ==
+                                          3) {
+                                        var myMonths = monthlyController
+                                            .text.isEmpty
+                                            ? 1 * 1
+                                            : int.tryParse(
+                                            monthlyController.text)! *
+                                            1;
 
-
-                                      } else if(tenantController.paymentScheduleId.value ==3) {
-
-                                        var myMonths = monthlyController.text.isEmpty ? 1*1 : int.tryParse(monthlyController.text)! * 1;
-
-                                        if(monthlyController.text.toString() == '0'){
-                                          Fluttertoast.showToast(msg: 'Enter Right Month');
+                                        if (monthlyController.text.toString() ==
+                                            '0') {
+                                          Fluttertoast.showToast(
+                                              msg: 'Enter Right Month');
                                         } else {
-                                          print('MY myMonths are == ${monthlyController.text.toString()}');
-                                          print('Count myMonths ' + myMonths.toString());
-                                          selectedDate2.value = DateTime(selectedDate1.value.year, selectedDate1.value.month + myMonths, selectedDate1.value.day);
+                                          print(
+                                              'MY myMonths are == ${monthlyController
+                                                  .text.toString()}');
+                                          print('Count myMonths ' +
+                                              myMonths.toString());
+                                          selectedDate2.value = DateTime(
+                                              selectedDate1.value.year,
+                                              selectedDate1.value.month +
+                                                  myMonths,
+                                              selectedDate1.value.day);
                                           date2Controller.text =
-                                          '${DateFormat('MM/dd/yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month + myMonths, selectedDate1.value.day))}';
+                                          '${DateFormat('MM/dd/yyyy').format(
+                                              DateTime(selectedDate1.value.year,
+                                                  selectedDate1.value.month +
+                                                      myMonths,
+                                                  selectedDate1.value.day))}';
                                         }
+                                      } else if (tenantController
+                                          .paymentScheduleId.value ==
+                                          4) {
+                                        var myYears = yearlyController
+                                            .text.isEmpty
+                                            ? 1 * 1
+                                            : int.tryParse(
+                                            yearlyController.text)! *
+                                            1;
 
-                                      } else if(tenantController.paymentScheduleId.value ==4) {
-
-                                        var myYears = yearlyController.text.isEmpty ? 1*1 : int.tryParse(yearlyController.text)! * 1;
-
-                                        if(yearlyController.text.toString() == '0'){
-                                          Fluttertoast.showToast(msg: 'Enter Right years');
+                                        if (yearlyController.text.toString() ==
+                                            '0') {
+                                          Fluttertoast.showToast(
+                                              msg: 'Enter Right years');
                                         } else {
-                                          print('MY myYears are == ${yearlyController.text.toString()}');
-                                          print('Count myYears ' + myYears.toString());
-                                          selectedDate2.value = DateTime(selectedDate1.value.year + myYears, selectedDate1.value.month, selectedDate1.value.day);
+                                          print(
+                                              'MY myYears are == ${yearlyController
+                                                  .text.toString()}');
+                                          print('Count myYears ' +
+                                              myYears.toString());
+                                          selectedDate2.value = DateTime(
+                                              selectedDate1.value.year +
+                                                  myYears,
+                                              selectedDate1.value.month,
+                                              selectedDate1.value.day);
                                           date2Controller.text =
-                                          '${DateFormat('MM/dd/yyyy').format(DateTime(selectedDate1.value.year + myYears, selectedDate1.value.month, selectedDate1.value.day))}';
+                                          '${DateFormat('MM/dd/yyyy').format(
+                                              DateTime(selectedDate1.value
+                                                  .year + myYears, selectedDate1
+                                                  .value.month, selectedDate1
+                                                  .value.day))}';
                                         }
-
-
                                       } else {
-
                                         // date2Controller.text = '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day))}';
-
                                       }
-
                                     },
                                   );
                                 }),
@@ -637,7 +1013,9 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                               ),
                             ],
                           ),
-                          SizedBox(height: 1.h,),
+                          SizedBox(
+                            height: 1.h,
+                          ),
 
                           // Text('From', style: AppTheme.appFieldTitle,),
                           //
@@ -660,7 +1038,9 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                             obscureText: false,
                           ),
 
-                          SizedBox(height: 1.h,),
+                          SizedBox(
+                            height: 1.h,
+                          ),
 
                           DateTextField(
                             style: TextStyle(color: Colors.transparent),
@@ -668,7 +1048,6 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                               _selectDate2(context);
                             },
                             controller: date2Controller,
-
                             hintText: "To",
                             obscureText: false,
                             enabled: false,
@@ -707,6 +1086,18 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                             height: 2.h,
                           ),
 
+                          AuthTextField(
+                            controller: amountController,
+                            hintText: 'Description',
+                            obscureText: false,
+                            keyBoardType: TextInputType.number,
+                          ),
+
+                          SizedBox(
+                            height: 2.h,
+                          ),
+
+
                           // AppButton(
                           //   title: 'Add Tenant',
                           //   color: AppTheme.primaryColor,
@@ -727,6 +1118,35 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
 
                           // DateAccordion(dateController: date1Controller),
 
+                          Bounceable(
+                            onTap: () {
+                              pickAddTenantFile();
+                            },
+                            child: Container(
+                                height: 15.h,
+                                width: 90.w,
+                                decoration: BoxDecoration(
+                                  color: AppTheme.appBgColor,
+                                  borderRadius: BorderRadius.circular(15.sp),
+                                ),
+                                child: Center(
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment
+                                          .center,
+                                      crossAxisAlignment: CrossAxisAlignment
+                                          .center,
+                                      children: [
+                                        Icon(Icons.upload_file),
+                                        Text(
+                                          'Upload File',
+                                          style: TextStyle(
+                                            color: AppTheme.inActiveColor,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                      ],
+                                    ))),
+                          ),
                         ],
                       ),
                     ),
@@ -749,76 +1169,95 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
     _image = File('');
     _cnt = SingleValueDropDownController();
     _unitCont = SingleValueDropDownController();
-    selectedDate2.value = DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day);
-    date1Controller  = TextEditingController(text: '${DateFormat('MM/dd/yyyy').format(selectedDate1.value)}');
+    selectedDate2.value = DateTime(selectedDate1.value.year,
+        selectedDate1.value.month, selectedDate1.value.day);
+    date1Controller = TextEditingController(
+        text: '${DateFormat('MM/dd/yyyy').format(selectedDate1.value)}');
 
-    if(tenantController.paymentScheduleId.value == 1) {
+    if (tenantController.paymentScheduleId.value == 1) {
+      var myDays = dailyController.text.isEmpty
+          ? 1 * 1
+          : int.tryParse(dailyController.text)! * 1;
 
-      var myDays = dailyController.text.isEmpty ? 1*1 : int.tryParse(dailyController.text)! * 1;
-
-      if(dailyController.text.toString() == '0'){
+      if (dailyController.text.toString() == '0') {
         Fluttertoast.showToast(msg: 'Enter Right Day');
       } else {
         print('MY myDays are == ${dailyController.text.toString()}');
         print('Count myDays ' + myDays.toString());
-        selectedDate2.value = DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day + myDays);
+        selectedDate2.value = DateTime(selectedDate1.value.year,
+            selectedDate1.value.month, selectedDate1.value.day + myDays);
         date2Controller.text =
-        '${DateFormat('MM/dd/yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day + myDays))}';
+        '${DateFormat('MM/dd/yyyy').format(DateTime(
+            selectedDate1.value.year, selectedDate1.value.month,
+            selectedDate1.value.day + myDays))}';
         print('my seelected date ${selectedDate2.value}');
         print('my date date ${date2Controller.text}');
       }
+    } else if (tenantController.paymentScheduleId.value == 2) {
+      int myWeeks = weeklyController.text.isEmpty
+          ? 1 * 7
+          : int.tryParse(weeklyController.text)! * 7;
 
-
-    } else if(tenantController.paymentScheduleId.value ==2) {
-      int myWeeks = weeklyController.text.isEmpty ? 1*7 : int.tryParse(weeklyController.text)! * 7;
-
-      if(weeklyController.text.toString() == '0'){
+      if (weeklyController.text.toString() == '0') {
         Fluttertoast.showToast(msg: 'Enter Right week');
       } else {
         print('MY WEEKs are == ${weeklyController.text.toString()}');
         print('Count Weeks ' + myWeeks.toString());
-        selectedDate2.value = DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day + myWeeks);
+        selectedDate2.value = DateTime(selectedDate1.value.year,
+            selectedDate1.value.month, selectedDate1.value.day + myWeeks);
         date2Controller.text =
-        '${DateFormat('MM/dd/yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day + myWeeks))}';
+        '${DateFormat('MM/dd/yyyy').format(DateTime(
+            selectedDate1.value.year, selectedDate1.value.month,
+            selectedDate1.value.day + myWeeks))}';
       }
+    } else if (tenantController.paymentScheduleId.value == 3) {
+      var myMonths = monthlyController.text.isEmpty
+          ? 1 * 1
+          : int.tryParse(monthlyController.text)! * 1;
 
-
-    } else if(tenantController.paymentScheduleId.value ==3) {
-
-      var myMonths = monthlyController.text.isEmpty ? 1*1 : int.tryParse(monthlyController.text)! * 1;
-
-      if(monthlyController.text.toString() == '0'){
+      if (monthlyController.text.toString() == '0') {
         Fluttertoast.showToast(msg: 'Enter Right Month');
       } else {
         print('MY myMonths are == ${monthlyController.text.toString()}');
         print('Count myMonths ' + myMonths.toString());
-        selectedDate2.value = DateTime(selectedDate1.value.year, selectedDate1.value.month + myMonths, selectedDate1.value.day);
+        selectedDate2.value = DateTime(selectedDate1.value.year,
+            selectedDate1.value.month + myMonths, selectedDate1.value.day);
         date2Controller.text =
-        '${DateFormat('MM/dd/yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month + myMonths, selectedDate1.value.day))}';
+        '${DateFormat('MM/dd/yyyy').format(DateTime(
+            selectedDate1.value.year, selectedDate1.value.month + myMonths,
+            selectedDate1.value.day))}';
       }
+    } else if (tenantController.paymentScheduleId.value == 4) {
+      var myYears = yearlyController.text.isEmpty
+          ? 1 * 1
+          : int.tryParse(yearlyController.text)! * 1;
 
-    } else if(tenantController.paymentScheduleId.value ==4) {
-
-      var myYears = yearlyController.text.isEmpty ? 1*1 : int.tryParse(yearlyController.text)! * 1;
-
-      if(yearlyController.text.toString() == '0'){
+      if (yearlyController.text.toString() == '0') {
         Fluttertoast.showToast(msg: 'Enter Right years');
       } else {
         print('MY myYears are == ${yearlyController.text.toString()}');
         print('Count myYears ' + myYears.toString());
-        selectedDate2.value = DateTime(selectedDate1.value.year + myYears, selectedDate1.value.month, selectedDate1.value.day);
+        selectedDate2.value = DateTime(selectedDate1.value.year + myYears,
+            selectedDate1.value.month, selectedDate1.value.day);
         date2Controller.text =
-        '${DateFormat('MM/dd/yyyy').format(DateTime(selectedDate1.value.year + myYears, selectedDate1.value.month, selectedDate1.value.day))}';
+        '${DateFormat('MM/dd/yyyy').format(DateTime(
+            selectedDate1.value.year + myYears, selectedDate1.value.month,
+            selectedDate1.value.day))}';
       }
-
-
     } else {
-
-      date2Controller.text = '${DateFormat('MM/dd/yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day+1))}';
-
+      date2Controller.text =
+      '${DateFormat('MM/dd/yyyy').format(DateTime(
+          selectedDate1.value.year, selectedDate1.value.month,
+          selectedDate1.value.day + 1))}';
     }
+  }
 
-
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _cnt.dispose();
+    _unitCont.dispose();
   }
 
   @override
@@ -843,23 +1282,28 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                 ),
               ),
 
-              Align(alignment: Alignment.centerRight, child: Bounceable(
-                  onTap: (){
-                            showAsBottomSheet(context);
+              Align(
+                alignment: Alignment.centerRight,
+                child: Bounceable(
+                  onTap: () {
+                    showAsBottomSheet(context);
                   },
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.sp),
-                    color: AppTheme.primaryColor,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Center(
-                      child: Icon(Icons.add, color: Colors.white,),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.sp),
+                      color: AppTheme.primaryColor,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Center(
+                        child: Icon(
+                          Icons.add,
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ),
               ),
 
               // SizedBox(
@@ -872,48 +1316,57 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
               //         showAsBottomSheet(context);
               //       }),
               // ),
-
             ],
           ),
-          ListView.builder(
-              physics: NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: listSample.length,
-              itemBuilder: (context, index) {
-                var list = listSample[index];
-                return Padding(
-                  padding: EdgeInsets.only(bottom: 1.h),
-                  child: Card(
-                    child: ListTile(
-                      onTap: () {
-                        Get.to(() => TenantDetailsScreen(),
-                            transition: Transition.rightToLeftWithFade);
-                      },
-                      leading: ClipRRect(
-                        borderRadius: BorderRadius.circular(10.sp),
-                        child: Image.asset(
-                          'assets/avatar/rian.jpg',
-                          fit: BoxFit.cover,
+
+          Obx(() {
+            return tenantController.isPropertyTenantLoading.value
+                ? Padding(
+              padding: EdgeInsets.symmetric(vertical: 15.h),
+              child: Center(
+                child: Image.asset('assets/auth/logo.png', width: 35.w),),
+            )
+                :Expanded(
+              child: ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: tenantController.propertyTenantList.length,
+                  itemBuilder: (context, index) {
+                    var tenant = tenantController.propertyTenantList[index];
+                    return Padding(
+                      padding: EdgeInsets.only(bottom: 1.h),
+                      child: Card(
+                        child: ListTile(
+                          onTap: () {
+                            Get.to(() => TenantDetailsScreen(tenantController: tenantController, tenantUnitId: tenant.unitId,),
+                                transition: Transition.rightToLeftWithFade);
+                          },
+                          leading: ClipRRect(
+                            borderRadius: BorderRadius.circular(10.sp),
+                            child: Image.asset(
+                              'assets/avatar/rian.jpg',
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          title: Text(
+                            'Tenant ${tenant.tenantId}',
+                            style: AppTheme.appTitle3,
+                          ),
+                          subtitle: Text(
+                            '${amountFormatter.format(
+                                tenant.amount.toString())}/=',
+                            style: AppTheme.greenTitle2,
+                          ),
+                          trailing: Text(
+                            'Unit ${tenant.unitId}',
+                            style: AppTheme.subText,
+                          ),
                         ),
                       ),
-                      title: Text(
-                        list['first'].toString() +
-                            ' ' +
-                            list['last'].toString(),
-                        style: AppTheme.appTitle3,
-                      ),
-                      subtitle: Text(
-                        '${amountFormatter.format(list['amount'].toString())}/=',
-                        style: AppTheme.greenTitle2,
-                      ),
-                      trailing: Text(
-                        'Unit $index',
-                        style: AppTheme.subText,
-                      ),
-                    ),
-                  ),
-                );
-              })
+                    );
+                  }),
+            );
+          })
         ],
       ),
     );

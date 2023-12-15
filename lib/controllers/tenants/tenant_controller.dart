@@ -9,6 +9,8 @@ import 'package:smart_rent/models/nationality/nationality_model.dart';
 import 'package:smart_rent/models/payment/tenant_payment_model.dart';
 import 'package:smart_rent/models/payment_schedule/payment_schedule_model.dart';
 import 'package:smart_rent/models/salutation/salutation_model.dart';
+import 'package:smart_rent/models/tenant/property_tenant_model.dart';
+import 'package:smart_rent/models/tenant/property_tenant_schedule.dart';
 import 'package:smart_rent/models/tenant/tenant_model.dart';
 import 'package:smart_rent/models/tenant/tenant_profile_model.dart';
 import 'package:smart_rent/models/tenant/tenant_type_model.dart';
@@ -28,6 +30,8 @@ class TenantController extends GetxController {
   RxList<TenantUnitModel> tenantUnitList = <TenantUnitModel>[].obs;
   RxList<UnitModel> specificTenantUnits = <UnitModel>[].obs;
   RxList<TenantPaymentModel> tenantPaymentList = <TenantPaymentModel>[].obs;
+  RxList<PropertyTenantModel> propertyTenantList = <PropertyTenantModel>[].obs;
+  RxList<UnitPropertyScheduleModel> propertyUnitScheduleList = <UnitPropertyScheduleModel>[].obs;
 
 
   RxList<PaymentScheduleModel> paymentList = <PaymentScheduleModel>[].obs;
@@ -54,6 +58,8 @@ class TenantController extends GetxController {
   var isContactDetailsLoading = false.obs;
   var isIndividualTenantDetailsLoading = false.obs;
   var isTenantPaymentsLoading = false.obs;
+  var isPropertyTenantLoading = false.obs;
+  var isPaymentScheduleLoading = false.obs;
 
 
   var uCompanyNin = ''.obs;
@@ -109,7 +115,11 @@ class TenantController extends GetxController {
     fetchAllUnits();
     fetchAllBusinessTypes();
     fetchAllPayments();
+    listenToPropertyTenantListChanges();
 listenToTenantPaymentChanges();
+// fetchAllPaymentSchedules();
+    // listenToPropertyPaymentScheduleChanges();
+
   }
 
   setNewGender(String gender){
@@ -280,25 +290,74 @@ listenToTenantPaymentChanges();
 
   }
 
-  void fetchAllTenantUnits() async {
-    isTenantUnitListLoading(true);
+  void fetchAllPropertyTenants() async {
+    isPropertyTenantLoading(true);
     try {
 
       final response = await AppConfig().supaBaseClient.from('tenant_units').select().order('created_at', ascending: false);
       final data = response as List<dynamic>;
-      print(response);
+      print('PROPERTY ALL TENANT RESPONSE IS ${response}');
       print(response.length);
       print(data.length);
       print(data);
-      isTenantUnitListLoading(false);
+      isPropertyTenantLoading(false);
 
-      return tenantList.assignAll(
-          data.map((json) => TenantModel.fromJson(json)).toList());
+      return propertyTenantList.assignAll(
+          data.map((json) => PropertyTenantModel.fromJson(json)).toList());
 
     } catch (error) {
       print('Error fetching Tenants: $error');
-      isTenantUnitListLoading(false);
+      isPropertyTenantLoading(false);
     }
+
+  }
+
+  void fetchAllPaymentSchedules(String tenantUnitId) async {
+    isPaymentScheduleLoading(true);
+    try {
+
+      final response = await AppConfig().supaBaseClient.from('payment_schedule').select().eq('unit_id', tenantUnitId).order('created_at', ascending: false);
+      final data = response as List<dynamic>;
+      print('PROPERTY Payment TENANT data IS ${data}');
+      print(response.length);
+      print(data.length);
+      print(data);
+      isPaymentScheduleLoading(false);
+      print(propertyUnitScheduleList.length);
+      return propertyUnitScheduleList.assignAll(
+          data.map((json) => UnitPropertyScheduleModel.fromJson(json)).toList());
+
+    } catch (error) {
+      print('Error fetching Tenants: $error');
+      isPaymentScheduleLoading(false);
+    }
+
+    print(propertyUnitScheduleList.length);
+
+  }
+
+  void listenToPropertyPaymentScheduleChanges() {
+    // Set up real-time listener
+    AppConfig().supaBaseClient
+        .from('payment_schedule')
+        .stream(primaryKey: ['id'])
+        .listen((List<Map<String, dynamic>> data) {
+      // fetchAllPaymentSchedules();
+
+    });
+
+  }
+
+
+  void listenToPropertyTenantListChanges() {
+    // Set up real-time listener
+    AppConfig().supaBaseClient
+        .from('tenant_units')
+        .stream(primaryKey: ['id'])
+        .listen((List<Map<String, dynamic>> data) {
+          fetchAllPropertyTenants();
+
+    });
 
   }
 
@@ -782,8 +841,8 @@ listenToTenantPaymentChanges();
 
   }
 
-  addTenantToUnit( int tenantId, String createdBy,
-      int unitId, String date1, String date2, int amount, int discount
+  Future<void> addTenantToUnit( int tenantId, String createdBy,
+      int unitId, String date1, String date2, int amount, int discount, List<Map<String, dynamic>> periodList
       ) async {
 
     try {
@@ -799,12 +858,15 @@ listenToTenantPaymentChanges();
             "to_date" : date2,
             // "updated_at" : DateTime.now(),
           }
-      ).then((tenant) {
-        Get.back();
-        Get.snackbar('SUCCESS', 'Tenant added to unit',
-          titleText: Text(
-            'SUCCESS', style: AppTheme.greenTitle1,),
-        );
+      ).then((tenant) async{
+
+        await addPaymentSchedule(periodList);
+
+        // Get.back();
+        // Get.snackbar('SUCCESS', 'Tenant added to unit',
+        //   titleText: Text(
+        //     'SUCCESS', style: AppTheme.greenTitle1,),
+        // );
       });
 
       if (response.error != null) {
@@ -1186,6 +1248,66 @@ listenToTenantPaymentChanges();
     } catch (error) {
       isTenantPaymentsLoading(false);
       print('Error fetching tenant payments: $error');
+    }
+
+
+  }
+
+
+  // addPaymentSchedule(int tenantId, int unitId, String fromDate, String toDate, int amount,
+  //     int paid, int balance, String createdBy, String updatedBy,
+  //     ) async {
+  //
+  //   try {
+  //     final response =  await AppConfig().supaBaseClient.from('payment_schedule').insert(
+  //         {
+  //           "amount" : amount,
+  //           "paid" : paid,
+  //           "balance" : balance,
+  //           "unit_id": unitId,
+  //           "from_date": fromDate,
+  //           "to_date": toDate,
+  //           "tenant_id": tenantId,
+  //           "created_by" : createdBy,
+  //           "updated_by" : updatedBy,
+  //         }
+  //     ).then((indTenant) {
+  //       Get.back();
+  //       Get.snackbar('SUCCESS', 'Payment Schedule added',
+  //         titleText: Text(
+  //           'SUCCESS', style: AppTheme.greenTitle1,),
+  //       );
+  //     });
+  //
+  //     if (response.error != null) {
+  //       throw response.error;
+  //     }
+  //
+  //   } catch (error) {
+  //     print('Error adding payment schedule: $error');
+  //   }
+  //
+  //
+  // }
+
+  Future<void> addPaymentSchedule(List<Map<String, dynamic>> periodList) async {
+
+    try {
+      final response =  await AppConfig().supaBaseClient.from('payment_schedule').insert
+        (periodList).then((indTenant) {
+        Get.back();
+        Get.snackbar('SUCCESS', 'Tenant Added',
+          titleText: Text(
+            'SUCCESS', style: AppTheme.greenTitle1,),
+        );
+      });
+
+      if (response.error != null) {
+        throw response.error;
+      }
+
+    } catch (error) {
+      print('Error adding payment schedule: $error');
     }
 
 

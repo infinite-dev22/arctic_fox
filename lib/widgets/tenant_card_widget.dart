@@ -55,7 +55,7 @@ class TenantCardWidget extends StatelessWidget {
             Text(tenantController.tenantList[index].name, style: AppTheme.darkBlueTitle,),
             Bounceable(
               onTap: (){
-                Get.to(() => TenantDetailsScreen());
+                Get.to(() => TenantDetailsScreen(tenantController: tenantController,));
               },
                 child: Text('View More Info', style: AppTheme.darkBlueText1,)),
 

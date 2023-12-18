@@ -32,6 +32,7 @@ class TenantController extends GetxController {
   RxList<TenantPaymentModel> tenantPaymentList = <TenantPaymentModel>[].obs;
   RxList<PropertyTenantModel> propertyTenantList = <PropertyTenantModel>[].obs;
   RxList<UnitPropertyScheduleModel> propertyUnitScheduleList = <UnitPropertyScheduleModel>[].obs;
+  RxList<UnitPropertyScheduleModel> specificUnitScheduleList = <UnitPropertyScheduleModel>[].obs;
 
 
   RxList<PaymentScheduleModel> paymentList = <PaymentScheduleModel>[].obs;
@@ -60,6 +61,7 @@ class TenantController extends GetxController {
   var isTenantPaymentsLoading = false.obs;
   var isPropertyTenantLoading = false.obs;
   var isPaymentScheduleLoading = false.obs;
+  var isSpecificPaymentScheduleLoading = false.obs;
 
 
   var uCompanyNin = ''.obs;
@@ -312,11 +314,33 @@ listenToTenantPaymentChanges();
 
   }
 
-  void fetchAllPaymentSchedules(String tenantUnitId) async {
+
+
+  Map<String, dynamic> groupAllPropertyTenants() {
+
+
+    Map<String, dynamic> groupedData = {};
+
+    for (var item in propertyTenantList) {
+      var key = item.tenantId;
+      groupedData[key.toString()] = (groupedData[key] ?? 0) + 1;
+
+      // if (groupedData.containsKey(key)) {
+      //   groupedData[key.toString()] += 1;
+      // } else {
+      //   groupedData[key.toString()] = 1;
+      // }
+    }
+
+    return groupedData;
+  }
+
+
+  void fetchAllPaymentSchedules(int tenantId) async {
     isPaymentScheduleLoading(true);
     try {
 
-      final response = await AppConfig().supaBaseClient.from('payment_schedule').select().eq('unit_id', tenantUnitId).order('created_at', ascending: false);
+      final response = await AppConfig().supaBaseClient.from('payment_schedule').select().eq('tenant_id', tenantId).order('created_at', ascending: false);
       final data = response as List<dynamic>;
       print('PROPERTY Payment TENANT data IS ${data}');
       print(response.length);
@@ -335,6 +359,52 @@ listenToTenantPaymentChanges();
     print(propertyUnitScheduleList.length);
 
   }
+
+
+  void fetchSpecificUnitPaymentSchedules(int unitId) async {
+    specificUnitScheduleList.value.clear();
+    isSpecificPaymentScheduleLoading(true);
+    try {
+
+      final response = await AppConfig().supaBaseClient.from('payment_schedule').select().eq('unit_id', unitId).order('created_at', ascending: false);
+      final data = response as List<dynamic>;
+      print('UNIT Payment Sschedule data IS ${data}');
+      print(response.length);
+      print(data.length);
+      print(data);
+      isSpecificPaymentScheduleLoading(false);
+      print(specificUnitScheduleList.length);
+      return specificUnitScheduleList.assignAll(
+          data.map((json) => UnitPropertyScheduleModel.fromJson(json)).toList());
+
+    } catch (error) {
+      print('Error fetching Tenants: $error');
+      isSpecificPaymentScheduleLoading(false);
+    }
+
+    print(propertyUnitScheduleList.length);
+
+  }
+
+  Map<String, dynamic> groupAllPaymentSchedules() {
+
+
+    Map<String, dynamic> groupedData = {};
+
+    for (var item in propertyUnitScheduleList) {
+      var key = item.unitId;
+      groupedData[key.toString()] = (groupedData[key] ?? 0) + 1;
+
+      // if (groupedData.containsKey(key)) {
+      //   groupedData[key.toString()] += 1;
+      // } else {
+      //   groupedData[key.toString()] = 1;
+      // }
+    }
+
+    return groupedData;
+  }
+
 
   void listenToPropertyPaymentScheduleChanges() {
     // Set up real-time listener

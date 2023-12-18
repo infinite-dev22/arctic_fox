@@ -1320,6 +1320,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
           ),
 
           Obx(() {
+            var groupedData = tenantController.groupAllPropertyTenants();
             return tenantController.isPropertyTenantLoading.value
                 ? Padding(
               padding: EdgeInsets.symmetric(vertical: 15.h),
@@ -1330,15 +1331,21 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
               child: ListView.builder(
                   physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
-                  itemCount: tenantController.propertyTenantList.length,
+                  // itemCount: tenantController.propertyTenantList.length,
+                  itemCount: groupedData.length,
                   itemBuilder: (context, index) {
-                    var tenant = tenantController.propertyTenantList[index];
+                    var key = groupedData.keys.toList()[index];
+                    var value = groupedData[key];
+
+                    // var tenant = tenantController.propertyTenantList[index];
                     return Padding(
                       padding: EdgeInsets.only(bottom: 1.h),
                       child: Card(
                         child: ListTile(
                           onTap: () {
-                            Get.to(() => TenantDetailsScreen(tenantController: tenantController, tenantUnitId: tenant.unitId,),
+                            print('MY KEY ${key.runtimeType}');
+                            print('MY Value $value');
+                            Get.to(() => TenantDetailsScreen(tenantController: tenantController, tenantId: int.parse(key),),
                                 transition: Transition.rightToLeftWithFade);
                           },
                           leading: ClipRRect(
@@ -1349,18 +1356,18 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                             ),
                           ),
                           title: Text(
-                            'Tenant ${tenant.tenantId}',
+                            'Tenant $key',
                             style: AppTheme.appTitle3,
                           ),
-                          subtitle: Text(
-                            '${amountFormatter.format(
-                                tenant.amount.toString())}/=',
-                            style: AppTheme.greenTitle2,
-                          ),
-                          trailing: Text(
-                            'Unit ${tenant.unitId}',
-                            style: AppTheme.subText,
-                          ),
+                          // subtitle: Text(
+                          //   '${amountFormatter.format(
+                          //       tenant.amount.toString())}/=',
+                          //   style: AppTheme.greenTitle2,
+                          // ),
+                          // trailing: Text(
+                          //   'Unit ${tenant.unitId}',
+                          //   style: AppTheme.subText,
+                          // ),
                         ),
                       ),
                     );

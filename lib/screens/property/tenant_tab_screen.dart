@@ -1067,15 +1067,17 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                                   hintText: 'Amount',
                                   obscureText: false,
                                   keyBoardType: TextInputType.number,
+                                  enabled: false,
                                 ),
                                 width: 42.5.w,
                               ),
                               SizedBox(
                                 child: AuthTextField(
                                   controller: discountController,
-                                  hintText: 'Discount',
+                                  hintText: 'Discounted Amount',
                                   obscureText: false,
                                   keyBoardType: TextInputType.number,
+
                                 ),
                                 width: 42.5.w,
                               ),
@@ -1087,7 +1089,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                           ),
 
                           AuthTextField(
-                            controller: amountController,
+                            controller: descriptionController,
                             hintText: 'Description',
                             obscureText: false,
                             keyBoardType: TextInputType.number,

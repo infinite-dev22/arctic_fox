@@ -1,3 +1,4 @@
+import 'package:amount_formatter/amount_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -16,6 +17,8 @@ class AllPaymentScheduleScreen extends StatefulWidget {
 }
 
 class _AllPaymentScheduleScreenState extends State<AllPaymentScheduleScreen> {
+
+  final AmountFormatter amountFormatter = AmountFormatter(separator: ',');
 
   @override
   void initState() {
@@ -62,7 +65,7 @@ class _AllPaymentScheduleScreenState extends State<AllPaymentScheduleScreen> {
                                 DataColumn(label: Text('Amount')),
                                 DataColumn(label: Text('Paid')),
                                 DataColumn(label: Text('Balance')),
-                                DataColumn(label: Text('Tenant ID')),
+                                // DataColumn(label: Text('Tenant ID')),
                                 DataColumn(label: Text('Unit ID')),
                               ],
                               rows: widget.tenantController
@@ -75,12 +78,12 @@ class _AllPaymentScheduleScreenState extends State<AllPaymentScheduleScreen> {
                                       DataCell(Text(
                                           '${schedule.fromDate} to ${schedule.toDate}')),
                                       DataCell(
-                                          Text(schedule.amount.toString())),
-                                      DataCell(Text(schedule.paid.toString())),
+                                          Text(amountFormatter.format(schedule.amount.toString()))),
+                                      DataCell(Text(amountFormatter.format(schedule.paid.toString()))),
                                       DataCell(
-                                          Text(schedule.balance.toString())),
-                                      DataCell(
-                                          Text(schedule.tenantId.toString())),
+                                          Text(amountFormatter.format(schedule.balance.toString()))),
+                                      // DataCell(
+                                      //     Text(schedule.tenantId.toString())),
                                       DataCell(
                                           Text(schedule.unitId.toString())),
                                     ]);

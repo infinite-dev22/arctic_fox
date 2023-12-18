@@ -40,6 +40,8 @@ class TenantController extends GetxController {
 
   var tenantUnitAmount = 0.obs;
   var unitNumber = ''.obs;
+  var specificTenantName = ''.obs;
+  var specificUnitNumber = 0.obs;
 
   var companyProfileWithContact = TenantProfileContactModel().obs;
 
@@ -172,6 +174,16 @@ listenToTenantPaymentChanges();
   setPaymentScheduleId(int id){
     paymentScheduleId.value = id;
     print('New Payment Schedule Id is $id');
+  }
+
+  setSpecificTenantName(String name){
+    specificTenantName.value = name;
+    print('New Tenant Name is $name');
+  }
+
+  setSpecificTenantUnitNumber(int id){
+    specificUnitNumber.value = id;
+    print('New Unit Number is $id');
   }
 
   setFromDate(String date1){
@@ -360,6 +372,51 @@ listenToTenantPaymentChanges();
 
   }
 
+  void getSpecificTenantDetails(int tenantId) async {
+
+    isPaymentScheduleLoading(true);
+    try {
+
+      final response = await AppConfig().supaBaseClient.from('payment_schedule').select().eq('tenant_id', tenantId).order('created_at', ascending: false);
+
+      final tenantResponse = await AppConfig().supaBaseClient.from('tenants').select().eq('id', tenantId);
+      // final unitResponse = await AppConfig().supaBaseClient.from('units').select().eq('unit_id', unitId);
+      // final unitData = unitResponse as List<dynamic>;
+      final tenantData = tenantResponse as List<dynamic>;
+
+      
+      //
+      print('Specific Tenant Response is $tenantResponse');
+      print('Specific Tenant Data is $tenantData');
+      print(tenantData.map((e) => e['name']).toString().substring(1).replaceAll(')', ''));
+      setSpecificTenantName(tenantData.map((e) => e['name']).toString().substring(1).replaceAll(')', ''));
+
+      print('New Tenant is ${specificTenantName.value}');
+
+      // final containedResponse = await AppConfig().supaBaseClient
+      //     .from('units')
+      //     .select()
+      //     .in_('id', unitData.map((e) => e['unit_id']).toList());
+
+      final data = response as List<dynamic>;
+      print('PROPERTY Payment TENANT data IS ${data}');
+      print(response.length);
+      print(data.length);
+      print(data);
+      isPaymentScheduleLoading(false);
+      print(propertyUnitScheduleList.length);
+      return propertyUnitScheduleList.assignAll(
+          data.map((json) => UnitPropertyScheduleModel.fromJson(json)).toList());
+
+    } catch (error) {
+      print('Error fetching Tenants: $error');
+      isPaymentScheduleLoading(false);
+    }
+
+    print(propertyUnitScheduleList.length);
+
+  }
+
 
   void fetchSpecificUnitPaymentSchedules(int unitId) async {
     specificUnitScheduleList.value.clear();
@@ -367,7 +424,17 @@ listenToTenantPaymentChanges();
     try {
 
       final response = await AppConfig().supaBaseClient.from('payment_schedule').select().eq('unit_id', unitId).order('created_at', ascending: false);
+      final unitResponse = await AppConfig().supaBaseClient.from('units').select().eq('id', unitId);
+      final unitData = unitResponse as List<dynamic>;
       final data = response as List<dynamic>;
+
+      print('Specific Unit Response is $unitResponse');
+      print('Specific Unit Data is $unitData');
+      print(unitData.map((e) => e['unit_number']).toString().substring(1).replaceAll(')', ''));
+      setSpecificTenantUnitNumber(int.parse(unitData.map((e) => e['unit_number']).toString().substring(1).replaceAll(')', '')));
+
+      print('New Unit is ${specificUnitNumber.value}');
+      
       print('UNIT Payment Sschedule data IS ${data}');
       print(response.length);
       print(data.length);

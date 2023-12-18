@@ -1,9 +1,11 @@
+import 'package:amount_formatter/amount_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/controllers/tenants/tenant_controller.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 import 'package:smart_rent/widgets/app_image_header.dart';
+import 'package:smart_rent/widgets/app_state_text_header.dart';
 import 'package:smart_rent/widgets/app_text_header.dart';
 
 class SpecificPaymentScheduleScreen extends StatefulWidget {
@@ -17,6 +19,8 @@ class SpecificPaymentScheduleScreen extends StatefulWidget {
 
 class _SpecificPaymentScheduleScreenState extends State<SpecificPaymentScheduleScreen> {
 
+  final AmountFormatter amountFormatter = AmountFormatter(separator: ',');
+
   @override
   void initState() {
     // TODO: implement initState
@@ -28,8 +32,9 @@ class _SpecificPaymentScheduleScreenState extends State<SpecificPaymentScheduleS
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.whiteColor,
-      appBar: AppTextHeader(
-        title: 'Unit ${widget.unitId} Schedule',
+      appBar: AppStateTextHeader(
+        title: widget.tenantController.specificTenantName.value,
+        title2: 'Room ${widget.tenantController.specificUnitNumber.value.toString()}',
         isTitleCentred: true,
       ),
       body: Padding(
@@ -61,8 +66,6 @@ class _SpecificPaymentScheduleScreenState extends State<SpecificPaymentScheduleS
                                 DataColumn(label: Text('Amount')),
                                 DataColumn(label: Text('Paid')),
                                 DataColumn(label: Text('Balance')),
-                                DataColumn(label: Text('Tenant ID')),
-                                DataColumn(label: Text('Unit ID')),
                               ],
                               rows: widget.tenantController
                                   .specificUnitScheduleList.value
@@ -72,18 +75,16 @@ class _SpecificPaymentScheduleScreenState extends State<SpecificPaymentScheduleS
                                     //   MaterialStateColor.resolveWith((states) => Colors.green) : null,
                                     cells: [
                                       DataCell(Text(
-                                          '${schedule.fromDate} to ${schedule.toDate}')),
+                                          '${schedule.fromDate} to\n ${schedule.toDate}')),
                                       DataCell(
-                                          Text(schedule.amount.toString())),
-                                      DataCell(Text(schedule.paid.toString())),
+                                          Text(amountFormatter.format(schedule.amount.toString()))),
+                                      DataCell(Text(amountFormatter.format(schedule.paid.toString()))),
                                       DataCell(
-                                          Text(schedule.balance.toString())),
-                                      DataCell(
-                                          Text(schedule.tenantId.toString())),
-                                      DataCell(
-                                          Text(schedule.unitId.toString())),
+                                          Text(amountFormatter.format(schedule.balance.toString()))),
+
                                     ]);
                               }).toList(),
+
                             ),
                           ),
                         ),

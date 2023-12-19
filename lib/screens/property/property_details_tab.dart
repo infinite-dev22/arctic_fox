@@ -45,6 +45,7 @@ class PropertyDetailsTabScreen extends StatelessWidget {
                     detail: '673', icon: 'assets/property/size.png',),
                 ],
               ),
+
             ],
           )
 

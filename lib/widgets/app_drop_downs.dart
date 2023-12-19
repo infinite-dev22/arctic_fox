@@ -241,6 +241,67 @@ class SearchableTenantDropDown<T extends SmartTenantModel> extends StatelessWidg
 }
 
 
+
+class SearchableTenantUnitScheduleDropDown<T extends SmartTenantUnitScheduleModel> extends StatelessWidget {
+  const SearchableTenantUnitScheduleDropDown(
+      {super.key,
+        required this.hintText,
+        required this.menuItems,
+        this.onChanged,
+        this.defaultValue,
+        required this.controller});
+
+  final String hintText;
+  final List<T> menuItems;
+  final T? defaultValue;
+  final Function(dynamic)? onChanged;
+  final SingleValueDropDownController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return _buildBody();
+  }
+
+  _buildBody() {
+    return Container(
+      height: 50,
+      margin: const EdgeInsets.only(bottom: 10),
+      child: DropDownTextField(
+        controller: controller,
+        enableSearch: true,
+        dropdownColor: Colors.white,
+        textFieldDecoration: InputDecoration(
+          filled: true,
+          // fillColor: AppTheme.textBoxColor,
+          fillColor: AppTheme.appBgColor,
+          hintText: 'Select $hintText',
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide.none,
+          ),
+        ),
+        searchDecoration: InputDecoration(hintText: "Search $hintText"),
+        validator: (value) {
+          if (value == null) {
+            return "Required field";
+          } else {
+            return null;
+          }
+        },
+        dropDownItemCount: 6,
+        autovalidateMode: AutovalidateMode.always,
+        dropDownList: menuItems
+            .map(
+                (item) => DropDownValueModel(value: item, name: '${item.getUnitNumber()} | ${item.getTenantName()}'))
+            .toList(),
+        onChanged: onChanged,
+      ),
+    );
+  }
+}
+
+
+
 class SearchableUnitDropDown<T extends SmartUnitModel> extends StatelessWidget {
   const SearchableUnitDropDown(
       {super.key,

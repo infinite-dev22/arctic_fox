@@ -9,6 +9,7 @@ import 'package:smart_rent/models/nationality/nationality_model.dart';
 import 'package:smart_rent/models/payment/tenant_payment_model.dart';
 import 'package:smart_rent/models/payment_schedule/payment_schedule_model.dart';
 import 'package:smart_rent/models/salutation/salutation_model.dart';
+import 'package:smart_rent/models/schedule/tenant_unit_schedule.dart';
 import 'package:smart_rent/models/tenant/property_tenant_model.dart';
 import 'package:smart_rent/models/tenant/property_tenant_schedule.dart';
 import 'package:smart_rent/models/tenant/tenant_model.dart';
@@ -33,6 +34,7 @@ class TenantController extends GetxController {
   RxList<PropertyTenantModel> propertyTenantList = <PropertyTenantModel>[].obs;
   RxList<UnitPropertyScheduleModel> propertyUnitScheduleList = <UnitPropertyScheduleModel>[].obs;
   RxList<UnitPropertyScheduleModel> specificUnitScheduleList = <UnitPropertyScheduleModel>[].obs;
+  RxList<TenantUnitScheduleModel> tenantUnitUnitScheduleList = <TenantUnitScheduleModel>[].obs;
 
 
   RxList<PaymentScheduleModel> paymentList = <PaymentScheduleModel>[].obs;
@@ -64,6 +66,7 @@ class TenantController extends GetxController {
   var isPropertyTenantLoading = false.obs;
   var isPaymentScheduleLoading = false.obs;
   var isSpecificPaymentScheduleLoading = false.obs;
+  var isTenantUnitScheduleLoading = false.obs;
 
 
   var uCompanyNin = ''.obs;
@@ -119,6 +122,7 @@ class TenantController extends GetxController {
     fetchAllUnits();
     fetchAllBusinessTypes();
     fetchAllPayments();
+    fetchNestedTenantsUnits();
     listenToPropertyTenantListChanges();
 listenToTenantPaymentChanges();
 // fetchAllPaymentSchedules();
@@ -326,7 +330,56 @@ listenToTenantPaymentChanges();
 
   }
 
+  void fetchNestedTenantsUnits() async {
+    isTenantUnitScheduleLoading(true);
+    try {
 
+      final response = await AppConfig().supaBaseClient.from('payment_schedule').select(
+        'id, from_date, to_date, amount, balance, paid, tenants(name), units(unit_number)'
+      ).order('created_at', ascending: false);
+
+      final data = response as List<dynamic>;
+      print('Unit Tenants IS ${response}');
+      print(response.length);
+      print(data.length);
+      print(data);
+      isTenantUnitScheduleLoading(false);
+
+
+      return tenantUnitUnitScheduleList.assignAll(
+          data.map((json) => TenantUnitScheduleModel.fromJson(json)).toList());
+
+    } catch (error) {
+      print('Error fetching unit tenants: $error');
+      isTenantUnitScheduleLoading(false);
+    }
+
+  }
+
+  Map<String, dynamic> getTenantUnitSchedules() {
+
+
+    Map<String, dynamic> groupedData1 = {};
+    // Map<String, dynamic> groupedData2 = {};
+
+    for (var item in tenantUnitUnitScheduleList) {
+      var key1 = item.tenantId;
+      var key2 = item.unitId;
+      // groupedData1[key1.toString()] = (groupedData1[key1] ?? 0) + 1;
+      // groupedData2[key2.toString()] = (groupedData2[key2] ?? 0) + 1;
+
+      if (groupedData1.containsKey(key1) && groupedData1.containsKey(key2)) {
+        groupedData1[key1.toString()]  += 1;
+        groupedData1[key2.toString()] += 1;
+        // groupedData2[key2.toString()] += 1;
+      } else {
+        groupedData1[key1.toString()] = 1;
+        // groupedData2[key2.toString()] = 1;
+      }
+    }
+
+    return groupedData1;
+  }
 
   Map<String, dynamic> groupAllPropertyTenants() {
 
@@ -795,6 +848,7 @@ listenToTenantPaymentChanges();
       final unitResponse = await AppConfig().supaBaseClient.from('tenant_units').select('unit_id').eq('tenant_id', tenantId);
       final data = response as List<dynamic>;
       final unitData = unitResponse as List<dynamic>;
+
 
       print(response);
       print(unitResponse);

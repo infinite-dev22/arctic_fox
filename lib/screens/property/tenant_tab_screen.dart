@@ -17,6 +17,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/controllers/property_options/property_details_options_controller.dart';
 import 'package:smart_rent/controllers/tenants/tenant_controller.dart';
 import 'package:smart_rent/models/payment_schedule/payment_schedule_model.dart';
+import 'package:smart_rent/models/schedule/tenant_unit_schedule.dart';
 import 'package:smart_rent/models/tenant/tenant_model.dart';
 import 'package:smart_rent/models/unit/unit_model.dart';
 import 'package:smart_rent/screens/tenant/tenant_details_screen.dart';
@@ -604,20 +605,22 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                           //   );
                           // }),
 
-                          Obx(() {
-                            return SearchableTenantDropDown<TenantModel>(
-                              hintText: 'Tenant',
-                              menuItems: tenantController.tenantList.value,
-                              controller: _cnt,
-                              onChanged: (value) {
-                                print(value.value.id);
-                                tenantController.setTenantId(value.value.id);
-                                print(
-                                    'MY TEnant is ${tenantController.tenantId
-                                        .value}');
-                              },
-                            );
-                          }),
+
+
+                          // Obx(() {
+                          //   return SearchableTenantDropDown<TenantModel>(
+                          //     hintText: 'Tenant',
+                          //     menuItems: tenantController.tenantList.value,
+                          //     controller: _cnt,
+                          //     onChanged: (value) {
+                          //       print(value.value.id);
+                          //       tenantController.setTenantId(value.value.id);
+                          //       print(
+                          //           'MY TEnant is ${tenantController.tenantId
+                          //               .value}');
+                          //     },
+                          //   );
+                          // }),
 
                           Obx(() {
                             return SearchableUnitDropDown<UnitModel>(

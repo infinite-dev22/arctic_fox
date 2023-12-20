@@ -373,16 +373,16 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                                           discountController.text.toString()),
                                       dividedAmounts
                                   ).then((value) async {
-                                    tenantController.tenantId.value == 0;
-                                    tenantController.unitId.value == 0;
-                                    selectedDate2.value =
-                                        DateTime(selectedDate1.value.year,
-                                            selectedDate1.value.month,
-                                            selectedDate1.value.day);
-                                    dailyController.clear();
-                                    weeklyController.clear();
-                                    monthlyController.clear();
-                                    yearlyController.clear();
+                                    // tenantController.tenantId.value == 0;
+                                    // tenantController.unitId.value == 0;
+                                    // selectedDate2.value =
+                                    //     DateTime(selectedDate1.value.year,
+                                    //         selectedDate1.value.month,
+                                    //         selectedDate1.value.day);
+                                    // dailyController.clear();
+                                    // weeklyController.clear();
+                                    // monthlyController.clear();
+                                    // yearlyController.clear();
                                   });
 
 

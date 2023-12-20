@@ -86,3 +86,15 @@ abstract class SmartTenantUnitScheduleModel {
 
 }
 
+abstract class SmartSpecificTenantUnitModel {
+
+  int getId();
+  String getUnitNumber();
+  String getTenantName();
+  int getAmount();
+  int getTenantId();
+  int getUnitId();
+  DateTime getFromDate();
+  DateTime getToDate();
+
+}

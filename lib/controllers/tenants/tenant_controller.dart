@@ -16,9 +16,11 @@ import 'package:smart_rent/models/tenant/tenant_model.dart';
 import 'package:smart_rent/models/tenant/tenant_profile_model.dart';
 import 'package:smart_rent/models/tenant/tenant_type_model.dart';
 import 'package:smart_rent/models/tenant/tenant_unit_model.dart';
+import 'package:smart_rent/models/unit/specific_tenant_unit_model.dart';
 import 'package:smart_rent/models/unit/unit_model.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 import 'package:uuid/uuid.dart';
+import "package:collection/collection.dart";
 
 class TenantController extends GetxController {
 
@@ -35,6 +37,10 @@ class TenantController extends GetxController {
   RxList<UnitPropertyScheduleModel> propertyUnitScheduleList = <UnitPropertyScheduleModel>[].obs;
   RxList<UnitPropertyScheduleModel> specificUnitScheduleList = <UnitPropertyScheduleModel>[].obs;
   RxList<TenantUnitScheduleModel> tenantUnitUnitScheduleList = <TenantUnitScheduleModel>[].obs;
+  RxList<TenantUnitScheduleModel> specificTenantUnitScheduleList = <TenantUnitScheduleModel>[].obs;
+  RxList<SpecificTenantUnitModel> specificTenantUnitModelList = <SpecificTenantUnitModel>[].obs;
+  RxList<TenantUnitScheduleModel> tenantUnitUnitScheduleListGroup = <TenantUnitScheduleModel>[].obs;
+  RxMap<dynamic, TenantUnitScheduleModel> tenantUnitUnitScheduleMap = <dynamic, TenantUnitScheduleModel>{}.obs;
 
 
   RxList<PaymentScheduleModel> paymentList = <PaymentScheduleModel>[].obs;
@@ -54,6 +60,7 @@ class TenantController extends GetxController {
   var tenantTypeId = 0.obs;
   var unitId = 0.obs;
   var tenantId = 0.obs;
+  var specificScheduleId = 0.obs;
   var unitAmount = 0.obs;
   var businessTypeId = 0.obs;
   var newGender = ''.obs;
@@ -67,6 +74,8 @@ class TenantController extends GetxController {
   var isPaymentScheduleLoading = false.obs;
   var isSpecificPaymentScheduleLoading = false.obs;
   var isTenantUnitScheduleLoading = false.obs;
+  var isSpecificTenantUnitScheduleLoading = false.obs;
+  var isSpecificUnitsLoading = false.obs;
 
 
   var uCompanyNin = ''.obs;
@@ -101,6 +110,9 @@ class TenantController extends GetxController {
   var iDescription = ''.obs;
   var iBusinessTypeId = 0.obs;
   var paymentScheduleId = 0.obs;
+  var specificPaymentAmount = 0.obs;
+  var specificPaymentBalance = 0.obs;
+  var specificPaymentPaid = 0.obs;
 
 
   var uuid = Uuid();
@@ -122,7 +134,7 @@ class TenantController extends GetxController {
     fetchAllUnits();
     fetchAllBusinessTypes();
     fetchAllPayments();
-    fetchNestedTenantsUnits();
+    // fetchNestedTenantsUnits();
     listenToPropertyTenantListChanges();
 listenToTenantPaymentChanges();
 // fetchAllPaymentSchedules();
@@ -170,6 +182,11 @@ listenToTenantPaymentChanges();
     print('New Tenant Id is $id');
   }
 
+  setSpecificScheduleId(int id){
+    specificScheduleId.value = id;
+    print('New Schedule Id is $id');
+  }
+
   setBusinessTypeId(int id){
     businessTypeId.value = id;
     print('New Business Type Id is $id');
@@ -200,6 +217,21 @@ listenToTenantPaymentChanges();
     tenantUnitAmount.value = unitModel == null ? specificTenantUnits.value.first.amount : unitModel.amount;
     print('Tenant Unit Amount == ${tenantUnitAmount.value}');
 }
+
+setSpecificPaymentBalance(int balance){
+  specificPaymentBalance.value = balance;
+  print('New balance is $balance');
+}
+
+  setSpecificPaymentAmount(int amount){
+    specificPaymentAmount.value = amount;
+    print('New Amount is $amount');
+  }
+
+  setSpecificPaymentPaid(int paid){
+    specificPaymentPaid.value = paid;
+    print('New paid is $paid');
+  }
 
   fetchAllPayments() async {
 
@@ -330,15 +362,74 @@ listenToTenantPaymentChanges();
 
   }
 
-  void fetchNestedTenantsUnits() async {
+
+  Future<void> fetchSpecificTenantsUnitSchedules() async {
+    isSpecificTenantUnitScheduleLoading(true);
+    try {
+
+      final filterConditions = {
+        'tenant_id': {'eq': tenantId},
+        'unit_id': {'eq': unitId},
+        // Add more conditions as needed
+      };
+
+      final filters = [
+        {'tenant_id': tenantId},
+        {'unit_id': unitId},
+        // Add more conditions as needed
+      ];
+
+      final combinedFilter = filters.fold(
+        {},
+            (previous, current) => {...previous, 'eq': current},
+      );
+
+      final response = await AppConfig().supaBaseClient.from('payment_schedule').select(
+          'id, from_date, to_date, amount, balance, paid, tenant_id, unit_id, tenants(name), units(unit_number)'
+      ).eq('unit_id', unitId).eq('tenant_id', tenantId).gt('balance', 0);
+
+      final data = response as List<dynamic>;
+
+      // List<TenantUnitScheduleModel> scheduleData = (response)
+      //     .map((item) => TenantUnitScheduleModel.fromJson(item as Map<String, dynamic>))
+      //     .toList();
+      // tenantUnitUnitScheduleListGroup.value = scheduleData;
+
+
+      print('Unit Tenant schedules IS ${response}');
+      print(response.length);
+      print(data.length);
+      print(data);
+      isSpecificTenantUnitScheduleLoading(false);
+
+
+      return specificTenantUnitScheduleList.assignAll(
+          data.map((json) => TenantUnitScheduleModel.fromJson(json)).toList());
+
+    } catch (error) {
+      print('Error fetching schedules: $error');
+      isSpecificTenantUnitScheduleLoading(false);
+    }
+
+  }
+
+
+  Future<void> fetchNestedTenantsUnits() async {
     isTenantUnitScheduleLoading(true);
     try {
 
       final response = await AppConfig().supaBaseClient.from('payment_schedule').select(
-        'id, from_date, to_date, amount, balance, paid, tenants(name), units(unit_number)'
+        'id, from_date, to_date, amount, balance, paid, tenant_id, unit_id, tenants(name), units(unit_number)'
       ).order('created_at', ascending: false);
 
       final data = response as List<dynamic>;
+
+      // List<TenantUnitScheduleModel> scheduleData = (response)
+      //     .map((item) => TenantUnitScheduleModel.fromJson(item as Map<String, dynamic>))
+      //     .toList();
+      // tenantUnitUnitScheduleListGroup.value = scheduleData;
+
+      print('Grouped list is $tenantUnitUnitScheduleListGroup');
       print('Unit Tenants IS ${response}');
       print(response.length);
       print(data.length);
@@ -356,30 +447,18 @@ listenToTenantPaymentChanges();
 
   }
 
-  Map<String, dynamic> getTenantUnitSchedules() {
+  getTenantdatalist(){
 
+    var group = groupBy(tenantUnitUnitScheduleList, (TenantUnitScheduleModel e) => [e.tenantId, e.unitId]);
 
-    Map<String, dynamic> groupedData1 = {};
-    // Map<String, dynamic> groupedData2 = {};
+    print('My Group 1= $group');
+    print('My Group type= ${group.runtimeType}');
+    print('My Group length= ${group.length}');
 
-    for (var item in tenantUnitUnitScheduleList) {
-      var key1 = item.tenantId;
-      var key2 = item.unitId;
-      // groupedData1[key1.toString()] = (groupedData1[key1] ?? 0) + 1;
-      // groupedData2[key2.toString()] = (groupedData2[key2] ?? 0) + 1;
-
-      if (groupedData1.containsKey(key1) && groupedData1.containsKey(key2)) {
-        groupedData1[key1.toString()]  += 1;
-        groupedData1[key2.toString()] += 1;
-        // groupedData2[key2.toString()] += 1;
-      } else {
-        groupedData1[key1.toString()] = 1;
-        // groupedData2[key2.toString()] = 1;
-      }
-    }
-
-    return groupedData1;
   }
+
+
+
 
   Map<String, dynamic> groupAllPropertyTenants() {
 
@@ -397,6 +476,8 @@ listenToTenantPaymentChanges();
       // }
     }
 
+    print(groupedData);
+    print(groupedData.length);
     return groupedData;
   }
 
@@ -885,6 +966,40 @@ listenToTenantPaymentChanges();
     }
 
     print('My TenantUnitList $tenantUnitList');
+
+  }
+
+
+  Future<void> getSpecificTenantUnits() async {
+    isSpecificUnitsLoading(true);
+    try {
+
+      final response = await AppConfig().supaBaseClient.from('tenant_units').select(
+          'id, from_date, to_date, amount, tenant_id, unit_id, tenants(name), units(unit_number)'
+      ).eq('tenant_id', tenantId) .order('created_at', ascending: false);
+
+      final data = response as List<dynamic>;
+
+      // List<TenantUnitScheduleModel> scheduleData = (response)
+      //     .map((item) => TenantUnitScheduleModel.fromJson(item as Map<String, dynamic>))
+      //     .toList();
+      // tenantUnitUnitScheduleListGroup.value = scheduleData;
+
+      print('Grouped list is $tenantUnitUnitScheduleListGroup');
+      print('Unit Tenants IS ${response}');
+      print(response.length);
+      print(data.length);
+      print(data);
+      isSpecificUnitsLoading(false);
+
+
+      return specificTenantUnitModelList.assignAll(
+          data.map((json) => SpecificTenantUnitModel.fromJson(json)).toList());
+
+    } catch (error) {
+      print('Error fetching unit tenants: $error');
+      isSpecificUnitsLoading(false);
+    }
 
   }
 

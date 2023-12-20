@@ -6,4 +6,5 @@ class AppConfig {
 
   final supaBaseClient = Supabase.instance.client;
 
+
 }

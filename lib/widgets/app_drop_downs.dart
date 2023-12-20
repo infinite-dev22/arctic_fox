@@ -1,10 +1,13 @@
 
+import 'package:amount_formatter/amount_formatter.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/models/general/smart_model.dart';
 import 'package:smart_rent/styles/app_theme.dart';
+import 'package:smart_rent/utils/extra.dart';
 import 'package:smart_rent/widgets/custom_elevated_image.dart';
 import 'package:smart_rent/widgets/custom_icon_holder.dart';
 
@@ -259,6 +262,7 @@ class SearchableTenantUnitScheduleDropDown<T extends SmartTenantUnitScheduleMode
 
   @override
   Widget build(BuildContext context) {
+    final AmountFormatter amountFormatter = AmountFormatter(separator: ',');
     return _buildBody();
   }
 
@@ -292,7 +296,7 @@ class SearchableTenantUnitScheduleDropDown<T extends SmartTenantUnitScheduleMode
         autovalidateMode: AutovalidateMode.always,
         dropDownList: menuItems
             .map(
-                (item) => DropDownValueModel(value: item, name: '${item.getUnitNumber()} | ${item.getTenantName()}'))
+                (item) => DropDownValueModel(value: item, name: 'R${item.getUnitNumber()} | ${DateFormat('dd/MM/yyyy').format(item.getFromDate())}-${DateFormat('dd/MM/yyyy').format(item.getToDate())} | ${amountFormatter.format(item.getBalance().toString())}'))
             .toList(),
         onChanged: onChanged,
       ),
@@ -304,6 +308,65 @@ class SearchableTenantUnitScheduleDropDown<T extends SmartTenantUnitScheduleMode
 
 class SearchableUnitDropDown<T extends SmartUnitModel> extends StatelessWidget {
   const SearchableUnitDropDown(
+      {super.key,
+        required this.hintText,
+        required this.menuItems,
+        this.onChanged,
+        this.defaultValue,
+        required this.controller});
+
+  final String hintText;
+  final List<T> menuItems;
+  final T? defaultValue;
+  final Function(dynamic)? onChanged;
+  final SingleValueDropDownController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return _buildBody();
+  }
+
+  _buildBody() {
+    return Container(
+      height: 50,
+      margin: const EdgeInsets.only(bottom: 10),
+      child: DropDownTextField(
+        controller: controller,
+        enableSearch: true,
+        dropdownColor: Colors.white,
+        textFieldDecoration: InputDecoration(
+          filled: true,
+          // fillColor: AppTheme.textBoxColor,
+          fillColor: AppTheme.appBgColor,
+          hintText: 'Select $hintText',
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide.none,
+          ),
+        ),
+        searchDecoration: InputDecoration(hintText: "Search $hintText"),
+        validator: (value) {
+          if (value == null) {
+            return "Required field";
+          } else {
+            return null;
+          }
+        },
+        dropDownItemCount: 6,
+        autovalidateMode: AutovalidateMode.always,
+        dropDownList: menuItems
+            .map(
+                (item) => DropDownValueModel(value: item, name: item.getUnitNumber()))
+            .toList(),
+        onChanged: onChanged,
+      ),
+    );
+  }
+}
+
+
+class SearchableSpecificTenantUnitDropDown<T extends SmartSpecificTenantUnitModel> extends StatelessWidget {
+  const SearchableSpecificTenantUnitDropDown(
       {super.key,
         required this.hintText,
         required this.menuItems,

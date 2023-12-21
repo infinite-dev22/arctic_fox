@@ -414,6 +414,34 @@ setSpecificPaymentBalance(int balance){
   }
 
 
+  Future<void> payForSpecificTenantUnitSchedule(int tenantId, int unitId, String date1, String date2, int amount,
+      int paid, int balance, String createdBy, String updatedBy,) async {
+
+
+    try {
+
+
+
+         await AppConfig().supaBaseClient.from('payment_schedule').update(
+          {
+            "paid" : paid,
+            "balance" : balance,
+            "date_posted": DateTime.now().toIso8601String(),
+          }
+      ).eq('id', specificScheduleId.value).execute().then((value) async{
+
+       await addTenantPayment(tenantId, unitId, date1, date2, amount, paid, balance, createdBy, updatedBy);
+
+      });
+
+    } catch (error) {
+      print('Error updating Individual tenant: $error');
+    }
+
+
+  }
+
+
   Future<void> fetchNestedTenantsUnits() async {
     isTenantUnitScheduleLoading(true);
     try {

@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:overlay_loader_with_app_icon/overlay_loader_with_app_icon.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:smart_rent/config/app_config.dart';
 import 'package:smart_rent/controllers/property_options/property_details_options_controller.dart';
 import 'package:smart_rent/controllers/tenants/tenant_controller.dart';
 import 'package:smart_rent/controllers/units/unit_controller.dart';
@@ -134,7 +135,9 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
 
                               Bounceable(
                                   onTap: () async {
-                                    await tenantController.addTenantPayment(
+
+
+                                    await tenantController.payForSpecificTenantUnitSchedule(
                                       tenantController.tenantId.value,
                                       tenantController.unitId.value,
                                       selectedDate1.value.toIso8601String(),
@@ -145,6 +148,18 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                                       'f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5',
                                       'f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5',
                                     );
+
+                                    // await tenantController.addTenantPayment(
+                                    //   tenantController.tenantId.value,
+                                    //   tenantController.unitId.value,
+                                    //   selectedDate1.value.toIso8601String(),
+                                    //   selectedDate2.value.toIso8601String(),
+                                    //   int.parse(amountController.text),
+                                    //   int.parse(paidController.text),
+                                    //   int.parse(balanceController.text),
+                                    //   'f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5',
+                                    //   'f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5',
+                                    // );
 
                                     // Get.back();
 
@@ -638,7 +653,7 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                                   controller: _tenantUnitScheduleCont,
                                   onChanged: (value) {
                                     print(value.value.id);
-                                    tenantController.setSpecificScheduleId(value.value.unitId);
+                                    tenantController.setSpecificScheduleId(value.value.id);
                                     tenantController.setSpecificPaymentAmount(value.value.amount);
                                     tenantController.setSpecificPaymentBalance(value.value.balance);
                                     tenantController.setSpecificPaymentPaid(value.value.paid);
@@ -754,17 +769,17 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
 
                               SizedBox(height: 2.h,),
 
-                              AppButton(
-                                  title: 'Get unit Tenants',
-                                  color: Colors.black,
-                                  function: () async{
-                                    // tenantController.fetchNestedTenantsUnits();
-                                    // await tenantController.fetchNestedTenantsUnits();
-                                    // tenantController.groupAllPropertyTenants();
-                                    // tenantController.getSpecificTenantUnits();
-                                    tenantController.fetchSpecificTenantsUnitSchedules();
-
-                                  }),
+                              // AppButton(
+                              //     title: 'Get unit Tenants',
+                              //     color: Colors.black,
+                              //     function: () async{
+                              //       // tenantController.fetchNestedTenantsUnits();
+                              //       // await tenantController.fetchNestedTenantsUnits();
+                              //       // tenantController.groupAllPropertyTenants();
+                              //       // tenantController.getSpecificTenantUnits();
+                              //       tenantController.fetchSpecificTenantsUnitSchedules();
+                              //
+                              //     }),
 
                               // AuthTextField(
                               //   controller: paidController,

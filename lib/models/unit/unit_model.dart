@@ -111,6 +111,7 @@ class UnitModel extends SmartUnitModel{
   int floorId;
   dynamic amount;
   int unitType;
+  bool isAvailable;
 
   UnitModel({
     required this.id,
@@ -118,6 +119,7 @@ class UnitModel extends SmartUnitModel{
     required this.floorId,
     required this.amount,
     required this.unitType,
+    required this.isAvailable,
   });
 
   factory UnitModel.fromJson(Map<String, dynamic> json) => UnitModel(
@@ -126,6 +128,7 @@ class UnitModel extends SmartUnitModel{
     floorId: json["floor_id"],
     amount: json["amount"],
     unitType: json["unit_type"],
+    isAvailable: json["is_available"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -134,6 +137,7 @@ class UnitModel extends SmartUnitModel{
     "floor_id": floorId,
     "amount": amount,
     "unit_type": unitType,
+    "is_available": isAvailable,
   };
 
   @override

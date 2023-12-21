@@ -360,7 +360,21 @@ class _RoomOptionWidgetState extends State<RoomOptionWidget> {
         leading: CircleAvatar(
           child: Text('${widget.index +1}', style: AppTheme.subTextBold),
         ),
-        title: Text('Unit ${widget.roomModel.unitNumber}', style: AppTheme.subTextBold,),
+        title: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Unit ${widget.roomModel.unitNumber}', style: AppTheme.subTextBold,),
+            Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(widget.roomModel.isAvailable == true ? 'available' : 'occupied', style: TextStyle(
+                    color: widget.roomModel.isAvailable == true ? Colors.green : Colors.red,
+
+                  ),),
+                )),
+          ],
+        ),
         subtitle: Text('Level ${widget.roomModel.id}', style: AppTheme.subText,),
         trailing: Column(
           // mainAxisSize: MainAxisSize.min,

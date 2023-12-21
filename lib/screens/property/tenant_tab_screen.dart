@@ -14,6 +14,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:smart_rent/config/app_config.dart';
 import 'package:smart_rent/controllers/property_options/property_details_options_controller.dart';
 import 'package:smart_rent/controllers/tenants/tenant_controller.dart';
 import 'package:smart_rent/models/payment_schedule/payment_schedule_model.dart';
@@ -328,7 +329,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                                         "amount": totalAmount,
                                         "paid": 0,
                                         "balance": totalAmount,
-                                        "unit_id": tenantController.unitId
+                                        "unit_id": tenantController.specificUnitId
                                             .value,
                                         "from_date": currentDate
                                             .toIso8601String(),
@@ -363,7 +364,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                                   await tenantController.addTenantToUnit(
                                       tenantController.tenantId.value,
                                       "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
-                                      tenantController.unitId.value,
+                                      tenantController.specificUnitId.value,
                                       selectedDate1.value.toString(),
                                       selectedDate2.value.toString(),
                                       // date2Controller.text.trim().toString(),
@@ -607,29 +608,54 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
 
 
 
+                          Obx(() {
+                            return SearchableTenantDropDown<TenantModel>(
+                              hintText: 'Tenant',
+                              menuItems: tenantController.tenantList.value,
+                              controller: _cnt,
+                              onChanged: (value) {
+                                print(value.value.id);
+                                tenantController.setTenantId(value.value.id);
+                                print(
+                                    'MY TEnant is ${tenantController.tenantId
+                                        .value}');
+                              },
+                            );
+                          }),
+
                           // Obx(() {
-                          //   return SearchableTenantDropDown<TenantModel>(
-                          //     hintText: 'Tenant',
-                          //     menuItems: tenantController.tenantList.value,
-                          //     controller: _cnt,
+                          //   return SearchableUnitDropDown<UnitModel>(
+                          //     hintText: 'Unit',
+                          //     menuItems: tenantController.unitList.value,
+                          //     controller: _unitCont,
                           //     onChanged: (value) {
                           //       print(value.value.id);
-                          //       tenantController.setTenantId(value.value.id);
+                          //       tenantController.setUnitId(value.value.id);
+                          //       tenantController
+                          //           .setUnitAmount(value.value.amount);
+                          //       amountController.text =
+                          //           value.value.amount.toString();
+                          //       discountController.text =
+                          //           value.value.amount.toString();
                           //       print(
-                          //           'MY TEnant is ${tenantController.tenantId
+                          //           'MY Unit is ${tenantController.unitId
+                          //               .value}');
+                          //       print(
+                          //           'MY Amount is ${tenantController.unitAmount
                           //               .value}');
                           //     },
                           //   );
                           // }),
 
+
                           Obx(() {
                             return SearchableUnitDropDown<UnitModel>(
                               hintText: 'Unit',
-                              menuItems: tenantController.unitList.value,
+                              menuItems: tenantController.specificUnitList.value,
                               controller: _unitCont,
                               onChanged: (value) {
                                 print(value.value.id);
-                                tenantController.setUnitId(value.value.id);
+                                tenantController.setSpecificUnitId(value.value.id);
                                 tenantController
                                     .setUnitAmount(value.value.amount);
                                 amountController.text =
@@ -637,7 +663,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                                 discountController.text =
                                     value.value.amount.toString();
                                 print(
-                                    'MY Unit is ${tenantController.unitId
+                                    'MY Unit is ${tenantController.specificUnitId
                                         .value}');
                                 print(
                                     'MY Amount is ${tenantController.unitAmount
@@ -646,15 +672,6 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                             );
                           }),
 
-                          // Obx(() {
-                          //   return CustomApiUnitDropdown(
-                          //     hintText: 'Unit',
-                          //     menuItems: tenantController.unitList.value,
-                          //     onChanged: (value) {
-                          //       tenantController.setUnitId(value!.id);
-                          //     },
-                          //   );
-                          // }),
 
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1152,6 +1169,20 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                                       ],
                                     ))),
                           ),
+
+                          // AppButton(
+                          //     title: 'Get only free rooms',
+                          //     color: AppTheme.primaryColor,
+                          //     function: () async{
+                          //       // tenantController.fetchOnlyAvailableUnits();
+                          //       await AppConfig().supaBaseClient.from('units').update(
+                          //           {
+                          //             "is_available" : 0,
+                          //           }
+                          //       ).eq('id', tenantController.specificUnitId.value);
+                          //     },
+                          // ),
+
                         ],
                       ),
                     ),

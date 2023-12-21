@@ -28,6 +28,7 @@ class TenantController extends GetxController {
   RxList<SalutationModel> salutationList = <SalutationModel>[].obs;
   RxList<TenantTypeModel> tenantTypeList = <TenantTypeModel>[].obs;
   RxList<UnitModel> unitList = <UnitModel>[].obs;
+  RxList<UnitModel> specificUnitList = <UnitModel>[].obs;
   RxList<TenantModel> tenantList = <TenantModel>[].obs;
   RxList<BusinessTypeModel> businessList = <BusinessTypeModel>[].obs;
   RxList<TenantUnitModel> tenantUnitList = <TenantUnitModel>[].obs;
@@ -59,6 +60,7 @@ class TenantController extends GetxController {
   var nationalityId = 0.obs;
   var tenantTypeId = 0.obs;
   var unitId = 0.obs;
+  var specificUnitId = 0.obs;
   var tenantId = 0.obs;
   var specificScheduleId = 0.obs;
   var unitAmount = 0.obs;
@@ -129,6 +131,7 @@ class TenantController extends GetxController {
     fetchAllTenantTypes();
     fetchAllNationalities();
     fetchAllSalutations();
+    fetchOnlyAvailableUnits();
     // fetchAllTenants();
     listenToTenantChanges();
     fetchAllUnits();
@@ -164,6 +167,11 @@ listenToTenantPaymentChanges();
 
   setUnitId(int id){
     unitId.value = id;
+    print('New Unit Id is $id');
+  }
+
+  setSpecificUnitId(int id){
+    specificUnitId.value = id;
     print('New Unit Id is $id');
   }
 
@@ -703,6 +711,28 @@ setSpecificPaymentBalance(int balance){
   }
 
 
+  void fetchOnlyAvailableUnits() async {
+
+    try {
+
+      final response = await AppConfig().supaBaseClient.from('units').select().eq('is_available', 1);
+      final data = response as List<dynamic>;
+      print(response);
+      print(response.length);
+      print(data.length);
+      print(data);
+
+      return specificUnitList.assignAll(
+          data.map((json) => UnitModel.fromJson(json)).toList());
+
+    } catch (error) {
+      print('Error fetching Units: $error');
+    }
+
+
+  }
+
+
   addIndividualTenant(String name, int organisationId, int tenantTypeId, String createdBy,
       int nationId,
       ) async {
@@ -1193,6 +1223,12 @@ setSpecificPaymentBalance(int balance){
             // "updated_at" : DateTime.now(),
           }
       ).then((tenant) async{
+
+        await AppConfig().supaBaseClient.from('units').update(
+            {
+              "is_available" : 0,
+            }
+        ).eq('id', unitId);
 
         await addPaymentSchedule(periodList);
 

@@ -785,21 +785,23 @@ class _RoomTabScreenState extends State<RoomTabScreen> {
             Obx(() {
               return widget.unitController.isUnitLoading.value
                   ? Center(child: Text('Units Loading'),)
-                  : ListView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: widget.unitController.roomList
-                      .length,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    var roomModel = widget.unitController
-                        .roomList[index];
-                    return RoomOptionWidget(roomModel: roomModel,
-                      index: index,
-                      propertyDetailsOptionsController: widget
-                          .propertyDetailsOptionsController,
-                      unitController: widget.unitController,
-                    );
-                  });
+                  : Expanded(
+                    child: ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: widget.unitController.roomList
+                        .length,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      var roomModel = widget.unitController
+                          .roomList[index];
+                      return RoomOptionWidget(roomModel: roomModel,
+                        index: index,
+                        propertyDetailsOptionsController: widget
+                            .propertyDetailsOptionsController,
+                        unitController: widget.unitController,
+                      );
+                    }),
+                  );
             }),
           ],
         ),

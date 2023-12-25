@@ -148,6 +148,13 @@ class AppTheme{
     fontStyle: FontStyle.italic,
   );
 
+  static TextStyle get appTitle7 => GoogleFonts.hind(
+    color: blueTitleColor1,
+    fontSize: 20.sp,
+    fontWeight: FontWeight.bold,
+    fontStyle: FontStyle.normal,
+  );
+
   static TextStyle get appTitle1 => GoogleFonts.hind(
     color: blueTitleColor1,
     fontSize: 22.5.sp,

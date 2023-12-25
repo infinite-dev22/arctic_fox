@@ -1112,7 +1112,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                             controller: descriptionController,
                             hintText: 'Description',
                             obscureText: false,
-                            keyBoardType: TextInputType.number,
+                            keyBoardType: TextInputType.text,
                           ),
 
                           SizedBox(

@@ -26,7 +26,9 @@ class RoomOptionWidget extends StatefulWidget {
   final PropertyDetailsOptionsController propertyDetailsOptionsController;
   final UnitModel roomModel;
   final int index;
-  const RoomOptionWidget({super.key, required this.roomModel, required this.index, required this.propertyDetailsOptionsController,  this.unitController});
+
+  const RoomOptionWidget(
+      {super.key, required this.roomModel, required this.index, required this.propertyDetailsOptionsController, this.unitController});
 
   @override
   State<RoomOptionWidget> createState() => _RoomOptionWidgetState();
@@ -55,14 +57,12 @@ class _RoomOptionWidgetState extends State<RoomOptionWidget> {
   }
 
 
-
-
   void showRoomEditBottomSheet(BuildContext context, int amount) async {
-
     final TextEditingController roomNameController = TextEditingController();
     final TextEditingController roomNumberController = TextEditingController();
     final TextEditingController sizeController = TextEditingController();
-    final TextEditingController amountController = TextEditingController(text:  amount.toString());
+    final TextEditingController amountController = TextEditingController(
+        text: amount.toString());
     final TextEditingController descriptionController = TextEditingController();
 
     final result = await showSlidingBottomSheet(
@@ -96,11 +96,11 @@ class _RoomOptionWidgetState extends State<RoomOptionWidget> {
                         height: 7.5.h,
                         decoration: BoxDecoration(
                             boxShadow: [
-
                             ]
                         ),
                         child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 5.w, vertical: 2.h),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -120,8 +120,10 @@ class _RoomOptionWidgetState extends State<RoomOptionWidget> {
                               Bounceable(
                                   onTap: () async {
                                     Get.back();
-                                    Get.snackbar('SUCCESS', 'Unit edited successfully',
-                                      titleText: Text('SUCCESS', style: AppTheme.greenTitle1,),
+                                    Get.snackbar(
+                                      'SUCCESS', 'Unit edited successfully',
+                                      titleText: Text('SUCCESS',
+                                        style: AppTheme.greenTitle1,),
                                     );
                                   },
                                   child: Text('Update', style: TextStyle(
@@ -139,7 +141,7 @@ class _RoomOptionWidgetState extends State<RoomOptionWidget> {
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 5.w,
                           vertical: 1.h),
-                      child:  SingleChildScrollView(
+                      child: SingleChildScrollView(
                         child: Column(
                           children: [
                             SizedBox(height: 1.h,),
@@ -152,8 +154,10 @@ class _RoomOptionWidgetState extends State<RoomOptionWidget> {
                                   width: 42.5.w,
                                   child: CustomGenericDropdown<String>(
                                     hintText: 'Unit Type',
-                                    menuItems: widget.propertyDetailsOptionsController.roomTypeList,
-                                    onChanged: (value){
+                                    menuItems: widget
+                                        .propertyDetailsOptionsController
+                                        .roomTypeList,
+                                    onChanged: (value) {
 
                                     },
                                   ),
@@ -163,8 +167,10 @@ class _RoomOptionWidgetState extends State<RoomOptionWidget> {
                                   width: 42.5.w,
                                   child: CustomGenericDropdown<String>(
                                     hintText: 'Level',
-                                    menuItems: widget.propertyDetailsOptionsController.levelList,
-                                    onChanged: (value){
+                                    menuItems: widget
+                                        .propertyDetailsOptionsController
+                                        .levelList,
+                                    onChanged: (value) {
 
                                     },
                                   ),
@@ -216,7 +222,7 @@ class _RoomOptionWidgetState extends State<RoomOptionWidget> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 SizedBox(
-                                  child:  AuthTextField(
+                                  child: AuthTextField(
                                     controller: amountController,
                                     hintText: 'Amount',
                                     obscureText: false,
@@ -230,8 +236,10 @@ class _RoomOptionWidgetState extends State<RoomOptionWidget> {
                                   width: 42.5.w,
                                   child: CustomGenericDropdown<String>(
                                     hintText: 'Per Month',
-                                    menuItems: widget.propertyDetailsOptionsController.periodList,
-                                    onChanged: (value){
+                                    menuItems: widget
+                                        .propertyDetailsOptionsController
+                                        .periodList,
+                                    onChanged: (value) {
 
                                     },
                                   ),
@@ -242,9 +250,9 @@ class _RoomOptionWidgetState extends State<RoomOptionWidget> {
                             SizedBox(height: 1.h,),
 
                             AppMaxTextField(
-                                controller: descriptionController,
-                                hintText: 'Description',
-                                obscureText: false,
+                              controller: descriptionController,
+                              hintText: 'Description',
+                              obscureText: false,
                               fillColor: AppTheme.textBoxColor,
                             ),
 
@@ -267,16 +275,20 @@ class _RoomOptionWidgetState extends State<RoomOptionWidget> {
                                         height: 29.5.h,
                                         width: 77.5.w,
                                         decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(20.sp)
+                                            borderRadius: BorderRadius.circular(
+                                                20.sp)
                                         ),
                                         child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          mainAxisAlignment: MainAxisAlignment
+                                              .center,
+                                          crossAxisAlignment: CrossAxisAlignment
+                                              .center,
                                           children: [
                                             Center(child: Image.asset(
                                                 'assets/general/upload.png')),
                                             SizedBox(width: 3.w,),
-                                            Text('Upload Property Pictures', style: AppTheme.subText)
+                                            Text('Upload Property Pictures',
+                                                style: AppTheme.subText)
                                           ],
                                         )),
                                   ),
@@ -288,7 +300,8 @@ class _RoomOptionWidgetState extends State<RoomOptionWidget> {
                                     width: 77.5.w,
                                     decoration: BoxDecoration(
                                       // color: AppTheme.borderColor2,
-                                        borderRadius: BorderRadius.circular(20.sp)
+                                        borderRadius: BorderRadius.circular(
+                                            20.sp)
                                     ),
                                     child: Stack(
                                       children: [
@@ -308,8 +321,10 @@ class _RoomOptionWidgetState extends State<RoomOptionWidget> {
                                                       _image = File('');
                                                     });
                                                   },
-                                                  child: Icon(Icons.cancel, size: 25.sp,
-                                                    color: AppTheme.primaryColor,)),
+                                                  child: Icon(
+                                                    Icons.cancel, size: 25.sp,
+                                                    color: AppTheme
+                                                        .primaryColor,)),
                                             ))
                                       ],
                                     ),),
@@ -354,55 +369,122 @@ class _RoomOptionWidgetState extends State<RoomOptionWidget> {
 
   @override
   Widget build(BuildContext context) {
-
     return Card(
       child: ListTile(
-        leading: CircleAvatar(
-          child: Text('${widget.index +1}', style: AppTheme.subTextBold),
-        ),
-        title: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
+        // leading: CircleAvatar(
+        //   child: Text('${widget.index +1}', style: AppTheme.subTextBold),
+        // ),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Unit ${widget.roomModel.unitNumber}', style: AppTheme.subTextBold,),
-            Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(widget.roomModel.isAvailable == true ? 'available' : 'occupied', style: TextStyle(
-                    color: widget.roomModel.isAvailable == true ? Colors.green : Colors.red,
+            Text('Unit ${widget.roomModel.unitNumber}',
+              style: AppTheme.subTextBold,),
+            SizedBox(width: 10.w,),
+            Text('${amountFormatter.format(
+                widget.roomModel.amount.toString())}/=',
+                style: AppTheme.appTitle3),
+            PopupMenuButton(
 
-                  ),),
-                )),
-          ],
-        ),
-        subtitle: Text('Level ${widget.roomModel.id}', style: AppTheme.subText,),
-        trailing: Column(
-          // mainAxisSize: MainAxisSize.min,
-          children: [
-            Text('${amountFormatter.format(widget.roomModel.amount.toString())}/=', style: AppTheme.appTitle3),
-            Expanded(
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  // Text(widget.roomModel.status.toString(), style: TextStyle(
-                  //   color: widget.roomModel.status.toString() == 'available' ? Colors.green : Colors.red,
-                  // ),),
-                  // Text(widget.roomModel.)
-                  Bounceable(
-                      onTap: (){
-                        showRoomEditBottomSheet(context, widget.roomModel.amount);
-                      }, child: Image.asset('assets/tenant/edit.png', width: 5.w,)),
-                  SizedBox(width: 5.w,),
-                  Bounceable(
-                    onTap: (){
-                      widget.unitController!.deleteUnit(widget.roomModel.id);
-                    },
-                      child: Image.asset('assets/tenant/delete.png', width: 3.5.w,)),
-                ],
-              ),
+              onSelected: (value) async {
+                if (value == 1) {
+                  showRoomEditBottomSheet(context, widget.roomModel.amount);
+                } else {
+                  widget.unitController!.deleteUnit(widget.roomModel.id);
+                }
+              },
+              itemBuilder: (context) {
+                return [
+                  PopupMenuItem(
+                    value: 1,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Image.asset('assets/tenant/edit.png', width: 5.w,),
+                        Text('Edit'),
+                      ],
+                    ),
+                  ),
+                  PopupMenuItem(
+                    value: 2,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Image.asset('assets/tenant/delete.png', width: 3.5.w,),
+                        Text('Delete'),
+                      ],
+                    ),
+                  ),
+
+                ];
+              },
             ),
+
           ],
         ),
+        subtitle: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text('Level ${widget.roomModel.id}', style: AppTheme.subText,),
+            Bounceable(
+              onTap: () async {
+                if (widget.roomModel.isAvailable == false) {
+                  Get.defaultDialog(
+                      title: 'Change Availability',
+                      middleText: 'Make Room ${widget.roomModel
+                          .unitNumber} available',
+                      barrierDismissible: true,
+                      titleStyle: AppTheme.appTitle7,
+                      cancel: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          SizedBox(
+                              width: 30.w,
+                              child: AppButton(title: 'Cancel', color: Colors
+                                  .black, function: () {
+                                Get.back();
+                              })),
+                          SizedBox(
+                              width: 30.w,
+                              child: Obx(() {
+                                return AppButton(title: 'Yes',
+                                    isLoading: widget.unitController!.isUpdateStatusLoading.value,
+                                    color: AppTheme.primaryColor,
+                                    function: () async {
+                                      await widget.unitController!
+                                          .updateUnitStatusAvailable(
+                                          widget.roomModel);
+                                    });
+                              })),
+                        ],
+                      ),
+                      // confirm: SizedBox(
+                      //     width: 40.w,
+                      //     child: AppButton(title: 'Yes', color: AppTheme.primaryColor, function: (){})),
+                      middleTextStyle: AppTheme.subTextBold1
+                  );
+                } else {
+
+                }
+              },
+              child: Card(
+                  color: widget.roomModel.isAvailable == true
+                      ? Colors.green
+                      : Colors.red,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(widget.roomModel.isAvailable == true
+                        ? 'available'
+                        : 'occupied', style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold
+                    ),),
+                  )),
+            ),
+
+
+          ],
+        ),
+
       ),
     );
   }

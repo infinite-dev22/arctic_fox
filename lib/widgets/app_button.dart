@@ -35,9 +35,9 @@ class AppButton extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // loader ?? Container(),
-              isLoading == true ?  SpinKitThreeBounce(
+              isLoading == true ?  SpinKitFadingCircle(
                 color: loaderColor ?? Colors.white,
-                size: 25.sp,
+                size: 20.sp,
               ) : Center(
                 child: width == null ? Text(
                   title,

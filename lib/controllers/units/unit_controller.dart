@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:smart_rent/config/app_config.dart';
 import 'package:smart_rent/models/currency/currency_model.dart';
@@ -21,6 +22,7 @@ class UnitController extends GetxController {
   var floorId = 0.obs;
   var currencyId = 0.obs;
   var isUnitLoading = false.obs;
+  var isUpdateStatusLoading = false.obs;
 
   @override
   void onInit() {
@@ -219,6 +221,24 @@ class UnitController extends GetxController {
         .delete()
         .match({ 'id': id });
     // fetchAllPropertyUnits();
+  }
+
+  Future<void> updateUnitStatusAvailable(UnitModel unitModel)async{
+    isUpdateStatusLoading(true);
+    try{
+      await AppConfig().supaBaseClient.from('units').update(
+          {
+            "is_available" : 1,
+          }
+      ).eq('id', unitModel.id).then((value) {
+        isUpdateStatusLoading(false);
+        Get.back();
+        Fluttertoast.showToast(msg: '${unitModel.unitNumber} is now available');
+      });
+    } catch(error){
+      isUpdateStatusLoading(false);
+      print(error);
+    }
   }
 
 

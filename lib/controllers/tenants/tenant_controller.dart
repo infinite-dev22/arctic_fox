@@ -1205,6 +1205,21 @@ setSpecificPaymentBalance(int balance){
 
   }
 
+
+  Future<void> updateUnitStatusAvailable(UnitModel unitModel)async{
+    try{
+      await AppConfig().supaBaseClient.from('units').update(
+          {
+            "is_available" : 1,
+          }
+      ).eq('id', unitModel.id).then((value) {
+        Fluttertoast.showToast(msg: '${unitModel.unitNumber} is now available');
+      });
+    } catch(error){
+      print(error);
+    }
+  }
+
   Future<void> addTenantToUnit( int tenantId, String createdBy,
       int unitId, String date1, String date2, int amount, int discount, List<Map<String, dynamic>> periodList
       ) async {

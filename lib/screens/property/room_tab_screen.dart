@@ -784,7 +784,11 @@ class _RoomTabScreenState extends State<RoomTabScreen> {
 
             Obx(() {
               return widget.unitController.isUnitLoading.value
-                  ? Center(child: Text('Units Loading'),)
+                  ? Padding(
+                padding: EdgeInsets.symmetric(vertical: 15.h),
+                child: Center(
+                  child: Image.asset('assets/auth/logo.png', width: 35.w),),
+              )
                   : Expanded(
                     child: ListView.builder(
                     physics: NeverScrollableScrollPhysics(),

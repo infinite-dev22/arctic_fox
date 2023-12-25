@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:multi_dropdown/multiselect_dropdown.dart';
 import 'package:overlay_loader_with_app_icon/overlay_loader_with_app_icon.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/config/app_config.dart';
@@ -36,6 +37,9 @@ class PaymentTabScreen extends StatefulWidget {
 }
 
 class _PaymentTabScreenState extends State<PaymentTabScreen> {
+
+  var schedules = [].obs;
+
 
   final listSample = [
     {'tenant': 'vincent west', 'unit': '4', 'amount': 50000, 'period': 'month'},
@@ -135,9 +139,8 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
 
                               Bounceable(
                                   onTap: () async {
-
-
-                                    await tenantController.payForSpecificTenantUnitSchedule(
+                                    await tenantController
+                                        .payForSpecificTenantUnitSchedule(
                                       tenantController.tenantId.value,
                                       tenantController.unitId.value,
                                       selectedDate1.value.toIso8601String(),
@@ -182,699 +185,753 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                     ),
 
                     Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 5.w,
-                            vertical: 1.h),
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              SizedBox(height: 1.h,),
+                      padding: EdgeInsets.symmetric(horizontal: 5.w,
+                          vertical: 1.h),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            SizedBox(height: 1.h,),
 
 
-                              // Obx(() {
-                              //   return SearchableTenantDropDown<TenantModel>(
-                              //     hintText: 'Tenant',
-                              //     menuItems: tenantController.tenantList.value,
-                              //     controller: tenantDropdownCont,
-                              //     onChanged: (value) {
-                              //       print(value.value.id);
-                              //       tenantController.setTenantId(
-                              //           value.value.id);
-                              //       print(
-                              //           'MY TEnant is ${tenantController
-                              //               .tenantId
-                              //               .value}');
-                              //       tenantController.getTenantUnits(null).then((
-                              //           value) {
-                              //         amountController.text =
-                              //             tenantController.tenantUnitAmount
-                              //                 .toString();
-                              //         print(
-                              //             'MY Amount Controller sis == ${tenantController
-                              //                 .specificTenantUnits.value.first
-                              //                 .amount}');
-                              //         date1Controller.text =
-                              //             tenantController.tenantUnitList.value
-                              //                 .first.fromDate;
-                              //         date2Controller.text =
-                              //             tenantController.tenantUnitList.value
-                              //                 .first.toDate;
-                              //
-                              //         selectedDate1.value = DateTime.parse(
-                              //             tenantController.tenantUnitList.value
-                              //                 .first.fromDate);
-                              //         selectedDate2.value = DateTime.parse(
-                              //             tenantController.tenantUnitList.value
-                              //                 .first.toDate);
-                              //
-                              //         print('DATE1 = ${date1Controller.text}');
-                              //         print('DATE2 = ${date2Controller.text}');
-                              //
-                              //         print('RX DATE1 = ${selectedDate1}');
-                              //         print('RX DATE2 = ${selectedDate2}');
-                              //
-                              //         // Define two DateTime objects representing the two dates
-                              //         // DateTime date1 = DateTime(2023, 1, 11);
-                              //         // DateTime date2 = DateTime(2024, 1, 11);
-                              //
-                              //         // Calculate the duration between the two dates
-                              //         Duration difference = selectedDate2.value
-                              //             .difference(selectedDate1.value);
-                              //         // Duration difference = DateTime.parse(date1Controller.text).difference(DateTime.parse(date2Controller.text));
-                              //
-                              //         // Extract individual components (days, weeks, months, years) from the duration
-                              //         int daysDifference = difference.inDays;
-                              //         int weeksDifference = difference.inDays ~/
-                              //             7; // 7 days in a week
-                              //         int monthsDifference = difference
-                              //             .inDays ~/
-                              //             30; // Assuming an average of 30 days in a month
-                              //         int yearsDifference = difference.inDays ~/
-                              //             365; // Assuming an average of 365 days in a year
-                              //
-                              //         // Determine the best fit unit
-                              //         String bestFitUnit;
-                              //         int bestFitValue;
-                              //
-                              //         if (yearsDifference > 0) {
-                              //           bestFitValue = yearsDifference;
-                              //           bestFitUnit =
-                              //           bestFitValue == 1 ? 'year' : 'years';
-                              //           fitUnit.value = bestFitUnit;
-                              //           fitValue.value = bestFitValue;
-                              //         } else if (monthsDifference > 0) {
-                              //           bestFitValue = monthsDifference;
-                              //           bestFitUnit =
-                              //           bestFitValue == 1 ? 'month' : 'months';
-                              //           fitUnit.value = bestFitUnit;
-                              //           fitValue.value = bestFitValue;
-                              //         } else if (weeksDifference > 0) {
-                              //           bestFitValue = weeksDifference;
-                              //           bestFitUnit =
-                              //           bestFitValue == 1 ? 'week' : 'weeks';
-                              //           fitUnit.value = bestFitUnit;
-                              //           fitValue.value = bestFitValue;
-                              //         } else {
-                              //           bestFitValue = daysDifference;
-                              //           bestFitUnit =
-                              //           bestFitValue == 1 ? 'day' : 'days';
-                              //           fitUnit.value = bestFitUnit;
-                              //           fitValue.value = bestFitValue;
-                              //         }
-                              //
-                              //         print(
-                              //             'Best fit difference: $fitValue $fitUnit');
-                              //
-                              //         amountController.text =
-                              //             (int.parse(tenantController
-                              //                 .specificTenantUnits.value.first
-                              //                 .amount
-                              //                 .toString()) * fitValue.value)
-                              //                 .toString();
-                              //
-                              //         print(amountController.text);
-                              //       });
-                              //     },
-                              //   );
-                              // }),
+                            // Obx(() {
+                            //   return SearchableTenantDropDown<TenantModel>(
+                            //     hintText: 'Tenant',
+                            //     menuItems: tenantController.tenantList.value,
+                            //     controller: tenantDropdownCont,
+                            //     onChanged: (value) {
+                            //       print(value.value.id);
+                            //       tenantController.setTenantId(
+                            //           value.value.id);
+                            //       print(
+                            //           'MY TEnant is ${tenantController
+                            //               .tenantId
+                            //               .value}');
+                            //       tenantController.getTenantUnits(null).then((
+                            //           value) {
+                            //         amountController.text =
+                            //             tenantController.tenantUnitAmount
+                            //                 .toString();
+                            //         print(
+                            //             'MY Amount Controller sis == ${tenantController
+                            //                 .specificTenantUnits.value.first
+                            //                 .amount}');
+                            //         date1Controller.text =
+                            //             tenantController.tenantUnitList.value
+                            //                 .first.fromDate;
+                            //         date2Controller.text =
+                            //             tenantController.tenantUnitList.value
+                            //                 .first.toDate;
+                            //
+                            //         selectedDate1.value = DateTime.parse(
+                            //             tenantController.tenantUnitList.value
+                            //                 .first.fromDate);
+                            //         selectedDate2.value = DateTime.parse(
+                            //             tenantController.tenantUnitList.value
+                            //                 .first.toDate);
+                            //
+                            //         print('DATE1 = ${date1Controller.text}');
+                            //         print('DATE2 = ${date2Controller.text}');
+                            //
+                            //         print('RX DATE1 = ${selectedDate1}');
+                            //         print('RX DATE2 = ${selectedDate2}');
+                            //
+                            //         // Define two DateTime objects representing the two dates
+                            //         // DateTime date1 = DateTime(2023, 1, 11);
+                            //         // DateTime date2 = DateTime(2024, 1, 11);
+                            //
+                            //         // Calculate the duration between the two dates
+                            //         Duration difference = selectedDate2.value
+                            //             .difference(selectedDate1.value);
+                            //         // Duration difference = DateTime.parse(date1Controller.text).difference(DateTime.parse(date2Controller.text));
+                            //
+                            //         // Extract individual components (days, weeks, months, years) from the duration
+                            //         int daysDifference = difference.inDays;
+                            //         int weeksDifference = difference.inDays ~/
+                            //             7; // 7 days in a week
+                            //         int monthsDifference = difference
+                            //             .inDays ~/
+                            //             30; // Assuming an average of 30 days in a month
+                            //         int yearsDifference = difference.inDays ~/
+                            //             365; // Assuming an average of 365 days in a year
+                            //
+                            //         // Determine the best fit unit
+                            //         String bestFitUnit;
+                            //         int bestFitValue;
+                            //
+                            //         if (yearsDifference > 0) {
+                            //           bestFitValue = yearsDifference;
+                            //           bestFitUnit =
+                            //           bestFitValue == 1 ? 'year' : 'years';
+                            //           fitUnit.value = bestFitUnit;
+                            //           fitValue.value = bestFitValue;
+                            //         } else if (monthsDifference > 0) {
+                            //           bestFitValue = monthsDifference;
+                            //           bestFitUnit =
+                            //           bestFitValue == 1 ? 'month' : 'months';
+                            //           fitUnit.value = bestFitUnit;
+                            //           fitValue.value = bestFitValue;
+                            //         } else if (weeksDifference > 0) {
+                            //           bestFitValue = weeksDifference;
+                            //           bestFitUnit =
+                            //           bestFitValue == 1 ? 'week' : 'weeks';
+                            //           fitUnit.value = bestFitUnit;
+                            //           fitValue.value = bestFitValue;
+                            //         } else {
+                            //           bestFitValue = daysDifference;
+                            //           bestFitUnit =
+                            //           bestFitValue == 1 ? 'day' : 'days';
+                            //           fitUnit.value = bestFitUnit;
+                            //           fitValue.value = bestFitValue;
+                            //         }
+                            //
+                            //         print(
+                            //             'Best fit difference: $fitValue $fitUnit');
+                            //
+                            //         amountController.text =
+                            //             (int.parse(tenantController
+                            //                 .specificTenantUnits.value.first
+                            //                 .amount
+                            //                 .toString()) * fitValue.value)
+                            //                 .toString();
+                            //
+                            //         print(amountController.text);
+                            //       });
+                            //     },
+                            //   );
+                            // }),
 
 
-                              Obx(() {
-                                return SearchableTenantDropDown<TenantModel>(
-                                  hintText: 'Tenant',
-                                  menuItems: tenantController.tenantList.value,
-                                  controller: tenantDropdownCont,
-                                  onChanged: (value) {
-                                    print(value.value.id);
-                                    tenantController.setTenantId(
-                                        value.value.id);
-                                    print(
-                                        'MY TEnant is ${tenantController
-                                            .tenantId
-                                            .value}');
-                                    tenantController.getTenantUnits(null).then((
-                                        value) {
+                            Obx(() {
+                              return SearchableTenantDropDown<TenantModel>(
+                                hintText: 'Tenant',
+                                menuItems: tenantController.tenantList.value,
+                                controller: tenantDropdownCont,
+                                onChanged: (value) {
+                                  print(value.value.id);
+                                  tenantController.setTenantId(
+                                      value.value.id);
+                                  print(
+                                      'MY TEnant is ${tenantController
+                                          .tenantId
+                                          .value}');
+                                  tenantController.getTenantUnits(null).then((
+                                      value) {
+                                    // tenantController.fetchSpecificTenantsUnitSchedules();
+                                    tenantController.getSpecificTenantUnits();
 
-                                      // tenantController.fetchSpecificTenantsUnitSchedules();
-                                      tenantController.getSpecificTenantUnits();
-
-                                      // amountController.text =
-                                      //     tenantController.tenantUnitAmount
-                                      //         .toString();
-                                      // print(
-                                      //     'MY Amount Controller sis == ${tenantController
-                                      //         .specificTenantUnits.value.first
-                                      //         .amount}');
-                                      // date1Controller.text =
-                                      //     tenantController.tenantUnitList.value
-                                      //         .first.fromDate;
-                                      // date2Controller.text =
-                                      //     tenantController.tenantUnitList.value
-                                      //         .first.toDate;
-                                      //
-                                      // selectedDate1.value = DateTime.parse(
-                                      //     tenantController.tenantUnitList.value
-                                      //         .first.fromDate);
-                                      // selectedDate2.value = DateTime.parse(
-                                      //     tenantController.tenantUnitList.value
-                                      //         .first.toDate);
-                                      //
-                                      // print('DATE1 = ${date1Controller.text}');
-                                      // print('DATE2 = ${date2Controller.text}');
-                                      //
-                                      // print('RX DATE1 = ${selectedDate1}');
-                                      // print('RX DATE2 = ${selectedDate2}');
-                                      //
-                                      // // Define two DateTime objects representing the two dates
-                                      // // DateTime date1 = DateTime(2023, 1, 11);
-                                      // // DateTime date2 = DateTime(2024, 1, 11);
-                                      //
-                                      // // Calculate the duration between the two dates
-                                      // Duration difference = selectedDate2.value
-                                      //     .difference(selectedDate1.value);
-                                      // // Duration difference = DateTime.parse(date1Controller.text).difference(DateTime.parse(date2Controller.text));
-                                      //
-                                      // // Extract individual components (days, weeks, months, years) from the duration
-                                      // int daysDifference = difference.inDays;
-                                      // int weeksDifference = difference.inDays ~/
-                                      //     7; // 7 days in a week
-                                      // int monthsDifference = difference
-                                      //     .inDays ~/
-                                      //     30; // Assuming an average of 30 days in a month
-                                      // int yearsDifference = difference.inDays ~/
-                                      //     365; // Assuming an average of 365 days in a year
-                                      //
-                                      // // Determine the best fit unit
-                                      // String bestFitUnit;
-                                      // int bestFitValue;
-                                      //
-                                      // if (yearsDifference > 0) {
-                                      //   bestFitValue = yearsDifference;
-                                      //   bestFitUnit =
-                                      //   bestFitValue == 1 ? 'year' : 'years';
-                                      //   fitUnit.value = bestFitUnit;
-                                      //   fitValue.value = bestFitValue;
-                                      // } else if (monthsDifference > 0) {
-                                      //   bestFitValue = monthsDifference;
-                                      //   bestFitUnit =
-                                      //   bestFitValue == 1 ? 'month' : 'months';
-                                      //   fitUnit.value = bestFitUnit;
-                                      //   fitValue.value = bestFitValue;
-                                      // } else if (weeksDifference > 0) {
-                                      //   bestFitValue = weeksDifference;
-                                      //   bestFitUnit =
-                                      //   bestFitValue == 1 ? 'week' : 'weeks';
-                                      //   fitUnit.value = bestFitUnit;
-                                      //   fitValue.value = bestFitValue;
-                                      // } else {
-                                      //   bestFitValue = daysDifference;
-                                      //   bestFitUnit =
-                                      //   bestFitValue == 1 ? 'day' : 'days';
-                                      //   fitUnit.value = bestFitUnit;
-                                      //   fitValue.value = bestFitValue;
-                                      // }
-                                      //
-                                      // print(
-                                      //     'Best fit difference: $fitValue $fitUnit');
-                                      //
-                                      // amountController.text =
-                                      //     (int.parse(tenantController
-                                      //         .specificTenantUnits.value.first
-                                      //         .amount
-                                      //         .toString()) * fitValue.value)
-                                      //         .toString();
-                                      //
-                                      // print(amountController.text);
-
-                                    },
-                                    );
-                                  },
-                                );
-                              }),
-
-
-                              // Obx(() {
-                              //   return SearchableUnitDropDown<UnitModel>(
-                              //         hintText: tenantController.unitNumber.value
-                              //             .isEmpty ? 'Unit' : tenantController
-                              //             .unitNumber.value,
-                              //     menuItems: tenantController.unitList.value,
-                              //     controller: _unitCont,
-                              //     onChanged: (value) {
-                              //       print(value.value.id);
-                              //       tenantController.setUnitId(value.value.id);
-                              //             tenantController
-                              //                 .setAmountForSpecificTenantUnit(value.value);
-                              //             tenantController.fetchSpecificTenantsUnitSchedules().then((value){
-                              //               amountController.text =
-                              //                   tenantController.tenantUnitAmount
-                              //                       .toString();
-                              //               print(
-                              //                   'MY Amount Controller sis == ${tenantController
-                              //                       .specificTenantUnits.value.first
-                              //                       .amount}');
-                              //               date1Controller.text =
-                              //                   tenantController.tenantUnitList.value
-                              //                       .first.fromDate;
-                              //               date2Controller.text =
-                              //                   tenantController.tenantUnitList.value
-                              //                       .first.toDate;
-                              //
-                              //               selectedDate1.value = DateTime.parse(
-                              //                   tenantController.tenantUnitList.value
-                              //                       .first.fromDate);
-                              //               selectedDate2.value = DateTime.parse(
-                              //                   tenantController.tenantUnitList.value
-                              //                       .first.toDate);
-                              //
-                              //               print('DATE1 = ${date1Controller.text}');
-                              //               print('DATE2 = ${date2Controller.text}');
-                              //
-                              //               print('RX DATE1 = ${selectedDate1}');
-                              //               print('RX DATE2 = ${selectedDate2}');
-                              //
-                              //               // Define two DateTime objects representing the two dates
-                              //               // DateTime date1 = DateTime(2023, 1, 11);
-                              //               // DateTime date2 = DateTime(2024, 1, 11);
-                              //
-                              //               // Calculate the duration between the two dates
-                              //               Duration difference = selectedDate2.value
-                              //                   .difference(selectedDate1.value);
-                              //               // Duration difference = DateTime.parse(date1Controller.text).difference(DateTime.parse(date2Controller.text));
-                              //
-                              //               // Extract individual components (days, weeks, months, years) from the duration
-                              //               int daysDifference = difference.inDays;
-                              //               int weeksDifference = difference.inDays ~/
-                              //                   7; // 7 days in a week
-                              //               int monthsDifference = difference
-                              //                   .inDays ~/
-                              //                   30; // Assuming an average of 30 days in a month
-                              //               int yearsDifference = difference.inDays ~/
-                              //                   365; // Assuming an average of 365 days in a year
-                              //
-                              //               // Determine the best fit unit
-                              //               String bestFitUnit;
-                              //               int bestFitValue;
-                              //
-                              //               if (yearsDifference > 0) {
-                              //                 bestFitValue = yearsDifference;
-                              //                 bestFitUnit =
-                              //                 bestFitValue == 1 ? 'year' : 'years';
-                              //                 fitUnit.value = bestFitUnit;
-                              //                 fitValue.value = bestFitValue;
-                              //               } else if (monthsDifference > 0) {
-                              //                 bestFitValue = monthsDifference;
-                              //                 bestFitUnit =
-                              //                 bestFitValue == 1 ? 'month' : 'months';
-                              //                 fitUnit.value = bestFitUnit;
-                              //                 fitValue.value = bestFitValue;
-                              //               } else if (weeksDifference > 0) {
-                              //                 bestFitValue = weeksDifference;
-                              //                 bestFitUnit =
-                              //                 bestFitValue == 1 ? 'week' : 'weeks';
-                              //                 fitUnit.value = bestFitUnit;
-                              //                 fitValue.value = bestFitValue;
-                              //               } else {
-                              //                 bestFitValue = daysDifference;
-                              //                 bestFitUnit =
-                              //                 bestFitValue == 1 ? 'day' : 'days';
-                              //                 fitUnit.value = bestFitUnit;
-                              //                 fitValue.value = bestFitValue;
-                              //               }
-                              //
-                              //               print(
-                              //                   'Best fit difference: $fitValue $fitUnit');
-                              //
-                              //               amountController.text =
-                              //                   (int.parse(tenantController
-                              //                       .specificTenantUnits.value.first
-                              //                       .amount
-                              //                       .toString()) * fitValue.value)
-                              //                       .toString();
-                              //
-                              //               print(amountController.text);
-                              //             });
-                              //             amountController.text = (int.parse(
-                              //                 tenantController.tenantUnitAmount
-                              //                     .toString()) * fitValue.value)
-                              //                 .toString();
-                              //
-                              //       // tenantController.setUnitAmount(value.value.amount);
-                              //       // amountController.text = value.value.amount.toString();
-                              //       // discountController.text = value.value.amount.toString();
-                              //       print('MY Unit is ${tenantController.unitId.value}');
-                              //       print('MY Amount is ${tenantController.unitAmount.value}');
-                              //
-                              //     },
-                              //   );
-                              // }),
-
-
-                              Obx(() {
-                                return SearchableSpecificTenantUnitDropDown<SpecificTenantUnitModel>(
-                                  hintText: tenantController.unitNumber.value
-                                      .isEmpty ? 'Unit' : tenantController
-                                      .unitNumber.value,
-                                  menuItems: tenantController.specificTenantUnitModelList.value,
-                                  controller: _unitCont,
-                                  onChanged: (value) {
-                                    print(value.value.id);
-                                    tenantController.setUnitId(value.value.unitId);
-                                    // tenantController
-                                    //     .setAmountForSpecificTenantUnit(value.value);
-                                    tenantController.fetchSpecificTenantsUnitSchedules().then((value){
-                                      // amountController.text =
-                                      //     tenantController.tenantUnitAmount
-                                      //         .toString();
-                                      // print(
-                                      //     'MY Amount Controller sis == ${tenantController
-                                      //         .specificTenantUnits.value.first
-                                      //         .amount}');
-                                      // date1Controller.text =
-                                      //     tenantController.tenantUnitList.value
-                                      //         .first.fromDate;
-                                      // date2Controller.text =
-                                      //     tenantController.tenantUnitList.value
-                                      //         .first.toDate;
-                                      //
-                                      // selectedDate1.value = DateTime.parse(
-                                      //     tenantController.tenantUnitList.value
-                                      //         .first.fromDate);
-                                      // selectedDate2.value = DateTime.parse(
-                                      //     tenantController.tenantUnitList.value
-                                      //         .first.toDate);
-                                      //
-                                      // print('DATE1 = ${date1Controller.text}');
-                                      // print('DATE2 = ${date2Controller.text}');
-                                      //
-                                      // print('RX DATE1 = ${selectedDate1}');
-                                      // print('RX DATE2 = ${selectedDate2}');
-                                      //
-                                      // // Define two DateTime objects representing the two dates
-                                      // // DateTime date1 = DateTime(2023, 1, 11);
-                                      // // DateTime date2 = DateTime(2024, 1, 11);
-                                      //
-                                      // // Calculate the duration between the two dates
-                                      // Duration difference = selectedDate2.value
-                                      //     .difference(selectedDate1.value);
-                                      // // Duration difference = DateTime.parse(date1Controller.text).difference(DateTime.parse(date2Controller.text));
-                                      //
-                                      // // Extract individual components (days, weeks, months, years) from the duration
-                                      // int daysDifference = difference.inDays;
-                                      // int weeksDifference = difference.inDays ~/
-                                      //     7; // 7 days in a week
-                                      // int monthsDifference = difference
-                                      //     .inDays ~/
-                                      //     30; // Assuming an average of 30 days in a month
-                                      // int yearsDifference = difference.inDays ~/
-                                      //     365; // Assuming an average of 365 days in a year
-                                      //
-                                      // // Determine the best fit unit
-                                      // String bestFitUnit;
-                                      // int bestFitValue;
-                                      //
-                                      // if (yearsDifference > 0) {
-                                      //   bestFitValue = yearsDifference;
-                                      //   bestFitUnit =
-                                      //   bestFitValue == 1 ? 'year' : 'years';
-                                      //   fitUnit.value = bestFitUnit;
-                                      //   fitValue.value = bestFitValue;
-                                      // } else if (monthsDifference > 0) {
-                                      //   bestFitValue = monthsDifference;
-                                      //   bestFitUnit =
-                                      //   bestFitValue == 1 ? 'month' : 'months';
-                                      //   fitUnit.value = bestFitUnit;
-                                      //   fitValue.value = bestFitValue;
-                                      // } else if (weeksDifference > 0) {
-                                      //   bestFitValue = weeksDifference;
-                                      //   bestFitUnit =
-                                      //   bestFitValue == 1 ? 'week' : 'weeks';
-                                      //   fitUnit.value = bestFitUnit;
-                                      //   fitValue.value = bestFitValue;
-                                      // } else {
-                                      //   bestFitValue = daysDifference;
-                                      //   bestFitUnit =
-                                      //   bestFitValue == 1 ? 'day' : 'days';
-                                      //   fitUnit.value = bestFitUnit;
-                                      //   fitValue.value = bestFitValue;
-                                      // }
-                                      //
-                                      // print(
-                                      //     'Best fit difference: $fitValue $fitUnit');
-                                      //
-                                      // amountController.text =
-                                      //     (int.parse(tenantController
-                                      //         .specificTenantUnits.value.first
-                                      //         .amount
-                                      //         .toString()) * fitValue.value)
-                                      //         .toString();
-                                      //
-                                      // print(amountController.text);
-                                    });
-                                    // amountController.text = (int.parse(
+                                    // amountController.text =
                                     //     tenantController.tenantUnitAmount
+                                    //         .toString();
+                                    // print(
+                                    //     'MY Amount Controller sis == ${tenantController
+                                    //         .specificTenantUnits.value.first
+                                    //         .amount}');
+                                    // date1Controller.text =
+                                    //     tenantController.tenantUnitList.value
+                                    //         .first.fromDate;
+                                    // date2Controller.text =
+                                    //     tenantController.tenantUnitList.value
+                                    //         .first.toDate;
+                                    //
+                                    // selectedDate1.value = DateTime.parse(
+                                    //     tenantController.tenantUnitList.value
+                                    //         .first.fromDate);
+                                    // selectedDate2.value = DateTime.parse(
+                                    //     tenantController.tenantUnitList.value
+                                    //         .first.toDate);
+                                    //
+                                    // print('DATE1 = ${date1Controller.text}');
+                                    // print('DATE2 = ${date2Controller.text}');
+                                    //
+                                    // print('RX DATE1 = ${selectedDate1}');
+                                    // print('RX DATE2 = ${selectedDate2}');
+                                    //
+                                    // // Define two DateTime objects representing the two dates
+                                    // // DateTime date1 = DateTime(2023, 1, 11);
+                                    // // DateTime date2 = DateTime(2024, 1, 11);
+                                    //
+                                    // // Calculate the duration between the two dates
+                                    // Duration difference = selectedDate2.value
+                                    //     .difference(selectedDate1.value);
+                                    // // Duration difference = DateTime.parse(date1Controller.text).difference(DateTime.parse(date2Controller.text));
+                                    //
+                                    // // Extract individual components (days, weeks, months, years) from the duration
+                                    // int daysDifference = difference.inDays;
+                                    // int weeksDifference = difference.inDays ~/
+                                    //     7; // 7 days in a week
+                                    // int monthsDifference = difference
+                                    //     .inDays ~/
+                                    //     30; // Assuming an average of 30 days in a month
+                                    // int yearsDifference = difference.inDays ~/
+                                    //     365; // Assuming an average of 365 days in a year
+                                    //
+                                    // // Determine the best fit unit
+                                    // String bestFitUnit;
+                                    // int bestFitValue;
+                                    //
+                                    // if (yearsDifference > 0) {
+                                    //   bestFitValue = yearsDifference;
+                                    //   bestFitUnit =
+                                    //   bestFitValue == 1 ? 'year' : 'years';
+                                    //   fitUnit.value = bestFitUnit;
+                                    //   fitValue.value = bestFitValue;
+                                    // } else if (monthsDifference > 0) {
+                                    //   bestFitValue = monthsDifference;
+                                    //   bestFitUnit =
+                                    //   bestFitValue == 1 ? 'month' : 'months';
+                                    //   fitUnit.value = bestFitUnit;
+                                    //   fitValue.value = bestFitValue;
+                                    // } else if (weeksDifference > 0) {
+                                    //   bestFitValue = weeksDifference;
+                                    //   bestFitUnit =
+                                    //   bestFitValue == 1 ? 'week' : 'weeks';
+                                    //   fitUnit.value = bestFitUnit;
+                                    //   fitValue.value = bestFitValue;
+                                    // } else {
+                                    //   bestFitValue = daysDifference;
+                                    //   bestFitUnit =
+                                    //   bestFitValue == 1 ? 'day' : 'days';
+                                    //   fitUnit.value = bestFitUnit;
+                                    //   fitValue.value = bestFitValue;
+                                    // }
+                                    //
+                                    // print(
+                                    //     'Best fit difference: $fitValue $fitUnit');
+                                    //
+                                    // amountController.text =
+                                    //     (int.parse(tenantController
+                                    //         .specificTenantUnits.value.first
+                                    //         .amount
                                     //         .toString()) * fitValue.value)
-                                    //     .toString();
-
-                                    // tenantController.setUnitAmount(value.value.amount);
-                                    // amountController.text = value.value.amount.toString();
-                                    // discountController.text = value.value.amount.toString();
-                                    print('MY Unit is ${tenantController.unitId.value}');
-                                    print('MY Amount is ${tenantController.unitAmount.value}');
+                                    //         .toString();
+                                    //
+                                    // print(amountController.text);
 
                                   },
-                                );
-                              }),
+                                  );
+                                },
+                              );
+                            }),
 
 
-                              Obx(() {
-                                return SearchableTenantUnitScheduleDropDown<TenantUnitScheduleModel>(
-                                  hintText: 'Schedule',
-                                  menuItems: tenantController.specificTenantUnitScheduleList.value,
-                                  controller: _tenantUnitScheduleCont,
-                                  onChanged: (value) {
-                                    print(value.value.id);
-                                    tenantController.setSpecificScheduleId(value.value.id);
-                                    tenantController.setSpecificPaymentAmount(value.value.amount);
-                                    tenantController.setSpecificPaymentBalance(value.value.balance);
-                                    tenantController.setSpecificPaymentPaid(value.value.paid);
+                            // Obx(() {
+                            //   return SearchableUnitDropDown<UnitModel>(
+                            //         hintText: tenantController.unitNumber.value
+                            //             .isEmpty ? 'Unit' : tenantController
+                            //             .unitNumber.value,
+                            //     menuItems: tenantController.unitList.value,
+                            //     controller: _unitCont,
+                            //     onChanged: (value) {
+                            //       print(value.value.id);
+                            //       tenantController.setUnitId(value.value.id);
+                            //             tenantController
+                            //                 .setAmountForSpecificTenantUnit(value.value);
+                            //             tenantController.fetchSpecificTenantsUnitSchedules().then((value){
+                            //               amountController.text =
+                            //                   tenantController.tenantUnitAmount
+                            //                       .toString();
+                            //               print(
+                            //                   'MY Amount Controller sis == ${tenantController
+                            //                       .specificTenantUnits.value.first
+                            //                       .amount}');
+                            //               date1Controller.text =
+                            //                   tenantController.tenantUnitList.value
+                            //                       .first.fromDate;
+                            //               date2Controller.text =
+                            //                   tenantController.tenantUnitList.value
+                            //                       .first.toDate;
+                            //
+                            //               selectedDate1.value = DateTime.parse(
+                            //                   tenantController.tenantUnitList.value
+                            //                       .first.fromDate);
+                            //               selectedDate2.value = DateTime.parse(
+                            //                   tenantController.tenantUnitList.value
+                            //                       .first.toDate);
+                            //
+                            //               print('DATE1 = ${date1Controller.text}');
+                            //               print('DATE2 = ${date2Controller.text}');
+                            //
+                            //               print('RX DATE1 = ${selectedDate1}');
+                            //               print('RX DATE2 = ${selectedDate2}');
+                            //
+                            //               // Define two DateTime objects representing the two dates
+                            //               // DateTime date1 = DateTime(2023, 1, 11);
+                            //               // DateTime date2 = DateTime(2024, 1, 11);
+                            //
+                            //               // Calculate the duration between the two dates
+                            //               Duration difference = selectedDate2.value
+                            //                   .difference(selectedDate1.value);
+                            //               // Duration difference = DateTime.parse(date1Controller.text).difference(DateTime.parse(date2Controller.text));
+                            //
+                            //               // Extract individual components (days, weeks, months, years) from the duration
+                            //               int daysDifference = difference.inDays;
+                            //               int weeksDifference = difference.inDays ~/
+                            //                   7; // 7 days in a week
+                            //               int monthsDifference = difference
+                            //                   .inDays ~/
+                            //                   30; // Assuming an average of 30 days in a month
+                            //               int yearsDifference = difference.inDays ~/
+                            //                   365; // Assuming an average of 365 days in a year
+                            //
+                            //               // Determine the best fit unit
+                            //               String bestFitUnit;
+                            //               int bestFitValue;
+                            //
+                            //               if (yearsDifference > 0) {
+                            //                 bestFitValue = yearsDifference;
+                            //                 bestFitUnit =
+                            //                 bestFitValue == 1 ? 'year' : 'years';
+                            //                 fitUnit.value = bestFitUnit;
+                            //                 fitValue.value = bestFitValue;
+                            //               } else if (monthsDifference > 0) {
+                            //                 bestFitValue = monthsDifference;
+                            //                 bestFitUnit =
+                            //                 bestFitValue == 1 ? 'month' : 'months';
+                            //                 fitUnit.value = bestFitUnit;
+                            //                 fitValue.value = bestFitValue;
+                            //               } else if (weeksDifference > 0) {
+                            //                 bestFitValue = weeksDifference;
+                            //                 bestFitUnit =
+                            //                 bestFitValue == 1 ? 'week' : 'weeks';
+                            //                 fitUnit.value = bestFitUnit;
+                            //                 fitValue.value = bestFitValue;
+                            //               } else {
+                            //                 bestFitValue = daysDifference;
+                            //                 bestFitUnit =
+                            //                 bestFitValue == 1 ? 'day' : 'days';
+                            //                 fitUnit.value = bestFitUnit;
+                            //                 fitValue.value = bestFitValue;
+                            //               }
+                            //
+                            //               print(
+                            //                   'Best fit difference: $fitValue $fitUnit');
+                            //
+                            //               amountController.text =
+                            //                   (int.parse(tenantController
+                            //                       .specificTenantUnits.value.first
+                            //                       .amount
+                            //                       .toString()) * fitValue.value)
+                            //                       .toString();
+                            //
+                            //               print(amountController.text);
+                            //             });
+                            //             amountController.text = (int.parse(
+                            //                 tenantController.tenantUnitAmount
+                            //                     .toString()) * fitValue.value)
+                            //                 .toString();
+                            //
+                            //       // tenantController.setUnitAmount(value.value.amount);
+                            //       // amountController.text = value.value.amount.toString();
+                            //       // discountController.text = value.value.amount.toString();
+                            //       print('MY Unit is ${tenantController.unitId.value}');
+                            //       print('MY Amount is ${tenantController.unitAmount.value}');
+                            //
+                            //     },
+                            //   );
+                            // }),
 
-                                    amountController.text = tenantController.specificPaymentBalance.value.toString();
-                                    paidController.text = tenantController.specificPaymentBalance.value.toString();
-                                    // balanceController.text = int.parse(tenantController.specificPaymentBalance.value.toString()) as String;
-                                    print(
-                                        'MY Schedule is ${tenantController.specificScheduleId
-                                            .value}');
-                                  },
-                                );
-                              }),
+
+                            Obx(() {
+                              return SearchableSpecificTenantUnitDropDown<
+                                  SpecificTenantUnitModel>(
+                                hintText: tenantController.unitNumber.value
+                                    .isEmpty ? 'Unit' : tenantController
+                                    .unitNumber.value,
+                                menuItems: tenantController
+                                    .specificTenantUnitModelList.value,
+                                controller: _unitCont,
+                                onChanged: (value) {
+                                  print(value.value.id);
+                                  tenantController.setUnitId(
+                                      value.value.unitId);
+                                  // tenantController
+                                  //     .setAmountForSpecificTenantUnit(value.value);
+                                  tenantController
+                                      .fetchSpecificTenantsUnitSchedules()
+                                      .then((value) {
+                                    // amountController.text =
+                                    //     tenantController.tenantUnitAmount
+                                    //         .toString();
+                                    // print(
+                                    //     'MY Amount Controller sis == ${tenantController
+                                    //         .specificTenantUnits.value.first
+                                    //         .amount}');
+                                    // date1Controller.text =
+                                    //     tenantController.tenantUnitList.value
+                                    //         .first.fromDate;
+                                    // date2Controller.text =
+                                    //     tenantController.tenantUnitList.value
+                                    //         .first.toDate;
+                                    //
+                                    // selectedDate1.value = DateTime.parse(
+                                    //     tenantController.tenantUnitList.value
+                                    //         .first.fromDate);
+                                    // selectedDate2.value = DateTime.parse(
+                                    //     tenantController.tenantUnitList.value
+                                    //         .first.toDate);
+                                    //
+                                    // print('DATE1 = ${date1Controller.text}');
+                                    // print('DATE2 = ${date2Controller.text}');
+                                    //
+                                    // print('RX DATE1 = ${selectedDate1}');
+                                    // print('RX DATE2 = ${selectedDate2}');
+                                    //
+                                    // // Define two DateTime objects representing the two dates
+                                    // // DateTime date1 = DateTime(2023, 1, 11);
+                                    // // DateTime date2 = DateTime(2024, 1, 11);
+                                    //
+                                    // // Calculate the duration between the two dates
+                                    // Duration difference = selectedDate2.value
+                                    //     .difference(selectedDate1.value);
+                                    // // Duration difference = DateTime.parse(date1Controller.text).difference(DateTime.parse(date2Controller.text));
+                                    //
+                                    // // Extract individual components (days, weeks, months, years) from the duration
+                                    // int daysDifference = difference.inDays;
+                                    // int weeksDifference = difference.inDays ~/
+                                    //     7; // 7 days in a week
+                                    // int monthsDifference = difference
+                                    //     .inDays ~/
+                                    //     30; // Assuming an average of 30 days in a month
+                                    // int yearsDifference = difference.inDays ~/
+                                    //     365; // Assuming an average of 365 days in a year
+                                    //
+                                    // // Determine the best fit unit
+                                    // String bestFitUnit;
+                                    // int bestFitValue;
+                                    //
+                                    // if (yearsDifference > 0) {
+                                    //   bestFitValue = yearsDifference;
+                                    //   bestFitUnit =
+                                    //   bestFitValue == 1 ? 'year' : 'years';
+                                    //   fitUnit.value = bestFitUnit;
+                                    //   fitValue.value = bestFitValue;
+                                    // } else if (monthsDifference > 0) {
+                                    //   bestFitValue = monthsDifference;
+                                    //   bestFitUnit =
+                                    //   bestFitValue == 1 ? 'month' : 'months';
+                                    //   fitUnit.value = bestFitUnit;
+                                    //   fitValue.value = bestFitValue;
+                                    // } else if (weeksDifference > 0) {
+                                    //   bestFitValue = weeksDifference;
+                                    //   bestFitUnit =
+                                    //   bestFitValue == 1 ? 'week' : 'weeks';
+                                    //   fitUnit.value = bestFitUnit;
+                                    //   fitValue.value = bestFitValue;
+                                    // } else {
+                                    //   bestFitValue = daysDifference;
+                                    //   bestFitUnit =
+                                    //   bestFitValue == 1 ? 'day' : 'days';
+                                    //   fitUnit.value = bestFitUnit;
+                                    //   fitValue.value = bestFitValue;
+                                    // }
+                                    //
+                                    // print(
+                                    //     'Best fit difference: $fitValue $fitUnit');
+                                    //
+                                    // amountController.text =
+                                    //     (int.parse(tenantController
+                                    //         .specificTenantUnits.value.first
+                                    //         .amount
+                                    //         .toString()) * fitValue.value)
+                                    //         .toString();
+                                    //
+                                    // print(amountController.text);
+                                  });
+                                  // amountController.text = (int.parse(
+                                  //     tenantController.tenantUnitAmount
+                                  //         .toString()) * fitValue.value)
+                                  //     .toString();
+
+                                  // tenantController.setUnitAmount(value.value.amount);
+                                  // amountController.text = value.value.amount.toString();
+                                  // discountController.text = value.value.amount.toString();
+                                  print('MY Unit is ${tenantController.unitId
+                                      .value}');
+                                  print('MY Amount is ${tenantController
+                                      .unitAmount.value}');
+                                },
+                              );
+                            }),
 
 
+                            // Obx(() {
+                            //   return SearchableTenantUnitScheduleDropDown<
+                            //       TenantUnitScheduleModel>(
+                            //     hintText: 'Schedule',
+                            //     menuItems: tenantController
+                            //         .specificTenantUnitScheduleList.value,
+                            //     controller: _tenantUnitScheduleCont,
+                            //     onChanged: (value) {
+                            //       print(value.value.id);
+                            //       tenantController.setSpecificScheduleId(
+                            //           value.value.id);
+                            //       tenantController.setSpecificPaymentAmount(
+                            //           value.value.amount);
+                            //       tenantController.setSpecificPaymentBalance(
+                            //           value.value.balance);
+                            //       tenantController.setSpecificPaymentPaid(
+                            //           value.value.paid);
+                            //
+                            //       amountController.text =
+                            //           tenantController.specificPaymentBalance
+                            //               .value.toString();
+                            //       paidController.text =
+                            //           tenantController.specificPaymentBalance
+                            //               .value.toString();
+                            //       // balanceController.text = int.parse(tenantController.specificPaymentBalance.value.toString()) as String;
+                            //       print(
+                            //           'MY Schedule is ${tenantController
+                            //               .specificScheduleId
+                            //               .value}');
+                            //     },
+                            //   );
+                            // }),
 
-                              // Obx(() {
-                              //   return tenantController.specificTenantUnitScheduleList.value
-                              //       .isEmpty ? Container() : DateTextField2(
-                              //     style: TextStyle(color: Colors.transparent),
-                              //     onTap: () {
-                              //       // _selectDate1(context);
-                              //     },
-                              //     controller: date1Controller,
-                              //     hintText: "From",
-                              //     obscureText: false,
-                              //     tenantController: tenantController,
-                              //   );
-                              // }),
-                              //
-                              // Obx(() {
-                              //   return tenantController.specificTenantUnitScheduleList.value
-                              //       .isEmpty ? Container() : SizedBox(
-                              //     height: 1.h,);
-                              // }),
-                              //
-                              // Obx(() {
-                              //   return tenantController.tenantUnitList.value
-                              //       .isEmpty ? Container() : DateTextField2(
-                              //     style: TextStyle(color: Colors.transparent),
-                              //     onTap: () {
-                              //       // _selectDate2(context);
-                              //     },
-                              //     controller: date2Controller,
-                              //
-                              //     hintText: "To",
-                              //     obscureText: false,
-                              //     enabled: false,
-                              //     tenantController: tenantController,
-                              //   );
-                              // }),
-                              //
-                              //
-                              //
-                              // Obx(() {
-                              //   return tenantController.tenantUnitList.value
-                              //       .isEmpty ? Container() : SizedBox(
-                              //     height: 1.h,);
-                              // }),
 
-                              Obx(() {
-                                return AmountTextField(
-                                  controller: amountController,
-                                  hintText: 'Amount',
-                                  obscureText: false,
-                                  keyBoardType: TextInputType.number,
-                                  enabled: false,
-                                  suffix: fitValue.value == 0
-                                      ? ''
-                                      : '$fitValue $fitUnit',
-                                );
-                              }),
+                            // Obx(() {
+                            //   return tenantController.specificTenantUnitScheduleList.value
+                            //       .isEmpty ? Container() : DateTextField2(
+                            //     style: TextStyle(color: Colors.transparent),
+                            //     onTap: () {
+                            //       // _selectDate1(context);
+                            //     },
+                            //     controller: date1Controller,
+                            //     hintText: "From",
+                            //     obscureText: false,
+                            //     tenantController: tenantController,
+                            //   );
+                            // }),
+                            //
+                            // Obx(() {
+                            //   return tenantController.specificTenantUnitScheduleList.value
+                            //       .isEmpty ? Container() : SizedBox(
+                            //     height: 1.h,);
+                            // }),
+                            //
+                            // Obx(() {
+                            //   return tenantController.tenantUnitList.value
+                            //       .isEmpty ? Container() : DateTextField2(
+                            //     style: TextStyle(color: Colors.transparent),
+                            //     onTap: () {
+                            //       // _selectDate2(context);
+                            //     },
+                            //     controller: date2Controller,
+                            //
+                            //     hintText: "To",
+                            //     obscureText: false,
+                            //     enabled: false,
+                            //     tenantController: tenantController,
+                            //   );
+                            // }),
+                            //
+                            //
+                            //
+                            // Obx(() {
+                            //   return tenantController.tenantUnitList.value
+                            //       .isEmpty ? Container() : SizedBox(
+                            //     height: 1.h,);
+                            // }),
 
-                              SizedBox(height: 1.h,),
+                            Obx(() {
+                              return AmountTextField(
+                                controller: amountController,
+                                hintText: 'Amount',
+                                obscureText: false,
+                                keyBoardType: TextInputType.number,
+                                enabled: false,
+                                suffix: fitValue.value == 0
+                                    ? ''
+                                    : '$fitValue $fitUnit',
+                              );
+                            }),
 
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment
-                                    .spaceBetween,
-                                children: [
-                                  SizedBox(
-                                    child: AuthTextField(
-                                      controller: paidController,
-                                      hintText: 'Paid',
-                                      obscureText: false,
-                                      keyBoardType: TextInputType.number,
-                                      onChanged: (value) {
-                                        var myPaid = int.parse(value);
-                                        print(myPaid);
-                                        balanceController.text =
-                                            (int.parse(amountController.text) -
-                                                myPaid)
-                                                .toString();
-                                        print('MY Balance == ${balanceController
-                                            .text}');
-                                      },
-                                    ),
-                                    width: 40.w,
+                            SizedBox(height: 1.h,),
+
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment
+                                  .spaceBetween,
+                              children: [
+                                SizedBox(
+                                  child: AuthTextField(
+                                    controller: paidController,
+                                    hintText: 'Paid',
+                                    obscureText: false,
+                                    keyBoardType: TextInputType.number,
+                                    onChanged: (value) {
+                                      var myPaid = int.parse(value);
+                                      print(myPaid);
+                                      balanceController.text =
+                                          (int.parse(amountController.text) -
+                                              myPaid)
+                                              .toString();
+                                      print('MY Balance == ${balanceController
+                                          .text}');
+                                    },
                                   ),
+                                  width: 40.w,
+                                ),
 
 
-                                  SizedBox(
-                                    width: 40.w,
-                                    child: AuthTextField(
-                                      controller: balanceController,
-                                      hintText: 'Balance',
-                                      obscureText: false,
-                                      keyBoardType: TextInputType.number,
-                                      enabled: false,
-                                    ),
+                                SizedBox(
+                                  width: 40.w,
+                                  child: AuthTextField(
+                                    controller: balanceController,
+                                    hintText: 'Balance',
+                                    obscureText: false,
+                                    keyBoardType: TextInputType.number,
+                                    enabled: false,
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
+                            ),
 
-                              SizedBox(height: 2.h,),
-
-                              // AppButton(
-                              //     title: 'Get unit Tenants',
-                              //     color: Colors.black,
-                              //     function: () async{
-                              //       // tenantController.fetchNestedTenantsUnits();
-                              //       // await tenantController.fetchNestedTenantsUnits();
-                              //       // tenantController.groupAllPropertyTenants();
-                              //       // tenantController.getSpecificTenantUnits();
-                              //       tenantController.fetchSpecificTenantsUnitSchedules();
-                              //
-                              //     }),
-
-                              // AuthTextField(
-                              //   controller: paidController,
-                              //   hintText: 'Paid',
-                              //   obscureText: false,
-                              //   keyBoardType: TextInputType.number,
-                              //   onChanged: (value) {
-                              //     var myPaid = int.parse(value);
-                              //     print(myPaid);
-                              //     balanceController.text =
-                              //         (int.parse(amountController.text) - myPaid)
-                              //             .toString();
-                              //     print('MY Balance == ${balanceController}');
-                              //   },
-                              // ),
-                              //
-                              //
-                              // SizedBox(height: 1.h,),
-                              //
-                              // AuthTextField(
-                              //   controller: balanceController,
-                              //   hintText: 'Balance',
-                              //   obscureText: false,
-                              //   keyBoardType: TextInputType.number,
-                              //   enabled: false,
-                              // ),
+                            SizedBox(height: 2.h,),
 
 
-                              // SizedBox(height: 1.h,),
-                              //
-                              // AppButton(
-                              //   title: 'Add Payment',
-                              //   color: AppTheme.primaryColor,
-                              //   function: () async {
-                              //     //
-                              //     // // Define two DateTime objects representing the two dates
-                              //     // // DateTime date1 = DateTime(2023, 1, 11);
-                              //     // // DateTime date2 = DateTime(2024, 1, 11);
-                              //     //
-                              //     // // Calculate the duration between the two dates
-                              //     // Duration difference = selectedDate2.value.difference(selectedDate1.value);
-                              //     // // Duration difference = DateTime.parse(date1Controller.text).difference(DateTime.parse(date2Controller.text));
-                              //     //
-                              //     // // Extract individual components (days, weeks, months, years) from the duration
-                              //     // int daysDifference = difference.inDays;
-                              //     // int weeksDifference = difference.inDays ~/ 7; // 7 days in a week
-                              //     // int monthsDifference = difference.inDays ~/ 30; // Assuming an average of 30 days in a month
-                              //     // int yearsDifference = difference.inDays ~/ 365; // Assuming an average of 365 days in a year
-                              //     //
-                              //     // // Determine the best fit unit
-                              //     // String bestFitUnit;
-                              //     // int bestFitValue;
-                              //     //
-                              //     // if (yearsDifference > 0) {
-                              //     //   bestFitUnit = 'year';
-                              //     //   bestFitValue = yearsDifference;
-                              //     // } else if (monthsDifference > 0) {
-                              //     //   bestFitUnit = 'month';
-                              //     //   bestFitValue = monthsDifference;
-                              //     // } else if (weeksDifference > 0) {
-                              //     //   bestFitUnit = 'week';
-                              //     //   bestFitValue = weeksDifference;
-                              //     // } else {
-                              //     //   bestFitUnit = 'day';
-                              //     //   bestFitValue = daysDifference;
-                              //     // }
-                              //     //
-                              //     // print('Best fit difference: $bestFitValue $bestFitUnit(s)');
-                              //     // // print(date1Controller.text);
-                              //     // // tenantController.getTenantUnits(null);
-                              //   },
-                              // ),
+                            Obx(() {
+                              return MultiSelectDropDown(
+                                showClearIcon: true,
+                                hint: 'Client to notify',
+                                onOptionSelected: (options) {
+                                  for (var element in options) {
+                                    schedules.add(element.value!);
+                                    print('My SChedules ${schedules.value}');
+                                  }
+                                },
+                                options: tenantController
+                                    .specificTenantUnitScheduleList.value
+                                    .map((schedule) =>
+                                    ValueItem(
+                                        label:
+                                        'R${schedule.units!
+                                            .unitNumber} | ${DateFormat(
+                                            'dd/MM/yyyy').format(
+                                            schedule.fromDate!)}-${DateFormat(
+                                            'dd/MM/yyyy').format(schedule
+                                            .toDate!)} | ${amountFormatter
+                                            .format(
+                                            schedule.balance.toString())}',
+                                        value:
+                                        '${schedule.units!
+                                            .unitNumber}|${schedule.balance}'))
+                                    .toList(),
+                                selectionType: SelectionType.multi,
+                                chipConfig:
+                                const ChipConfig(wrapType: WrapType.scroll),
+                                borderColor: Colors.white,
+                                optionTextStyle: const TextStyle(fontSize: 16),
+                                selectedOptionIcon:
+                                const Icon(Icons.check_circle),
+                              );
+                            }),
 
 
-                              //
-                              // Obx(() {
-                              //   return tenantController.isTenantUnitListLoading
-                              //       .value
-                              //       ? Center(child: CircularProgressIndicator(),)
-                              //       : ListView.builder(
-                              //       itemCount: tenantController.tenantUnitList
-                              //           .length,
-                              //       shrinkWrap: true,
-                              //       itemBuilder: (context, index) {
-                              //         var unit = tenantController
-                              //             .tenantUnitList[index];
-                              //         return Card(
-                              //             child: Text(unit.amount.toString()));
-                              //       });
-                              // }),
+                            // AppButton(
+                            //     title: 'Get unit Tenants',
+                            //     color: Colors.black,
+                            //     function: () async{
+                            //       // tenantController.fetchNestedTenantsUnits();
+                            //       // await tenantController.fetchNestedTenantsUnits();
+                            //       // tenantController.groupAllPropertyTenants();
+                            //       // tenantController.getSpecificTenantUnits();
+                            //       tenantController.fetchSpecificTenantsUnitSchedules();
+                            //
+                            //     }),
 
-                            ],
-                          ),
+                            // AuthTextField(
+                            //   controller: paidController,
+                            //   hintText: 'Paid',
+                            //   obscureText: false,
+                            //   keyBoardType: TextInputType.number,
+                            //   onChanged: (value) {
+                            //     var myPaid = int.parse(value);
+                            //     print(myPaid);
+                            //     balanceController.text =
+                            //         (int.parse(amountController.text) - myPaid)
+                            //             .toString();
+                            //     print('MY Balance == ${balanceController}');
+                            //   },
+                            // ),
+                            //
+                            //
+                            // SizedBox(height: 1.h,),
+                            //
+                            // AuthTextField(
+                            //   controller: balanceController,
+                            //   hintText: 'Balance',
+                            //   obscureText: false,
+                            //   keyBoardType: TextInputType.number,
+                            //   enabled: false,
+                            // ),
+
+
+                            // SizedBox(height: 1.h,),
+                            //
+                            // AppButton(
+                            //   title: 'Add Payment',
+                            //   color: AppTheme.primaryColor,
+                            //   function: () async {
+                            //     //
+                            //     // // Define two DateTime objects representing the two dates
+                            //     // // DateTime date1 = DateTime(2023, 1, 11);
+                            //     // // DateTime date2 = DateTime(2024, 1, 11);
+                            //     //
+                            //     // // Calculate the duration between the two dates
+                            //     // Duration difference = selectedDate2.value.difference(selectedDate1.value);
+                            //     // // Duration difference = DateTime.parse(date1Controller.text).difference(DateTime.parse(date2Controller.text));
+                            //     //
+                            //     // // Extract individual components (days, weeks, months, years) from the duration
+                            //     // int daysDifference = difference.inDays;
+                            //     // int weeksDifference = difference.inDays ~/ 7; // 7 days in a week
+                            //     // int monthsDifference = difference.inDays ~/ 30; // Assuming an average of 30 days in a month
+                            //     // int yearsDifference = difference.inDays ~/ 365; // Assuming an average of 365 days in a year
+                            //     //
+                            //     // // Determine the best fit unit
+                            //     // String bestFitUnit;
+                            //     // int bestFitValue;
+                            //     //
+                            //     // if (yearsDifference > 0) {
+                            //     //   bestFitUnit = 'year';
+                            //     //   bestFitValue = yearsDifference;
+                            //     // } else if (monthsDifference > 0) {
+                            //     //   bestFitUnit = 'month';
+                            //     //   bestFitValue = monthsDifference;
+                            //     // } else if (weeksDifference > 0) {
+                            //     //   bestFitUnit = 'week';
+                            //     //   bestFitValue = weeksDifference;
+                            //     // } else {
+                            //     //   bestFitUnit = 'day';
+                            //     //   bestFitValue = daysDifference;
+                            //     // }
+                            //     //
+                            //     // print('Best fit difference: $bestFitValue $bestFitUnit(s)');
+                            //     // // print(date1Controller.text);
+                            //     // // tenantController.getTenantUnits(null);
+                            //   },
+                            // ),
+
+
+                            //
+                            // Obx(() {
+                            //   return tenantController.isTenantUnitListLoading
+                            //       .value
+                            //       ? Center(child: CircularProgressIndicator(),)
+                            //       : ListView.builder(
+                            //       itemCount: tenantController.tenantUnitList
+                            //           .length,
+                            //       shrinkWrap: true,
+                            //       itemBuilder: (context, index) {
+                            //         var unit = tenantController
+                            //             .tenantUnitList[index];
+                            //         return Card(
+                            //             child: Text(unit.amount.toString()));
+                            //       });
+                            // }),
+
+                          ],
                         ),
                       ),
+                    ),
                   ],
                 ),
               );
@@ -932,21 +989,21 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
               ),
 
               Align(alignment: Alignment.centerRight, child: Bounceable(
-                  onTap: () {
-                    showAsBottomSheet(context);
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.sp),
-                      color: AppTheme.primaryColor,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Center(
-                        child: Icon(Icons.add, color: Colors.white,),
-                      ),
+                onTap: () {
+                  showAsBottomSheet(context);
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.sp),
+                    color: AppTheme.primaryColor,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Center(
+                      child: Icon(Icons.add, color: Colors.white,),
                     ),
                   ),
+                ),
               )),
 
               // SizedBox(
@@ -975,7 +1032,7 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                 child: Image.asset('assets/auth/logo.png', width: 35.w),),
             )
                 : Expanded(
-                  child: ListView.builder(
+              child: ListView.builder(
                   physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   itemCount: tenantController.tenantPaymentList.length,
@@ -983,9 +1040,8 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                     var payment = tenantController.tenantPaymentList[index];
 
                     return PaymentCardWidget(tenantPaymentModel: payment);
-
                   }),
-                );
+            );
           }),
 
 

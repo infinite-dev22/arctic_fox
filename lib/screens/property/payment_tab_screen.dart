@@ -886,25 +886,25 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                               );
                             }),
 
-
-                            SizedBox(height: 10.h,),
-
-                            AppButton(title: 'Get Unique List', color: Colors.green,
-                                function: () async{
-                                  await tenantController
-                                      .payForMultipleTenantUnitSchedule(
-                                    tenantController.tenantId.value,
-                                    tenantController.unitId.value,
-                                    selectedDate1.value.toIso8601String(),
-                                    selectedDate2.value.toIso8601String(),
-                                    int.parse(amountController.text),
-                                    int.parse(paidController.text),
-                                    int.parse(balanceController.text),
-                                    'f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5',
-                                    'f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5',
-                                  );
-                                },
-                            )
+                            //
+                            // SizedBox(height: 10.h,),
+                            //
+                            // AppButton(title: 'Get Unique List', color: Colors.green,
+                            //     function: () async{
+                            //       await tenantController
+                            //           .payForMultipleTenantUnitSchedule(
+                            //         tenantController.tenantId.value,
+                            //         tenantController.unitId.value,
+                            //         selectedDate1.value.toIso8601String(),
+                            //         selectedDate2.value.toIso8601String(),
+                            //         int.parse(amountController.text),
+                            //         int.parse(paidController.text),
+                            //         int.parse(balanceController.text),
+                            //         'f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5',
+                            //         'f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5',
+                            //       );
+                            //     },
+                            // )
 
                             // AppButton(
                             //     title: 'Get unit Tenants',

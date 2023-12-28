@@ -116,6 +116,8 @@ class TenantController extends GetxController {
   var specificPaymentBalance = 0.obs;
   var specificPaymentPaid = 0.obs;
 
+  var schedules = [].obs;
+
 
   var uuid = Uuid();
 
@@ -445,6 +447,48 @@ setSpecificPaymentBalance(int balance){
     } catch (error) {
       print('Error updating Individual tenant: $error');
     }
+
+
+  }
+
+  Future<void> payForMultipleTenantUnitSchedule(int tenantId, int unitId, String date1, String date2, int amount,
+      int paid, int balance, String createdBy, String updatedBy,) async {
+
+
+    Set uniqueNumbersSet = schedules.toSet();
+
+
+    List uniqueNumbersList = uniqueNumbersSet.toList();
+
+
+    print('MY UNIQUE Controller List is $uniqueNumbersList');
+
+
+
+
+
+    // try {
+    //
+    //   // Iterate over the list of IDs and update each row
+    //   for (final id in uniqueNumbersList) {
+    //     await AppConfig().supaBaseClient.from('payment_schedule').update(
+    //         {
+    //           "paid" : paid,
+    //           "balance" : balance,
+    //           "date_posted": DateTime.now().toIso8601String(),
+    //         }
+    //     ).eq('id', specificScheduleId.value).execute().then((value) async{
+    //
+    //       await addTenantPayment(tenantId, unitId, date1, date2, amount, paid, balance, createdBy, updatedBy);
+    //
+    //     });
+    //   }
+    //
+    //
+    //
+    // } catch (error) {
+    //   print('Error updating Individual tenant: $error');
+    // }
 
 
   }

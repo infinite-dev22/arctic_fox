@@ -38,7 +38,7 @@ class PaymentTabScreen extends StatefulWidget {
 
 class _PaymentTabScreenState extends State<PaymentTabScreen> {
 
-  var schedules = [].obs;
+
 
 
   final listSample = [
@@ -544,6 +544,31 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                                   print(value.value.id);
                                   tenantController.setUnitId(
                                       value.value.unitId);
+
+                                  // print(element.value.id);
+                                  // tenantController.setSpecificScheduleId(
+                                  //     value.value.id);
+                                  // tenantController.setSpecificPaymentAmount(
+                                  //     value.value.amount);
+                                  // tenantController.setSpecificPaymentBalance(
+                                  //     value.value.balance);
+                                  // tenantController.setSpecificPaymentPaid(
+                                  //     value.value.paid);
+                                  //
+                                  // amountController.text =
+                                  //     tenantController.specificPaymentBalance
+                                  //         .value.toString();
+                                  // paidController.text =
+                                  //     tenantController.specificPaymentBalance
+                                  //         .value.toString();
+                                  // // balanceController.text = int.parse(tenantController.specificPaymentBalance.value.toString()) as String;
+                                  // print(
+                                  //     'MY Schedule is ${tenantController
+                                  //         .specificScheduleId
+                                  //         .value}');
+
+
+
                                   // tenantController
                                   //     .setAmountForSpecificTenantUnit(value.value);
                                   tenantController
@@ -791,11 +816,44 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                             Obx(() {
                               return MultiSelectDropDown(
                                 showClearIcon: true,
-                                hint: 'Client to notify',
+                                hint: 'Select Payment Schedule',
                                 onOptionSelected: (options) {
                                   for (var element in options) {
-                                    schedules.add(element.value!);
-                                    print('My SChedules ${schedules.value}');
+                                    tenantController.schedules.add(element.value!);
+                                    print('My SChedules ${tenantController.schedules.value}');
+
+
+                                          // print(element.value.id);
+                                          // tenantController.setSpecificScheduleId(
+                                          //     value.value.id);
+                                          // tenantController.setSpecificPaymentAmount(
+                                          //     value.value.amount);
+                                          // tenantController.setSpecificPaymentBalance(
+                                          //     value.value.balance);
+                                          // tenantController.setSpecificPaymentPaid(
+                                          //     value.value.paid);
+                                          //
+                                          // amountController.text =
+                                          //     tenantController.specificPaymentBalance
+                                          //         .value.toString();
+                                          // paidController.text =
+                                          //     tenantController.specificPaymentBalance
+                                          //         .value.toString();
+                                          // // balanceController.text = int.parse(tenantController.specificPaymentBalance.value.toString()) as String;
+                                          // print(
+                                          //     'MY Schedule is ${tenantController
+                                          //         .specificScheduleId
+                                          //         .value}');
+
+                                    // // Convert the list to a set to remove duplicate values
+                                    // Set uniqueNumbersSet = tenantController.schedules.toSet();
+                                    //
+                                    // // Convert the set back to a list if needed
+                                    // List uniqueNumbersList = uniqueNumbersSet.toList();
+                                    //
+                                    // // Print the result
+                                    // print('MY UNIQUE List is $uniqueNumbersList');
+
                                   }
                                 },
                                 options: tenantController
@@ -811,9 +869,11 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                                             .toDate!)} | ${amountFormatter
                                             .format(
                                             schedule.balance.toString())}',
-                                        value:
-                                        '${schedule.units!
-                                            .unitNumber}|${schedule.balance}'))
+                                        value: schedule.id,
+                                        // '${schedule.units!
+                                        //     .unitNumber}|${schedule.balance}'
+                                    ),
+                                )
                                     .toList(),
                                 selectionType: SelectionType.multi,
                                 chipConfig:
@@ -822,9 +882,29 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                                 optionTextStyle: const TextStyle(fontSize: 16),
                                 selectedOptionIcon:
                                 const Icon(Icons.check_circle),
+
                               );
                             }),
 
+
+                            SizedBox(height: 10.h,),
+
+                            AppButton(title: 'Get Unique List', color: Colors.green,
+                                function: () async{
+                                  await tenantController
+                                      .payForMultipleTenantUnitSchedule(
+                                    tenantController.tenantId.value,
+                                    tenantController.unitId.value,
+                                    selectedDate1.value.toIso8601String(),
+                                    selectedDate2.value.toIso8601String(),
+                                    int.parse(amountController.text),
+                                    int.parse(paidController.text),
+                                    int.parse(balanceController.text),
+                                    'f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5',
+                                    'f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5',
+                                  );
+                                },
+                            )
 
                             // AppButton(
                             //     title: 'Get unit Tenants',

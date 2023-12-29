@@ -97,6 +97,52 @@ class UserController extends GetxController {
     }
   }
 
+
+
+  Future<void> resetPassword(String email, String resetToken, String password) async {
+    try{
+
+      final recovery = await AppConfig().supaBaseClient.auth.verifyOTP(
+        email: email,
+        token: resetToken,
+        type: OtpType.recovery,
+      );
+      print(recovery);
+      await AppConfig().supaBaseClient.auth.updateUser(
+        UserAttributes(password: password),
+      );
+
+      // final AuthResponse response = await AppConfig().supaBaseClient.auth.signInWithPassword(
+      //   email: email,
+      //   password: password,
+      // );
+      final Session? session = recovery.session;
+      final User? user = recovery.user;
+
+
+      print(session);
+      print(session!.accessToken);
+      print(user);
+
+      if(user != null) {
+        await userStorage.write('isLoggedIn', true);
+        await userStorage.write('accessToken', session.accessToken);
+        await userStorage.write('userId', user.id);
+        await getUserProfileData().then((value) {
+          Get.to(() => BottomNavBar());
+        });
+
+      } else {
+        Fluttertoast.showToast(msg: 'Check your credentials');
+      }
+
+
+    }  catch(error){
+      print('Login Error is $error');
+      Fluttertoast.showToast(msg: error.toString());
+    }
+  }
+
   Future<void> loginUser(String email, String password) async {
     try{
 

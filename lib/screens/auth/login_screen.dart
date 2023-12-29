@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/config/app_config.dart';
 import 'package:smart_rent/controllers/user/user_controller.dart';
 import 'package:smart_rent/models/user/user_model.dart';
 import 'package:smart_rent/screens/auth/create_organisation_screen.dart';
+import 'package:smart_rent/screens/auth/forgot_password_screen.dart';
 import 'package:smart_rent/screens/auth/signup_screen.dart';
 import 'package:smart_rent/screens/bottom_nav_bar/bottom_nav_bar.dart';
 import 'package:smart_rent/screens/home/homepage_screen.dart';
@@ -115,6 +117,14 @@ class _LoginScreenState extends State<LoginScreen> {
                           // }
 
                         }),
+                    SizedBox(height: 1.h,),
+                    Center(child: Bounceable(
+                      onTap: (){
+                        Get.to(() => ForgotPasswordScreen());
+                      },
+                      child: Text(
+                        'Forgot Password!', style: AppTheme.subTextBold,),
+                    )),
 
                     SizedBox(height: 5.h,),
                     Center(child: Text(

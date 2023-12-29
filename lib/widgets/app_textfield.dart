@@ -538,7 +538,8 @@ class AppDateTextField extends StatelessWidget {
                 borderSide: borderSide,
                 borderRadius: BorderRadius.circular(15.sp),
               ),
-              fillColor: AppTheme.textBoxColor,
+              // fillColor: AppTheme.textBoxColor,
+              fillColor: AppTheme.appBgColor,
               filled: true,
               hintText: hintText,
               hintStyle: TextStyle(

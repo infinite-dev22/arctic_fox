@@ -407,6 +407,11 @@ setSpecificPaymentBalance(int balance){
 
 
       print('Unit Tenant schedules IS ${response}');
+      print('Unit Tenant schedules Amountt IS ${data[0]['amount']}');
+      print('Unit Tenant schedules Balance IS ${data[0]['balance']}');
+
+      setSpecificPaymentBalance(data[0]['balance']);
+      setSpecificPaymentAmount(data[0]['amount']);
       print(response.length);
       print(data.length);
       print(data);
@@ -464,35 +469,42 @@ setSpecificPaymentBalance(int balance){
     print('MY UNIQUE Controller List is $uniqueNumbersList');
 
 
+    try {
+
+      // Iterate over the list of IDs and update each row
+      for (final id in uniqueNumbersList) {
+        await AppConfig().supaBaseClient.from('payment_schedule').update(
+            {
+              "paid" : paid,
+              "balance" : balance,
+              "date_posted": DateTime.now().toIso8601String(),
+            }
+        ).eq('id', id).execute().then((value) async{
+
+          await addTenantPayment(tenantId, unitId, date1, date2, amount, paid, balance, createdBy, updatedBy);
+
+        });
+      }
 
 
 
-    // try {
-    //
-    //   // Iterate over the list of IDs and update each row
-    //   for (final id in uniqueNumbersList) {
-    //     await AppConfig().supaBaseClient.from('payment_schedule').update(
-    //         {
-    //           "paid" : paid,
-    //           "balance" : balance,
-    //           "date_posted": DateTime.now().toIso8601String(),
-    //         }
-    //     ).eq('id', specificScheduleId.value).execute().then((value) async{
-    //
-    //       await addTenantPayment(tenantId, unitId, date1, date2, amount, paid, balance, createdBy, updatedBy);
-    //
-    //     });
-    //   }
-    //
-    //
-    //
-    // } catch (error) {
-    //   print('Error updating Individual tenant: $error');
-    // }
+    } catch (error) {
+      print('Error updating Individual tenant: $error');
+    }
 
 
   }
 
+  testout(){
+
+    Set uniqueNumbersSet = schedules.toSet();
+
+
+    List uniqueNumbersList = uniqueNumbersSet.toList();
+
+
+    print('MY UNIQUE Controller List is $uniqueNumbersList');
+  }
 
   Future<void> fetchNestedTenantsUnits() async {
     isTenantUnitScheduleLoading(true);

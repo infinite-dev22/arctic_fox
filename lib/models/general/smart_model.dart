@@ -98,3 +98,13 @@ abstract class SmartSpecificTenantUnitModel {
   DateTime getToDate();
 
 }
+
+
+abstract class SmartUserRoleModel {
+
+  int getId();
+  String getName();
+  String getDescription();
+
+
+}

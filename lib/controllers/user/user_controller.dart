@@ -4,6 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:smart_rent/config/app_config.dart';
 import 'package:smart_rent/models/organisation/organisation_model.dart';
+import 'package:smart_rent/models/role/user_role_model.dart';
 import 'package:smart_rent/models/user/user_model.dart';
 import 'package:smart_rent/models/user/user_profile_model.dart';
 import 'package:smart_rent/screens/auth/initial_screen.dart';
@@ -19,15 +20,27 @@ class UserController extends GetxController {
 
   var userProfileModel = UserProfileModel().obs;
   var userFirstname = ''.obs;
+  var addedUserRoleId = 0.obs;
+  var isUserListLoading = false.obs;
 
   RxList<UserModel> userList = <UserModel>[].obs;
-
+  RxList<UserRoleModel> userRoleList = <UserRoleModel>[].obs;
+  RxList<UserProfileModel> userProfileModelList = <UserProfileModel>[].obs;
 
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
+    getUserOrganizationData();
     getUserProfileData();
+    fetchAllUserRoles();
+    listenToPropertyTenantListChanges();
+  }
+
+
+  setAddedUserRoleId(int id){
+    addedUserRoleId.value = id;
+    print('New Added User Role ID is $id');
   }
 
   // void fetchAllUsers() async {
@@ -45,13 +58,80 @@ class UserController extends GetxController {
   //   fetchAllUsers();
   // }
 
-  Future<void> getUserProfileData() async {
+  fetchAllUserRoles() async {
+isUserListLoading(true);
+    try {
+
+      final response = await AppConfig().supaBaseClient.from('roles').select();
+      final data = response as List<dynamic>;
+      print('my Roles are $response');
+      print(response.length);
+      print(data.length);
+      print(data);
+      isUserListLoading(false);
+      return userRoleList.assignAll(
+          data.map((json) => UserRoleModel.fromJson(json)).toList());
+
+    } catch (error) {
+      isUserListLoading(false);
+      print('Error fetching User Roles: $error');
+    }
+
+  }
+
+  fetchAllUsersInSpecificOrganization() async {
+
+    try {
+
+      final response = await AppConfig().supaBaseClient.from('user_profiles').select()
+          .eq('organisation_id', userStorage.read('OrganizationId'));
+      final data = response as List<dynamic>;
+      print('my Profile Users are $response');
+      print(response.length);
+      print(data.length);
+      print(data);
+
+      return userProfileModelList.assignAll(
+          data.map((json) => UserProfileModel.fromJson(json)).toList());
+
+    } catch (error) {
+      print('Error fetching User Roles: $error');
+    }
+
+  }
+
+  Future<void> getUserOrganizationData() async {
 
     try{
 
       final response = await AppConfig().supaBaseClient.from('organisations').select().eq('user_id', userStorage.read('userId')).execute();
       print('MY SPECIFIC RESPONSE IS ${response.data[0]['name']}');
+      print('MY SPECIFIC ORGANIZATION ID IS ${response.data[0]['id']}');
       userFirstname.value = response.data[0]['name'];
+      userStorage.write('OrganizationId', response.data[0]['id']);
+      userStorage.write('userFirstname', response.data[0]['name']);
+
+      // final response = await AppConfig().supaBaseClient.from('user_profiles').select().eq('user_id', userStorage.read('userId')).execute();
+      // print('MY SPECIFIC RESPONSE IS ${response.data[0]['first_name']}');
+      // userFirstname.value = response.data[0]['first_name'];
+
+
+    }catch(error){
+      print(error);
+    }
+
+  }
+
+  Future<void> getUserProfileData() async {
+
+    try{
+
+      final response = await AppConfig().supaBaseClient.from('user_profiles').select().eq('user_id', userStorage.read('userId')).execute();
+      print('MY SPECIFIC Profile User RESPONSE IS ${response.data[0]['first_name']}');
+      print('MY SPECIFIC Profile User  ID IS ${response.data[0]['user_id']}');
+      userFirstname.value = response.data[0]['first_name'];
+      // userStorage.write('OrganizationId', response.data[0]['id']);
+      userStorage.write('userFirstname', response.data[0]['first_name']);
 
       // final response = await AppConfig().supaBaseClient.from('user_profiles').select().eq('user_id', userStorage.read('userId')).execute();
       // print('MY SPECIFIC RESPONSE IS ${response.data[0]['first_name']}');
@@ -73,6 +153,8 @@ class UserController extends GetxController {
         await userStorage.remove('accessToken');
         await userStorage.write('isLoggedIn', false);
         await userStorage.remove('isLoggedIn');
+        await userStorage.remove('userFirstname');
+        await userStorage.remove('OrganizationId');
         Get.off(() => InitialScreen());
       });
     } catch(error) {
@@ -128,7 +210,7 @@ class UserController extends GetxController {
         await userStorage.write('isLoggedIn', true);
         await userStorage.write('accessToken', session.accessToken);
         await userStorage.write('userId', user.id);
-        await getUserProfileData().then((value) {
+        await getUserOrganizationData().then((value) {
           Get.to(() => BottomNavBar());
         });
 
@@ -162,7 +244,7 @@ class UserController extends GetxController {
         await userStorage.write('isLoggedIn', true);
         await userStorage.write('accessToken', session.accessToken);
         await userStorage.write('userId', user.id);
-        await getUserProfileData().then((value) {
+        await getUserOrganizationData().then((value) {
           Get.to(() => BottomNavBar());
         });
 
@@ -274,6 +356,60 @@ class UserController extends GetxController {
     } catch (e) {
 
     }
+
+  }
+
+  Future<void> adminCreateUser(String email, String password,
+      String firstName, String lastName, int role
+      ) async {
+    try {
+      // final response = await AppConfig().supaBaseClient.from('users').upsert([data]);
+      final AuthResponse response = await AppConfig().supaBaseClient.auth.signUp(password: password, email: email,);
+      // if (response.user != null) {
+      //   throw response.toString();
+      // }
+      // organisationId.value = response.data?.first['id'] ?? -1;
+      print(response.user!.id);
+      adminCreateUserProfile(response.user!.id.toString(), firstName, lastName, role);
+    } catch (error) {
+      print('Error inserting into Users: $error');
+    }
+  }
+
+  Future<void> adminCreateUserProfile(String userId,
+      String firstName, String lastName, int role
+      ) async {
+    try {
+
+      await AppConfig().supaBaseClient.from('user_profiles').insert([
+        {
+          "user_id" : userId,
+          "organisation_id" : userStorage.read('OrganizationId'),
+          "first_name" : firstName,
+          "last_name" : lastName,
+          "role_id" : role,
+        }
+      ]);
+
+      // userProfileId.value = response.data?.first['id'] ?? -1;
+      // print(userProfileId.value.toString());
+
+      Get.back();
+
+    } catch (error) {
+      print('Error inserting into user Profile: $error');
+    }
+  }
+
+  void listenToPropertyTenantListChanges() {
+    // Set up real-time listener
+    AppConfig().supaBaseClient
+        .from('user_profiles')
+        .stream(primaryKey: ['id'])
+        .listen((List<Map<String, dynamic>> data) {
+      fetchAllUsersInSpecificOrganization();
+
+    });
 
   }
 

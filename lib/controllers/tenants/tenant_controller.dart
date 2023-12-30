@@ -80,6 +80,7 @@ class TenantController extends GetxController {
   var isSpecificUnitsLoading = false.obs;
 
 
+
   var uCompanyNin = ''.obs;
   var uCompanyFirstName = ''.obs;
   var uCompanySurname = ''.obs;
@@ -242,6 +243,8 @@ setSpecificPaymentBalance(int balance){
     specificPaymentPaid.value = paid;
     print('New paid is $paid');
   }
+
+
 
   fetchAllPayments() async {
 

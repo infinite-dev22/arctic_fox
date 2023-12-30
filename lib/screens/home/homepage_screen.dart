@@ -10,6 +10,7 @@ import 'package:smart_rent/controllers/user/user_controller.dart';
 import 'package:smart_rent/screens/property/property_list_screen.dart';
 import 'package:smart_rent/screens/tenant/tenant_list_screen.dart';
 import 'package:smart_rent/styles/app_theme.dart';
+import 'package:smart_rent/utils/app_prefs.dart';
 import 'package:smart_rent/widgets/app_header.dart';
 import 'package:smart_rent/widgets/complaints_widget.dart';
 import 'package:smart_rent/widgets/home_card_widget1.dart';
@@ -20,14 +21,15 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final UserController userController = Get.put(UserController());
+    final UserController userController = Get.put(
+        UserController(), permanent: true);
     final ComplaintsController complaintsController =
-        Get.put(ComplaintsController());
+    Get.put(ComplaintsController());
     final TenantController tenantController = Get.put(
       TenantController(),
     );
     final UnitController unitController =
-        Get.put(UnitController(), permanent: true);
+    Get.put(UnitController(), permanent: true);
     return Scaffold(
       backgroundColor: AppTheme.whiteColor,
       appBar: AppHeader(
@@ -39,7 +41,7 @@ class HomePage extends StatelessWidget {
               padding: EdgeInsets.only(right: 5.w),
               child: Image.asset('assets/home/sidely.png'),
             ),
-            onSelected: (value) async{
+            onSelected: (value) async {
               if (value == 1) {
                 await userController.logoutUser();
               }
@@ -64,29 +66,59 @@ class HomePage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Obx(() {
-                return Row(
-                  children: [
-                    Text(
-                      'Welcome',
-                      style: AppTheme.appTitle5,
-                    ),
-                    SizedBox(
-                      width: 2.w,
-                    ),
-                    ZoomIn(
-                        child: SizedBox(
-                          child: Text(
-                      '${userController.userFirstname.value} ',
-                      style: AppTheme.appTitle2,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                    ),
-                          width: 47.5.w,
-                        ), delay: Duration(seconds: 3),),
-                  ],
-                );
-              }),
+              Row(
+                children: [
+                  Text(
+                    'Welcome',
+                    style: AppTheme.appTitle5,
+                  ),
+                  SizedBox(
+                    width: 2.w,
+                  ),
+                  userStorage.read('userFirstname') == null ?
+                  ZoomIn(
+                    child: SizedBox(
+                      child: Obx(() {
+                        return Text(
+                          '${userController.userFirstname.value} ',
+                          style: AppTheme.appTitle2,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        );
+                      }),
+                      // child: Text(
+                      //   // '${userController.userFirstname.value} ',
+                      //   userStorage.read('userFirstname') == null
+                      //       ? userController.userFirstname.value
+                      //       : userStorage.read('userFirstname').toString(),
+                      //   style: AppTheme.appTitle2,
+                      //   maxLines: 1,
+                      //   overflow: TextOverflow.ellipsis,
+                      // ),
+                      width: 47.5.w,
+                    ), delay: Duration(seconds: 0),)
+                      : ZoomIn(
+                    child: SizedBox(
+                      child: Text(
+                        // '${userController.userFirstname.value} ',
+                        userStorage.read('userFirstname'),
+                        style: AppTheme.appTitle2,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      // child: Text(
+                      //   // '${userController.userFirstname.value} ',
+                      //   userStorage.read('userFirstname') == null
+                      //       ? userController.userFirstname.value
+                      //       : userStorage.read('userFirstname').toString(),
+                      //   style: AppTheme.appTitle2,
+                      //   maxLines: 1,
+                      //   overflow: TextOverflow.ellipsis,
+                      // ),
+                      width: 47.5.w,
+                    ), delay: Duration(seconds: 0),),
+                ],
+              ),
               // Text(userController.userFirstname.value),
 
               SizedBox(
@@ -102,7 +134,8 @@ class HomePage extends StatelessWidget {
                     title: 'Total Property',
                     function: () {
                       Get.to(
-                          () => PropertyListScreen(
+                              () =>
+                              PropertyListScreen(
                                 unitController: unitController,
                                 tenantController: tenantController,
                               ),
@@ -116,7 +149,8 @@ class HomePage extends StatelessWidget {
                       title: 'Total Tenants',
                       function: () {
                         Get.to(
-                            () => TenantListScreen(
+                                () =>
+                                TenantListScreen(
                                   tenantController: tenantController,
                                 ),
                             transition: Transition.zoom);

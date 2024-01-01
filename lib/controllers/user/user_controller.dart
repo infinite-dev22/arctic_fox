@@ -1,14 +1,17 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:smart_rent/config/app_config.dart';
+import 'package:smart_rent/models/employee/employee_property_model.dart';
 import 'package:smart_rent/models/organisation/organisation_model.dart';
 import 'package:smart_rent/models/role/user_role_model.dart';
 import 'package:smart_rent/models/user/user_model.dart';
 import 'package:smart_rent/models/user/user_profile_model.dart';
 import 'package:smart_rent/screens/auth/initial_screen.dart';
 import 'package:smart_rent/screens/bottom_nav_bar/bottom_nav_bar.dart';
+import 'package:smart_rent/styles/app_theme.dart';
 import 'package:smart_rent/utils/app_prefs.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -22,10 +25,12 @@ class UserController extends GetxController {
   var userFirstname = ''.obs;
   var addedUserRoleId = 0.obs;
   var isUserListLoading = false.obs;
+  var isEmployeePropertyLoading = false.obs;
 
   RxList<UserModel> userList = <UserModel>[].obs;
   RxList<UserRoleModel> userRoleList = <UserRoleModel>[].obs;
   RxList<UserProfileModel> userProfileModelList = <UserProfileModel>[].obs;
+  RxList<EmployeePropertyModel> employeePropertyModelList = <EmployeePropertyModel>[].obs;
 
   @override
   void onInit() {
@@ -110,6 +115,7 @@ isUserListLoading(true);
       userFirstname.value = response.data[0]['name'];
       userStorage.write('OrganizationId', response.data[0]['id']);
       userStorage.write('userFirstname', response.data[0]['name']);
+      userStorage.write('organisationName', response.data[0]['name']);
 
       // final response = await AppConfig().supaBaseClient.from('user_profiles').select().eq('user_id', userStorage.read('userId')).execute();
       // print('MY SPECIFIC RESPONSE IS ${response.data[0]['first_name']}');
@@ -132,6 +138,7 @@ isUserListLoading(true);
       userFirstname.value = response.data[0]['first_name'];
       // userStorage.write('OrganizationId', response.data[0]['id']);
       userStorage.write('userFirstname', response.data[0]['first_name']);
+      userStorage.write('userProfileId', response.data[0]['id']);
 
       // final response = await AppConfig().supaBaseClient.from('user_profiles').select().eq('user_id', userStorage.read('userId')).execute();
       // print('MY SPECIFIC RESPONSE IS ${response.data[0]['first_name']}');
@@ -173,7 +180,20 @@ isUserListLoading(true);
       // }
       // organisationId.value = response.data?.first['id'] ?? -1;
       print(response.user!.id);
-      createOrganisation(businessName, description, response.user!.id.toString(), firstName, lastName);
+      // createOrganisation(businessName, description, response.user!.id.toString(), firstName, lastName);
+
+      final orgResponse = await AppConfig().supaBaseClient.from('organisations').insert([
+        {
+          "name" : businessName,
+          "description" : description,
+          "user_id" : response.user!.id,
+        }
+      ]);
+
+      print(orgResponse);
+      final orgList = orgResponse as List<dynamic>;
+      print('MY ORGLIST = $orgList');
+
     } catch (error) {
       print('Error inserting into Users: $error');
     }
@@ -276,10 +296,20 @@ isUserListLoading(true);
       //   throw response.error;
       // }
       //
-      organisationId.value = response.data?.first['id'] ?? -1;
-      print(organisationId.value.toString());
 
-      createUserProfile(businessName, description, userId, firstName, lastName);
+
+      // final newOrganization = response as List<dynamic>;
+      // final insertedOrgId = newOrganization[0]['id'];
+
+
+      print('INSERTED Response is == $response');
+      print('INSERTED ORGANIZATION ID == ${response}');
+      // organisationId.value = response.data?.first['id'] ?? -1;
+      // print(organisationId.value.toString());
+
+      //  createUserProfile(businessName, description, userId, firstName, lastName, insertedOrgId).then((value) {
+      //   Get.off(() => InitialScreen());
+      // });
     } catch (error) {
       print('Error inserting into Organisations: $error');
       throw error;
@@ -288,13 +318,14 @@ isUserListLoading(true);
   }
 
   Future<void> createUserProfile( String businessName, String description, String userId,
-      String firstName, String lastName
+      String firstName, String lastName, int organizationId
       ) async {
     try {
       final response = await AppConfig().supaBaseClient.from('user_profiles').insert([
         {
           "user_id" : userId,
-          "organisation_id" : 1,
+          // "organisation_id" : 1,
+          "organisation_id" : organizationId,
           "first_name" : firstName,
           "last_name" : lastName,
           "role_id" : 1,
@@ -413,7 +444,95 @@ isUserListLoading(true);
 
   }
 
-  // void listenToChanges() {
+  fetchAllEmployeePropertiesInOrganization() async {
+    isEmployeePropertyLoading(true);
+    try {
+
+      final response = await AppConfig().supaBaseClient.from('employee_properties').select().eq('user_id', userStorage.read('OrganizationId'))
+          .eq('organization_id', userStorage.read('OrganizationId'));
+      final data = response as List<dynamic>;
+      print('my Employee Properties are $response');
+      print(response.length);
+      print(data.length);
+      print(data);
+      isEmployeePropertyLoading(false);
+      return employeePropertyModelList.assignAll(
+          data.map((json) => EmployeePropertyModel.fromJson(json)).toList());
+
+    } catch (error) {
+      print('Error fetching Employee Properties: $error');
+      isEmployeePropertyLoading(false);
+    }
+
+  }
+
+  void listenToEmployeePropertiesInOrganizationChanges() {
+    // Set up real-time listener
+    AppConfig().supaBaseClient
+        .from('employee_properties')
+        .stream(primaryKey: ['id'])
+        .listen((List<Map<String, dynamic>> data) {
+      fetchAllEmployeePropertiesInOrganization();
+
+    });
+
+  }
+
+  // Future<void> addPropertyToEmployee(int propertyId, int roleId) async {
+  //   try {
+  //
+  //     final response = await AppConfig().supaBaseClient.from('employee_properties').insert([
+  //       {
+  //         "user_id" : userStorage.read('userId'),
+  //         "property_id" : propertyId,
+  //         "role_id" : roleId,
+  //         "organization_id" : userStorage.read('OrganizationId'),
+  //         "created_by" : userStorage.read('userProfileId'),
+  //         "updated_by" : userStorage.read('userProfileId'),
+  //       }
+  //     ]);
+  //
+  //     print(response);
+  //     final propertyList = response as List<dynamic>;
+  //     print('MY Employee Property = $propertyList');
+  //
+  //   } catch (error) {
+  //     print('Error inserting into Employee property: $error');
+  //   }
+  // }
+
+  addPropertyToEmployee(int propertyId, int roleId) async {
+
+    try {
+      final response = await AppConfig().supaBaseClient.from('employee_properties').insert([
+        {
+          "user_id" : userStorage.read('userId'),
+          "property_id" : propertyId,
+          "role_id" : roleId,
+          "organization_id" : userStorage.read('OrganizationId'),
+          "created_by" : userStorage.read('userProfileId'),
+          "updated_by" : userStorage.read('userProfileId'),
+        }
+      ]).then((property) {
+        Get.back();
+        Get.snackbar('SUCCESS', 'Property added to employee',
+          titleText: Text('SUCCESS', style: AppTheme.greenTitle1,),
+        );
+      });
+
+      if (response.error != null) {
+        throw response.error;
+      }
+
+    } catch (error) {
+      print('Error adding property: $error');
+    }
+
+
+  }
+
+
+// void listenToChanges() {
   //   // Set up real-time listener
   //   AppConfig().supaBaseClient
   //       .from('users')

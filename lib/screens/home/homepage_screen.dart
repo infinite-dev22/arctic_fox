@@ -128,20 +128,22 @@ class HomePage extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  HomeCardWidget1(
-                    color: AppTheme.greenCardColor,
-                    total: 8,
-                    title: 'Total Property',
-                    function: () {
-                      Get.to(
-                              () =>
-                              PropertyListScreen(
-                                unitController: unitController,
-                                tenantController: tenantController,
-                              ),
-                          transition: Transition.zoom);
-                    },
-                  ),
+                  Obx(() {
+                    return HomeCardWidget1(
+                      color: AppTheme.greenCardColor,
+                      total: tenantController.propertyModelList.value.length,
+                      title: 'Total Property',
+                      function: () {
+                        Get.to(
+                                () =>
+                                PropertyListScreen(
+                                  unitController: unitController,
+                                  tenantController: tenantController,
+                                ),
+                            transition: Transition.zoom);
+                      },
+                    );
+                  }),
                   Obx(() {
                     return HomeCardWidget1(
                       color: AppTheme.redCardColor,

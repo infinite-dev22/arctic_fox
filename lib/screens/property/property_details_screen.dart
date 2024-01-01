@@ -9,6 +9,7 @@ import 'package:smart_rent/controllers/property_options/property_details_options
 import 'package:smart_rent/controllers/property_options/property_options_controller.dart';
 import 'package:smart_rent/controllers/tenants/tenant_controller.dart';
 import 'package:smart_rent/controllers/units/unit_controller.dart';
+import 'package:smart_rent/models/property/property_model.dart';
 import 'package:smart_rent/screens/property/floor_tab_screen.dart';
 import 'package:smart_rent/screens/property/payment_tab_screen.dart';
 import 'package:smart_rent/screens/property/property_details_tab.dart';
@@ -24,7 +25,8 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 class PropertyDetailsScreen extends StatefulWidget {
   final TenantController tenantController;
   final UnitController unitController;
-  const PropertyDetailsScreen({super.key, required this.unitController, required this.tenantController});
+  final PropertyModel propertyModel;
+  const PropertyDetailsScreen({super.key, required this.unitController, required this.tenantController, required this.propertyModel});
 
   @override
   State<PropertyDetailsScreen> createState() => _PropertyDetailsScreenState();

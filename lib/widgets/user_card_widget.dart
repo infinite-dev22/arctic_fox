@@ -4,14 +4,17 @@ import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/controllers/tenants/tenant_controller.dart';
 import 'package:smart_rent/controllers/user/user_controller.dart';
+import 'package:smart_rent/models/user/user_profile_model.dart';
 import 'package:smart_rent/screens/tenant/tenant_details_screen.dart';
+import 'package:smart_rent/screens/users/employee_details_screen.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 
 class UserCardWidget extends StatelessWidget {
   final UserController userController;
   final int index;
   final VoidCallback editFunction;
-  const UserCardWidget({super.key, required this.userController, required this.index, required this.editFunction});
+  final UserProfileModel userProfileModel;
+  const UserCardWidget({super.key, required this.userController, required this.index, required this.editFunction, required this.userProfileModel});
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +59,7 @@ class UserCardWidget extends StatelessWidget {
             Text('${userController.userProfileModelList[index].firstName} ${userController.userProfileModelList[index].lastName}', style: AppTheme.darkBlueTitle,),
             Bounceable(
               onTap: (){
-                // Get.to(() => TenantDetailsScreen(tenantController: userController,));
+                Get.to(() => EmployeeDetailsScreen(userController: userController, userProfileModel: userProfileModel,));
               },
                 child: Text('View More Info', style: AppTheme.darkBlueText1,)),
 

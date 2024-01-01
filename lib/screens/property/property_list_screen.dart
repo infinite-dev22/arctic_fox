@@ -8,6 +8,7 @@ import 'package:smart_rent/controllers/units/unit_controller.dart';
 import 'package:smart_rent/screens/property/add_property_screen.dart';
 import 'package:smart_rent/screens/property/property_details_screen.dart';
 import 'package:smart_rent/styles/app_theme.dart';
+import 'package:smart_rent/utils/app_prefs.dart';
 import 'package:smart_rent/widgets/app_header.dart';
 import 'package:smart_rent/widgets/app_image_header.dart';
 import 'package:smart_rent/widgets/app_search_textfield.dart';
@@ -16,7 +17,9 @@ import 'package:smart_rent/widgets/property_card_widget.dart';
 class PropertyListScreen extends StatefulWidget {
   final TenantController tenantController;
   final UnitController unitController;
-  const PropertyListScreen({super.key, required this.unitController, required this.tenantController});
+
+  const PropertyListScreen(
+      {super.key, required this.unitController, required this.tenantController});
 
   @override
   State<PropertyListScreen> createState() => _PropertyListScreenState();
@@ -33,7 +36,7 @@ class _PropertyListScreenState extends State<PropertyListScreen> {
       appBar: AppImageHeader(
         isTitleCentred: true,
         leading: Text(''),
-          title: 'assets/auth/logo.png',
+        title: 'assets/auth/logo.png',
         actions: [
           Padding(
             padding: EdgeInsets.only(right: 5.w),
@@ -57,34 +60,51 @@ class _PropertyListScreenState extends State<PropertyListScreen> {
             children: [
               Row(
                 children: [
-                  Image.asset('assets/home/location.png', fit: BoxFit.cover,scale: 0.65),
-                  Text('JK Holdings', style: AppTheme.appTitle1,),
+                  Image.asset('assets/home/location.png', fit: BoxFit.cover,
+                      scale: 0.65),
+                  Text(userStorage.read('organisationName').toString(), style: AppTheme.appTitle1,),
                 ],
               ),
 
-              AppSearchTextField(
+              Obx(() {
+                return AppSearchTextField(
                   controller: searchController,
                   hintText: 'Search properties, tenants, units',
                   obscureText: false,
-                function: (){
-                    Get.to(() => AddPropertyScreen(), transition: Transition.downToUp);
-                },
-                fillColor: AppTheme.textBoxColor,
+                  function: () {
+                    Get.to(() => AddPropertyScreen(),
+                        transition: Transition.downToUp);
+                  },
+                  fillColor: AppTheme.textBoxColor,
+                  number: widget.tenantController.propertyModelList.value
+                      .length,
 
-              ),
+                );
+              }),
 
-              ListView.builder(
-                  shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: 5,
-                  clipBehavior: Clip.none,
-                  itemBuilder: (context, index) {
-                  return Bounceable(
-                    onTap: (){
-
-                      Get.to(() => PropertyDetailsScreen(unitController: widget.unitController, tenantController: widget.tenantController,));
-                    },
-                      child: SlideInUp(child: PropertyCardWidget()));
+              Obx(() {
+                return widget.tenantController.isPropertyModelListLoading.value
+                    ? Padding(
+                  padding: EdgeInsets.symmetric(vertical: 15.h),
+                  child: Center(
+                    child: Image.asset('assets/auth/logo.png', width: 35.w),),
+                ) : ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: widget.tenantController.propertyModelList.length,
+                    clipBehavior: Clip.none,
+                    itemBuilder: (context, index) {
+                      var property = widget.tenantController.propertyModelList[index];
+                      return Bounceable(
+                          onTap: () {
+                            Get.to(() =>
+                                PropertyDetailsScreen(
+                                  propertyModel: property,
+                                  unitController: widget.unitController,
+                                  tenantController: widget.tenantController,));
+                          },
+                          child: SlideInUp(child: PropertyCardWidget(propertyModel: property,)));
+                    });
               }),
 
 

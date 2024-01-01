@@ -21,10 +21,10 @@ class TenantDetailsScreen extends StatefulWidget {
   final TenantController tenantController;
 
   // final int? tenantUnitId;
-  final int? tenantId;
+  final int tenantId;
 
   const TenantDetailsScreen(
-      {super.key, required this.tenantController, this.tenantId,});
+      {super.key, required this.tenantController, required this.tenantId,});
 
   @override
   State<TenantDetailsScreen> createState() => _TenantDetailsScreenState();
@@ -48,7 +48,7 @@ class _TenantDetailsScreenState extends State<TenantDetailsScreen> {
     // TODO: implement initState
     super.initState();
     // mytenantController.fetchAllPaymentSchedules(widget.tenantUnitId.toString());
-    mytenantController.fetchAllPaymentSchedules(widget.tenantId!.toInt());
+    mytenantController.fetchAllPaymentSchedules(widget.tenantId!);
     mytenantController.getSpecificTenantDetails(widget.tenantId!.toInt());
   }
 

@@ -8,6 +8,7 @@ import 'package:smart_rent/models/business/business_type_model.dart';
 import 'package:smart_rent/models/nationality/nationality_model.dart';
 import 'package:smart_rent/models/payment/tenant_payment_model.dart';
 import 'package:smart_rent/models/payment_schedule/payment_schedule_model.dart';
+import 'package:smart_rent/models/property/property_model.dart';
 import 'package:smart_rent/models/salutation/salutation_model.dart';
 import 'package:smart_rent/models/schedule/tenant_unit_schedule.dart';
 import 'package:smart_rent/models/tenant/property_tenant_model.dart';
@@ -19,6 +20,7 @@ import 'package:smart_rent/models/tenant/tenant_unit_model.dart';
 import 'package:smart_rent/models/unit/specific_tenant_unit_model.dart';
 import 'package:smart_rent/models/unit/unit_model.dart';
 import 'package:smart_rent/styles/app_theme.dart';
+import 'package:smart_rent/utils/app_prefs.dart';
 import 'package:uuid/uuid.dart';
 import "package:collection/collection.dart";
 
@@ -41,6 +43,7 @@ class TenantController extends GetxController {
   RxList<TenantUnitScheduleModel> specificTenantUnitScheduleList = <TenantUnitScheduleModel>[].obs;
   RxList<SpecificTenantUnitModel> specificTenantUnitModelList = <SpecificTenantUnitModel>[].obs;
   RxList<TenantUnitScheduleModel> tenantUnitUnitScheduleListGroup = <TenantUnitScheduleModel>[].obs;
+  RxList<PropertyModel> propertyModelList = <PropertyModel>[].obs;
   RxMap<dynamic, TenantUnitScheduleModel> tenantUnitUnitScheduleMap = <dynamic, TenantUnitScheduleModel>{}.obs;
 
 
@@ -78,6 +81,8 @@ class TenantController extends GetxController {
   var isTenantUnitScheduleLoading = false.obs;
   var isSpecificTenantUnitScheduleLoading = false.obs;
   var isSpecificUnitsLoading = false.obs;
+  var isPropertyModelListLoading = false.obs;
+  var selectedPropertyId = 0.obs;
 
 
 
@@ -143,6 +148,7 @@ class TenantController extends GetxController {
     // fetchNestedTenantsUnits();
     listenToPropertyTenantListChanges();
 listenToTenantPaymentChanges();
+    listenToPropertyModelListChanges();
 // fetchAllPaymentSchedules();
     // listenToPropertyPaymentScheduleChanges();
 
@@ -244,7 +250,10 @@ setSpecificPaymentBalance(int balance){
     print('New paid is $paid');
   }
 
-
+  setSelectedPropertyId(int id){
+    selectedPropertyId.value = id;
+    print('New Selected Propert is $id');
+  }
 
   fetchAllPayments() async {
 
@@ -1756,5 +1765,42 @@ setSpecificPaymentBalance(int balance){
 
 
   }
+
+
+  fetchAllPropertiesSpecificOrganization() async {
+    isPropertyModelListLoading(true);
+    try {
+
+      final response = await AppConfig().supaBaseClient.from('properties').select()
+          .eq('organisation_id', userStorage.read('OrganizationId'));
+      final data = response as List<dynamic>;
+      print('my Properties are $response');
+      print(response.length);
+      print(data.length);
+      print(data);
+      isPropertyModelListLoading(false);
+
+      return propertyModelList.assignAll(
+          data.map((json) => PropertyModel.fromJson(json)).toList());
+
+    } catch (error) {
+      print('Error fetching User Roles: $error');
+      isPropertyModelListLoading(false);
+    }
+
+  }
+
+  void listenToPropertyModelListChanges() {
+    // Set up real-time listener
+    AppConfig().supaBaseClient
+        .from('properties')
+        .stream(primaryKey: ['id'])
+        .listen((List<Map<String, dynamic>> data) {
+      fetchAllPropertiesSpecificOrganization();
+
+    });
+
+  }
+
 
 }

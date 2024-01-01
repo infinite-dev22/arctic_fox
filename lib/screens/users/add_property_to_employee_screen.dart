@@ -17,16 +17,16 @@ import 'package:smart_rent/widgets/app_image_header.dart';
 import 'package:smart_rent/widgets/app_password_textfield.dart';
 import 'package:smart_rent/widgets/app_textfield.dart';
 
-class AddUserScreen extends StatefulWidget {
+class AddPropertyToEmployeeScreen extends StatefulWidget {
   final UserController userController;
 
-  const AddUserScreen({super.key, required this.userController,});
+  const AddPropertyToEmployeeScreen({super.key, required this.userController,});
 
   @override
-  State<AddUserScreen> createState() => _AddUserScreenState();
+  State<AddPropertyToEmployeeScreen> createState() => _AddPropertyToEmployeeScreenState();
 }
 
-class _AddUserScreenState extends State<AddUserScreen> {
+class _AddPropertyToEmployeeScreenState extends State<AddPropertyToEmployeeScreen> {
 
   final TextEditingController firstNameEditingController = TextEditingController();
   final TextEditingController lastNameEditingController = TextEditingController();
@@ -182,11 +182,11 @@ class _AddUserScreenState extends State<AddUserScreen> {
                         } else {
 
                           await userController.adminCreateUser(
-                            emailEditingController.text.trim().toString(),
-                            passwordEditingController.text.trim().toString(),
-                            firstNameEditingController.text.trim().toString(),
-                            lastNameEditingController.text.trim().toString(),
-                            userController.addedUserRoleId.value
+                              emailEditingController.text.trim().toString(),
+                              passwordEditingController.text.trim().toString(),
+                              firstNameEditingController.text.trim().toString(),
+                              lastNameEditingController.text.trim().toString(),
+                              userController.addedUserRoleId.value
                           ).then((value) {
                             emailEditingController.clear();
                             passwordEditingController.clear();

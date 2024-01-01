@@ -15,6 +15,7 @@ void main() async{
   await GetStorage.init();
   await Supabase.initialize(
     url: 'https://nsmowxdnkhgxyleexifv.supabase.co',
+    // anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5zbW93eGRua2hneHlsZWV4aWZ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTk4ODQ5NDYsImV4cCI6MjAxNTQ2MDk0Nn0.aNrLzAm74sF0aH04qUGyodAqRMDLs-MsLlCGRbKsd-w',
     anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5zbW93eGRua2hneHlsZWV4aWZ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTk4ODQ5NDYsImV4cCI6MjAxNTQ2MDk0Nn0.aNrLzAm74sF0aH04qUGyodAqRMDLs-MsLlCGRbKsd-w',
   );
   WidgetsFlutterBinding.ensureInitialized();

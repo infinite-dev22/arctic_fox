@@ -51,9 +51,38 @@ class BottomNavBar extends StatelessWidget {
                 selectedIcon: Image.asset('assets/general/signpost.png', color: Theme.of(context).primaryColor),
               ),
               NavigationDestination(
-                icon: Image.asset('assets/home/add.png'),
+                // icon: Image.asset('assets/home/add.png'),
+                icon: Container(
+                  width: 10.w,
+                  height: 5.h,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.sp),
+                    color: AppTheme.primaryColor,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Center(
+                      child: Icon(Icons.add, color: Colors.white,),
+                    ),
+                  ),
+                ),
                 label: '',
-                selectedIcon: Image.asset('assets/home/add.png', color: Theme.of(context).primaryColor),
+                // selectedIcon: Image.asset('assets/home/add.png', color: Theme.of(context).primaryColor),
+                selectedIcon: Container(
+                  width: 7.5.w,
+                  height: 3.h,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12.5.sp),
+                    color: AppTheme.primaryColor,
+
+                  ),
+                  child: Padding(
+                    padding:  EdgeInsets.only(bottom: 1.h),
+                    child: Center(
+                      child: Icon(Icons.add, color: Colors.white,),
+                    ),
+                  ),
+                ),
               ),
               NavigationDestination(
                 icon: Image.asset('assets/general/message-text.png'),

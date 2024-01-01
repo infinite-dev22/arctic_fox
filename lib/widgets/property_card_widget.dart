@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:smart_rent/models/property/property_model.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 
 
 class PropertyCardWidget extends StatelessWidget {
-  const PropertyCardWidget({super.key});
+  final PropertyModel propertyModel;
+  const PropertyCardWidget({super.key,required this.propertyModel});
 
   @override
   Widget build(BuildContext context) {
@@ -52,8 +54,8 @@ class PropertyCardWidget extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Imperial Mall', style: AppTheme.appTitle6,),
-                      Text('Entebbe, Uganda', style: AppTheme.subText,),
+                      Text(propertyModel.name.toString(), style: AppTheme.appTitle6,),
+                      Text(propertyModel.location.toString(), style: AppTheme.subText,),
                       
                       SizedBox(height: 1.h,),
 

@@ -26,6 +26,7 @@ class AddScreen extends StatefulWidget {
 class _AddScreenState extends State<AddScreen> {
   final UserController userController = Get.put(UserController(), permanent: true);
 
+
   @override
   void initState() {
     // TODO: implement initState
@@ -97,6 +98,7 @@ class _AddScreenState extends State<AddScreen> {
                       return Padding(
                         padding: EdgeInsets.only(top: 1.h),
                         child: SlideInUp(child: UserCardWidget(
+                          userProfileModel: user,
                           userController: userController,
                           index: index,
                           editFunction: () {

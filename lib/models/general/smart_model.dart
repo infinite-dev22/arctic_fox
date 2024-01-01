@@ -108,3 +108,26 @@ abstract class SmartUserRoleModel {
 
 
 }
+
+int? id;
+String? name;
+String? description;
+int? organisationId;
+String? squareMeters;
+int? propertyTypeId;
+int? categoryTypeId;
+String? location;
+
+abstract class SmartPropertyModel {
+
+  int getId();
+  String getName();
+  String getDescription();
+  int getOrganisationId();
+  int getPropertyTypeId();
+  int getCategoryTypeId();
+  String getLocation();
+  String getSquareMeters();
+
+
+}

@@ -12,6 +12,7 @@ import 'package:smart_rent/models/general/smart_model.dart';
 import 'package:smart_rent/models/property/property_category_model.dart';
 import 'package:smart_rent/models/property/property_type_model.dart';
 import 'package:smart_rent/styles/app_theme.dart';
+import 'package:smart_rent/utils/app_prefs.dart';
 import 'package:smart_rent/widgets/app_button.dart';
 import 'package:smart_rent/widgets/app_drop_downs.dart';
 import 'package:smart_rent/widgets/app_image_header.dart';
@@ -270,13 +271,14 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                   propertyController.addProperty(
                       titleController.text.trim().toString(),
                       descriptionController.text.trim().toString(),
-                      12,
+                      userStorage.read('OrganizationId'),
                       propertyController.propertyTypeId.value,
                       propertyController.categoryId.value,
                       locationController.text.trim().toString(),
                       sqmController.text.trim().toString(),
-                    "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
-                  "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
+                    userStorage.read('userProfileId').toString(),
+                    userStorage.read('userProfileId').toString(),
+                  // "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
                   );
                 },
               ),

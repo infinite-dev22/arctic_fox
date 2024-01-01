@@ -15,6 +15,7 @@ class AppSearchTextField extends StatelessWidget {
   final bool enabled;
   final String? title;
   final VoidCallback function;
+  final int number;
 
   const AppSearchTextField({
     super.key,
@@ -26,7 +27,7 @@ class AppSearchTextField extends StatelessWidget {
     this.fillColor = AppTheme.fillColor,
     this.style,
     this.enabled = true,
-    this.title, required this.function
+    this.title, required this.function, required this.number
   });
 
   @override
@@ -102,7 +103,7 @@ class AppSearchTextField extends StatelessWidget {
         )),
 
         Text('Your properties', style: AppTheme.appTitle1,),
-        Text('243 properties', style: AppTheme.subText,),
+        Text('$number ${number >1 ? 'properties' : 'property'}', style: AppTheme.subText,),
 
       ],
     );

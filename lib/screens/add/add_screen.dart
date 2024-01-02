@@ -31,6 +31,7 @@ class _AddScreenState extends State<AddScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    userController.listenToAllUsersInSpecificOrganizationChanges();
   }
 
   @override

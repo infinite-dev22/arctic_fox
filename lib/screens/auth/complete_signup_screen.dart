@@ -204,6 +204,7 @@ class _CompleteSignUpScreenState extends State<CompleteSignUpScreen> {
                       },
                       child: Text('back to login', style: AppTheme.subTextBold,))),
 
+
                 ],
               ),
             ),

@@ -39,7 +39,8 @@ class UserController extends GetxController {
     getUserOrganizationData();
     getUserProfileData();
     fetchAllUserRoles();
-    listenToPropertyTenantListChanges();
+    // listenToPropertyTenantListChanges();
+    // listenToAllUsersInSpecificOrganizationChanges();
   }
 
 
@@ -89,7 +90,7 @@ isUserListLoading(true);
     try {
 
       final response = await AppConfig().supaBaseClient.from('user_profiles').select()
-          .eq('organisation_id', userStorage.read('OrganizationId'));
+          .eq('organisation_id', userStorage.read('OrganizationId')).order('created_at');
       final data = response as List<dynamic>;
       print('my Profile Users are $response');
       print(response.length);
@@ -180,7 +181,7 @@ isUserListLoading(true);
       // }
       // organisationId.value = response.data?.first['id'] ?? -1;
       print(response.user!.id);
-      // createOrganisation(businessName, description, response.user!.id.toString(), firstName, lastName);
+      createOrganisation(businessName, description, response.user!.id.toString(), firstName, lastName);
 
       final orgResponse = await AppConfig().supaBaseClient.from('organisations').insert([
         {
@@ -290,16 +291,11 @@ isUserListLoading(true);
           "description" : description,
           "user_id" : userId,
         }
-      ]);
-      // final AuthResponse response = await AppConfig().supaBaseClient.auth.signUp(password: password, email: email,);
-      // if (response.error != null) {
-      //   throw response.error;
-      // }
-      //
+      ]).select();
 
 
-      // final newOrganization = response as List<dynamic>;
-      // final insertedOrgId = newOrganization[0]['id'];
+      final newOrganization = response as List<dynamic>;
+      final insertedOrgId = newOrganization[0]['id'];
 
 
       print('INSERTED Response is == $response');
@@ -307,9 +303,9 @@ isUserListLoading(true);
       // organisationId.value = response.data?.first['id'] ?? -1;
       // print(organisationId.value.toString());
 
-      //  createUserProfile(businessName, description, userId, firstName, lastName, insertedOrgId).then((value) {
-      //   Get.off(() => InitialScreen());
-      // });
+       createUserProfile(businessName, description, userId, firstName, lastName, insertedOrgId).then((value) {
+        Get.offAll(() => InitialScreen());
+      });
     } catch (error) {
       print('Error inserting into Organisations: $error');
       throw error;
@@ -339,7 +335,7 @@ isUserListLoading(true);
       userProfileId.value = response.data?.first['id'] ?? -1;
       print(userProfileId.value.toString());
 
-      Get.off(() => InitialScreen());
+      // Get.off(() => InitialScreen());
 
     } catch (error) {
       print('Error inserting into user Profile: $error');
@@ -425,14 +421,14 @@ isUserListLoading(true);
       // userProfileId.value = response.data?.first['id'] ?? -1;
       // print(userProfileId.value.toString());
 
-      Get.back();
+      // Get.back();
 
     } catch (error) {
       print('Error inserting into user Profile: $error');
     }
   }
 
-  void listenToPropertyTenantListChanges() {
+  void listenToAllUsersInSpecificOrganizationChanges() {
     // Set up real-time listener
     AppConfig().supaBaseClient
         .from('user_profiles')

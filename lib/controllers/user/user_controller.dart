@@ -163,6 +163,7 @@ isUserListLoading(true);
         await userStorage.remove('isLoggedIn');
         await userStorage.remove('userFirstname');
         await userStorage.remove('OrganizationId');
+        await userStorage.remove('userProfileId');
         Get.off(() => InitialScreen());
       });
     } catch(error) {
@@ -183,17 +184,6 @@ isUserListLoading(true);
       print(response.user!.id);
       createOrganisation(businessName, description, response.user!.id.toString(), firstName, lastName);
 
-      final orgResponse = await AppConfig().supaBaseClient.from('organisations').insert([
-        {
-          "name" : businessName,
-          "description" : description,
-          "user_id" : response.user!.id,
-        }
-      ]);
-
-      print(orgResponse);
-      final orgList = orgResponse as List<dynamic>;
-      print('MY ORGLIST = $orgList');
 
     } catch (error) {
       print('Error inserting into Users: $error');

@@ -75,48 +75,44 @@ class HomePage extends StatelessWidget {
                   SizedBox(
                     width: 2.w,
                   ),
-                  userStorage.read('userFirstname') == null ?
+
                   ZoomIn(
                     child: SizedBox(
-                      child: Obx(() {
-                        return Text(
-                          '${userController.userFirstname.value} ',
+                      child:  Text(
+                          userStorage.read('userFirstname').toString(),
                           style: AppTheme.appTitle2,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                        );
-                      }),
-                      // child: Text(
-                      //   // '${userController.userFirstname.value} ',
-                      //   userStorage.read('userFirstname') == null
-                      //       ? userController.userFirstname.value
-                      //       : userStorage.read('userFirstname').toString(),
-                      //   style: AppTheme.appTitle2,
-                      //   maxLines: 1,
-                      //   overflow: TextOverflow.ellipsis,
-                      // ),
+                        ),
+
                       width: 47.5.w,
                     ), delay: Duration(seconds: 0),)
-                      : ZoomIn(
-                    child: SizedBox(
-                      child: Text(
-                        // '${userController.userFirstname.value} ',
-                        userStorage.read('userFirstname'),
-                        style: AppTheme.appTitle2,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      // child: Text(
-                      //   // '${userController.userFirstname.value} ',
-                      //   userStorage.read('userFirstname') == null
-                      //       ? userController.userFirstname.value
-                      //       : userStorage.read('userFirstname').toString(),
-                      //   style: AppTheme.appTitle2,
-                      //   maxLines: 1,
-                      //   overflow: TextOverflow.ellipsis,
-                      // ),
-                      width: 47.5.w,
-                    ), delay: Duration(seconds: 0),),
+
+                  // userStorage.read('userFirstname') == null ?
+                  // ZoomIn(
+                  //   child: SizedBox(
+                  //     child: Obx(() {
+                  //       return Text(
+                  //         '${userController.userFirstname.value} ',
+                  //         style: AppTheme.appTitle2,
+                  //         maxLines: 1,
+                  //         overflow: TextOverflow.ellipsis,
+                  //       );
+                  //     }),
+                  //
+                  //     width: 47.5.w,
+                  //   ), delay: Duration(seconds: 0),)
+                  //     : ZoomIn(
+                  //   child: SizedBox(
+                  //     child: Text(
+                  //       // '${userController.userFirstname.value} ',
+                  //       userStorage.read('userFirstname'),
+                  //       style: AppTheme.appTitle2,
+                  //       maxLines: 1,
+                  //       overflow: TextOverflow.ellipsis,
+                  //     ),
+                  //     width: 47.5.w,
+                  //   ), delay: Duration(seconds: 0),),
                 ],
               ),
               // Text(userController.userFirstname.value),

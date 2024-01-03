@@ -23,6 +23,7 @@ class UserController extends GetxController {
 
   var userProfileModel = UserProfileModel().obs;
   var userFirstname = ''.obs;
+  var organisationName = ''.obs;
   var addedUserRoleId = 0.obs;
   var isUserListLoading = false.obs;
   var isEmployeePropertyLoading = false.obs;
@@ -113,9 +114,8 @@ isUserListLoading(true);
       final response = await AppConfig().supaBaseClient.from('organisations').select().eq('user_id', userStorage.read('userId')).execute();
       print('MY SPECIFIC RESPONSE IS ${response.data[0]['name']}');
       print('MY SPECIFIC ORGANIZATION ID IS ${response.data[0]['id']}');
-      userFirstname.value = response.data[0]['name'];
+      organisationName.value = response.data[0]['name'];
       userStorage.write('OrganizationId', response.data[0]['id']);
-      userStorage.write('userFirstname', response.data[0]['name']);
       userStorage.write('organisationName', response.data[0]['name']);
 
       // final response = await AppConfig().supaBaseClient.from('user_profiles').select().eq('user_id', userStorage.read('userId')).execute();
@@ -321,9 +321,9 @@ isUserListLoading(true);
       // if (response.error != null) {
       //   throw response.error;
       // }
-
-      userProfileId.value = response.data?.first['id'] ?? -1;
-      print(userProfileId.value.toString());
+      //
+      // userProfileId.value = response.data?.first['id'] ?? -1;
+      // print(userProfileId.value.toString());
 
       // Get.off(() => InitialScreen());
 

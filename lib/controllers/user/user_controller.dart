@@ -478,6 +478,7 @@ isUserListLoading(true);
       return employeePropertyModelList.assignAll(
           data.map((json) => EmployeePropertyModel.fromJson(json)).toList());
 
+
     } catch (error) {
       print('Error fetching Employee Properties: $error');
       isEmployeePropertyLoading(false);

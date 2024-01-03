@@ -183,7 +183,10 @@ class _EmployeeDetailsScreenState extends State<EmployeeDetailsScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Properties', style: AppTheme.appTitle3,),
+                  Text(widget.userController.employeePropertyModelList.isEmpty
+                      ?' No Properties' : widget.userController.employeePropertyModelList.length ==1 ? '1 Property'
+                      : '${widget.userController.employeePropertyModelList.length} Properties'
+                    , style: AppTheme.appTitle3,),
                   Bounceable(
                     onTap: () {
                       showDialog(
@@ -280,7 +283,7 @@ class _EmployeeDetailsScreenState extends State<EmployeeDetailsScreen> {
                   padding: EdgeInsets.symmetric(vertical: 15.h),
                   child: Center(
                     child: Image.asset('assets/auth/logo.png', width: 35.w),),
-                ) : ListView.builder(
+                ) :  ListView.builder(
                   shrinkWrap: true,
                   itemCount: widget.userController.employeePropertyModelList.length,
                     itemBuilder: (context, index) {

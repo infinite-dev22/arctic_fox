@@ -22,7 +22,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final UserController userController = Get.put(
-        UserController(), permanent: true);
+        UserController(),);
     final ComplaintsController complaintsController =
     Get.put(ComplaintsController());
     final TenantController tenantController = Get.put(
@@ -76,6 +76,20 @@ class HomePage extends StatelessWidget {
                     width: 2.w,
                   ),
 
+                  userStorage.read('userFirstname') == null ? ZoomIn(
+                    child: SizedBox(
+                      child: Obx(() {
+                        return Text(
+                          // userStorage.read('userFirstname').toString(),
+                          '${userController.userFirstname.value}',
+                          style: AppTheme.appTitle2,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        );
+                      }),
+
+                      width: 47.5.w,
+                    ), delay: Duration(seconds: 0),) :
                   ZoomIn(
                     child: SizedBox(
                       child:  Text(
@@ -87,6 +101,7 @@ class HomePage extends StatelessWidget {
 
                       width: 47.5.w,
                     ), delay: Duration(seconds: 0),)
+
 
                   // userStorage.read('userFirstname') == null ?
                   // ZoomIn(

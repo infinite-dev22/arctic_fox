@@ -37,7 +37,6 @@ class UserController extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    getUserOrganizationData();
     getUserProfileData();
     fetchAllUserRoles();
     // listenToPropertyTenantListChanges();
@@ -111,12 +110,12 @@ isUserListLoading(true);
 
     try{
 
-      final response = await AppConfig().supaBaseClient.from('organisations').select().eq('user_id', userStorage.read('userId')).execute();
+      final response = await AppConfig().supaBaseClient.from('organisations').select().eq('id', userStorage.read('OrganizationId')).execute();
       print('MY SPECIFIC RESPONSE IS ${response.data[0]['name']}');
       print('MY SPECIFIC ORGANIZATION ID IS ${response.data[0]['id']}');
       organisationName.value = response.data[0]['name'];
-      userStorage.write('OrganizationId', response.data[0]['id']);
-      userStorage.write('organisationName', response.data[0]['name']);
+     // await userStorage.write('OrganizationId', response.data[0]['id']);
+      await userStorage.write('organisationName', response.data[0]['name']);
 
       // final response = await AppConfig().supaBaseClient.from('user_profiles').select().eq('user_id', userStorage.read('userId')).execute();
       // print('MY SPECIFIC RESPONSE IS ${response.data[0]['first_name']}');
@@ -133,13 +132,34 @@ isUserListLoading(true);
 
     try{
 
-      final response = await AppConfig().supaBaseClient.from('user_profiles').select().eq('user_id', userStorage.read('userId')).execute();
-      print('MY SPECIFIC Profile User RESPONSE IS ${response.data[0]['first_name']}');
-      print('MY SPECIFIC Profile User  ID IS ${response.data[0]['user_id']}');
-      userFirstname.value = response.data[0]['first_name'];
+      await AppConfig().supaBaseClient.from('user_profiles').select().eq('user_id', userStorage.read('userId')).execute().then((userValue) async{
+        print('MY SPECIFIC Profile User RESPONSE IS ${userValue.data[0]['first_name']}');
+        print('MY SPECIFIC Profile User  ID IS ${userValue.data[0]['user_id']}');
+        userFirstname.value = userValue.data[0]['first_name'];
+        await userStorage.write('userFirstname', userValue.data[0]['first_name']).then((value) async{
+          await userStorage.write('userProfileId', userValue.data[0]['id']).then((value) async{
+            await userStorage.write('OrganizationId', userValue.data[0]['organisation_id']).then((value) async{
+              await userStorage.write('roleId', userValue.data[0]['role_id']).then((value) async{
+                await getUserOrganizationData();
+              });
+            });
+          });
+        });
+      });
+      // print('MY SPECIFIC Profile User RESPONSE IS ${response.data[0]['first_name']}');
+      // print('MY SPECIFIC Profile User  ID IS ${response.data[0]['user_id']}');
+      // userFirstname.value = response.data[0]['first_name'];
       // userStorage.write('OrganizationId', response.data[0]['id']);
-      userStorage.write('userFirstname', response.data[0]['first_name']);
-      userStorage.write('userProfileId', response.data[0]['id']);
+      // await userStorage.write('userFirstname', response.data[0]['first_name']);
+      // await userStorage.write('userProfileId', response.data[0]['id']);
+
+      // final response = await AppConfig().supaBaseClient.from('user_profiles').select().eq('user_id', userStorage.read('userId')).execute();
+      // print('MY SPECIFIC Profile User RESPONSE IS ${response.data[0]['first_name']}');
+      // print('MY SPECIFIC Profile User  ID IS ${response.data[0]['user_id']}');
+      // userFirstname.value = response.data[0]['first_name'];
+      // // userStorage.write('OrganizationId', response.data[0]['id']);
+      // await userStorage.write('userFirstname', response.data[0]['first_name']);
+      // await userStorage.write('userProfileId', response.data[0]['id']);
 
       // final response = await AppConfig().supaBaseClient.from('user_profiles').select().eq('user_id', userStorage.read('userId')).execute();
       // print('MY SPECIFIC RESPONSE IS ${response.data[0]['first_name']}');
@@ -160,9 +180,10 @@ isUserListLoading(true);
         await userStorage.remove('userId');
         await userStorage.remove('accessToken');
         await userStorage.write('isLoggedIn', false);
-        await userStorage.remove('isLoggedIn');
+        // await userStorage.remove('isLoggedIn');
         await userStorage.remove('userFirstname');
         await userStorage.remove('OrganizationId');
+        await userStorage.remove('organisationName');
         await userStorage.remove('userProfileId');
         Get.off(() => InitialScreen());
       });
@@ -252,12 +273,24 @@ isUserListLoading(true);
       print(user);
 
       if(user != null) {
-        await userStorage.write('isLoggedIn', true);
-        await userStorage.write('accessToken', session.accessToken);
-        await userStorage.write('userId', user.id);
-        await getUserOrganizationData().then((value) {
-          Get.to(() => BottomNavBar());
+
+        await userStorage.write('isLoggedIn', true).then((value) async{
+          await userStorage.write('accessToken', session.accessToken).then((value) async{
+            await userStorage.write('userId', user.id).then((value) async{
+               Get.put(UserController()).getUserProfileData().then((value) {
+                   Get.off(() => BottomNavBar());
+               });
+            });
+          });
         });
+
+
+        // await userStorage.write('isLoggedIn', true);
+        // await userStorage.write('accessToken', session.accessToken);
+        // await userStorage.write('userId', user.id);
+        // await getUserOrganizationData().then((value) {
+        //   Get.off(() => BottomNavBar());
+        // });
 
       } else {
         Fluttertoast.showToast(msg: 'Check your credentials');

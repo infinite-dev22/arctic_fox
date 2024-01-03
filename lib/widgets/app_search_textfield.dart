@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/styles/app_theme.dart';
+import 'package:smart_rent/utils/app_prefs.dart';
 
 
 class AppSearchTextField extends StatelessWidget {
@@ -85,7 +86,7 @@ class AppSearchTextField extends StatelessWidget {
 
         SizedBox(height: 2.h,),
 
-        Align(alignment: Alignment.centerRight, child: Bounceable(
+        userStorage.read('roleId') == 4 ? Container() : Align(alignment: Alignment.centerRight, child: Bounceable(
           onTap: function,
           child: Container(
             width: 10.w,

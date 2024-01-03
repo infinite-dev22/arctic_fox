@@ -8,6 +8,7 @@ import 'package:smart_rent/screens/tenant/add_tenant_screen.dart';
 import 'package:smart_rent/screens/tenant/update_company_tenant_with%20contact_screen.dart';
 import 'package:smart_rent/screens/tenant/update_individual_tenant_screen.dart';
 import 'package:smart_rent/styles/app_theme.dart';
+import 'package:smart_rent/utils/app_prefs.dart';
 import 'package:smart_rent/widgets/app_header.dart';
 import 'package:smart_rent/widgets/app_image_header.dart';
 import 'package:smart_rent/widgets/tenant_card_widget.dart';
@@ -59,7 +60,7 @@ class _TenantListScreenState extends State<TenantListScreen> {
                       ],
                     ),
                   ),
-                  Bounceable(
+                  userStorage.read('roleId') == 4 ? Container() : Bounceable(
                       onTap: () {
                         Get.to(() => AddTenantScreen(),
                             transition: Transition.downToUp);

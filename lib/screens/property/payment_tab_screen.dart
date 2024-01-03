@@ -18,6 +18,7 @@ import 'package:smart_rent/models/tenant/tenant_model.dart';
 import 'package:smart_rent/models/unit/specific_tenant_unit_model.dart';
 import 'package:smart_rent/models/unit/unit_model.dart';
 import 'package:smart_rent/styles/app_theme.dart';
+import 'package:smart_rent/utils/app_prefs.dart';
 import 'package:smart_rent/utils/extra.dart';
 import 'package:smart_rent/widgets/app_button.dart';
 import 'package:smart_rent/widgets/app_drop_downs.dart';
@@ -148,8 +149,8 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                                       int.parse(amountController.text),
                                       int.parse(paidController.text),
                                       int.parse(balanceController.text),
-                                      'f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5',
-                                      'f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5',
+                                        userStorage.read('userProfileId'),
+                                      userStorage.read('userProfileId'),
                                     );
 
                                     // await tenantController
@@ -161,8 +162,8 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                                     //   int.parse(amountController.text),
                                     //   int.parse(paidController.text),
                                     //   int.parse(balanceController.text),
-                                    //   'f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5',
-                                    //   'f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5',
+                                    //   'userStorage.read('userProfileId')',
+                                    //   'userStorage.read('userProfileId')',
                                     // );
 
                                     // await tenantController.addTenantPayment(
@@ -173,8 +174,8 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                                     //   int.parse(amountController.text),
                                     //   int.parse(paidController.text),
                                     //   int.parse(balanceController.text),
-                                    //   'f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5',
-                                    //   'f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5',
+                                    //   'userStorage.read('userProfileId')',
+                                    //   'userStorage.read('userProfileId')',
                                     // );
 
                                     // Get.back();
@@ -931,8 +932,8 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                             //         int.parse(amountController.text),
                             //         int.parse(paidController.text),
                             //         int.parse(balanceController.text),
-                            //         'f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5',
-                            //         'f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5',
+                            //         'userStorage.read('userProfileId')',
+                            //         'userStorage.read('userProfileId')',
                             //       );
                             //     },
                             // )

@@ -280,7 +280,7 @@ setSpecificPaymentBalance(int balance){
 
     try {
 
-      final response = await AppConfig().supaBaseClient.from('currency_types').select();
+      final response = await AppConfig().supaBaseClient.from('currency_symbol').select();
       final data = response as List<dynamic>;
       print(response);
       print(response.length);
@@ -894,7 +894,7 @@ setSpecificPaymentBalance(int balance){
   //             "contact" : contactPhone,
   //             "email" : contactEmail,
   //             "designation": contactDesignation,
-  //             "created_by" : "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
+  //             "created_by" : "userStorage.read('userProfileId')",
   //           }
   //       );
   //
@@ -935,7 +935,7 @@ setSpecificPaymentBalance(int balance){
   //   //             "nin" : contactNin,
   //   //             "contact" : contactPhone,
   //   //             "email" : contactEmail,
-  //   //             "created_by" : "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
+  //   //             "created_by" : "userStorage.read('userProfileId')",
   //   //           }
   //   //       );
   //   //
@@ -1013,7 +1013,7 @@ setSpecificPaymentBalance(int balance){
             "contact" : phone,
             "email" : email,
             "description": description,
-            "created_by" : "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
+            "created_by" : "userStorage.read('userProfileId')",
             "gender" : gender,
             "date_of_birth" : dob,
 
@@ -1189,7 +1189,7 @@ setSpecificPaymentBalance(int balance){
               "contact" : contactPhone,
               "email" : contactEmail,
               "designation": contactDesignation,
-              "created_by" : "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
+              "created_by" : "userStorage.read('userProfileId')",
             }
         );
         // fetchAllTenants();
@@ -1364,7 +1364,7 @@ setSpecificPaymentBalance(int balance){
             "contact" : phone,
             "email" : email,
             "description": description,
-            "created_by" : "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
+            "created_by" : "userStorage.read('userProfileId')",
             "gender" : gender,
             "date_of_birth" : dob,
 
@@ -1429,7 +1429,7 @@ setSpecificPaymentBalance(int balance){
             "contact" : contactPhone,
             "email" : contactEmail,
             "designation": contactDesignation,
-            "created_by" : "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
+            "created_by" : "userStorage.read('userProfileId')",
           }
       );
       // fetchAllTenants();
@@ -1574,7 +1574,7 @@ setSpecificPaymentBalance(int balance){
       // Fetch the specific row based on ID
       final response = await AppConfig().supaBaseClient.from('tenants').select().eq('id', id).execute();
 
-      final countryTypeResponse = await AppConfig().supaBaseClient.from('currency_types').select().eq('id', response.data[0]['nation_id']).execute();
+      final countryTypeResponse = await AppConfig().supaBaseClient.from('currency_symbol').select().eq('id', response.data[0]['nation_id']).execute();
 
       // final data = await AppConfig().supaBaseClient.from('business_types')
       //     .select('id')
@@ -1599,7 +1599,7 @@ setSpecificPaymentBalance(int balance){
       // Fetch the specific row based on ID
       final response = await AppConfig().supaBaseClient.from('tenants').select().eq('id', id).execute();
 
-      final countryTypeResponse = await AppConfig().supaBaseClient.from('currency_types').select().eq('id', response.data[0]['nation_id']).execute();
+      final countryTypeResponse = await AppConfig().supaBaseClient.from('currency_symbol').select().eq('id', response.data[0]['nation_id']).execute();
 
       // final data = await AppConfig().supaBaseClient.from('business_types')
       //     .select('id')

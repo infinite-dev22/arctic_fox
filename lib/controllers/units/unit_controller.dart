@@ -123,7 +123,7 @@ class UnitController extends GetxController {
 
     try {
 
-      final response = await AppConfig().supaBaseClient.from('currency_types').select();
+      final response = await AppConfig().supaBaseClient.from('currency_symbol').select();
       final data = response as List<dynamic>;
       print(response);
       print(response.length);

@@ -666,7 +666,7 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                             12,
                             tenantController.tenantTypeId.value,
                             tenantController.businessTypeId.value,
-                            "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
+                            "userStorage.read('userProfileId')",
                             tenantController.nationalityId.value,
                             individualNinController.text.toString(),
                             individualPhoneNameController.text.toString(),
@@ -683,7 +683,7 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                         //       .trim()} ${surnameNameController.text.trim()}",
                         //   12,
                         //   tenantController.tenantTypeId.value,
-                        //   "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
+                        //   "userStorage.read('userProfileId')",
                         //   tenantController.nationalityId.value,
                         // );
                       } else {
@@ -701,7 +701,7 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                               12,
                               tenantController.tenantTypeId.value,
                             tenantController.businessTypeId.value,
-                              "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
+                              "userStorage.read('userProfileId')",
                               tenantController.nationalityId.value,
                             companyDescriptionController.text.toString(),
                           );
@@ -722,7 +722,7 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                               12,
                               tenantController.tenantTypeId.value,
                             tenantController.businessTypeId.value,
-                              "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
+                              "userStorage.read('userProfileId')",
                               tenantController.nationalityId.value,
                               contactFirstNameController.text.trim().toString(),
                             contactLastNameController.text.trim().toString(),

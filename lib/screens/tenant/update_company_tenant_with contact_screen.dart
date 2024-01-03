@@ -476,7 +476,7 @@ class _UpdateCompanyTenantWithContactScreenState
                       companyNameController.text.trim().toString(),
                       12,
                       tenantController.businessTypeId.value,
-                        "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
+                        "userStorage.read('userProfileId')",
                       tenantController.nationalityId.value,
                       contactFirstNameController.text.trim().toString(),
                       contactLastNameController.text.trim().toString(),

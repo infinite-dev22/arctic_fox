@@ -278,7 +278,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                       sqmController.text.trim().toString(),
                     userStorage.read('userProfileId').toString(),
                     userStorage.read('userProfileId').toString(),
-                  // "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
+                  // "userStorage.read('userProfileId')",
                   );
                 },
               ),

@@ -23,6 +23,7 @@ import 'package:smart_rent/models/tenant/tenant_model.dart';
 import 'package:smart_rent/models/unit/unit_model.dart';
 import 'package:smart_rent/screens/tenant/tenant_details_screen.dart';
 import 'package:smart_rent/styles/app_theme.dart';
+import 'package:smart_rent/utils/app_prefs.dart';
 import 'package:smart_rent/utils/extra.dart';
 import 'package:smart_rent/widgets/app_button.dart';
 import 'package:smart_rent/widgets/app_drop_downs.dart';
@@ -338,8 +339,8 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                                             .toIso8601String(),
                                         "tenant_id": tenantController.tenantId
                                             .value,
-                                        "created_by": 'f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5',
-                                        "updated_by": 'f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5',
+                                        "created_by": userStorage.read('userProfileId'),
+                                        "updated_by": userStorage.read('userProfileId'),
                                       };
 
                                       dividedAmounts.add(mDividedAmount);
@@ -363,7 +364,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
 
                                   await tenantController.addTenantToUnit(
                                       tenantController.tenantId.value,
-                                      "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
+                                      "userStorage.read('userProfileId')",
                                       tenantController.specificUnitId.value,
                                       selectedDate1.value.toString(),
                                       selectedDate2.value.toString(),
@@ -397,13 +398,13 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                                   //   0,
                                   //   int.parse(
                                   //       discountController.text.toString()),
-                                  //   'f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5',
-                                  //   'f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5',
+                                  //   'userStorage.read('userProfileId')',
+                                  //   'userStorage.read('userProfileId')',
                                   // );
 
                                   // tenantController.addPaymentSchedule(
                                   //   tenantController.tenantId.value,
-                                  //   "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
+                                  //   "userStorage.read('userProfileId')",
                                   //   tenantController.unitId.value,
                                   //   selectedDate1.value.toString(),
                                   //   selectedDate2.value.toString(),
@@ -558,7 +559,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                                 //
                                 //   tenantController.addTenantToUnit(
                                 //     tenantController.tenantId.value,
-                                //     "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
+                                //     "userStorage.read('userProfileId')",
                                 //     tenantController.unitId.value,
                                 //     selectedDate1.value.toString(),
                                 //     selectedDate2.value.toString(),
@@ -1127,7 +1128,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                           //     if (_formKey.currentState!.validate()) {
                           //       tenantController.addTenantToUnit(
                           //         tenantController.tenantId.value,
-                          //         "f88d4f61-6ea8-4d54-aca3-54dfc58bd8f5",
+                          //         "userStorage.read('userProfileId')",
                           //         tenantController.unitId.value,
                           //         selectedDate1.value.toString(),
                           //         date2Controller.text.trim().toString(),

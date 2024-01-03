@@ -17,17 +17,19 @@ import 'package:smart_rent/widgets/home_card_widget1.dart';
 import 'package:smart_rent/widgets/home_card_widget2.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  final UserController userController;
+  final TenantController tenantController;
+  const HomePage({super.key, required this.userController, required this.tenantController});
 
   @override
   Widget build(BuildContext context) {
-    final UserController userController = Get.put(
-        UserController(),);
+    // final UserController userController = Get.put(
+    //     UserController(),);
     final ComplaintsController complaintsController =
     Get.put(ComplaintsController());
-    final TenantController tenantController = Get.put(
-      TenantController(),
-    );
+    // final TenantController tenantController = Get.put(
+    //   TenantController(),
+    // );
     final UnitController unitController =
     Get.put(UnitController(), permanent: true);
     return Scaffold(
@@ -81,8 +83,8 @@ class HomePage extends StatelessWidget {
                       child: Obx(() {
                         return Text(
                           // userStorage.read('userFirstname').toString(),
-                          '${userController.userFirstname.value}',
-                          style: AppTheme.appTitle2,
+                          '${userController.userFirstname.value}'.capitalizeFirst.toString(),
+                          style: AppTheme.blueAppTitle,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         );
@@ -93,8 +95,8 @@ class HomePage extends StatelessWidget {
                   ZoomIn(
                     child: SizedBox(
                       child:  Text(
-                          userStorage.read('userFirstname').toString(),
-                          style: AppTheme.appTitle2,
+                          userStorage.read('userFirstname').toString().capitalizeFirst.toString(),
+                          style: AppTheme.blueAppTitle,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),

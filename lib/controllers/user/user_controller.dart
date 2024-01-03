@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:smart_rent/config/app_config.dart';
@@ -185,6 +186,9 @@ isUserListLoading(true);
         await userStorage.remove('OrganizationId');
         await userStorage.remove('organisationName');
         await userStorage.remove('userProfileId');
+        await DefaultCacheManager().emptyCache();
+        print('LOGOUT ORG ID == ${userStorage.read('OrganizationId')}');
+        await Get.deleteAll();
         Get.off(() => InitialScreen());
       });
     } catch(error) {
@@ -278,6 +282,7 @@ isUserListLoading(true);
           await userStorage.write('accessToken', session.accessToken).then((value) async{
             await userStorage.write('userId', user.id).then((value) async{
                Get.put(UserController()).getUserProfileData().then((value) {
+                 print('LOGIN ORG ID IS ${userStorage.read('OrganizationId')}');
                    Get.off(() => BottomNavBar());
                });
             });

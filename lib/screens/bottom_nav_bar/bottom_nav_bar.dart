@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/controllers/bottom_nav_bar/bottom_nav_controller.dart';
+import 'package:smart_rent/controllers/tenants/tenant_controller.dart';
+import 'package:smart_rent/controllers/user/user_controller.dart';
 import 'package:smart_rent/screens/add/add_screen.dart';
 import 'package:smart_rent/screens/chat/chat_screen.dart';
 import 'package:smart_rent/screens/find/find_screen.dart';
@@ -10,15 +12,33 @@ import 'package:smart_rent/screens/profile/profile_screen.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 
 
-class BottomNavBar extends StatelessWidget {
+class BottomNavBar extends StatefulWidget {
   const BottomNavBar({super.key});
+
+  @override
+  State<BottomNavBar> createState() => _BottomNavBarState();
+}
+
+class _BottomNavBarState extends State<BottomNavBar> {
+
+  final UserController userController = Get.put(UserController(),);
+
+  final TenantController tenantController = Get.put(
+    TenantController(),
+  );
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    userController;
+  }
 
   @override
   Widget build(BuildContext context) {
     final BottomNavBarController bottomNavBarController = Get.put(
         BottomNavBarController());
     final screens = [
-      HomePage(),
+      HomePage(userController: userController, tenantController:  tenantController,),
       FindScreen(),
       AddScreen(),
       ChatScreen(),

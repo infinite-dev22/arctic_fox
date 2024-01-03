@@ -287,12 +287,13 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                 'Add Tenant',
                 style: AppTheme.appTitle5,
               ),
-              Align(
-                  alignment: Alignment.centerRight,
-                  child: Text(
-                    '#000484',
-                    style: AppTheme.subTextBold1,
-                  )),
+              SizedBox(height: 1.h,),
+              // Align(
+              //     alignment: Alignment.centerRight,
+              //     child: Text(
+              //       '#000484',
+              //       style: AppTheme.subTextBold1,
+              //     )),
 
               Container(
                 child: Form(

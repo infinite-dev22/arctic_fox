@@ -17,7 +17,7 @@ class HomeCardWidget2 extends StatelessWidget {
     return Bounceable(
       onTap: function,
       child: Container(
-        height: 17.5.h,
+        height: 15.h,
         width: 42.5.w,
         decoration: BoxDecoration(
           color: Colors.white,

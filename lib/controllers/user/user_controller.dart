@@ -226,10 +226,6 @@ isUserListLoading(true);
         UserAttributes(password: password),
       );
 
-      // final AuthResponse response = await AppConfig().supaBaseClient.auth.signInWithPassword(
-      //   email: email,
-      //   password: password,
-      // );
       final Session? session = recovery.session;
       final User? user = recovery.user;
 
@@ -239,12 +235,16 @@ isUserListLoading(true);
       print(user);
 
       if(user != null) {
-        await userStorage.write('isLoggedIn', true);
-        await userStorage.write('accessToken', session.accessToken);
-        await userStorage.write('userId', user.id);
-        await getUserOrganizationData().then((value) {
-          Get.to(() => BottomNavBar());
+        await userStorage.write('isLoggedIn', true).then((value) async{
+          await userStorage.write('accessToken', session.accessToken).then((value) async{
+            await userStorage.write('userId', user.id).then((value) async{
+              Get.put(UserController()).getUserProfileData().then((value) {
+                Get.off(() => BottomNavBar());
+              });
+            });
+          });
         });
+
 
       } else {
         Fluttertoast.showToast(msg: 'Check your credentials');

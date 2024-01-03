@@ -17,7 +17,7 @@ class HomeCardWidget1 extends StatelessWidget {
       onTap: function,
       child: Container(
         padding: EdgeInsets.only(left: 2.w, bottom: 2.h, right: 2.w),
-        height: 12.5.h,
+        height: 10.h,
         width: 42.5.w,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15.sp),

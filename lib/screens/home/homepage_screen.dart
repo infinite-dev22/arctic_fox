@@ -133,7 +133,7 @@ class HomePage extends StatelessWidget {
               // Text(userController.userFirstname.value),
 
               SizedBox(
-                height: 2.h,
+                height: 1.h,
               ),
 
               Row(

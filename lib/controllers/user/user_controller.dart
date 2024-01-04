@@ -29,6 +29,9 @@ class UserController extends GetxController {
   var isUserListLoading = false.obs;
   var isEmployeePropertyLoading = false.obs;
 
+  var isPhoneSelected = false.obs;
+  var isEmailSelected = false.obs;
+
   RxList<UserModel> userList = <UserModel>[].obs;
   RxList<UserRoleModel> userRoleList = <UserRoleModel>[].obs;
   RxList<UserProfileModel> userProfileModelList = <UserProfileModel>[].obs;
@@ -44,6 +47,10 @@ class UserController extends GetxController {
     // listenToAllUsersInSpecificOrganizationChanges();
   }
 
+  setPhoneAsUsername(){
+    isPhoneSelected.toggle();
+    print('My Username is ${isPhoneSelected.value}');
+  }
 
   setAddedUserRoleId(int id){
     addedUserRoleId.value = id;
@@ -196,16 +203,12 @@ isUserListLoading(true);
     }
   }
 
-  Future<void> createUser(String email, String password, String businessName, String description,
-      String firstName, String lastName
+  Future<void> createUserWithEmail(String email, String password, String businessName, String description,
+      String firstName, String lastName, String phone
       ) async {
     try {
-      // final response = await AppConfig().supaBaseClient.from('users').upsert([data]);
-      final AuthResponse response = await AppConfig().supaBaseClient.auth.signUp(password: password, email: email,);
-      // if (response.user != null) {
-      //   throw response.toString();
-      // }
-      // organisationId.value = response.data?.first['id'] ?? -1;
+      final AuthResponse response = await AppConfig().supaBaseClient.auth.signUp(password: password, email: email, phone: phone);
+
       print(response.user!.id);
       createOrganisation(businessName, description, response.user!.id.toString(), firstName, lastName);
 
@@ -214,6 +217,22 @@ isUserListLoading(true);
       print('Error inserting into Users: $error');
     }
   }
+
+  Future<void> createUserWithPhone(String phone, String password, String email, String businessName, String description,
+      String firstName, String lastName)async{
+    try {
+      final AuthResponse response = await AppConfig().supaBaseClient.auth.signUp(phone: phone, password: password);
+
+      print(response.user!.id);
+      createOrganisation(businessName, description, response.user!.id.toString(), firstName, lastName);
+
+
+    } catch (error) {
+      print('Error inserting into Users: $error');
+    }
+
+  }
+
 
 
 

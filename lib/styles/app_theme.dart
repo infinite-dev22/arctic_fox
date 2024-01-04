@@ -219,7 +219,13 @@ class AppTheme{
   static TextStyle get blueSubText => GoogleFonts.hind(
     color: blueTitleColor2,
     fontSize: 17.5.sp,
-    fontWeight: FontWeight.w400,
+    fontWeight: FontWeight.bold,
+  );
+
+  static TextStyle get blackSubText => GoogleFonts.hind(
+    color: Colors.black,
+    fontSize: 17.5.sp,
+    fontWeight: FontWeight.bold,
   );
 
 

@@ -88,4 +88,17 @@ class AuthController extends GetxController {
   }
 
 
+  phonePasswordSignUp(String phone, String password)async{
+    try {
+      final AuthResponse response = await AppConfig().supaBaseClient.auth.signUp(phone: phone, password: password);
+
+      print(response.user!.id);
+
+    } catch (error) {
+      print('Error inserting into Users: $error');
+    }
+
+  }
+
+
 }

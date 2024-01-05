@@ -928,7 +928,8 @@ setSpecificPaymentBalance(int balance){
   //   //     } else {
   //   //
   //   //       await AppConfig().supaBaseClient.from('tenant_profile_contacts').insert(
-  //   //           {
+  //
+  //           {
   //   //             "tenant_id" : compTenant['id'],
   //   //             "first_name" : contactFirstName,
   //   //             "last_name" : contactLastName,
@@ -970,6 +971,7 @@ setSpecificPaymentBalance(int balance){
 
     String uniqueId = uuid.v4();
 
+    print('MY ORG ID == $organisationId');
 
     try {
       final response =  await AppConfig().supaBaseClient.from('tenants').insert(
@@ -1013,7 +1015,7 @@ setSpecificPaymentBalance(int balance){
             "contact" : phone,
             "email" : email,
             "description": description,
-            "created_by" : "userStorage.read('userProfileId')",
+            "created_by" : userStorage.read('userProfileId'),
             "gender" : gender,
             "date_of_birth" : dob,
 
@@ -1189,7 +1191,7 @@ setSpecificPaymentBalance(int balance){
               "contact" : contactPhone,
               "email" : contactEmail,
               "designation": contactDesignation,
-              "created_by" : "userStorage.read('userProfileId')",
+              "created_by" : userStorage.read('userProfileId'),
             }
         );
         // fetchAllTenants();
@@ -1364,7 +1366,7 @@ setSpecificPaymentBalance(int balance){
             "contact" : phone,
             "email" : email,
             "description": description,
-            "created_by" : "userStorage.read('userProfileId')",
+            "created_by" : userStorage.read('userProfileId'),
             "gender" : gender,
             "date_of_birth" : dob,
 

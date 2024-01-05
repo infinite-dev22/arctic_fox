@@ -665,7 +665,7 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                         await tenantController.addPersonalTenant(
                             "${firstNameController.text
                                 .trim()} ${surnameNameController.text.trim()}",
-                            12,
+                          userStorage.read('OrganizationId'),
                             tenantController.tenantTypeId.value,
                             tenantController.businessTypeId.value,
                             userStorage.read('userProfileId'),
@@ -700,7 +700,7 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                           //     'Posting Company', 'No Company Contact');
                           await tenantController.addCompanyTenantWithoutContact(
                               companyNameController.text.toString(),
-                              12,
+                            userStorage.read('OrganizationId'),
                               tenantController.tenantTypeId.value,
                             tenantController.businessTypeId.value,
                               userStorage.read('userProfileId'),
@@ -721,7 +721,7 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                           //     'Posting Company', 'With Company Contact');
                           await tenantController.addCompanyTenantWithContact(
                               companyNameController.text.toString(),
-                              12,
+                            userStorage.read('OrganizationId'),
                               tenantController.tenantTypeId.value,
                             tenantController.businessTypeId.value,
                               userStorage.read('userProfileId'),

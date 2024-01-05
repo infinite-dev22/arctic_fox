@@ -19,6 +19,7 @@ import 'package:smart_rent/models/salutation/salutation_model.dart';
 import 'package:smart_rent/models/tenant/tenant_model.dart';
 import 'package:smart_rent/models/tenant/tenant_type_model.dart';
 import 'package:smart_rent/styles/app_theme.dart';
+import 'package:smart_rent/utils/app_prefs.dart';
 import 'package:smart_rent/widgets/app_button.dart';
 import 'package:smart_rent/widgets/app_drop_downs.dart';
 import 'package:smart_rent/widgets/app_image_header.dart';
@@ -476,7 +477,7 @@ class _UpdateCompanyTenantWithContactScreenState
                       companyNameController.text.trim().toString(),
                       12,
                       tenantController.businessTypeId.value,
-                        "userStorage.read('userProfileId')",
+                        userStorage.read('userProfileId'),
                       tenantController.nationalityId.value,
                       contactFirstNameController.text.trim().toString(),
                       contactLastNameController.text.trim().toString(),

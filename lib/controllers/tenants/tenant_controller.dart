@@ -1429,7 +1429,7 @@ setSpecificPaymentBalance(int balance){
             "contact" : contactPhone,
             "email" : contactEmail,
             "designation": contactDesignation,
-            "created_by" : "userStorage.read('userProfileId')",
+            "created_by" : userStorage.read('userProfileId'),
           }
       );
       // fetchAllTenants();

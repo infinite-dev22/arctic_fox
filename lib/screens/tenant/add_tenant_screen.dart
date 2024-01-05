@@ -20,6 +20,7 @@ import 'package:smart_rent/models/general/smart_model.dart';
 import 'package:smart_rent/models/salutation/salutation_model.dart';
 import 'package:smart_rent/models/tenant/tenant_type_model.dart';
 import 'package:smart_rent/styles/app_theme.dart';
+import 'package:smart_rent/utils/app_prefs.dart';
 import 'package:smart_rent/widgets/app_button.dart';
 import 'package:smart_rent/widgets/app_drop_downs.dart';
 import 'package:smart_rent/widgets/app_image_header.dart';
@@ -393,12 +394,12 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
 
                           SizedBox(height: 1.h,),
 
-                          AppTextField(
+                          AuthTextField(
                             controller: individualEmailNameController,
                             hintText: 'Email',
                             obscureText: false,
                             keyBoardType: TextInputType.emailAddress,
-                            validator: iEmailValidator,
+                            // validator: iEmailValidator,
                           ),
 
                           SizedBox(height: 1.h,),
@@ -667,7 +668,7 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                             12,
                             tenantController.tenantTypeId.value,
                             tenantController.businessTypeId.value,
-                            "userStorage.read('userProfileId')",
+                            userStorage.read('userProfileId'),
                             tenantController.nationalityId.value,
                             individualNinController.text.toString(),
                             individualPhoneNameController.text.toString(),
@@ -702,7 +703,7 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                               12,
                               tenantController.tenantTypeId.value,
                             tenantController.businessTypeId.value,
-                              "userStorage.read('userProfileId')",
+                              userStorage.read('userProfileId'),
                               tenantController.nationalityId.value,
                             companyDescriptionController.text.toString(),
                           );
@@ -723,7 +724,7 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                               12,
                               tenantController.tenantTypeId.value,
                             tenantController.businessTypeId.value,
-                              "userStorage.read('userProfileId')",
+                              userStorage.read('userProfileId'),
                               tenantController.nationalityId.value,
                               contactFirstNameController.text.trim().toString(),
                             contactLastNameController.text.trim().toString(),

@@ -283,10 +283,16 @@ isUserListLoading(true);
   Future<void> loginUser(String email, String password) async {
     try{
 
+      // final AuthResponse response = await AppConfig().supaBaseClient.auth.signInWithPassword(
+      //   email: email,
+      //   password: password,
+      // );
+
       final AuthResponse response = await AppConfig().supaBaseClient.auth.signInWithPassword(
-        email: email,
+        phone: email,
         password: password,
       );
+
       final Session? session = response.session;
       final User? user = response.user;
 

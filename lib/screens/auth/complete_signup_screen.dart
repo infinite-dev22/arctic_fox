@@ -9,6 +9,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/controllers/user/user_controller.dart';
 import 'package:smart_rent/models/general/smart_model.dart';
 import 'package:smart_rent/models/user/user_model.dart';
+import 'package:smart_rent/screens/auth/verify_phone_otp.dart';
 import 'package:smart_rent/screens/bottom_nav_bar/bottom_nav_bar.dart';
 import 'package:smart_rent/screens/home/homepage_screen.dart';
 import 'package:smart_rent/styles/app_theme.dart';
@@ -152,6 +153,9 @@ class _CompleteSignUpScreenState extends State<CompleteSignUpScreen> {
                     ),
                     child: TextFormField(
                       // maxLength: 9,
+                      onChanged: (value){
+                        print('dialCode==${countryCode.dialCode} code==${countryCode.code} phone==${mobileCont.text}');
+                      },
                       textAlign: TextAlign.left,
                       keyboardType: TextInputType.phone,
                       controller: mobileCont,
@@ -305,6 +309,7 @@ class _CompleteSignUpScreenState extends State<CompleteSignUpScreen> {
                                   widget.description.toString(),
                                   firstNameEditingController.text.trim().toString(),
                                   lastNameEditingController.text.trim().toString(),
+                                userController.isPhoneSelected.value
 
                               ).then((value) {
                                 emailEditingController.clear();
@@ -312,6 +317,8 @@ class _CompleteSignUpScreenState extends State<CompleteSignUpScreen> {
                                 firstNameEditingController.clear();
                                 lastNameEditingController.clear();
                                 mobileCont.clear();
+                                // Get.to(() => VerifyPhoneOtpScreen(phone: '${countryCode.dialCode}${mobileCont.text.trim()}'));
+
                               });
                             } else {
                               print('Email SignUp');
@@ -322,7 +329,8 @@ class _CompleteSignUpScreenState extends State<CompleteSignUpScreen> {
                                   widget.description.toString(),
                                   firstNameEditingController.text.trim().toString(),
                                   lastNameEditingController.text.trim().toString(),
-                                  '${countryCode.dialCode}${mobileCont.text.trim()}'
+                                  '${countryCode.dialCode}${mobileCont.text.trim()}',
+                                  userController.isPhoneSelected.value
                               ).then((value) {
                                 emailEditingController.clear();
                                 passwordEditingController.clear();

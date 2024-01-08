@@ -92,10 +92,54 @@ class AuthController extends GetxController {
     try {
       final AuthResponse response = await AppConfig().supaBaseClient.auth.signUp(phone: phone, password: password);
 
+      print('PHONE AUTH RESPONSE == $response');
+      print('PHONE AUTH USER == ${response.user}');
+      print('PHONE AUTH SESSION == ${response.session}');
+
       print(response.user!.id);
 
     } catch (error) {
-      print('Error inserting into Users: $error');
+      print('Error inserting into AUTHE USERS: $error');
+    }
+
+  }
+
+  Future<void> verifyPhoneOtp(String otp, String phone) async {
+
+    try{
+
+      final AuthResponse response = await AppConfig().supaBaseClient.auth.verifyOTP(
+          token: otp, type: OtpType.sms, phone: phone);
+
+
+      final Session? session = response.session;
+      final User? user = response.user;
+
+
+      print('PHONE VERIFIED RESPONSE == $response');
+      print('PHONE VERIFIED USER == ${user}');
+      print('PHONE VERIFIED SESSION == ${session}');
+
+      if(user != null) {
+        await userStorage.write('isLoggedIn', true).then((value) async{
+          await userStorage.write('accessToken', session!.accessToken).then((value) async{
+            await userStorage.write('userId', user.id).then((value) async{
+              Get.put(UserController()).getUserProfileData().then((value) {
+                Get.off(() => BottomNavBar());
+              });
+            });
+          });
+        });
+
+
+      } else {
+        Fluttertoast.showToast(msg: 'Check your credentials');
+      }
+
+
+    }  catch(error){
+      print('Login Error is $error');
+      Fluttertoast.showToast(msg: error.toString());
     }
 
   }

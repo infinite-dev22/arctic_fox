@@ -5,6 +5,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/config/app_config.dart';
 import 'package:smart_rent/screens/auth/initial_screen.dart';
+import 'package:smart_rent/screens/auth/verify_phone_otp.dart';
 import 'package:smart_rent/screens/bottom_nav_bar/bottom_nav_bar.dart';
 import 'package:smart_rent/screens/home/homepage_screen.dart';
 import 'package:smart_rent/styles/app_theme.dart';
@@ -61,6 +62,8 @@ class _MyAppState extends State<MyApp> {
           ),
           // home: HomePage(),
           home: userStorage.read('isLoggedIn') ? BottomNavBar() : InitialScreen(),
+          // home: VerifyPhoneOtpScreen(phone: '+256785556722'),
+          
         );
 
       },

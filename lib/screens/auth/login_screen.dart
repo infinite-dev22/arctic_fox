@@ -57,8 +57,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
                     AuthTextField(
                       controller: emailController,
-                        hintText: 'Your Email',
+                        hintText: 'Your Username',
                         obscureText: false,
+                      onChanged: (value){
+                        print('${emailController.text.trim().toString()}');
+                      },
                     ),
 
                     SizedBox(height: 1.h,),
@@ -77,9 +80,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         color: AppTheme.primaryColor,
                         function: () async {
 
-                          await userController.loginUser(emailController.text, passwordController.text).then((value) {
-                            emailController.clear();
-                            passwordController.clear();
+                          await userController.loginUser('${emailController.text.trim()}', passwordController.text.trim()).then((value) {
+                            // emailController.clear();
+                            // passwordController.clear();
                           });
 
 

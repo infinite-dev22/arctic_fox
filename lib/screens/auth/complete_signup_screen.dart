@@ -303,8 +303,8 @@ class _CompleteSignUpScreenState extends State<CompleteSignUpScreen> {
                               print('Phone SignUp');
                               await userController.createUserWithPhone(
                                 '${countryCode.dialCode}${mobileCont.text.trim()}',
-                                  emailEditingController.text.trim().toString(),
                                   passwordEditingController.text.trim().toString(),
+                                  emailEditingController.text.trim().toString(),
                                   widget.businessName.toString(),
                                   widget.description.toString(),
                                   firstNameEditingController.text.trim().toString(),

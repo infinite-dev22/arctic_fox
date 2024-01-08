@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/config/app_config.dart';
@@ -25,7 +26,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
 
-  final TextEditingController emailController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
@@ -56,11 +57,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     Text('Sign in', style: AppTheme.appTitleLarge,),
 
                     AuthTextField(
-                      controller: emailController,
+                      controller: usernameController,
                         hintText: 'Your Username',
                         obscureText: false,
                       onChanged: (value){
-                        print('${emailController.text.trim().toString()}');
+                        print('${usernameController.text.trim().toString()}');
                       },
                     ),
 
@@ -79,45 +80,16 @@ class _LoginScreenState extends State<LoginScreen> {
                         title: 'Sign in',
                         color: AppTheme.primaryColor,
                         function: () async {
+                          
+                          if(usernameController.text.length < 10) {
+                            Fluttertoast.showToast(msg: 'short or no username');
+                          } else if (passwordController.text.length < 6){
+                            Fluttertoast.showToast(msg: 'short or no password');
+                          } else {
+                            // Fluttertoast.showToast(msg: 'SUCCESS', backgroundColor: Colors.green);
+                            userController.checkUsernameType(usernameController.text.trim().toString(), passwordController.text.trim().toString());
 
-                          await userController.loginUser('${emailController.text.trim()}', passwordController.text.trim()).then((value) {
-                            // emailController.clear();
-                            // passwordController.clear();
-                          });
-
-
-                          // Get.off(() => BottomNavBar());
-                          // emailController.clear();
-                          // passwordController.clear();
-                          // Get.snackbar('SUCCESS', 'Logged in successfully',
-                          //   titleText: Text(
-                          //     'SUCCESS', style: AppTheme.greenTitle1,),
-                          // );
-
-
-                          // if (_formKey.currentState!.validate()) {
-                          //
-                          //   // userController.insertUser(UserModel(
-                          //   //     email: emailController.text.toString(),
-                          //   //   password: passwordController.text.toString(),
-                          //   // ));
-                          //
-                          //   // await AppConfig().supaBaseClient.from('users')
-                          //   //     .insert(({
-                          //   //   'email': emailController.text.toString(),
-                          //   //   'password': passwordController.text.toString(),
-                          //   // }))
-                          //   //     .then((value) {});
-                          //
-                          //   Get.off(() => BottomNavBar());
-                          //   Get.snackbar('SUCCESS', 'Logged in successfully',
-                          //     titleText: Text(
-                          //       'SUCCESS', style: AppTheme.greenTitle1,),
-                          //   );
-                          //
-                          // } else {
-                          //
-                          // }
+                          }
 
                         }),
                     SizedBox(height: 1.h,),

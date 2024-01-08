@@ -284,17 +284,23 @@ isUserListLoading(true);
     }
   }
 
-  Future<void> loginUser(String email, String password) async {
+  checkUsernameType(String username, String password){
+    bool isEmail = GetUtils.isEmail(username);
+
+    if(isEmail){
+      loginEmailUser(username, password);
+    } else {
+      loginPhoneUser(username, password);
+    }
+
+  }
+
+  Future<void> loginEmailUser(String email, String password) async {
     try{
 
-      // final AuthResponse response = await AppConfig().supaBaseClient.auth.signInWithPassword(
-      //   email: email,
-      //   password: password,
-      // );
-
       final AuthResponse response = await AppConfig().supaBaseClient.auth.signInWithPassword(
-        phone: email,
-        password: password
+        email: email,
+        password: password,
       );
 
       final Session? session = response.session;
@@ -319,12 +325,46 @@ isUserListLoading(true);
         });
 
 
-        // await userStorage.write('isLoggedIn', true);
-        // await userStorage.write('accessToken', session.accessToken);
-        // await userStorage.write('userId', user.id);
-        // await getUserOrganizationData().then((value) {
-        //   Get.off(() => BottomNavBar());
-        // });
+      } else {
+        Fluttertoast.showToast(msg: 'Check your credentials');
+      }
+
+
+    }  catch(error){
+      print('Login Error is $error');
+      Fluttertoast.showToast(msg: error.toString());
+    }
+  }
+
+  Future<void> loginPhoneUser(String phone, String password) async {
+    try{
+
+      final AuthResponse response = await AppConfig().supaBaseClient.auth.signInWithPassword(
+        phone: phone,
+        password: password,
+      );
+
+      final Session? session = response.session;
+      final User? user = response.user;
+
+
+      print(session);
+      print(session!.accessToken);
+      print(user);
+
+      if(user != null) {
+
+        await userStorage.write('isLoggedIn', true).then((value) async{
+          await userStorage.write('accessToken', session.accessToken).then((value) async{
+            await userStorage.write('userId', user.id).then((value) async{
+              Get.put(UserController()).getUserProfileData().then((value) {
+                print('LOGIN ORG ID IS ${userStorage.read('OrganizationId')}');
+                Get.off(() => BottomNavBar());
+              });
+            });
+          });
+        });
+
 
       } else {
         Fluttertoast.showToast(msg: 'Check your credentials');

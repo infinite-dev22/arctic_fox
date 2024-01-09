@@ -1,8 +1,10 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
+import 'package:pinput/pinput.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/controllers/user/auth_controller.dart';
 import 'package:smart_rent/screens/auth/complete_signup_screen.dart';
@@ -15,6 +17,7 @@ import 'package:smart_rent/widgets/app_textfield.dart';
 
 class VerifyPhoneOtpScreen extends StatefulWidget {
   final String phone;
+
   const VerifyPhoneOtpScreen({super.key, required this.phone});
 
   @override
@@ -43,12 +46,10 @@ class _VerifyPhoneOtpScreenState extends State<VerifyPhoneOtpScreen> {
     // TODO: implement initState
     super.initState();
     phoneEditingController = TextEditingController(text: widget.phone);
-
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       // backgroundColor: AppTheme.appBgColor,
       backgroundColor: AppTheme.whiteColor,
@@ -65,69 +66,94 @@ class _VerifyPhoneOtpScreenState extends State<VerifyPhoneOtpScreen> {
 
                   // Center(child: Image.asset('assets/auth/otp.png')),
 
-                  Text('Verify Phone' , style: AppTheme.appTitle2,),
+                  Text('Verify Phone', style: AppTheme.appTitle2,),
+                  Text('Enter OTP sent to ${widget.phone}',
+                    style: AppTheme.blueSubText,),
 
-                  AuthTextField(
-                    isEmail: false,
-                    controller: otpTokenController,
-                    hintText: 'Enter sent OTP',
-                    obscureText: false,
+                  FadeInRight(
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 5.h),
+                      child: Pinput(
+                        length: 6,
+                        controller: otpTokenController,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        validator: (otp) {
+                          return null;
+                        },
+                        // onChanged: (value){
+                        //   setState((){
+                        //     code = value;
+                        //   });
+                        // },
+                        defaultPinTheme: PinTheme(
+                          height: 10.h,
+                          width: 20.w,
+                          decoration: BoxDecoration(
+                            color: AppTheme.appBgColor,
+                            borderRadius: BorderRadius.circular(15.sp),
+                          ),
+                          textStyle: TextStyle(
+                            color: AppTheme.primaryColor,
+                            fontSize: 20.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
 
+                        errorPinTheme: PinTheme(
+                          height: 10.h,
+                          width: 20.w,
+                          decoration: BoxDecoration(
+                            color: AppTheme.appBgColor,
+                            borderRadius: BorderRadius.circular(15.sp),
+                            border: Border.all(
+                              color: Colors.red, width: 2,
+                            ),
+                          ),
+                          textStyle: TextStyle(
+                            color: AppTheme.primaryColor,
+                            fontSize: 20.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
-                  SizedBox(height: 2.h,),
-
-                  AuthTextField(
-                    obscureText: false,
-                    controller: phoneEditingController,
-                    hintText: 'Phone account',
-                    fillColor: AppTheme.appBgColor,
-                    // validator: passwordValidator,
-                  ),
-
-                  // AppDateTextField(
-                  //     controller: emailEditingController,
-                  //     hintText: 'Email', obscureText: false,
-                  //   validator: emailValidator,
-                  // ),
 
 
                   SizedBox(height: 3.h,),
 
-                  AppButton(
-                      title: 'Verify Otp',
-                      color: AppTheme.primaryColor,
-                      function: ()async{
-
-
-                        if(phoneEditingController.text.isEmpty && otpTokenController.text.isEmpty){
-                          Fluttertoast.showToast(msg: 'all fields required');
-                        } else if (phoneEditingController.text.length <12) {
-                          Fluttertoast.showToast(msg: 'Phone is short');
-                        }  else if (otpTokenController.text.length <5) {
-                          Fluttertoast.showToast(msg: 'Otp is short');
-                        } else {
-
-                          await authController.verifyPhoneOtp(
+                  Obx(() {
+                    return AppButton(
+                      isLoading: authController.isVerifyOtpLoading.value,
+                        title: 'Verify Otp',
+                        color: AppTheme.primaryColor,
+                        function: () async {
+                          if (otpTokenController.text.isEmpty) {
+                            Fluttertoast.showToast(msg: 'otp required');
+                          } else if (otpTokenController.text.length < 6) {
+                            Fluttertoast.showToast(msg: 'Otp is short');
+                          } else {
+                            await authController.verifyPhoneOtp(
                               otpTokenController.text.trim().toString(),
-                              phoneEditingController.text.trim().toString(),
-                          );
+                              widget.phone.toString(),
+                            );
 
-                          // await authController.resetUserPassword(
-                          //   widget.phone,
-                          //   otpTokenController.text.trim().toString(),
-                          //   phoneEditingController.text.trim().toString(),
-                          // );
+                            // await authController.resetUserPassword(
+                            //   widget.phone,
+                            //   otpTokenController.text.trim().toString(),
+                            //   phoneEditingController.text.trim().toString(),
+                            // );
 
 
+                          }
                         }
 
-                      }
 
-
-                  ),
+                    );
+                  }),
                   SizedBox(height: 1.h,),
                   Center(child: Bounceable(
-                      onTap: (){
+                      onTap: () {
                         Get.off(() => InitialScreen());
                       },
                       child: Text('back', style: AppTheme.subTextBold,))),

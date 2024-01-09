@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
@@ -60,6 +61,9 @@ class _CreateOrganisationScreenState extends State<CreateOrganisationScreen> {
                     Text('Create Organization' , style: AppTheme.appTitle2,),
 
                     AuthTextField(
+                      inputFormatters: [
+                        LengthLimitingTextInputFormatter(25),
+                      ],
                       controller: businessNameController,
                         hintText: 'Business Name',
                         obscureText: false,
@@ -67,6 +71,9 @@ class _CreateOrganisationScreenState extends State<CreateOrganisationScreen> {
                     SizedBox(height: 1.h,),
 
                     AuthTextField(
+                      inputFormatters: [
+                        LengthLimitingTextInputFormatter(35),
+                      ],
                       controller: descriptionController,
                       hintText: 'Description',
                       obscureText: false,
@@ -82,7 +89,15 @@ class _CreateOrganisationScreenState extends State<CreateOrganisationScreen> {
 
                         if(businessNameController.text.isEmpty && descriptionController.text.isEmpty){
                           Fluttertoast.showToast(msg: 'Fill all Fields');
-                        } else {
+                        } else if (businessNameController.text.length < 5){
+
+                          Fluttertoast.showToast(msg: 'Short business name');
+
+                        } else if (descriptionController.text.length < 5){
+
+                          Fluttertoast.showToast(msg: 'Too short description');
+
+                        }else {
 
                           Get.to(() => CompleteSignUpScreen(
                             businessName: businessNameController.text.toString(),
@@ -96,14 +111,6 @@ class _CreateOrganisationScreenState extends State<CreateOrganisationScreen> {
 
                         }
 
-                        // if(_formKey.currentState!.validate()){
-                        //   Get.to(() => CompleteSignUpScreen(
-                        //     businessName: businessNameController.text.toString(),
-                        //     description: descriptionController.text.toString(),
-                        //   ), transition: Transition.rightToLeftWithFade);
-                        // } else {
-                        //   Fluttertoast.showToast(msg: 'Fill all Fields');
-                        // }
                       },
                     ),
                     SizedBox(height: 1.h,),

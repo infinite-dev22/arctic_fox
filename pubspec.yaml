@@ -79,6 +79,7 @@ dependencies:
 #  fl_country_code_picker: ^0.1.9+1
   fl_country_code_picker: ^0.0.4
   flutter_switch: ^0.3.2
+  pinput: ^3.0.1
 #  multi_dropdown: ^2.1.2
 
 #  supabase: ^1.11.11

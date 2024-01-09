@@ -58,9 +58,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
                     AuthTextField(
                       controller: usernameController,
-                        hintText: 'Your Username',
-                        obscureText: false,
-                      onChanged: (value){
+                      hintText: 'Your Username',
+                      obscureText: false,
+                      onChanged: (value) {
                         print('${usernameController.text.trim().toString()}');
                       },
                     ),
@@ -76,25 +76,29 @@ class _LoginScreenState extends State<LoginScreen> {
 
                     SizedBox(height: 2.h,),
 
-                    AppButton(
-                        title: 'Sign in',
-                        color: AppTheme.primaryColor,
-                        function: () async {
-                          
-                          if(usernameController.text.length < 10) {
-                            Fluttertoast.showToast(msg: 'short or no username');
-                          } else if (passwordController.text.length < 6){
-                            Fluttertoast.showToast(msg: 'short or no password');
-                          } else {
-                            // Fluttertoast.showToast(msg: 'SUCCESS', backgroundColor: Colors.green);
-                            userController.checkUsernameType(usernameController.text.trim().toString(), passwordController.text.trim().toString());
-
-                          }
-
-                        }),
+                    Obx(() {
+                      return AppButton(
+                        isLoading: userController.isLoginLoading.value,
+                          title: 'Sign in',
+                          color: AppTheme.primaryColor,
+                          function: () async {
+                            if (usernameController.text.length < 10) {
+                              Fluttertoast.showToast(
+                                  msg: 'short or no username');
+                            } else if (passwordController.text.length < 6) {
+                              Fluttertoast.showToast(
+                                  msg: 'short or no password');
+                            } else {
+                              // Fluttertoast.showToast(msg: 'SUCCESS', backgroundColor: Colors.green);
+                              userController.checkUsernameType(
+                                  usernameController.text.trim().toString(),
+                                  passwordController.text.trim().toString());
+                            }
+                          });
+                    }),
                     SizedBox(height: 1.h,),
                     Center(child: Bounceable(
-                      onTap: (){
+                      onTap: () {
                         Get.to(() => ForgotPasswordScreen());
                       },
                       child: Text(
@@ -109,7 +113,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       color: AppTheme.darkerColor,
                       function: () async {
                         // Get.to(() => SignUpScreen(), transition: Transition.upToDown);
-                        Get.to(() => CreateOrganisationScreen(), transition: Transition.upToDown);
+                        Get.to(() => CreateOrganisationScreen(),
+                            transition: Transition.upToDown);
                       },
                     ),
 

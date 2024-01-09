@@ -1,5 +1,6 @@
 import 'package:fl_country_code_picker/fl_country_code_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -123,6 +124,9 @@ class _CompleteSignUpScreenState extends State<CompleteSignUpScreen> {
                       SizedBox(
                         width: 42.5.w,
                         child: AuthTextField(
+                          inputFormatters: [
+                            LengthLimitingTextInputFormatter(15),
+                          ],
                           controller: firstNameEditingController,
                           hintText: 'Firstname',
                           obscureText: false,
@@ -133,6 +137,9 @@ class _CompleteSignUpScreenState extends State<CompleteSignUpScreen> {
                       SizedBox(
                         width: 42.5.w,
                         child: AuthTextField(
+                          inputFormatters: [
+                            LengthLimitingTextInputFormatter(15),
+                          ],
                           controller: lastNameEditingController,
                           hintText: 'Lastname',
                           obscureText: false,
@@ -153,8 +160,10 @@ class _CompleteSignUpScreenState extends State<CompleteSignUpScreen> {
                     ),
                     child: TextFormField(
                       // maxLength: 9,
-                      onChanged: (value){
-                        print('dialCode==${countryCode.dialCode} code==${countryCode.code} phone==${mobileCont.text}');
+                      onChanged: (value) {
+                        print('dialCode==${countryCode
+                            .dialCode} code==${countryCode
+                            .code} phone==${mobileCont.text}');
                       },
                       textAlign: TextAlign.left,
                       keyboardType: TextInputType.phone,
@@ -257,8 +266,9 @@ class _CompleteSignUpScreenState extends State<CompleteSignUpScreen> {
                         children: [
                           Text('use '),
                           Obx(() {
-                            return  userController.isPhoneSelected.value == true
-                                ? Text('phone', style: AppTheme.blueSubText,) : Text('email',style: AppTheme.blackSubText, );
+                            return userController.isPhoneSelected.value == true
+                                ? Text('phone', style: AppTheme.blueSubText,)
+                                : Text('email', style: AppTheme.blackSubText,);
                           }),
                           Text(' as Username'),
                         ],
@@ -278,73 +288,97 @@ class _CompleteSignUpScreenState extends State<CompleteSignUpScreen> {
                   // ),
 
 
-                  AppButton(
-                      title: 'Submit',
-                      color: AppTheme.primaryColor,
-                      function: () async {
+                  Obx(() {
+                    return AppButton(
+                      isLoading: userController.isSignUpLoading.value,
+                        title: 'Submit',
+                        color: AppTheme.primaryColor,
+                        function: () async {
+                          print('mobile length ==${countryCode
+                              .dialCode} ${mobileCont.text} is ${mobileCont.text
+                              .length}');
 
-                        print('mobile length ==${countryCode.dialCode} ${mobileCont.text} is ${mobileCont.text.length}');
+                          if (firstNameEditingController.text.isEmpty ||
+                              lastNameEditingController.text.isEmpty ||
+                              emailEditingController.text.isEmpty ||
+                              passwordEditingController.text.isEmpty ||
+                              mobileCont.text.isEmpty
+                          ) {
+                            Fluttertoast.showToast(msg: 'fill in all fields');
+                          }  else {
+                            if (mobileCont.text.length < 9) {
+                              Fluttertoast.showToast(
+                                  msg: 'phone number is short');
+                            } else if (mobileCont.text.length > 11) {
+                              Fluttertoast.showToast(
+                                  msg: 'phone number is long');
+                            } else if (firstNameEditingController.text.length < 3) {
+                              Fluttertoast.showToast(
+                                  msg: 'short first name');
+                            } else if (lastNameEditingController.text.length < 3) {
+                              Fluttertoast.showToast(
+                                  msg: 'short last name');
+                            } else if (passwordEditingController.text.length < 6) {
+                              Fluttertoast.showToast(
+                                  msg: 'short password : min is 6');
+                            }else {
+                              print('EVERYTHING IS OKAY');
+                              if (userController.isPhoneSelected.value ==
+                                  true) {
+                                print('Phone SignUp');
+                                await userController.createUserWithPhone(
+                                    '${countryCode.dialCode}${mobileCont.text
+                                        .trim()}',
+                                    passwordEditingController.text.trim()
+                                        .toString(),
+                                    emailEditingController.text.trim()
+                                        .toString(),
+                                    widget.businessName.toString(),
+                                    widget.description.toString(),
+                                    firstNameEditingController.text.trim()
+                                        .toString(),
+                                    lastNameEditingController.text.trim()
+                                        .toString(),
+                                    userController.isPhoneSelected.value
 
-                        if (firstNameEditingController.text.isEmpty ||
-                            lastNameEditingController.text.isEmpty ||
-                            emailEditingController.text.isEmpty ||
-                            passwordEditingController.text.isEmpty ||
-                        mobileCont.text.isEmpty
-                        ) {
-                          Fluttertoast.showToast(msg: 'fill in all fields');
-                        } else {
-                          if(mobileCont.text.length<9){
-                            Fluttertoast.showToast(msg: 'phone number is short');
-                          } else if(mobileCont.text.length>11){
-                            Fluttertoast.showToast(msg: 'phone number is long');
-                          } else {
-                            print('EVERYTHING IS OKAY');
-                            if(userController.isPhoneSelected.value == true) {
-                              print('Phone SignUp');
-                              await userController.createUserWithPhone(
-                                '${countryCode.dialCode}${mobileCont.text.trim()}',
-                                  passwordEditingController.text.trim().toString(),
-                                  emailEditingController.text.trim().toString(),
-                                  widget.businessName.toString(),
-                                  widget.description.toString(),
-                                  firstNameEditingController.text.trim().toString(),
-                                  lastNameEditingController.text.trim().toString(),
-                                userController.isPhoneSelected.value
+                                ).then((value) {
+                                  emailEditingController.clear();
+                                  passwordEditingController.clear();
+                                  firstNameEditingController.clear();
+                                  lastNameEditingController.clear();
+                                  mobileCont.clear();
+                                  // Get.to(() => VerifyPhoneOtpScreen(phone: '${countryCode.dialCode}${mobileCont.text.trim()}'));
 
-                              ).then((value) {
-                                emailEditingController.clear();
-                                passwordEditingController.clear();
-                                firstNameEditingController.clear();
-                                lastNameEditingController.clear();
-                                mobileCont.clear();
-                                // Get.to(() => VerifyPhoneOtpScreen(phone: '${countryCode.dialCode}${mobileCont.text.trim()}'));
+                                });
+                              } else {
+                                print('Email SignUp');
+                                await userController.createUserWithEmail(
+                                    emailEditingController.text.trim()
+                                        .toString(),
+                                    passwordEditingController.text.trim()
+                                        .toString(),
+                                    widget.businessName.toString(),
+                                    widget.description.toString(),
+                                    firstNameEditingController.text.trim()
+                                        .toString(),
+                                    lastNameEditingController.text.trim()
+                                        .toString(),
+                                    '${countryCode.dialCode}${mobileCont.text
+                                        .trim()}',
+                                    userController.isPhoneSelected.value
+                                ).then((value) {
+                                  emailEditingController.clear();
+                                  passwordEditingController.clear();
+                                  firstNameEditingController.clear();
+                                  lastNameEditingController.clear();
+                                  mobileCont.clear();
 
-                              });
-                            } else {
-                              print('Email SignUp');
-                              await userController.createUserWithEmail(
-                                  emailEditingController.text.trim().toString(),
-                                  passwordEditingController.text.trim().toString(),
-                                  widget.businessName.toString(),
-                                  widget.description.toString(),
-                                  firstNameEditingController.text.trim().toString(),
-                                  lastNameEditingController.text.trim().toString(),
-                                  '${countryCode.dialCode}${mobileCont.text.trim()}',
-                                  userController.isPhoneSelected.value
-                              ).then((value) {
-                                emailEditingController.clear();
-                                passwordEditingController.clear();
-                                firstNameEditingController.clear();
-                                lastNameEditingController.clear();
-                                mobileCont.clear();
-                              });
+                                });
+                              }
                             }
                           }
-
-                        }
-
-
-                      }),
+                        });
+                  }),
 
                   SizedBox(height: 3.h,),
 

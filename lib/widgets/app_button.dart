@@ -35,10 +35,21 @@ class AppButton extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // loader ?? Container(),
-              isLoading == true ?  SpinKitFadingCircle(
-                color: loaderColor ?? Colors.white,
-                size: 20.sp,
-              ) : Center(
+              isLoading == true
+              ? Container(
+             height: 4.h,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle
+                ),
+                child: CircularProgressIndicator.adaptive(
+                  valueColor:AlwaysStoppedAnimation<Color>(Colors.white),
+                ),
+              )
+              //     ?  SpinKitFadingCircle(
+              //   color: loaderColor ?? Colors.white,
+              //   size: 20.sp,
+              // )
+                  : Center(
                 child: width == null ? Text(
                   title,
                   style: textStyle ?? AppTheme.buttonText,

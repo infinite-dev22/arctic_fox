@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/controllers/tenants/tenant_controller.dart';
@@ -124,6 +125,7 @@ class AuthTextField extends StatelessWidget {
   final Function(String)? onChanged;
   final Function()? onTap;
   final TextInputType? keyBoardType;
+  final List<TextInputFormatter>? inputFormatters;
 
   const AuthTextField({
     super.key,
@@ -136,7 +138,7 @@ class AuthTextField extends StatelessWidget {
     this.style,
     this.enabled = true,
     this.onChanged,
-    this.onTap, this.keyBoardType,
+    this.onTap, this.keyBoardType, this.inputFormatters,
   });
 
   @override
@@ -144,6 +146,9 @@ class AuthTextField extends StatelessWidget {
     return SizedBox(
       height: 50,
       child: TextFormField(
+        inputFormatters: inputFormatters ?? [
+          LengthLimitingTextInputFormatter(35),
+        ],
         cursorColor: AppTheme.gray45,
         validator: (val) =>
         val!.isEmpty ? 'Required field, Please fill in.' : null,

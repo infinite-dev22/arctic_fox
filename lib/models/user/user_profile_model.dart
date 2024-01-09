@@ -15,6 +15,8 @@ class UserProfileModel {
   String? firstName;
   String? lastName;
   int? roleId;
+  String? email;
+  String? phone;
 
   UserProfileModel({
     this.id,
@@ -23,6 +25,8 @@ class UserProfileModel {
     this.firstName,
     this.lastName,
     this.roleId,
+    this.email,
+    this.phone
   });
 
   factory UserProfileModel.fromJson(Map<String, dynamic> json) => UserProfileModel(
@@ -32,6 +36,8 @@ class UserProfileModel {
     firstName: json["first_name"],
     lastName: json["last_name"],
     roleId: json["role_id"],
+    email: json["email"],
+    phone: json["phone"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -41,5 +47,7 @@ class UserProfileModel {
     "first_name": firstName,
     "last_name": lastName,
     "role_id": roleId,
+    "email": email,
+    "phone": phone,
   };
 }

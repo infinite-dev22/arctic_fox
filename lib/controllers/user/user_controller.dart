@@ -11,6 +11,7 @@ import 'package:smart_rent/models/role/user_role_model.dart';
 import 'package:smart_rent/models/user/user_model.dart';
 import 'package:smart_rent/models/user/user_profile_model.dart';
 import 'package:smart_rent/screens/auth/initial_screen.dart';
+import 'package:smart_rent/screens/auth/login_screen.dart';
 import 'package:smart_rent/screens/auth/verify_phone_otp.dart';
 import 'package:smart_rent/screens/bottom_nav_bar/bottom_nav_bar.dart';
 import 'package:smart_rent/styles/app_theme.dart';
@@ -32,6 +33,9 @@ class UserController extends GetxController {
 
   var isPhoneSelected = false.obs;
   var isEmailSelected = false.obs;
+  var isLoginLoading = false.obs;
+  var isSignUpLoading = false.obs;
+
 
   RxList<UserModel> userList = <UserModel>[].obs;
   RxList<UserRoleModel> userRoleList = <UserRoleModel>[].obs;
@@ -207,20 +211,25 @@ isUserListLoading(true);
   Future<void> createUserWithEmail(String email, String password, String businessName, String description,
       String firstName, String lastName, String phone, bool isPhone
       ) async {
+    isSignUpLoading(true);
     try {
-      final AuthResponse response = await AppConfig().supaBaseClient.auth.signUp(password: password, email: email, phone: phone);
+      final AuthResponse response = await AppConfig().supaBaseClient.auth.signUp(password: password, email: email,);
 
       print(response.user!.id);
-      createOrganisation(businessName, description, response.user!.id.toString(), firstName, lastName, isPhone, phone);
+      createOrganisation(businessName, description, response.user!.id.toString(), firstName, lastName, isPhone, phone, email);
 
+      isSignUpLoading(false);
 
-    } catch (error) {
+    } on AuthException catch (error) {
+      isSignUpLoading(false);
+      Fluttertoast.showToast(msg: error.message.toString(), backgroundColor: Colors.black);
       print('Error inserting into Users: $error');
     }
   }
 
   Future<void> createUserWithPhone(String phone, String password, String email, String businessName, String description,
       String firstName, String lastName, bool isPhone)async{
+    isSignUpLoading(true);
     try {
       final AuthResponse response = await AppConfig().supaBaseClient.auth.signUp(phone: phone, password: password);
       print('PHONE AUTH RESPONSE == $response');
@@ -228,11 +237,13 @@ isUserListLoading(true);
       print('PHONE AUTH SESSION == ${response.session}');
 
       print(response.user!.id);
-      createOrganisation(businessName, description, response.user!.id.toString(), firstName, lastName, isPhone, phone);
+      createOrganisation(businessName, description, response.user!.id.toString(), firstName, lastName, isPhone, phone, email);
+      isSignUpLoading(false);
 
-
-    } catch (error) {
+    } on AuthException catch (error) {
+      isSignUpLoading(false);
       print('Error inserting into Users: $error');
+      Fluttertoast.showToast(msg: error.message.toString(), backgroundColor: Colors.black);
     }
 
   }
@@ -337,6 +348,7 @@ isUserListLoading(true);
   }
 
   Future<void> loginPhoneUser(String phone, String password) async {
+    isLoginLoading(true);
     try{
 
       final AuthResponse response = await AppConfig().supaBaseClient.auth.signInWithPassword(
@@ -353,6 +365,7 @@ isUserListLoading(true);
       print(user);
 
       if(user != null) {
+        isLoginLoading(false);
 
         await userStorage.write('isLoggedIn', true).then((value) async{
           await userStorage.write('accessToken', session.accessToken).then((value) async{
@@ -367,13 +380,15 @@ isUserListLoading(true);
 
 
       } else {
+        isLoginLoading(false);
         Fluttertoast.showToast(msg: 'Check your credentials');
       }
 
 
-    }  catch(error){
+    } on AuthException catch(error){
+      isLoginLoading(false);
       print('Login Error is $error');
-      Fluttertoast.showToast(msg: error.toString());
+      Fluttertoast.showToast(msg: error.message, backgroundColor: Colors.black);
     }
   }
 
@@ -420,7 +435,7 @@ isUserListLoading(true);
 
 
   Future<void> createOrganisation( String businessName, String description, String userId,
-      String firstName, String lastName, bool isPhone , String phone
+      String firstName, String lastName, bool isPhone , String phone, String email
       ) async {
     try {
       final response = await AppConfig().supaBaseClient.from('organisations').insert([
@@ -441,11 +456,11 @@ isUserListLoading(true);
       // organisationId.value = response.data?.first['id'] ?? -1;
       // print(organisationId.value.toString());
 
-       createUserProfile(businessName, description, userId, firstName, lastName, insertedOrgId).then((value) {
+       createUserProfile(businessName, description, userId, firstName, lastName, insertedOrgId, email, phone).then((value) {
          if(isPhone == true){
            Get.to(() => VerifyPhoneOtpScreen(phone: phone));
          } else {
-           Get.offAll(() => InitialScreen());
+           Get.off(() => LoginScreen());
          }
 
       });
@@ -457,7 +472,7 @@ isUserListLoading(true);
   }
 
   Future<void> createUserProfile( String businessName, String description, String userId,
-      String firstName, String lastName, int organizationId
+      String firstName, String lastName, int organizationId, String email, String phone
       ) async {
     try {
       final response = await AppConfig().supaBaseClient.from('user_profiles').insert([
@@ -468,6 +483,8 @@ isUserListLoading(true);
           "first_name" : firstName,
           "last_name" : lastName,
           "role_id" : 1,
+          "email" : email,
+          "phone" : phone,
         }
       ]);
       // final AuthResponse response = await AppConfig().supaBaseClient.auth.signUp(password: password, email: email,);
@@ -485,7 +502,7 @@ isUserListLoading(true);
     }
   }
 
-   signUpUser(String email, String password, String firstName, String lastName, String businessName, String description,  ) async {
+   signUpUser(String email, String password, String firstName, String lastName, String businessName, String description, String phone ) async {
 
     UserModel userModel = UserModel(email: email, password: password);
 
@@ -507,6 +524,8 @@ isUserListLoading(true);
             "first_name" : firstName,
             "last_name" : lastName,
             "role_id" : 1,
+            "email" : email,
+            "phone" : phone,
           }
         );
 
@@ -530,7 +549,7 @@ isUserListLoading(true);
   }
 
   Future<void> adminCreateUser(String email, String password,
-      String firstName, String lastName, int role
+      String firstName, String lastName, int role, String phone
       ) async {
     try {
       // final response = await AppConfig().supaBaseClient.from('users').upsert([data]);
@@ -540,14 +559,15 @@ isUserListLoading(true);
       // }
       // organisationId.value = response.data?.first['id'] ?? -1;
       print(response.user!.id);
-      adminCreateUserProfile(response.user!.id.toString(), firstName, lastName, role);
+      adminCreateUserProfile(response.user!.id.toString(), firstName, lastName, role, phone, email);
     } catch (error) {
       print('Error inserting into Users: $error');
     }
   }
 
   Future<void> adminCreateUserProfile(String userId,
-      String firstName, String lastName, int role
+      String firstName, String lastName, int role,
+      String? phone, String? email
       ) async {
     try {
 
@@ -558,6 +578,8 @@ isUserListLoading(true);
           "first_name" : firstName,
           "last_name" : lastName,
           "role_id" : role,
+          "email" : email,
+          "phone" : phone,
         }
       ]);
 

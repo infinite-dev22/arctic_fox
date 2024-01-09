@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:smart_rent/config/app_config.dart';
@@ -10,7 +11,37 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthController extends GetxController {
 
+  var isVerifyOtpLoading = false.obs;
+  var isSendOtpLoading = false.obs;
 
+  Future<void> checkUserEmailAvailability(String email) async{
+    isSendOtpLoading(true);
+    try{
+
+     final response = await AppConfig().supaBaseClient.from('user_profiles').select().eq('email', email);
+      final data = response as List<dynamic>;
+     print('The AVAILABLE User IS == ${data}');
+     print(response.length);
+     print(data.length);
+     print(data);
+     print(response);
+      if(data.isNotEmpty){
+        sendResetOtp(email).then((value) {
+          isSendOtpLoading(false);
+        });
+
+        // Fluttertoast.showToast(msg: 'Email $email exists', backgroundColor: Colors.green);
+      } else {
+        isSendOtpLoading(false);
+        Fluttertoast.showToast(msg: 'User not found');
+      }
+
+
+    } catch(e){
+      isSendOtpLoading(false);
+      Fluttertoast.showToast(msg: e.toString());
+    }
+  }
 
   Future<void> sendResetOtp(String email) async{
     try{
@@ -20,8 +51,8 @@ class AuthController extends GetxController {
         Get.snackbar('RESET PASSWORD', 'Otp sent to $email');
       });
 
-    } catch(e){
-      Fluttertoast.showToast(msg: e.toString());
+    } on AuthException catch(e){
+      Fluttertoast.showToast(msg: e.message);
     }
   }
 
@@ -105,6 +136,7 @@ class AuthController extends GetxController {
   }
 
   Future<void> verifyPhoneOtp(String otp, String phone) async {
+    isVerifyOtpLoading(true);
 
     try{
 
@@ -131,15 +163,17 @@ class AuthController extends GetxController {
           });
         });
 
+        isVerifyOtpLoading(false);
 
       } else {
+        isVerifyOtpLoading(false);
         Fluttertoast.showToast(msg: 'Check your credentials');
       }
 
 
-    }  catch(error){
-      print('Login Error is $error');
-      Fluttertoast.showToast(msg: error.toString());
+    } on AuthException catch(error){
+      isVerifyOtpLoading(false);
+      Fluttertoast.showToast(msg: error.message.toString());
     }
 
   }

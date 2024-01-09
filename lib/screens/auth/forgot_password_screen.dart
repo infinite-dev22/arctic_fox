@@ -35,7 +35,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       // backgroundColor: AppTheme.appBgColor,
       backgroundColor: AppTheme.whiteColor,
@@ -52,7 +51,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
                   // Center(child: Image.asset('assets/auth/otp.png')),
 
-                  Text('Forgot Password' , style: AppTheme.appTitle2,),
+                  Text('Forgot Password', style: AppTheme.appTitle2,),
 
                   AuthTextField(
                     isEmail: true,
@@ -71,33 +70,40 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
                   SizedBox(height: 3.h,),
 
-                  AppButton(
-                    title: 'Send Reset Code',
-                    color: AppTheme.primaryColor,
-                    function: ()async{
-                      String email = emailEditingController.text.trim();
-                      bool isValid = isEmailValid(email);
+                  Obx(() {
+                    return AppButton(
+                      isLoading: authController.isSendOtpLoading.value,
+                        title: 'Send Reset Code',
+                        color: AppTheme.primaryColor,
+                        function: () async {
+                          String email = emailEditingController.text.trim();
+                          bool isValid = isEmailValid(email);
 
-                      if(email.isEmpty){
-                        Fluttertoast.showToast(msg: 'Email Required');
-                      } else if (!isValid) {
-                        Fluttertoast.showToast(msg: 'Enter Correct Email');
-                      } else {
-                        print('Okay');
-                        await authController.sendResetOtp(email);
-                        Fluttertoast.showToast(msg: 'Enter New Password');
-                      }
+                          if (email.isEmpty) {
+                            Fluttertoast.showToast(msg: 'Email Required');
+                          } else if (!isValid) {
+                            Fluttertoast.showToast(msg: 'Enter Correct Email');
+                          } else {
+                            await authController.checkUserEmailAvailability(
+                                email);
 
-                      }
+                            // print('Okay');
+                            // await authController.sendResetOtp(email);
+                            // Fluttertoast.showToast(msg: 'Enter New Password');
+
+                          }
+                        }
 
 
-                  ),
+                    );
+                  }),
                   SizedBox(height: 1.h,),
                   Center(child: Bounceable(
-                      onTap: (){
+                      onTap: () {
                         Get.back();
                       },
-                      child: Text('back to login', style: AppTheme.subTextBold,))),
+                      child: Text(
+                        'back to login', style: AppTheme.subTextBold,))),
 
 
                 ],

@@ -186,7 +186,8 @@ class _AddPropertyToEmployeeScreenState extends State<AddPropertyToEmployeeScree
                               passwordEditingController.text.trim().toString(),
                               firstNameEditingController.text.trim().toString(),
                               lastNameEditingController.text.trim().toString(),
-                              userController.addedUserRoleId.value
+                              userController.addedUserRoleId.value,
+                            ''
                           ).then((value) {
                             emailEditingController.clear();
                             passwordEditingController.clear();

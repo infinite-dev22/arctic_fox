@@ -15,19 +15,19 @@ import 'package:smart_rent/widgets/app_button.dart';
 import 'package:smart_rent/widgets/app_password_textfield.dart';
 import 'package:smart_rent/widgets/app_textfield.dart';
 
-class VerifyPhoneOtpScreen extends StatefulWidget {
-  final String phone;
+class VerifyEmailOtpScreen extends StatefulWidget {
+  final String email;
 
-  const VerifyPhoneOtpScreen({super.key, required this.phone});
+  const VerifyEmailOtpScreen({super.key, required this.email});
 
   @override
-  State<VerifyPhoneOtpScreen> createState() => _VerifyPhoneOtpScreenState();
+  State<VerifyEmailOtpScreen> createState() => _VerifyEmailOtpScreenState();
 }
 
-class _VerifyPhoneOtpScreenState extends State<VerifyPhoneOtpScreen> {
+class _VerifyEmailOtpScreenState extends State<VerifyEmailOtpScreen> {
 
   final TextEditingController otpTokenController = TextEditingController();
-  late TextEditingController phoneEditingController;
+  late TextEditingController emailEditingController;
 
   final AuthController authController = Get.put(AuthController());
 
@@ -45,7 +45,7 @@ class _VerifyPhoneOtpScreenState extends State<VerifyPhoneOtpScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    phoneEditingController = TextEditingController(text: widget.phone);
+    emailEditingController = TextEditingController(text: widget.email);
   }
 
   @override
@@ -66,8 +66,8 @@ class _VerifyPhoneOtpScreenState extends State<VerifyPhoneOtpScreen> {
 
                   // Center(child: Image.asset('assets/auth/otp.png')),
 
-                  Text('Verify Phone', style: AppTheme.appTitle2,),
-                  Text('Enter OTP sent to ${widget.phone}',
+                  Text('Verify Email', style: AppTheme.appTitle2,),
+                  Text('Enter OTP sent to ${widget.email}',
                     style: AppTheme.blueSubText,),
 
                   FadeInRight(
@@ -124,7 +124,7 @@ class _VerifyPhoneOtpScreenState extends State<VerifyPhoneOtpScreen> {
 
                   Obx(() {
                     return AppButton(
-                      isLoading: authController.isVerifyPhoneOtpLoading.value,
+                      isLoading: authController.isVerifyEmailOtpLoading.value,
                         title: 'Verify Otp',
                         color: AppTheme.primaryColor,
                         function: () async {
@@ -133,9 +133,9 @@ class _VerifyPhoneOtpScreenState extends State<VerifyPhoneOtpScreen> {
                           } else if (otpTokenController.text.length < 6) {
                             Fluttertoast.showToast(msg: 'Otp is short');
                           } else {
-                            await authController.verifyPhoneOtp(
+                            await authController.verifyEmailOtp(
                               otpTokenController.text.trim().toString(),
-                              widget.phone.toString(),
+                              widget.email.toString(),
                             );
 
                             // await authController.resetUserPassword(

@@ -231,11 +231,13 @@ class _CompleteSignUpScreenState extends State<CompleteSignUpScreen> {
                     // validator: passwordValidator,
                   ),
 
-                  // AppPasswordTextField(
-                  //   controller: confirmPasswordEditingController,
-                  //   hintText: 'Confirm Password',
-                  //   validator: (val) => MatchValidator(errorText: 'passwords do not match').validateMatch(val.toString(), ),
-                  // ),
+                  SizedBox(height: 1.h,),
+
+                  AppPasswordTextField(
+                    controller: confirmPasswordEditingController,
+                    hintText: 'Confirm Password',
+                    fillColor: AppTheme.appBgColor,
+                  ),
 
                   SizedBox(height: 1.h,),
                   Row(
@@ -298,6 +300,7 @@ class _CompleteSignUpScreenState extends State<CompleteSignUpScreen> {
                               .dialCode} ${mobileCont.text} is ${mobileCont.text
                               .length}');
 
+
                           if (firstNameEditingController.text.isEmpty ||
                               lastNameEditingController.text.isEmpty ||
                               emailEditingController.text.isEmpty ||
@@ -321,6 +324,8 @@ class _CompleteSignUpScreenState extends State<CompleteSignUpScreen> {
                             } else if (passwordEditingController.text.length < 6) {
                               Fluttertoast.showToast(
                                   msg: 'short password : min is 6');
+                            } else if (passwordEditingController.text.toString() != confirmPasswordEditingController.text.toString()) {
+                              Fluttertoast.showToast(msg: 'mismatching passwords');
                             }else {
                               print('EVERYTHING IS OKAY');
                               if (userController.isPhoneSelected.value ==
@@ -376,7 +381,9 @@ class _CompleteSignUpScreenState extends State<CompleteSignUpScreen> {
                                 });
                               }
                             }
+
                           }
+
                         });
                   }),
 

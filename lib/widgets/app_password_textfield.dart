@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 
@@ -15,6 +16,7 @@ class AppPasswordTextField extends StatefulWidget {
   final bool enabled;
   final TextStyle? style;
   final Function()? onTap;
+  final List<TextInputFormatter>? inputFormatters;
 
   const AppPasswordTextField({
     super.key,
@@ -26,6 +28,7 @@ class AppPasswordTextField extends StatefulWidget {
     this.style,
     this.enabled = true,
     this.onTap,
+    this.inputFormatters,
   });
 
   @override
@@ -40,6 +43,9 @@ class _AppPasswordTextField extends State<AppPasswordTextField> {
     return SizedBox(
       height: 50,
       child: TextFormField(
+        inputFormatters: widget.inputFormatters ?? [
+          LengthLimitingTextInputFormatter(30),
+        ],
         cursorColor: AppTheme.gray45,
         validator: (val) =>
         val!.isEmpty ? 'Required field, Please fill in.' : null,

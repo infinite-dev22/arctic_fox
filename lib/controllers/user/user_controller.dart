@@ -12,6 +12,7 @@ import 'package:smart_rent/models/user/user_model.dart';
 import 'package:smart_rent/models/user/user_profile_model.dart';
 import 'package:smart_rent/screens/auth/initial_screen.dart';
 import 'package:smart_rent/screens/auth/login_screen.dart';
+import 'package:smart_rent/screens/auth/verify_email_otp.dart';
 import 'package:smart_rent/screens/auth/verify_phone_otp.dart';
 import 'package:smart_rent/screens/bottom_nav_bar/bottom_nav_bar.dart';
 import 'package:smart_rent/styles/app_theme.dart';
@@ -460,7 +461,8 @@ isUserListLoading(true);
          if(isPhone == true){
            Get.to(() => VerifyPhoneOtpScreen(phone: phone));
          } else {
-           Get.off(() => LoginScreen());
+           Get.to(() => VerifyEmailOtpScreen(email: email));
+           // Get.off(() => LoginScreen());
          }
 
       });

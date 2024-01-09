@@ -11,7 +11,8 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthController extends GetxController {
 
-  var isVerifyOtpLoading = false.obs;
+  var isVerifyPhoneOtpLoading = false.obs;
+  var isVerifyEmailOtpLoading = false.obs;
   var isSendOtpLoading = false.obs;
 
   Future<void> checkUserEmailAvailability(String email) async{
@@ -136,7 +137,7 @@ class AuthController extends GetxController {
   }
 
   Future<void> verifyPhoneOtp(String otp, String phone) async {
-    isVerifyOtpLoading(true);
+    isVerifyPhoneOtpLoading(true);
 
     try{
 
@@ -163,19 +164,65 @@ class AuthController extends GetxController {
           });
         });
 
-        isVerifyOtpLoading(false);
+        isVerifyPhoneOtpLoading(false);
 
       } else {
-        isVerifyOtpLoading(false);
+        isVerifyPhoneOtpLoading(false);
         Fluttertoast.showToast(msg: 'Check your credentials');
       }
 
 
     } on AuthException catch(error){
-      isVerifyOtpLoading(false);
+      isVerifyPhoneOtpLoading(false);
       Fluttertoast.showToast(msg: error.message.toString());
     }
 
+  }
+
+
+  Future<void> verifyEmailOtp(String email, String verifyToken) async {
+    isVerifyEmailOtpLoading(true);
+    try{
+
+      final recovery = await AppConfig().supaBaseClient.auth.verifyOTP(
+        email: email,
+        token: verifyToken,
+        type: OtpType.email,
+        // type: OtpType.signup,
+      );
+
+      final Session? session = recovery.session;
+      final User? user = recovery.user;
+
+
+      print(session);
+      print(session!.accessToken);
+      print(user);
+
+      if(user != null) {
+        isVerifyEmailOtpLoading(false);
+        await userStorage.write('isLoggedIn', true).then((value) async{
+          await userStorage.write('accessToken', session.accessToken).then((value) async{
+            await userStorage.write('userId', user.id).then((value) async{
+              Get.put(UserController()).getUserProfileData().then((value) {
+                Get.off(() => BottomNavBar());
+              });
+            });
+          });
+        });
+
+
+      } else {
+        isVerifyEmailOtpLoading(false);
+        Fluttertoast.showToast(msg: 'Check your credentials');
+      }
+
+
+    }  catch(error){
+      isVerifyEmailOtpLoading(false);
+      print('Login Error is $error');
+      Fluttertoast.showToast(msg: error.toString());
+    }
   }
 
 

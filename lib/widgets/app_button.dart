@@ -42,6 +42,7 @@ class AppButton extends StatelessWidget {
                   shape: BoxShape.circle
                 ),
                 child: CircularProgressIndicator.adaptive(
+                  backgroundColor: Colors.white,
                   valueColor:AlwaysStoppedAnimation<Color>(Colors.white),
                 ),
               )

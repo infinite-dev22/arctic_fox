@@ -48,7 +48,7 @@ android {
 
 //        minSdkVersion flutter.minSdkVersion
 //        minSdkVersion 20
-        minSdkVersion 21
+        minSdkVersion 24
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
@@ -67,4 +67,6 @@ flutter {
     source '../..'
 }
 
-dependencies {}
+dependencies {
+    implementation 'com.github.AbedElazizShe:LightCompressor:1.0.0'
+}

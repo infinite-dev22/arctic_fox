@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:ffi';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
@@ -551,7 +553,7 @@ isUserListLoading(true);
   }
 
   Future<void> adminCreateUser(String email, String password,
-      String firstName, String lastName, int role, String phone
+      String firstName, String lastName, int role, String phone,
       ) async {
     try {
       // final response = await AppConfig().supaBaseClient.from('users').upsert([data]);
@@ -560,6 +562,7 @@ isUserListLoading(true);
       //   throw response.toString();
       // }
       // organisationId.value = response.data?.first['id'] ?? -1;
+
       print(response.user!.id);
       adminCreateUserProfile(response.user!.id.toString(), firstName, lastName, role, phone, email);
     } catch (error) {
@@ -569,7 +572,7 @@ isUserListLoading(true);
 
   Future<void> adminCreateUserProfile(String userId,
       String firstName, String lastName, int role,
-      String? phone, String? email
+      String? phone, String? email,
       ) async {
     try {
 
@@ -582,6 +585,7 @@ isUserListLoading(true);
           "role_id" : role,
           "email" : email,
           "phone" : phone,
+          "image" : null,
         }
       ]);
 

@@ -134,8 +134,9 @@ class _VerifyEmailOtpScreenState extends State<VerifyEmailOtpScreen> {
                             Fluttertoast.showToast(msg: 'Otp is short');
                           } else {
                             await authController.verifyEmailOtp(
-                              otpTokenController.text.trim().toString(),
                               widget.email.toString(),
+                              otpTokenController.text.trim().toString(),
+
                             );
 
                             // await authController.resetUserPassword(

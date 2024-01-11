@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:get/get.dart';
@@ -27,7 +28,7 @@ class TenantCardWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
           CircleAvatar(
-              backgroundImage: AssetImage('assets/avatar/rian.jpg'),
+              backgroundImage: CachedNetworkImageProvider(tenantController.tenantList[index].documents!.fileUrl.toString()),
               backgroundColor: AppTheme.primaryColor,
             ),
                 Container(

@@ -26,6 +26,8 @@ class TenantModel extends SmartTenantModel{
   String tenantNo;
   int businessTypeId;
   String description;
+  Documents? documents;
+  int image;
 
   TenantModel({
     required this.id,
@@ -35,6 +37,8 @@ class TenantModel extends SmartTenantModel{
     required this.tenantNo,
     required this.businessTypeId,
     required this.description,
+     this.documents,
+    required this.image
   });
 
   factory TenantModel.fromJson(Map<String, dynamic> json) => TenantModel(
@@ -45,6 +49,8 @@ class TenantModel extends SmartTenantModel{
     tenantNo: json["tenant_no"],
     businessTypeId: json["business_type_id"],
     description: json["description"],
+    documents: json["documents"] == null ? null : Documents.fromJson(json["documents"]),
+    image: json["image"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -55,6 +61,8 @@ class TenantModel extends SmartTenantModel{
     "tenant_no": tenantNo,
     "business_type_id": businessTypeId,
     "description": description,
+    "documents": documents?.toJson(),
+    "image": image,
   };
 
   @override
@@ -84,6 +92,27 @@ class TenantModel extends SmartTenantModel{
   @override
   int getTenantTypeId() { return tenantTypeId;
   }
+
+  @override
+  String getImageDocUrl() { return documents!.fileUrl.toString();
+  }
+}
+
+
+class Documents {
+  String? fileUrl;
+
+  Documents({
+    this.fileUrl,
+  });
+
+  factory Documents.fromJson(Map<String, dynamic> json) => Documents(
+    fileUrl: json["file_url"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "file_url": fileUrl,
+  };
 }
 
 

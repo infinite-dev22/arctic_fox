@@ -56,6 +56,7 @@ abstract class SmartTenantModel {
   String getTenantNo();
   int getBusinessTypeId();
   String getDescription();
+  String getImageDocUrl();
 
 }
 

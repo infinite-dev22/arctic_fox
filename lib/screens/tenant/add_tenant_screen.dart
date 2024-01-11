@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:full_picker/full_picker.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
@@ -36,6 +37,12 @@ class AddTenantScreen extends StatefulWidget {
 }
 
 class _AddTenantScreenState extends State<AddTenantScreen> {
+  File? tenantPic;
+  String? tenantImagePath;
+  String? tenantImageExtension;
+  String? tenantFileName;
+  Uint8List? tenantBytes;
+
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController surnameNameController = TextEditingController();
   final TextEditingController otherNameController = TextEditingController();
@@ -320,6 +327,7 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                           menuItems: tenantController.businessList.value,
                           onChanged: (value) {
                             tenantController.setBusinessTypeId(value!.id);
+                            print('MY Business == ${tenantController.businessTypeId.value}');
                           },
                         );
                       }),
@@ -453,6 +461,57 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                           hintText: 'Description',
                               obscureText: false,
                           ),
+
+                          SizedBox(height: 1.h,),
+
+                          Bounceable(
+                            onTap: (){
+                              FullPicker(
+                                context: context,
+                                file: true,
+                                image: true,
+                                video: true,
+                                videoCamera: true,
+                                imageCamera: true,
+                                voiceRecorder: true,
+                                videoCompressor: false,
+                                imageCropper: false,
+                                multiFile: true,
+                                url: true,
+                                onError: (int value) {
+                                  print(" ----  onError ----=$value");
+                                },
+                                onSelected: (value) async{
+                                  print(" ----  onSelected ----");
+
+                                  setState(() {
+                                    tenantPic = value.file.first;
+                                    tenantImagePath = value.file.first!.path;
+                                    tenantImageExtension = value.file.first!.path.split('.').last;
+                                    tenantFileName = value.file.first!.path.split('/').last;
+                                  });
+                                  tenantBytes = await tenantPic!.readAsBytes();
+                                  print('MY PIC == $tenantPic');
+                                  print('MY path == $tenantImagePath');
+                                  print('MY bytes == $tenantBytes');
+                                  print('MY extension == $tenantImageExtension');
+                                  print('MY FILE NAME == $tenantFileName');
+
+                                },
+                              );
+                            },
+                            child: Container(
+                              width: 90.w,
+                              height: 15.h,
+                              decoration: BoxDecoration(
+                                color: AppTheme.appBgColor,
+                                borderRadius: BorderRadius.circular(15.sp),
+                                image: DecorationImage(image: FileImage(tenantPic ?? File('')),fit: BoxFit.cover)
+                              ),
+                              child: tenantPic == null ? Center(child: Text('Upload profile pic'),) : null,
+                            ),
+                          )
+
 
                           // AppTextField(
                           //   controller: individualDescriptionController,
@@ -676,6 +735,9 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                             individualDescriptionController.text.toString(),
                             myDateOfBirth.value.toString(),
                             tenantController.newGender.value,
+                            tenantBytes!,
+                            tenantImageExtension!,
+                          tenantFileName!
                         );
 
                         Get.back();

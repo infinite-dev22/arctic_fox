@@ -84,24 +84,24 @@ class AppSearchTextField extends StatelessWidget {
           ),
         ),
 
-        SizedBox(height: 2.h,),
-
-        userStorage.read('roleId') == 4 ? Container() : Align(alignment: Alignment.centerRight, child: Bounceable(
-          onTap: function,
-          child: Container(
-            width: 10.w,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10.sp),
-              color: AppTheme.primaryColor,
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Center(
-                child: Icon(Icons.add, color: Colors.white,),
-              ),
-            ),
-          ),
-        )),
+        SizedBox(height: 1.h,),
+        //
+        // userStorage.read('roleId') == 4 ? Container() : Align(alignment: Alignment.centerRight, child: Bounceable(
+        //   onTap: function,
+        //   child: Container(
+        //     width: 10.w,
+        //     decoration: BoxDecoration(
+        //       borderRadius: BorderRadius.circular(10.sp),
+        //       color: AppTheme.primaryColor,
+        //     ),
+        //     child: Padding(
+        //       padding: const EdgeInsets.all(8.0),
+        //       child: Center(
+        //         child: Icon(Icons.add, color: Colors.white,),
+        //       ),
+        //     ),
+        //   ),
+        // )),
 
         Text('Your properties', style: AppTheme.appTitle1,),
         Text('$number ${number >1 ? 'properties' : 'property'}', style: AppTheme.subText,),

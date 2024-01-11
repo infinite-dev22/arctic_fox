@@ -1,6 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
+import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/controllers/tenants/tenant_controller.dart';
@@ -29,9 +30,72 @@ class _PropertyListScreenState extends State<PropertyListScreen> {
 
   final TextEditingController searchController = TextEditingController();
 
+  final _key = GlobalKey<ExpandableFabState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
+      floatingActionButtonLocation: userStorage.read('roleId') == 4 ? null : ExpandableFab.location,
+      floatingActionButton: userStorage.read('roleId') == 4 ? Container() : ExpandableFab(
+        type: ExpandableFabType.up,
+        openButtonBuilder: RotateFloatingActionButtonBuilder(
+          child: Container(
+            width: 10.w,
+            height: 6.h,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10.sp),
+              color: AppTheme.primaryColor,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                child: Icon(Icons.add, color: Colors.white,),
+              ),
+            ),
+          ),
+          fabSize: ExpandableFabSize.regular,
+          foregroundColor: Colors.transparent,
+          backgroundColor: Colors.transparent,
+          shape: const CircleBorder(),
+        ),
+        closeButtonBuilder: RotateFloatingActionButtonBuilder(
+          child: Container(
+            width: 10.w,
+            height: 6.h,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10.sp),
+              color: AppTheme.primaryColor,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                child: Icon(Icons.remove, color: Colors.white,),
+              ),
+            ),
+          ),
+          fabSize: ExpandableFabSize.regular,
+          foregroundColor: Colors.transparent,
+          backgroundColor: Colors.transparent,
+
+        ),
+        children: [
+          FloatingActionButton.small(
+            elevation: 0.0,
+            heroTag: null,
+            child: const Icon(Icons.edit),
+            onPressed: () {},
+            backgroundColor: Colors.transparent,
+          ),
+          FloatingActionButton.small(
+            elevation: 0.0,
+            heroTag: null,
+            child: const Icon(Icons.search),
+            onPressed: () {},
+            backgroundColor: Colors.transparent,
+          ),
+        ],
+      ),
       backgroundColor: AppTheme.whiteColor,
       appBar: AppImageHeader(
         isTitleCentred: true,

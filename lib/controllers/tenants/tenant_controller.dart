@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -21,6 +22,7 @@ import 'package:smart_rent/models/unit/specific_tenant_unit_model.dart';
 import 'package:smart_rent/models/unit/unit_model.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 import 'package:smart_rent/utils/app_prefs.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:uuid/uuid.dart';
 import "package:collection/collection.dart";
 
@@ -344,7 +346,9 @@ setSpecificPaymentBalance(int balance){
     isTenantListLoading(true);
     try {
 
-      final response = await AppConfig().supaBaseClient.from('tenants').select().order('created_at', ascending: false);
+      final response = await AppConfig().supaBaseClient.from('tenants').select(
+        'id, name, tenant_type_id, nation_id, tenant_no, business_type_id, description, documents(file_url), image'
+      ).order('created_at', ascending: false);
       final data = response as List<dynamic>;
       print(response);
       print(response.length);
@@ -356,7 +360,7 @@ setSpecificPaymentBalance(int balance){
           data.map((json) => TenantModel.fromJson(json)).toList());
 
     } catch (error) {
-      print('Error fetching Tenants: $error');
+      print('Error fetching Tenants Rent: $error');
       isTenantListLoading(false);
     }
 
@@ -967,6 +971,7 @@ setSpecificPaymentBalance(int balance){
   Future<void> addPersonalTenant(String name, int organisationId, int tenantTypeId, int businessTypeId, String createdBy,
       int nationId,
       String nin,  String phone, String email, String? description, String dob, String gender,
+     Uint8List imageBytes, String fileExtension, String fileName
       ) async {
 
     String uniqueId = uuid.v4();
@@ -974,7 +979,28 @@ setSpecificPaymentBalance(int balance){
     print('MY ORG ID == $organisationId');
 
     try {
-      final response =  await AppConfig().supaBaseClient.from('tenants').insert(
+      final imagePath = '/${userStorage.read('userId')}/profile';
+      await AppConfig().supaBaseClient.storage.from('tenants').uploadBinary(
+        imagePath,
+        imageBytes,
+        fileOptions: FileOptions(upsert: true, contentType: 'image/$fileExtension'),
+      );
+
+      String imageUrl = AppConfig().supaBaseClient.storage.from('tenants').getPublicUrl(imagePath);
+
+      print({
+        "tenant_no" : uniqueId,
+        "business_type_id" : businessTypeId,
+        "name" : name,
+        "nation_id": nationId,
+        "organisation_id": organisationId,
+        "tenant_type_id": tenantTypeId,
+        "created_by" : createdBy,
+        "description" : description,
+        "image" : null,
+      });
+
+      final tenantResponse =  await AppConfig().supaBaseClient.from('tenants').insert(
           {
             "tenant_no" : uniqueId,
             "business_type_id" : businessTypeId,
@@ -984,19 +1010,9 @@ setSpecificPaymentBalance(int balance){
             "tenant_type_id": tenantTypeId,
             "created_by" : createdBy,
             "description" : description,
+            "image" : null,
           }
       );
-
-      // await AppConfig().supaBaseClient.from('tenants').select('id').like('tenant_no', uniqueId.toString()).execute().then((response) {
-      //   if (response.data == null) {
-      //     print('Error: ${response.toString()}');
-      //   } else {
-      //     // Assuming there is only one row matching the condition
-      //     final tableId = response.data[0]['id'];
-      //
-      //     print('Table ID: $tableId');
-      //   }
-      // });
 
 
       final data = await AppConfig().supaBaseClient.from('tenants')
@@ -1009,8 +1025,6 @@ setSpecificPaymentBalance(int balance){
       await AppConfig().supaBaseClient.from('tenant_profiles').insert(
           {
             "tenant_id" : data.data[0]['id'],
-            // "first_name" : firstName,
-            // "last_name" : lastName,
             "nin" : nin,
             "contact" : phone,
             "email" : email,
@@ -1021,15 +1035,31 @@ setSpecificPaymentBalance(int balance){
 
           }
       );
+
+      final docResponse =  await AppConfig().supaBaseClient.from('documents').insert(
+          {
+            "name" : fileName,
+            "file_url": imageUrl,
+            "extension": fileExtension,
+            "document_type_id": 1,
+            "created_by" : createdBy,
+            "external_key" : data.data[0]['id'],
+          }
+      ).select().execute();
+
+      await AppConfig().supaBaseClient.from('tenants').update(
+          {
+            "image" : docResponse.data[0]['id'],
+          }
+      ).eq('id', data.data[0]['id']);
+
+      print('MY DOCResponse == $docResponse');
+      print('MY DOCID == ${docResponse.data[0]['id']}');
+
+
       // fetchAllTenants();
       Get.back();
-      Get.snackbar('Success', 'Added Company With Contact');
-
-      //     .then((value) {
-      //   // fetchAllTenants();
-      //   Get.back();
-      //   Get.snackbar('Success', 'Added Company With Contact');
-      // });
+      Get.snackbar('Success', 'Added Personal Tenant');
 
 
     } catch (error) {

@@ -1,6 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
+import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/controllers/tenants/tenant_controller.dart';
@@ -27,6 +28,7 @@ class AddScreen extends StatefulWidget {
 class _AddScreenState extends State<AddScreen> {
   final UserController userController = Get.put(UserController(), permanent: true);
 
+  final _key = GlobalKey<ExpandableFabState>();
 
   @override
   void initState() {
@@ -38,6 +40,7 @@ class _AddScreenState extends State<AddScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       backgroundColor: AppTheme.whiteColor,
       appBar: AppImageHeader(
         title: 'assets/auth/logo.png',

@@ -988,17 +988,6 @@ setSpecificPaymentBalance(int balance){
 
       String imageUrl = AppConfig().supaBaseClient.storage.from('tenants').getPublicUrl(imagePath);
 
-      print({
-        "tenant_no" : uniqueId,
-        "business_type_id" : businessTypeId,
-        "name" : name,
-        "nation_id": nationId,
-        "organisation_id": organisationId,
-        "tenant_type_id": tenantTypeId,
-        "created_by" : createdBy,
-        "description" : description,
-        "image" : null,
-      });
 
       final tenantResponse =  await AppConfig().supaBaseClient.from('tenants').insert(
           {
@@ -1250,6 +1239,9 @@ setSpecificPaymentBalance(int balance){
 
 
     try {
+
+
+
       final response =  await AppConfig().supaBaseClient.from('tenants').insert(
           {
             "tenant_no" : uniqueId,

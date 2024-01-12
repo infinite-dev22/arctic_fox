@@ -11,8 +11,8 @@ TenantTypeModel tenantTypeModelFromJson(String str) => TenantTypeModel.fromJson(
 String tenantTypeModelToJson(TenantTypeModel data) => json.encode(data.toJson());
 
 class TenantTypeModel extends SmartTenantTypeModel{
-  int id;
-  String name;
+  int? id;
+  String? name;
 
   TenantTypeModel({
     required this.id,
@@ -30,11 +30,11 @@ class TenantTypeModel extends SmartTenantTypeModel{
   };
 
   @override
-  String getName() { return name;
+  String getName() { return name!;
   }
 
   @override
-  int getId() { return id;
+  int getId() { return id!;
   }
 
 

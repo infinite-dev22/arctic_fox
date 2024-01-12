@@ -319,7 +319,7 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                           hintText: 'Select Tenant Type',
                           menuItems: tenantController.tenantTypeList.value,
                           onChanged: (value) {
-                            tenantController.setTenantTypeId(value!.id);
+                            tenantController.setTenantTypeId(value!.id!);
                           },
                         );
                       }),
@@ -332,7 +332,7 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                           hintText: "Business Type",
                           menuItems: tenantController.businessList.value,
                           onChanged: (value) {
-                            tenantController.setBusinessTypeId(value!.id);
+                            tenantController.setBusinessTypeId(value!.id!);
                             print('MY Business == ${tenantController
                                 .businessTypeId.value}');
                           },
@@ -348,7 +348,7 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                           hintText: 'Country',
                           menuItems: tenantController.nationalityList.value,
                           onChanged: (value) {
-                            tenantController.setNationalityId(value!.id);
+                            tenantController.setNationalityId(value!.id!);
                           },
                         );
                       }),

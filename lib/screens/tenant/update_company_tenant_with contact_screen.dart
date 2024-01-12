@@ -258,7 +258,7 @@ class _UpdateCompanyTenantWithContactScreenState
                           hintText: tenantController.uCompanyBusinessType.value,
                           menuItems: tenantController.businessList.value,
                           onChanged: (value) {
-                            tenantController.setBusinessTypeId(value!.id);
+                            tenantController.setBusinessTypeId(value!.id!);
                           },
                         );
                       }),
@@ -270,7 +270,7 @@ class _UpdateCompanyTenantWithContactScreenState
                           hintText: tenantController.uCompanyCountryType.value,
                           menuItems: tenantController.nationalityList.value,
                           onChanged: (value) {
-                            tenantController.setNationalityId(value!.id);
+                            tenantController.setNationalityId(value!.id!);
                           },
                         );
                       }),

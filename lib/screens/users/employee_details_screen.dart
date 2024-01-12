@@ -73,6 +73,7 @@ class _EmployeeDetailsScreenState extends State<EmployeeDetailsScreen> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -123,60 +124,6 @@ class _EmployeeDetailsScreenState extends State<EmployeeDetailsScreen> {
 
                 ],
               ),
-
-              // SizedBox(height: 2.h,),
-              // Text('Requirements', style: AppTheme.appTitle3,),
-              //
-              // ClipRRect(
-              //   borderRadius: BorderRadius.circular(20.sp),
-              //   child: Container(
-              //     clipBehavior: Clip.antiAlias,
-              //     height: 25.h,
-              //     width: 90.w,
-              //     decoration: BoxDecoration(
-              //       borderRadius: BorderRadius.circular(20.sp),
-              //       boxShadow: [
-              //         BoxShadow(
-              //           color: Colors.grey.withOpacity(0.6),
-              //           spreadRadius: 5,
-              //           blurRadius: 7,
-              //           offset: Offset(0, 3), // changes position of shadow
-              //         ),
-              //       ],
-              //     ),
-              //     child: GoogleMapsWidget(
-              //       mapType: MapType.terrain,
-              //       sourceMarkerIconInfo: MarkerIconInfo(
-              //         infoWindowTitle: 'Ryan Musk',
-              //         onTapInfoWindow: (_) {
-              //           print("Tapped on source info window");
-              //         },
-              //         assetPath: "assets/home/location.png",
-              //       ),
-              //       apiKey: 'AIzaSyCsl_5sdhkwJrPqgYMeYGvyMKyytrLfMG0',
-              //       sourceLatLng: LatLng(
-              //           0.31224095925812473, 32.5845170394287),
-              //       destinationLatLng: LatLng(0, 0),
-              //       zoomControlsEnabled: false,
-              //       zoomGesturesEnabled: true,
-              //       // destinationLatLng:  LatLng(0.31471590184881015, 32.584398366412834),
-              //
-              //     ),
-              //   ),
-              // ),
-
-              // SizedBox(height: 2.h,),
-              // Text('Description', style: AppTheme.appTitle3,),
-              // ReadMoreText(
-              //   'The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact.',
-              //   trimLines: 6,
-              //   colorClickableText: AppTheme.primaryColor,
-              //   trimMode: TrimMode.Line,
-              //   trimCollapsedText: 'Read more',
-              //   trimExpandedText: 'Show less',
-              //   style: AppTheme.descriptionText1,
-              //   moreStyle: AppTheme.descriptionText1,
-              // ),
 
 
               SizedBox(height: 2.h,),

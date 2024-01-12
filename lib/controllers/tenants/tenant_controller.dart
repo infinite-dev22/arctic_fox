@@ -15,7 +15,7 @@ import 'package:smart_rent/models/schedule/tenant_unit_schedule.dart';
 import 'package:smart_rent/models/tenant/property_tenant_model.dart';
 import 'package:smart_rent/models/tenant/property_tenant_schedule.dart';
 import 'package:smart_rent/models/tenant/tenant_model.dart';
-import 'package:smart_rent/models/tenant/tenant_profile_model.dart';
+import 'package:smart_rent/models/tenant/tenant_profile_contact_model.dart';
 import 'package:smart_rent/models/tenant/tenant_type_model.dart';
 import 'package:smart_rent/models/tenant/tenant_unit_model.dart';
 import 'package:smart_rent/models/unit/specific_tenant_unit_model.dart';
@@ -347,7 +347,7 @@ setSpecificPaymentBalance(int balance){
     try {
 
       final response = await AppConfig().supaBaseClient.from('tenants').select(
-        'id, name, tenant_type_id, nation_id, tenant_no, business_type_id, description, documents(file_url), image, business_types(name)'
+        'id, name, tenant_type_id, nation_id, tenant_no, business_type_id, description, documents(file_url), image, business_types(name), tenant_types(name), currency_symbol(country), tenant_profiles(email, date_of_birth, nin, gender, tenant_id, description, contact)'
       ).order('created_at', ascending: false);
       final data = response as List<dynamic>;
       print(response);

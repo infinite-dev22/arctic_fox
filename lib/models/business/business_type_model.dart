@@ -11,7 +11,7 @@ BusinessTypeModel businessTypeModelFromJson(String str) => BusinessTypeModel.fro
 String businessTypeModelToJson(BusinessTypeModel data) => json.encode(data.toJson());
 
 class BusinessTypeModel extends SmartModel{
-  int id;
+  int? id;
   String name;
 
   BusinessTypeModel({
@@ -30,7 +30,7 @@ class BusinessTypeModel extends SmartModel{
   };
 
   @override
-  int getId() { return id;
+  int getId() { return id!;
   }
 
   @override

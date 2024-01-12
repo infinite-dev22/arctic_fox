@@ -1,53 +1,61 @@
 // To parse this JSON data, do
 //
-//     final tenantProfileContactModel = tenantProfileContactModelFromJson(jsonString);
+//     final tenantProfileModel = tenantProfileModelFromJson(jsonString);
 
 import 'dart:convert';
 
-TenantProfileContactModel tenantProfileContactModelFromJson(String str) => TenantProfileContactModel.fromJson(json.decode(str));
+TenantProfileModel tenantProfileModelFromJson(String str) => TenantProfileModel.fromJson(json.decode(str));
 
-String tenantProfileContactModelToJson(TenantProfileContactModel data) => json.encode(data.toJson());
+String tenantProfileModelToJson(TenantProfileModel data) => json.encode(data.toJson());
 
-class TenantProfileContactModel {
+class TenantProfileModel {
   int? id;
-  int? tenantId;
-  String? firstName;
-  String? lastName;
-  String? nin;
-  String? designation;
-  String? contact;
+  DateTime? createdAt;
+  String? createdBy;
   String? email;
+  String? dateOfBirth;
+  String? nin;
+  String? gender;
+  int? tenantId;
+  String? description;
+  String? contact;
 
-  TenantProfileContactModel({
+  TenantProfileModel({
     this.id,
-    this.tenantId,
-    this.firstName,
-    this.lastName,
-    this.nin,
-    this.designation,
-    this.contact,
+    this.createdAt,
+    this.createdBy,
     this.email,
+    this.dateOfBirth,
+    this.nin,
+    this.gender,
+    this.tenantId,
+    this.description,
+    this.contact,
   });
 
-  factory TenantProfileContactModel.fromJson(Map<String, dynamic> json) => TenantProfileContactModel(
+  factory TenantProfileModel.fromJson(Map<String, dynamic> json) => TenantProfileModel(
     id: json["id"],
-    tenantId: json["tenant_id"],
-    firstName: json["first_name"],
-    lastName: json["last_name"],
-    nin: json["nin"],
-    designation: json["designation"],
-    contact: json["contact"],
+    createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
+    createdBy: json["created_by"],
     email: json["email"],
+    dateOfBirth: json["date_of_birth"],
+    nin: json["nin"],
+    gender: json["gender"],
+    tenantId: json["tenant_id"],
+    description: json["description"],
+    contact: json["contact"],
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
-    "tenant_id": tenantId,
-    "first_name": firstName,
-    "last_name": lastName,
-    "nin": nin,
-    "designation": designation,
-    "contact": contact,
+    "created_at": createdAt?.toIso8601String(),
+    "created_by": createdBy,
     "email": email,
+    "date_of_birth": dateOfBirth,
+    "nin": nin,
+    "gender": gender,
+    "tenant_id": tenantId,
+    "description": description,
+    "contact": contact,
   };
 }

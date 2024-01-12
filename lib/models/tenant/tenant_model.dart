@@ -4,7 +4,11 @@
 
 import 'dart:convert';
 
+import 'package:smart_rent/models/business/business_type_model.dart';
+import 'package:smart_rent/models/documents/documents_model.dart';
 import 'package:smart_rent/models/general/smart_model.dart';
+import 'package:smart_rent/models/nationality/nationality_model.dart';
+import 'package:smart_rent/models/tenant/tenant_profile_model.dart';
 
 
 
@@ -13,6 +17,8 @@ import 'package:smart_rent/models/general/smart_model.dart';
 //     final tenantModel = tenantModelFromJson(jsonString);
 
 import 'dart:convert';
+
+import 'package:smart_rent/models/tenant/tenant_type_model.dart';
 
 TenantModel tenantModelFromJson(String str) => TenantModel.fromJson(json.decode(str));
 
@@ -26,9 +32,12 @@ class TenantModel extends SmartTenantModel{
   String tenantNo;
   int businessTypeId;
   String description;
-  Documents? documents;
+  DocumentsModel? documents;
   int image;
-  BusinessTypes? businessTypes;
+  BusinessTypeModel? businessTypes;
+  TenantTypeModel? tenantTypes;
+  NationalityModel? nationalities;
+  List<TenantProfileModel>? tenantProfiles;
 
   TenantModel({
     required this.id,
@@ -40,7 +49,10 @@ class TenantModel extends SmartTenantModel{
     required this.description,
      this.documents,
     required this.image,
-     this.businessTypes
+     this.businessTypes,
+     this.tenantTypes,
+     this.nationalities,
+    this.tenantProfiles
   });
 
   factory TenantModel.fromJson(Map<String, dynamic> json) => TenantModel(
@@ -51,9 +63,14 @@ class TenantModel extends SmartTenantModel{
     tenantNo: json["tenant_no"],
     businessTypeId: json["business_type_id"],
     description: json["description"],
-    documents: json["documents"] == null ? null : Documents.fromJson(json["documents"]),
+    documents: json["documents"] == null ? null : DocumentsModel.fromJson(json["documents"]),
     image: json["image"],
-    businessTypes: json["business_types"] == null ? null : BusinessTypes.fromJson(json["business_types"]),
+    businessTypes: json["business_types"] == null ? null : BusinessTypeModel.fromJson(json["business_types"]),
+    tenantTypes: json["tenant_types"] == null ? null : TenantTypeModel.fromJson(json["tenant_types"]),
+    nationalities: json["currency_symbol"] == null ? null : NationalityModel.fromJson(json["currency_symbol"]),
+    tenantProfiles: json["images"] == null ? [] : List<TenantProfileModel>.from(json["tenant_profiles"]!.map((x) => TenantProfileModel.fromJson(x))),
+
+
   );
 
   Map<String, dynamic> toJson() => {
@@ -67,6 +84,9 @@ class TenantModel extends SmartTenantModel{
     "documents": documents?.toJson(),
     "image": image,
     "business_types": businessTypes?.toJson(),
+    "tenant_types": tenantTypes?.toJson(),
+    "currency_symbol": nationalities?.toJson(),
+    "images": tenantProfiles == null ? [] : List<dynamic>.from(tenantProfiles!.map((x) => x.toJson())),
   };
 
   @override
@@ -104,24 +124,14 @@ class TenantModel extends SmartTenantModel{
   @override
   String getBusinessType() { return businessTypes!.name.toString();
   }
+
+  @override
+  String getTenantType() { return tenantTypes!.name.toString();
+  }
+
 }
 
 
-class Documents {
-  String? fileUrl;
-
-  Documents({
-    this.fileUrl,
-  });
-
-  factory Documents.fromJson(Map<String, dynamic> json) => Documents(
-    fileUrl: json["file_url"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "file_url": fileUrl,
-  };
-}
 
 class BusinessTypes {
   String? name;
@@ -138,6 +148,7 @@ class BusinessTypes {
     "name": name,
   };
 }
+
 
 
 

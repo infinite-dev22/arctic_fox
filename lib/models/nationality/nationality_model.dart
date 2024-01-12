@@ -11,11 +11,11 @@ NationalityModel nationalityModelFromJson(String str) => NationalityModel.fromJs
 String nationalityModelToJson(NationalityModel data) => json.encode(data.toJson());
 
 class NationalityModel extends SmartNationalityModel{
-  int id;
-  String country;
-  String currency;
-  String code;
-  String symbol;
+  int? id;
+  String? country;
+  String? currency;
+  String? code;
+  String? symbol;
 
   NationalityModel({
     required this.id,
@@ -43,11 +43,11 @@ class NationalityModel extends SmartNationalityModel{
 
 
   @override
-  String getCountry() { return country;
+  String getCountry() { return country!;
   }
 
   @override
-  int getId() { return id;
+  int getId() { return id!;
   }
 
   // @override

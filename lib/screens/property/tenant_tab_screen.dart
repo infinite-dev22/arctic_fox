@@ -1382,8 +1382,8 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                           onTap: () {
                             print('MY KEY ${key.runtimeType}');
                             print('MY Value $value');
-                            Get.to(() => TenantDetailsScreen(tenantController: tenantController, tenantId: int.parse(key),),
-                                transition: Transition.rightToLeftWithFade);
+                            // Get.to(() => TenantDetailsScreen(tenantController: tenantController, tenantId: int.parse(key),),
+                            //     transition: Transition.rightToLeftWithFade);
                           },
                           leading: ClipRRect(
                             borderRadius: BorderRadius.circular(10.sp),

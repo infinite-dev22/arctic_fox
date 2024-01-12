@@ -94,6 +94,7 @@ class _TenantListScreenState extends State<TenantListScreen> {
                       return Padding(
                         padding: EdgeInsets.only(top: 1.h),
                         child: SlideInUp(child: TenantCardWidget(
+                          tenantModel: tenant,
                           tenantController: widget.tenantController,
                           index: index,
                           editFunction: () {

@@ -50,7 +50,7 @@ class _PropertyListScreenState extends State<PropertyListScreen> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Center(
-                child: Icon(Icons.add, color: Colors.white,),
+                child: Icon(Icons.menu, color: Colors.white,),
               ),
             ),
           ),
@@ -80,17 +80,24 @@ class _PropertyListScreenState extends State<PropertyListScreen> {
 
         ),
         children: [
-          FloatingActionButton.small(
+          FloatingActionButton.extended(
+
+            splashColor: Colors.transparent,
             elevation: 0.0,
             heroTag: null,
-            child: const Icon(Icons.edit),
-            onPressed: () {},
-            backgroundColor: Colors.transparent,
-          ),
-          FloatingActionButton.small(
-            elevation: 0.0,
-            heroTag: null,
-            child: const Icon(Icons.search),
+            label: Card(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    Icon(Icons.add),
+                    Text('Add Property', style: AppTheme.subTextBold2)
+
+                  ],
+                ),
+              ),
+            ),
+
             onPressed: () {},
             backgroundColor: Colors.transparent,
           ),
@@ -136,8 +143,8 @@ class _PropertyListScreenState extends State<PropertyListScreen> {
                   hintText: 'Search properties, tenants, units',
                   obscureText: false,
                   function: () {
-                    Get.to(() => AddPropertyScreen(),
-                        transition: Transition.downToUp);
+                    // Get.to(() => AddPropertyScreen(),
+                    //     transition: Transition.downToUp);
                   },
                   fillColor: AppTheme.textBoxColor,
                   number: widget.tenantController.propertyModelList.value

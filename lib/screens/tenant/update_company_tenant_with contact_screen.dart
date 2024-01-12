@@ -228,7 +228,7 @@ class _UpdateCompanyTenantWithContactScreenState
         isTitleCentred: true,
       ),
       body: Padding(
-        padding: EdgeInsets.only(left: 5.w, right: 5.w, top: 2.h),
+        padding: EdgeInsets.only(left: 5.w, right: 5.w, top: 1.h),
         child: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
           child: Column(
@@ -236,16 +236,16 @@ class _UpdateCompanyTenantWithContactScreenState
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(
-                'Update Tenant-${widget.tenantModel.id}',
-
+                'Update',
+                overflow: TextOverflow.ellipsis,
+                style: AppTheme.blueAppTitle,
+              ),
+              Text(
+                '${widget.tenantModel.name}'.capitalizeFirst.toString(),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
                 style: AppTheme.appTitle5,
               ),
-              Align(
-                  alignment: Alignment.centerRight,
-                  child: Text(
-                    '',
-                    style: AppTheme.subTextBold1,
-                  )),
 
               Container(
                 child: Form(

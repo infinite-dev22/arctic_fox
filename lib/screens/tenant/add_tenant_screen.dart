@@ -43,6 +43,12 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
   String? tenantFileName;
   Uint8List? tenantBytes;
 
+  File? companyTenantPic;
+  String? companyTenantImagePath;
+  String? companyTenantImageExtension;
+  String? companyTenantFileName;
+  Uint8List? companyTenantBytes;
+
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController surnameNameController = TextEditingController();
   final TextEditingController otherNameController = TextEditingController();
@@ -327,7 +333,8 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                           menuItems: tenantController.businessList.value,
                           onChanged: (value) {
                             tenantController.setBusinessTypeId(value!.id);
-                            print('MY Business == ${tenantController.businessTypeId.value}');
+                            print('MY Business == ${tenantController
+                                .businessTypeId.value}');
                           },
                         );
                       }),
@@ -426,7 +433,7 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                             controller: individualDateOfBirthController,
                             hintText: 'D.O.B',
                             obscureText: false,
-                            onTap: (){
+                            onTap: () {
                               _selectDateOfBirth(context);
                             },
                           ),
@@ -447,7 +454,7 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                             return CustomGenericDropdown<String>(
                               hintText: 'Gender',
                               menuItems: tenantController.genderList.value,
-                              onChanged: (value){
+                              onChanged: (value) {
                                 tenantController.setNewGender(value.toString());
                               },
 
@@ -457,15 +464,15 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                           SizedBox(height: 1.h,),
 
                           AuthTextField(
-                              controller: individualDescriptionController,
-                          hintText: 'Description',
-                              obscureText: false,
+                            controller: individualDescriptionController,
+                            hintText: 'Description',
+                            obscureText: false,
                           ),
 
                           SizedBox(height: 1.h,),
 
                           Bounceable(
-                            onTap: (){
+                            onTap: () {
                               FullPicker(
                                 context: context,
                                 file: true,
@@ -481,22 +488,28 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                                 onError: (int value) {
                                   print(" ----  onError ----=$value");
                                 },
-                                onSelected: (value) async{
+                                onSelected: (value) async {
                                   print(" ----  onSelected ----");
 
                                   setState(() {
                                     tenantPic = value.file.first;
                                     tenantImagePath = value.file.first!.path;
-                                    tenantImageExtension = value.file.first!.path.split('.').last;
-                                    tenantFileName = value.file.first!.path.split('/').last;
+                                    tenantImageExtension = value.file.first!
+                                        .path
+                                        .split('.')
+                                        .last;
+                                    tenantFileName = value.file.first!
+                                        .path
+                                        .split('/')
+                                        .last;
                                   });
                                   tenantBytes = await tenantPic!.readAsBytes();
                                   print('MY PIC == $tenantPic');
                                   print('MY path == $tenantImagePath');
                                   print('MY bytes == $tenantBytes');
-                                  print('MY extension == $tenantImageExtension');
+                                  print(
+                                      'MY extension == $tenantImageExtension');
                                   print('MY FILE NAME == $tenantFileName');
-
                                 },
                               );
                             },
@@ -504,11 +517,14 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                               width: 90.w,
                               height: 15.h,
                               decoration: BoxDecoration(
-                                color: AppTheme.appBgColor,
-                                borderRadius: BorderRadius.circular(15.sp),
-                                image: DecorationImage(image: FileImage(tenantPic ?? File('')),fit: BoxFit.cover)
+                                  color: AppTheme.appBgColor,
+                                  borderRadius: BorderRadius.circular(15.sp),
+                                  image: DecorationImage(
+                                      image: FileImage(tenantPic ?? File('')),
+                                      fit: BoxFit.cover)
                               ),
-                              child: tenantPic == null ? Center(child: Text('Upload profile pic'),) : null,
+                              child: tenantPic == null ? Center(
+                                child: Text('Upload profile pic'),) : null,
                             ),
                           )
 
@@ -586,8 +602,63 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                     : Container();
               }),
 
+              Obx(() {
+                return tenantController.tenantTypeId.value == 2
+                    ? Bounceable(
+                  onTap: () {
+                    FullPicker(
+                      context: context,
+                      file: true,
+                      image: true,
+                      video: true,
+                      videoCamera: true,
+                      imageCamera: true,
+                      voiceRecorder: true,
+                      videoCompressor: false,
+                      imageCropper: false,
+                      multiFile: true,
+                      url: true,
+                      onError: (int value) {
+                        print(" ----  onError ----=$value");
+                      },
+                      onSelected: (value) async {
+                        print(" ----  onSelected ----");
 
-
+                        setState(() {
+                          companyTenantPic = value.file.first;
+                          companyTenantImagePath = value.file.first!.path;
+                          companyTenantImageExtension = value.file.first!
+                              .path
+                              .split('.')
+                              .last;
+                          companyTenantFileName = value.file.first!
+                              .path
+                              .split('/')
+                              .last;
+                        });
+                        companyTenantBytes = await companyTenantPic!.readAsBytes();
+                        print('MY Company PIC == $companyTenantPic');
+                        print('MY Company path == $companyTenantImagePath');
+                        print('MY Company bytes == $companyTenantBytes');
+                        print('MY Company extension == $companyTenantImageExtension');
+                        print('MY Company FILE NAME == $companyTenantFileName');
+                      },
+                    );
+                  },
+                  child: Container(
+                    width: 90.w,
+                    height: 15.h,
+                    decoration: BoxDecoration(
+                        color: AppTheme.appBgColor,
+                        borderRadius: BorderRadius.circular(15.sp),
+                        image: DecorationImage(image: FileImage(
+                            companyTenantPic ?? File('')), fit: BoxFit.cover)
+                    ),
+                    child: companyTenantPic == null ? Center(
+                      child: Text('Upload profile pic'),) : null,
+                  ),
+                ) : Container();
+              }),
 
 
               SizedBox(
@@ -711,20 +782,20 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
               AppButton(
                 title: 'Submit',
                 color: AppTheme.primaryColor,
-                function: () async{
-
+                function: () async {
                   if (tenantController.tenantTypeId.value == 0) {
                     Fluttertoast.showToast(msg: 'Select Tenant Type');
                   } else {
                     if (tenantController.tenantTypeId.value == 1) {
-                      if (_formKey.currentState!.validate() && _individualFormKey.currentState!.validate()) {
+                      if (_formKey.currentState!.validate() &&
+                          _individualFormKey.currentState!.validate()) {
                         // Get.snackbar(
                         //     'Posting Individual', 'Adding Individual Tenant');
 
                         await tenantController.addPersonalTenant(
                             "${firstNameController.text
                                 .trim()} ${surnameNameController.text.trim()}",
-                          userStorage.read('OrganizationId'),
+                            userStorage.read('OrganizationId'),
                             tenantController.tenantTypeId.value,
                             tenantController.businessTypeId.value,
                             userStorage.read('userProfileId'),
@@ -737,7 +808,7 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                             tenantController.newGender.value,
                             tenantBytes!,
                             tenantImageExtension!,
-                          tenantFileName!
+                            tenantFileName!
                         );
 
                         Get.back();
@@ -754,60 +825,60 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                         Fluttertoast.showToast(msg: 'Fill required fields');
                       }
                     } else {
-                      if(tenantController.isAddContactPerson.isFalse){
-
+                      if (tenantController.isAddContactPerson.isFalse) {
                         if (_formKey.currentState!.validate() &&
                             _companyFormKey.currentState!.validate()) {
                           // Get.snackbar(
                           //     'Posting Company', 'No Company Contact');
                           await tenantController.addCompanyTenantWithoutContact(
-                              companyNameController.text.toString(),
+                            companyNameController.text.toString(),
                             userStorage.read('OrganizationId'),
-                              tenantController.tenantTypeId.value,
+                            tenantController.tenantTypeId.value,
                             tenantController.businessTypeId.value,
-                              userStorage.read('userProfileId'),
-                              tenantController.nationalityId.value,
+                            userStorage.read('userProfileId'),
+                            tenantController.nationalityId.value,
                             companyDescriptionController.text.toString(),
+                              companyTenantBytes!,
+                              companyTenantImageExtension!,
+                              companyTenantFileName!
                           );
 
                           Get.back();
-
                         } else {
                           Fluttertoast.showToast(msg: 'Fill in fields');
                         }
-
                       } else {
                         if (_formKey.currentState!.validate() &&
-                            _companyFormKey.currentState!.validate() && _contactFormKey.currentState!.validate()) {
+                            _companyFormKey.currentState!.validate() &&
+                            _contactFormKey.currentState!.validate()) {
                           // Get.snackbar(
                           //     'Posting Company', 'With Company Contact');
                           await tenantController.addCompanyTenantWithContact(
-                              companyNameController.text.toString(),
+                            companyNameController.text.toString(),
                             userStorage.read('OrganizationId'),
-                              tenantController.tenantTypeId.value,
+                            tenantController.tenantTypeId.value,
                             tenantController.businessTypeId.value,
-                              userStorage.read('userProfileId'),
-                              tenantController.nationalityId.value,
-                              contactFirstNameController.text.trim().toString(),
+                            userStorage.read('userProfileId'),
+                            tenantController.nationalityId.value,
+                            contactFirstNameController.text.trim().toString(),
                             contactLastNameController.text.trim().toString(),
                             contactNinController.text.trim().toString(),
                             contactDesignationController.text.trim().toString(),
                             contactPhoneController.text.trim().toString(),
                             contactEmailController.text.trim().toString(),
                             companyDescriptionController.text.toString(),
+                              companyTenantBytes!,
+                              companyTenantImageExtension!,
+                              companyTenantFileName!
                           );
 
                           Get.back();
-
                         } else {
                           Fluttertoast.showToast(msg: 'Fill in fields');
                         }
                       }
-
                     }
                   }
-
-
                 },
               ),
 

@@ -266,7 +266,7 @@ class _UpdateIndividualTenantScreenState
         isTitleCentred: true,
       ),
       body: Padding(
-        padding: EdgeInsets.only(left: 5.w, right: 5.w, top: 2.h),
+        padding: EdgeInsets.only(left: 5.w, right: 5.w, top: 1.h),
         child: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
           child: Column(
@@ -274,7 +274,14 @@ class _UpdateIndividualTenantScreenState
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(
-                'Update Tenant',
+                'Update',
+                overflow: TextOverflow.ellipsis,
+                style: AppTheme.blueAppTitle,
+              ),
+              Text(
+                '${widget.tenantModel.name}'.capitalizeFirst.toString(),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
                 style: AppTheme.appTitle5,
               ),
 

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_data_table/easy_data_table.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
@@ -6,6 +7,7 @@ import 'package:google_maps_widget/google_maps_widget.dart';
 import 'package:readmore/readmore.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/controllers/tenants/tenant_controller.dart';
+import 'package:smart_rent/models/tenant/tenant_model.dart';
 import 'package:smart_rent/screens/tenant/all_payment_schedule_screen.dart';
 import 'package:smart_rent/screens/tenant/specific_payment_schedule_screen.dart';
 import 'package:smart_rent/models/tenant/property_tenant_schedule.dart';
@@ -18,13 +20,14 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:wtf_sliding_sheet/wtf_sliding_sheet.dart';
 
 class TenantDetailsScreen extends StatefulWidget {
+  final TenantModel tenantModel;
   final TenantController tenantController;
 
   // final int? tenantUnitId;
   final int tenantId;
 
   const TenantDetailsScreen(
-      {super.key, required this.tenantController, required this.tenantId,});
+      {super.key, required this.tenantController, required this.tenantId, required this.tenantModel,});
 
   @override
   State<TenantDetailsScreen> createState() => _TenantDetailsScreenState();
@@ -75,8 +78,7 @@ class _TenantDetailsScreenState extends State<TenantDetailsScreen> {
                     child: Row(
                       children: [
                         CircleAvatar(
-                          backgroundImage: AssetImage(
-                            'assets/avatar/rian.jpg',),
+                          backgroundImage: CachedNetworkImageProvider(widget.tenantModel.documents!.fileUrl.toString()),
                           radius: 7.5.w,
                         ),
                         SizedBox(width: 5.w,),
@@ -85,8 +87,8 @@ class _TenantDetailsScreenState extends State<TenantDetailsScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                widget.tenantController.specificTenantName.value, style: AppTheme.appTitle3,),
-                              Text('TENANT PRO', style: AppTheme.subText,),
+                                widget.tenantModel.name, style: AppTheme.appTitle3,),
+                              Text(widget.tenantModel.businessTypes!.name.toString(), style: AppTheme.subText,),
                             ],
                           ),
                         )

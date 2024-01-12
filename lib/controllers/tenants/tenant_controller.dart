@@ -342,12 +342,12 @@ setSpecificPaymentBalance(int balance){
   }
 
 
-  void fetchAllTenants() async {
+  Future<void> fetchAllTenants() async {
     isTenantListLoading(true);
     try {
 
       final response = await AppConfig().supaBaseClient.from('tenants').select(
-        'id, name, tenant_type_id, nation_id, tenant_no, business_type_id, description, documents(file_url), image'
+        'id, name, tenant_type_id, nation_id, tenant_no, business_type_id, description, documents(file_url), image, business_types(name)'
       ).order('created_at', ascending: false);
       final data = response as List<dynamic>;
       print(response);
@@ -960,12 +960,15 @@ setSpecificPaymentBalance(int balance){
   // }
 
   deleteTenant(int id) async{
-
+    await AppConfig().supaBaseClient
+        .from('tenant_profiles')
+        .delete()
+        .match({ 'tenant_id': id });
     await AppConfig().supaBaseClient
         .from('tenants')
         .delete()
         .match({ 'id': id });
-    fetchAllTenants();
+    // fetchAllTenants();
   }
 
   Future<void> addPersonalTenant(String name, int organisationId, int tenantTypeId, int businessTypeId, String createdBy,
@@ -979,14 +982,14 @@ setSpecificPaymentBalance(int balance){
     print('MY ORG ID == $organisationId');
 
     try {
-      final imagePath = '/${userStorage.read('userId')}/profile';
-      await AppConfig().supaBaseClient.storage.from('tenants').uploadBinary(
-        imagePath,
-        imageBytes,
-        fileOptions: FileOptions(upsert: true, contentType: 'image/$fileExtension'),
-      );
-
-      String imageUrl = AppConfig().supaBaseClient.storage.from('tenants').getPublicUrl(imagePath);
+      // final imagePath = '/${userStorage.read('userId')}/profile';
+      // await AppConfig().supaBaseClient.storage.from('tenants').uploadBinary(
+      //   imagePath,
+      //   imageBytes,
+      //   fileOptions: FileOptions(upsert: true, contentType: 'image/$fileExtension'),
+      // );
+      //
+      // String imageUrl = AppConfig().supaBaseClient.storage.from('tenants').getPublicUrl(imagePath);
 
 
       final tenantResponse =  await AppConfig().supaBaseClient.from('tenants').insert(
@@ -1025,12 +1028,21 @@ setSpecificPaymentBalance(int balance){
           }
       );
 
+      final imagePath = '/${data.data[0]['id']}/profile';
+      await AppConfig().supaBaseClient.storage.from('tenants').uploadBinary(
+        imagePath,
+        imageBytes,
+        fileOptions: FileOptions(upsert: false, contentType: 'image/$fileExtension'),
+      );
+
+      String imageUrl = AppConfig().supaBaseClient.storage.from('tenants').getPublicUrl(imagePath);
+
       final docResponse =  await AppConfig().supaBaseClient.from('documents').insert(
           {
             "name" : fileName,
             "file_url": imageUrl,
             "extension": fileExtension,
-            "document_type_id": 1,
+            "document_type_id": 2,
             "created_by" : createdBy,
             "external_key" : data.data[0]['id'],
           }
@@ -1040,15 +1052,17 @@ setSpecificPaymentBalance(int balance){
           {
             "image" : docResponse.data[0]['id'],
           }
-      ).eq('id', data.data[0]['id']);
+      ).eq('id', data.data[0]['id']).then((value) async{
+        await fetchAllTenants().then((value) {
+          print('MY DOCResponse == $docResponse');
+          print('MY DOCID == ${docResponse.data[0]['id']}');
 
-      print('MY DOCResponse == $docResponse');
-      print('MY DOCID == ${docResponse.data[0]['id']}');
+          Get.back();
+          Get.snackbar('Success', 'Added Personal Tenant');
+        });
+      });
 
 
-      // fetchAllTenants();
-      Get.back();
-      Get.snackbar('Success', 'Added Personal Tenant');
 
 
     } catch (error) {
@@ -1154,6 +1168,7 @@ setSpecificPaymentBalance(int balance){
   Future<void> addCompanyTenantWithContact(String name, int organisationId, int tenantTypeId, int businessTypeId, String createdBy,
       int nationId, String? contactFirstName, String? contactLastName,
       String? contactNin, String? contactDesignation, String? contactPhone, String? contactEmail, String? description,
+      Uint8List imageBytes, String fileExtension, String fileName
       ) async {
 
     String uniqueId = uuid.v4();
@@ -1171,18 +1186,7 @@ setSpecificPaymentBalance(int balance){
             "created_by" : createdBy,
             "description" : description,
           }
-      );
-
-      // await AppConfig().supaBaseClient.from('tenants').select('id').like('tenant_no', uniqueId.toString()).execute().then((response) {
-      //   if (response.data == null) {
-      //     print('Error: ${response.toString()}');
-      //   } else {
-      //     // Assuming there is only one row matching the condition
-      //     final tableId = response.data[0]['id'];
-      //
-      //     print('Table ID: $tableId');
-      //   }
-      // });
+      ).select().execute();
 
 
       final data = await AppConfig().supaBaseClient.from('tenants')
@@ -1191,6 +1195,41 @@ setSpecificPaymentBalance(int balance){
 
       print(data);
       print(data.data[0]['id']);
+
+
+      final imagePath = '/${response.data[0]['id']}/profile';
+      await AppConfig().supaBaseClient.storage.from('tenants').uploadBinary(
+        imagePath,
+        imageBytes,
+        fileOptions: FileOptions(upsert: false, contentType: 'image/$fileExtension'),
+      );
+
+      String imageUrl = AppConfig().supaBaseClient.storage.from('tenants').getPublicUrl(imagePath);
+
+      final docResponse =  await AppConfig().supaBaseClient.from('documents').insert(
+          {
+            "name" : fileName,
+            "file_url": imageUrl,
+            "extension": fileExtension,
+            "document_type_id": 2,
+            "created_by" : createdBy,
+            "external_key" : response.data[0]['id'],
+          }
+      ).select().execute();
+
+      await AppConfig().supaBaseClient.from('tenants').update(
+          {
+            "image" : docResponse.data[0]['id'],
+          }
+      ).eq('id', response.data[0]['id']).then((value) async{
+        await fetchAllTenants().then((value) {
+          print('MY DOCResponse == $docResponse');
+          print('MY DOCID == ${docResponse.data[0]['id']}');
+          //
+          // Get.back();
+          // Get.snackbar('Success', 'Added Company Tenant');
+        });
+      });
 
       if(isAddContactPerson.isFalse) {
         // fetchAllTenants();
@@ -1213,14 +1252,6 @@ setSpecificPaymentBalance(int balance){
               "created_by" : userStorage.read('userProfileId'),
             }
         );
-        // fetchAllTenants();
-        Get.back();
-        // Get.snackbar('Success', 'Added Company With Contact');
-
-        //     .then((value) {
-        //   Get.back();
-        //   Get.snackbar('Success', 'Added Company With Contact');
-        // });
 
       }
 
@@ -1232,7 +1263,7 @@ setSpecificPaymentBalance(int balance){
 
 
   Future<void> addCompanyTenantWithoutContact(String name, int organisationId, int tenantTypeId, int businessTypeId, String createdBy,
-      int nationId, String? description,
+      int nationId, String? description, Uint8List imageBytes, String fileExtension, String fileName
       ) async {
 
     String uniqueId = uuid.v4();
@@ -1253,20 +1284,42 @@ setSpecificPaymentBalance(int balance){
             "created_by" : createdBy,
             "description" : description,
           }
+      ).select().execute();
+
+
+      final imagePath = '/${response.data[0]['id']}/profile';
+      await AppConfig().supaBaseClient.storage.from('tenants').uploadBinary(
+        imagePath,
+        imageBytes,
+        fileOptions: FileOptions(upsert: false, contentType: 'image/$fileExtension'),
       );
-      // fetchAllTenants();
-      Get.back();
-      Get.snackbar('Success', 'Added Company Without Contact');
 
+      String imageUrl = AppConfig().supaBaseClient.storage.from('tenants').getPublicUrl(imagePath);
 
+      final docResponse =  await AppConfig().supaBaseClient.from('documents').insert(
+          {
+            "name" : fileName,
+            "file_url": imageUrl,
+            "extension": fileExtension,
+            "document_type_id": 2,
+            "created_by" : createdBy,
+            "external_key" : response.data[0]['id'],
+          }
+      ).select().execute();
 
-      //     .then((value) {
-      //   Get.back();
-      //   Get.snackbar('Success', 'Added Company Without Contact');
-      // });
+      await AppConfig().supaBaseClient.from('tenants').update(
+          {
+            "image" : docResponse.data[0]['id'],
+          }
+      ).eq('id', response.data[0]['id']).then((value) async{
+        await fetchAllTenants().then((value) {
+          print('MY DOCResponse == $docResponse');
+          print('MY DOCID == ${docResponse.data[0]['id']}');
 
-
-
+          Get.back();
+          Get.snackbar('Success', 'Added Company Without Contact Tenant');
+        });
+      });
 
     } catch (error) {
       print('Error adding tenant: $error');

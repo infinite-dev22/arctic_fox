@@ -68,7 +68,7 @@ class TenantModel extends SmartTenantModel{
     businessTypes: json["business_types"] == null ? null : BusinessTypeModel.fromJson(json["business_types"]),
     tenantTypes: json["tenant_types"] == null ? null : TenantTypeModel.fromJson(json["tenant_types"]),
     nationalities: json["currency_symbol"] == null ? null : NationalityModel.fromJson(json["currency_symbol"]),
-    tenantProfiles: json["images"] == null ? [] : List<TenantProfileModel>.from(json["tenant_profiles"]!.map((x) => TenantProfileModel.fromJson(x))),
+    tenantProfiles: json["tenant_profiles"] == null ? [] : List<TenantProfileModel>.from(json["tenant_profiles"]!.map((x) => TenantProfileModel.fromJson(x))),
 
 
   );
@@ -86,7 +86,7 @@ class TenantModel extends SmartTenantModel{
     "business_types": businessTypes?.toJson(),
     "tenant_types": tenantTypes?.toJson(),
     "currency_symbol": nationalities?.toJson(),
-    "images": tenantProfiles == null ? [] : List<dynamic>.from(tenantProfiles!.map((x) => x.toJson())),
+    "tenant_profiles": tenantProfiles == null ? [] : List<dynamic>.from(tenantProfiles!.map((x) => x.toJson())),
   };
 
   @override

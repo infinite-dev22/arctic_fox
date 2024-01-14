@@ -60,6 +60,7 @@ abstract class SmartTenantModel {
   String getBusinessType();
   String getTenantType();
 
+
 }
 
 
@@ -131,6 +132,8 @@ abstract class SmartPropertyModel {
   int getCategoryTypeId();
   String getLocation();
   String getSquareMeters();
+  String getMainImage();
+  String getImageDocUrl();
 
 
 }

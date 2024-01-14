@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/models/property/property_model.dart';
@@ -41,6 +42,11 @@ class PropertyCardWidget extends StatelessWidget {
             children: [
               Expanded(
                 flex: 1,
+                // child: CachedNetworkImage(
+                //     imageUrl: propertyModel.mainImage.toString(),
+                //   fit: BoxFit.cover,
+                //   height: 25.h,
+                // ),
                   child: Image.asset('assets/property/mall1.jpg',
                     fit: BoxFit.cover,
                     height: 25.h,

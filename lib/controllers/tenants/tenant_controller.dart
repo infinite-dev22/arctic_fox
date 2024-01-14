@@ -88,6 +88,7 @@ class TenantController extends GetxController {
   var isSpecificUnitsLoading = false.obs;
   var isPropertyModelListLoading = false.obs;
   var selectedPropertyId = 0.obs;
+  var isSpecificTenantProfileContactsLoading = false.obs;
 
 
 
@@ -391,7 +392,7 @@ setSpecificPaymentBalance(int balance){
   }
 
   void fetchSpecificProfileContacts(int tenantId) async {
-
+    isSpecificTenantProfileContactsLoading(true);
     try {
 
       final response = await AppConfig().supaBaseClient.from('tenant_profile_contacts').select().eq('tenant_id', tenantId).order('created_at', ascending: false);
@@ -400,11 +401,12 @@ setSpecificPaymentBalance(int balance){
       print(response.length);
       print(data.length);
       print(data);
-
+      isSpecificTenantProfileContactsLoading(false);
       return specificTenantProfileContactList.assignAll(
           data.map((json) => TenantProfileContactModel.fromJson(json)).toList());
 
     } catch (error) {
+      isSpecificTenantProfileContactsLoading(false);
       print('Error fetching specific TENANT Profile Contacts: $error');
     }
 
@@ -1893,7 +1895,9 @@ setSpecificPaymentBalance(int balance){
     isPropertyModelListLoading(true);
     try {
 
-      final response = await AppConfig().supaBaseClient.from('properties').select()
+      final response = await AppConfig().supaBaseClient.from('properties').select(
+        'id, name, description, organisation_id, square_meters, property_type_id, category_type_id, location, main_image'
+      )
           .eq('organisation_id', userStorage.read('OrganizationId'));
       final data = response as List<dynamic>;
       print('my Properties are $response');
@@ -1906,7 +1910,7 @@ setSpecificPaymentBalance(int balance){
           data.map((json) => PropertyModel.fromJson(json)).toList());
 
     } catch (error) {
-      print('Error fetching User Roles: $error');
+      print('Error fetching Specific Organization Properties: $error');
       isPropertyModelListLoading(false);
     }
 

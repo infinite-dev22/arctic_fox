@@ -4,6 +4,7 @@
 
 import 'dart:convert';
 
+import 'package:smart_rent/models/documents/documents_model.dart';
 import 'package:smart_rent/models/general/smart_model.dart';
 
 PropertyModel propertyModelFromJson(String str) => PropertyModel.fromJson(json.decode(str));
@@ -19,6 +20,8 @@ class PropertyModel extends SmartPropertyModel {
   int? propertyTypeId;
   int? categoryTypeId;
   String? location;
+  String? mainImage;
+  DocumentsModel? documents;
 
   PropertyModel({
     this.id,
@@ -29,6 +32,8 @@ class PropertyModel extends SmartPropertyModel {
     this.propertyTypeId,
     this.categoryTypeId,
     this.location,
+    this.mainImage,
+    this.documents,
   });
 
   factory PropertyModel.fromJson(Map<String, dynamic> json) => PropertyModel(
@@ -40,6 +45,9 @@ class PropertyModel extends SmartPropertyModel {
     propertyTypeId: json["property_type_id"],
     categoryTypeId: json["category_type_id"],
     location: json["location"],
+    mainImage: json["main_image"],
+    documents: json["documents"] == null ? null : DocumentsModel.fromJson(json["documents"]),
+
   );
 
   Map<String, dynamic> toJson() => {
@@ -51,6 +59,9 @@ class PropertyModel extends SmartPropertyModel {
     "property_type_id": propertyTypeId,
     "category_type_id": categoryTypeId,
     "location": location,
+    "main_image": mainImage,
+    "documents": documents?.toJson(),
+
   };
 
   @override
@@ -82,5 +93,13 @@ class PropertyModel extends SmartPropertyModel {
 
   @override
   String getSquareMeters() { return squareMeters!;
+  }
+
+  @override
+  String getMainImage() { return mainImage.toString();
+  }
+
+  @override
+  String getImageDocUrl() { return documents!.fileUrl.toString();
   }
 }

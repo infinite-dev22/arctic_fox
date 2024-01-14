@@ -1,9 +1,13 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smart_rent/config/app_config.dart';
+import 'package:smart_rent/controllers/tenants/tenant_controller.dart';
 import 'package:smart_rent/models/property/property_category_model.dart';
 import 'package:smart_rent/models/property/property_type_model.dart';
 import 'package:smart_rent/styles/app_theme.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class PropertyController extends GetxController {
 
@@ -77,7 +81,7 @@ class PropertyController extends GetxController {
 
   addProperty(String name, String description, int organisationId, int propertyTypeId,
       categoryTypeId, String location, String squareMeters,
-      String createdBy, String updatedBy
+      String createdBy, String updatedBy, Uint8List imageBytes, String fileExtension, String fileName
       ) async {
 
     try {
@@ -92,17 +96,49 @@ class PropertyController extends GetxController {
             "square_meters" : squareMeters,
             "created_by" : createdBy,
             "updated_by" : updatedBy,
+            "main_image" : null,
           }
-      ).then((property) {
+      ).select().execute();
+
+
+      final imagePath = '/${response.data[0]['id']}/property';
+      await AppConfig().supaBaseClient.storage.from('properties').uploadBinary(
+        imagePath,
+        imageBytes,
+        fileOptions: FileOptions(upsert: false, contentType: 'image/$fileExtension'),
+      );
+
+      String imageUrl = AppConfig().supaBaseClient.storage.from('properties').getPublicUrl(imagePath);
+
+      final docResponse =  await AppConfig().supaBaseClient.from('documents').insert(
+          {
+            "name" : fileName,
+            "file_url": imageUrl,
+            "extension": fileExtension,
+            "document_type_id": 3,
+            "created_by" : createdBy,
+            "external_key" : response.data[0]['id'],
+          }
+      ).select().execute();
+
+      await AppConfig().supaBaseClient.from('properties').update(
+          {
+            "main_image" : docResponse.data[0]['id'],
+          }
+      ).eq('id', response.data[0]['id']).then((value) async{
+        print('MY DOCResponse == $docResponse');
+        print('MY DOCID == ${docResponse.data[0]['id']}');
+
         Get.back();
-        Get.snackbar('SUCCESS', 'Property added to your list',
-          titleText: Text('SUCCESS', style: AppTheme.greenTitle1,),
-        );
+        Get.snackbar('Success', 'Added Property to your list');
       });
 
-      if (response.error != null) {
-        throw response.error;
-      }
+      //     .then((property) {
+      //   Get.back();
+      //   Get.snackbar('SUCCESS', 'Property added to your list',
+      //     titleText: Text('SUCCESS', style: AppTheme.greenTitle1,),
+      //   );
+      // });
 
     } catch (error) {
       print('Error adding property: $error');

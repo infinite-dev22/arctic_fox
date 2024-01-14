@@ -4,6 +4,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
+import 'package:full_picker/full_picker.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -29,6 +30,12 @@ class AddPropertyScreen extends StatefulWidget {
 }
 
 class _AddPropertyScreenState extends State<AddPropertyScreen> {
+
+  File? propertyPic;
+  String? propertyImagePath;
+  String? propertyImageExtension;
+  String? propertyFileName;
+  Uint8List? propertyBytes;
 
   final TextEditingController titleController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
@@ -261,6 +268,67 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
               //   ),),
               // ),
 
+              SizedBox(height: 1.h,),
+
+              Bounceable(
+                onTap: () {
+                  FullPicker(
+                    context: context,
+                    file: true,
+                    image: true,
+                    video: true,
+                    videoCamera: true,
+                    imageCamera: true,
+                    voiceRecorder: true,
+                    videoCompressor: false,
+                    imageCropper: false,
+                    multiFile: true,
+                    url: true,
+                    onError: (int value) {
+                      print(" ----  onError ----=$value");
+                    },
+                    onSelected: (value) async {
+                      print(" ----  onSelected ----");
+
+                      setState(() {
+                        propertyPic = value.file.first;
+                        propertyImagePath = value.file.first!.path;
+                        propertyImageExtension = value.file.first!
+                            .path
+                            .split('.')
+                            .last;
+                        propertyFileName = value.file.first!
+                            .path
+                            .split('/')
+                            .last;
+                      });
+                      propertyBytes = await propertyPic!.readAsBytes();
+                      print('MY PIC == $propertyPic');
+                      print('MY path == $propertyImagePath');
+                      print('MY bytes == $propertyBytes');
+                      print(
+                          'MY extension == $propertyImageExtension');
+                      print('MY FILE NAME == $propertyFileName');
+                    },
+                  );
+                },
+                child: Container(
+                  width: 90.w,
+                  height: 15.h,
+                  decoration: BoxDecoration(
+                      color: AppTheme.appBgColor,
+                      borderRadius: BorderRadius.circular(15.sp),
+                      image: DecorationImage(
+                          image: FileImage(propertyPic ?? File('')),
+                          fit: BoxFit.cover)
+                  ),
+                  child: propertyPic == null ? Center(
+                    child: Text('Upload profile pic'),) : null,
+                ),
+              ),
+
+
+
               SizedBox(height: 3.h,),
 
               AppButton(
@@ -278,6 +346,9 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                       sqmController.text.trim().toString(),
                     userStorage.read('userProfileId').toString(),
                     userStorage.read('userProfileId').toString(),
+                      propertyBytes!,
+                      propertyImageExtension!,
+                      propertyFileName!
                   // "userStorage.read('userProfileId')",
                   );
                 },

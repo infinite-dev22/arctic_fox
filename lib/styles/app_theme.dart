@@ -191,6 +191,12 @@ class AppTheme{
     fontWeight: FontWeight.w700,
   );
 
+  static TextStyle get blueAppTitle3 => GoogleFonts.hind(
+    color: blueTitleColor2,
+    fontSize: 20.sp,
+    fontWeight: FontWeight.w700,
+  );
+
   static TextStyle get appTitle4 => GoogleFonts.hind(
     color: blackColor2,
     fontSize: 17.sp,

@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:smart_rent/config/app_config.dart';
 import 'package:smart_rent/models/business/business_type_model.dart';
+import 'package:smart_rent/models/documents/documents_model.dart';
 import 'package:smart_rent/models/nationality/nationality_model.dart';
 import 'package:smart_rent/models/payment/tenant_payment_model.dart';
 import 'package:smart_rent/models/payment_schedule/payment_schedule_model.dart';
@@ -46,6 +47,8 @@ class TenantController extends GetxController {
   RxList<SpecificTenantUnitModel> specificTenantUnitModelList = <SpecificTenantUnitModel>[].obs;
   RxList<TenantUnitScheduleModel> tenantUnitUnitScheduleListGroup = <TenantUnitScheduleModel>[].obs;
   RxList<PropertyModel> propertyModelList = <PropertyModel>[].obs;
+  RxList<DocumentsModel> specificTenantDocumentList = <DocumentsModel>[].obs;
+  RxList<TenantProfileContactModel> specificTenantProfileContactList = <TenantProfileContactModel>[].obs;
   RxMap<dynamic, TenantUnitScheduleModel> tenantUnitUnitScheduleMap = <dynamic, TenantUnitScheduleModel>{}.obs;
 
 
@@ -347,7 +350,7 @@ setSpecificPaymentBalance(int balance){
     try {
 
       final response = await AppConfig().supaBaseClient.from('tenants').select(
-        'id, name, tenant_type_id, nation_id, tenant_no, business_type_id, description, documents(file_url), image, business_types(name), tenant_types(name), currency_symbol(country), tenant_profiles(email, date_of_birth, nin, gender, tenant_id, description, contact)'
+        'id, name, tenant_type_id, nation_id, tenant_no, business_type_id, description, documents(file_url, external_key, created_at), image, business_types(name), tenant_types(name), currency_symbol(country), tenant_profiles(email, date_of_birth, nin, gender, tenant_id, description, contact)'
       ).order('created_at', ascending: false);
       final data = response as List<dynamic>;
       print(response);
@@ -363,6 +366,48 @@ setSpecificPaymentBalance(int balance){
       print('Error fetching Tenants Rent: $error');
       isTenantListLoading(false);
     }
+
+  }
+
+  void fetchSpecificTenantDocuments(int tenantId) async {
+
+    try {
+
+      final response = await AppConfig().supaBaseClient.from('documents').select().eq('external_key', tenantId).order('created_at', ascending: false);
+      final data = response as List<dynamic>;
+      print('SPECIFIC TENANT DOCUMENTS ARE == $response');
+      print(response.length);
+      print(data.length);
+      print(data);
+
+      return specificTenantDocumentList.assignAll(
+          data.map((json) => DocumentsModel.fromJson(json)).toList());
+
+    } catch (error) {
+      print('Error fetching specific tenant documents: $error');
+    }
+
+
+  }
+
+  void fetchSpecificProfileContacts(int tenantId) async {
+
+    try {
+
+      final response = await AppConfig().supaBaseClient.from('tenant_profile_contacts').select().eq('tenant_id', tenantId).order('created_at', ascending: false);
+      final data = response as List<dynamic>;
+      print('SPECIFIC TENANT Profile Contacts ARE == $response');
+      print(response.length);
+      print(data.length);
+      print(data);
+
+      return specificTenantProfileContactList.assignAll(
+          data.map((json) => TenantProfileContactModel.fromJson(json)).toList());
+
+    } catch (error) {
+      print('Error fetching specific TENANT Profile Contacts: $error');
+    }
+
 
   }
 

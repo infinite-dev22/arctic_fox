@@ -38,6 +38,7 @@ class _PropertyListScreenState extends State<PropertyListScreen> {
 
       floatingActionButtonLocation: userStorage.read('roleId') == 4 ? null : ExpandableFab.location,
       floatingActionButton: userStorage.read('roleId') == 4 ? Container() : ExpandableFab(
+        key: _key,
         type: ExpandableFabType.up,
         openButtonBuilder: RotateFloatingActionButtonBuilder(
           child: Container(
@@ -70,7 +71,7 @@ class _PropertyListScreenState extends State<PropertyListScreen> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Center(
-                child: Icon(Icons.remove, color: Colors.white,),
+                child: Icon(Icons.add, color: Colors.white,),
               ),
             ),
           ),
@@ -81,19 +82,29 @@ class _PropertyListScreenState extends State<PropertyListScreen> {
         ),
         children: [
           FloatingActionButton.extended(
-
             splashColor: Colors.transparent,
             elevation: 0.0,
             heroTag: null,
-            label: Card(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: [
-                    Icon(Icons.add),
-                    Text('Add Property', style: AppTheme.subTextBold2)
+            label: Bounceable(
+              onTap: (){
+                final state = _key.currentState;
+                if (state != null) {
+                  debugPrint('isOpen:${state.isOpen}');
+                  state.toggle();
+                }
+                Get.to(() => AddPropertyScreen(),
+                    transition: Transition.downToUp);
+              },
+              child: Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: [
+                      Icon(Icons.add),
+                      Text('Add Property', style: AppTheme.subTextBold2)
 
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),

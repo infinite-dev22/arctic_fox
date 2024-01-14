@@ -11,6 +11,9 @@ import 'package:smart_rent/models/tenant/tenant_model.dart';
 import 'package:smart_rent/screens/tenant/all_payment_schedule_screen.dart';
 import 'package:smart_rent/screens/tenant/specific_payment_schedule_screen.dart';
 import 'package:smart_rent/models/tenant/property_tenant_schedule.dart';
+import 'package:smart_rent/screens/tenant/tenant_details_tab.dart';
+import 'package:smart_rent/screens/tenant/tenant_documents_tab.dart';
+import 'package:smart_rent/screens/tenant/tenant_units_tab.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 import 'package:smart_rent/widgets/app_button.dart';
 import 'package:smart_rent/widgets/app_header.dart';
@@ -33,7 +36,7 @@ class TenantDetailsScreen extends StatefulWidget {
   State<TenantDetailsScreen> createState() => _TenantDetailsScreenState();
 }
 
-class _TenantDetailsScreenState extends State<TenantDetailsScreen> {
+class _TenantDetailsScreenState extends State<TenantDetailsScreen> with TickerProviderStateMixin{
 
   final TenantController mytenantController = Get.put(TenantController());
 
@@ -51,12 +54,16 @@ class _TenantDetailsScreenState extends State<TenantDetailsScreen> {
     // TODO: implement initState
     super.initState();
     // mytenantController.fetchAllPaymentSchedules(widget.tenantUnitId.toString());
-    mytenantController.fetchAllPaymentSchedules(widget.tenantId!);
-    mytenantController.getSpecificTenantDetails(widget.tenantId!.toInt());
+    mytenantController.fetchAllPaymentSchedules(widget.tenantId);
+    mytenantController.getSpecificTenantDetails(widget.tenantId.toInt());
+    mytenantController.fetchSpecificTenantDocuments(widget.tenantId);
+    mytenantController.fetchSpecificProfileContacts(widget.tenantId);
+
   }
 
   @override
   Widget build(BuildContext context) {
+    TabController tabController = TabController(length: 3, vsync: this);
     return Scaffold(
       backgroundColor: AppTheme.whiteColor,
       appBar: AppImageHeader(
@@ -64,21 +71,59 @@ class _TenantDetailsScreenState extends State<TenantDetailsScreen> {
         isTitleCentred: true,
       ),
 
-      body: Padding(
-        padding: EdgeInsets.only(left: 5.w, right: 5.w),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
 
-              Center(
-                child: CircleAvatar(
-                  backgroundImage: CachedNetworkImageProvider(widget.tenantModel.documents!.fileUrl.toString()),
-                  radius: 15.w,
-                ),
-              ),
-              Center(child: Text(widget.tenantModel.name, style: AppTheme.appTitle5,)),
+          Center(
+            child: CircleAvatar(
+              backgroundImage: CachedNetworkImageProvider(widget.tenantModel.documents!.fileUrl.toString()),
+              radius: 15.w,
+            ),
+          ),
+          Center(child: Text(widget.tenantModel.name, style: AppTheme.appTitle5,)),
+  SizedBox(height: 1.h,),
+  Center(
+    child: Card(
+      shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(15.sp),
+      ),
+      elevation: 5,
+      child: Container(
+      decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(15.sp),
+      ),
+      child: TabBar(
+      // indicator: BoxDecoration(
+      //   borderRadius: BorderRadius.circular(15.sp),
+      //   color: AppTheme.primaryColor,
+      // ),
+        controller: tabController,
+        isScrollable: true,
+        labelPadding: EdgeInsets.symmetric(horizontal: 5.w),
+        tabs: [
+          Tab(child: Text('Details'),),
+          Tab(child: Text('Units'),),
+          Tab(child: Text('Documents'),),
+      ],
+
+      ),
+      ),
+    ),
+  ),
+          SizedBox(height: 1.h,),
+
+  Expanded(
+    child: TabBarView(
+      controller: tabController,
+        children: [
+         TenantDetailsTab(tenantModel: widget.tenantModel, tenantController: widget.tenantController,),
+        TenantUnitsTab(tenantController: widget.tenantController,),
+        TenantDocumentsTab(tenantController: widget.tenantController,),
+
+    ]),
+  ),
 
   //             Row(
   //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -271,9 +316,7 @@ class _TenantDetailsScreenState extends State<TenantDetailsScreen> {
   //             //   ],
   //             // ),
 
-            ],
-          ),
-        ),
+        ],
       ),
 
     );

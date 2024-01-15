@@ -14,6 +14,7 @@ import 'package:smart_rent/models/floor/floor_model.dart';
 import 'package:smart_rent/models/payment_schedule/payment_schedule_model.dart';
 import 'package:smart_rent/models/unit/unit_type_model.dart';
 import 'package:smart_rent/styles/app_theme.dart';
+import 'package:smart_rent/utils/app_prefs.dart';
 import 'package:smart_rent/utils/extra.dart';
 import 'package:smart_rent/widgets/app_button.dart';
 import 'package:smart_rent/widgets/app_drop_downs.dart';
@@ -134,7 +135,7 @@ class _RoomTabScreenState extends State<RoomTabScreen> {
                                       widget.unitController.unitTypeId.value,
                                       widget.unitController.paymentScheduleId.value,
                                       sizeController.text.trim(),
-                                      "userStorage.read('userProfileId')",
+                                      userStorage.read('userProfileId'),
                                       int.parse(roomNumberController.text.trim()
                                           .toString()),
                                       int.parse(amountController.text.trim()

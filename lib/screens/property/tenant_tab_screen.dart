@@ -364,7 +364,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
 
                                   await tenantController.addTenantToUnit(
                                       tenantController.tenantId.value,
-                                      "userStorage.read('userProfileId')",
+                                      userStorage.read('userProfileId'),
                                       tenantController.specificUnitId.value,
                                       selectedDate1.value.toString(),
                                       selectedDate2.value.toString(),

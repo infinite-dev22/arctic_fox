@@ -31,7 +31,7 @@ class UnitController extends GetxController {
     // TODO: implement onInit
     super.onInit();
     fetchAllUnitTypes();
-    fetchAllFloors();
+    // fetchAllFloors();
     fetchAllPayments();
     fetchAllCurrencies();
     // fetchAllPropertyUnits();
@@ -75,7 +75,7 @@ class UnitController extends GetxController {
           data.map((json) => UnitTypeModel.fromJson(json)).toList());
 
     } catch (error) {
-      print('Error fetching categories: $error');
+      print('Error fetching unit types: $error');
     }
 
   }
@@ -114,11 +114,11 @@ class UnitController extends GetxController {
   }
 
 
-  fetchAllFloors() async {
+  fetchAllFloors(int propertyId) async {
 
     try {
 
-      final response = await AppConfig().supaBaseClient.from('floors').select();
+      final response = await AppConfig().supaBaseClient.from('floors').select().eq('property_id', propertyId);
       final data = response as List<dynamic>;
       print(response);
       print(response.length);

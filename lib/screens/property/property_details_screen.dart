@@ -46,6 +46,8 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> with Tick
     // TODO: implement initState
     print(videoId);
     super.initState();
+    widget.unitController.fetchAllFloors(widget.propertyModel.id!);
+    widget.tenantController.fetchOnlyAvailableUnits(widget.propertyModel.id!);
   }
 
   @override

@@ -145,7 +145,7 @@ class TenantController extends GetxController {
     fetchAllTenantTypes();
     fetchAllNationalities();
     fetchAllSalutations();
-    fetchOnlyAvailableUnits();
+    // fetchOnlyAvailableUnits();
     // fetchAllTenants();
     listenToTenantChanges();
     fetchAllUnits();
@@ -830,13 +830,15 @@ setSpecificPaymentBalance(int balance){
   }
 
 
-  void fetchOnlyAvailableUnits() async {
+  void fetchOnlyAvailableUnits(int propertyId) async {
 
     try {
 
-      final response = await AppConfig().supaBaseClient.from('units').select().eq('is_available', 1);
+      final response = await AppConfig().supaBaseClient.from('units').select(
+        '*, floors!inner(*)'
+      ).eq('is_available', 1).eq('floors.property_id', propertyId);
       final data = response as List<dynamic>;
-      print(response);
+      print('My Specific Units Are == $response');
       print(response.length);
       print(data.length);
       print(data);
@@ -845,7 +847,7 @@ setSpecificPaymentBalance(int balance){
           data.map((json) => UnitModel.fromJson(json)).toList());
 
     } catch (error) {
-      print('Error fetching Units: $error');
+      print('Error fetching only Units: $error');
     }
 
 

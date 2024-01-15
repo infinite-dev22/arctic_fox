@@ -9,8 +9,9 @@ class AppImageHeader extends StatelessWidget implements PreferredSizeWidget{
   final List<Widget>? actions;
   final Widget? leading;
   final bool? isTitleCentred;
+  final VoidCallback? backFunction;
 
-  const AppImageHeader({super.key, required this.title,  this.actions,  this.leading, this.isTitleCentred});
+  const AppImageHeader({super.key, required this.title,  this.actions,  this.leading, this.isTitleCentred, this.backFunction});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +27,9 @@ class AppImageHeader extends StatelessWidget implements PreferredSizeWidget{
             child: Image.asset('assets/home/sidely.png'),
           )
         ],
-        leading: leading ?? GestureDetector(onTap: (){Get.back();},child:  Image.asset('assets/general/back.png')),
+        leading: leading ?? GestureDetector(
+            onTap: backFunction ?? (){Get.back();},
+            child:  Image.asset('assets/general/back.png')),
       ),
     );
   }

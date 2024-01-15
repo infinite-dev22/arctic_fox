@@ -42,28 +42,8 @@ class _PropertyListScreenState extends State<PropertyListScreen> {
         type: ExpandableFabType.up,
         openButtonBuilder: RotateFloatingActionButtonBuilder(
           child: Container(
-            width: 10.w,
-            height: 6.h,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10.sp),
-              color: AppTheme.primaryColor,
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Center(
-                child: Icon(Icons.menu, color: Colors.white,),
-              ),
-            ),
-          ),
-          fabSize: ExpandableFabSize.regular,
-          foregroundColor: Colors.transparent,
-          backgroundColor: Colors.transparent,
-          shape: const CircleBorder(),
-        ),
-        closeButtonBuilder: RotateFloatingActionButtonBuilder(
-          child: Container(
-            width: 10.w,
-            height: 6.h,
+            width: 14.w,
+            height: 10.h,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10.sp),
               color: AppTheme.primaryColor,
@@ -78,15 +58,10 @@ class _PropertyListScreenState extends State<PropertyListScreen> {
           fabSize: ExpandableFabSize.regular,
           foregroundColor: Colors.transparent,
           backgroundColor: Colors.transparent,
-
+          shape: const CircleBorder(),
         ),
-        children: [
-          FloatingActionButton.extended(
-            splashColor: Colors.transparent,
-            elevation: 0.0,
-            heroTag: null,
-            label: Bounceable(
-              onTap: (){
+        children: [],
+        onOpen: (){
                 final state = _key.currentState;
                 if (state != null) {
                   debugPrint('isOpen:${state.isOpen}');
@@ -94,25 +69,62 @@ class _PropertyListScreenState extends State<PropertyListScreen> {
                 }
                 Get.to(() => AddPropertyScreen(),
                     transition: Transition.downToUp);
-              },
-              child: Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      Icon(Icons.add),
-                      Text('Add Property', style: AppTheme.subTextBold2)
-
-                    ],
-                  ),
-                ),
-              ),
-            ),
-
-            onPressed: () {},
-            backgroundColor: Colors.transparent,
-          ),
-        ],
+        },
+        // closeButtonBuilder: RotateFloatingActionButtonBuilder(
+        //   child: Container(
+        //     width: 14.w,
+        //     height: 10.h,
+        //     decoration: BoxDecoration(
+        //       borderRadius: BorderRadius.circular(10.sp),
+        //       color: AppTheme.primaryColor,
+        //     ),
+        //     child: Padding(
+        //       padding: const EdgeInsets.all(8.0),
+        //       child: Center(
+        //         child: Icon(Icons.add, color: Colors.white,),
+        //       ),
+        //     ),
+        //   ),
+        //   fabSize: ExpandableFabSize.regular,
+        //   foregroundColor: Colors.transparent,
+        //   backgroundColor: Colors.transparent,
+        //
+        // ),
+        // children: [
+        //   FloatingActionButton.extended(
+        //     splashColor: Colors.transparent,
+        //     elevation: 0.0,
+        //     heroTag: null,
+        //     label: Bounceable(
+        //       onTap: (){
+        //
+        //       },
+        //       child: Card(
+        //         child: Padding(
+        //           padding: const EdgeInsets.all(8.0),
+        //           child: Row(
+        //             children: [
+        //               Icon(Icons.add),
+        //               Text('Add Property', style: AppTheme.subTextBold2)
+        //
+        //             ],
+        //           ),
+        //         ),
+        //       ),
+        //     ),
+        //
+        //     onPressed: () {
+        //       final state = _key.currentState;
+        //       if (state != null) {
+        //         debugPrint('isOpen:${state.isOpen}');
+        //         state.toggle();
+        //       }
+        //       Get.to(() => AddPropertyScreen(),
+        //           transition: Transition.downToUp);
+        //     },
+        //     backgroundColor: Colors.transparent,
+        //   ),
+        // ],
       ),
       backgroundColor: AppTheme.whiteColor,
       appBar: AppImageHeader(

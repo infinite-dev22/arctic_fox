@@ -137,3 +137,19 @@ abstract class SmartPropertyModel {
 
 
 }
+
+
+
+abstract class SmartEmployeePropertyModel {
+
+  int getId();
+  String getUserId();
+  int getRoleId();
+  int getOrganizationId();
+  int getPropertyId();
+  String getPropertyName();
+  String getPropertyLocation();
+
+
+
+}

@@ -8,6 +8,7 @@ import 'package:smart_rent/models/payment_schedule/payment_schedule_model.dart';
 import 'package:smart_rent/models/unit/unit_model.dart';
 import 'package:smart_rent/models/unit/unit_type_model.dart';
 import 'package:smart_rent/styles/app_theme.dart';
+import 'package:smart_rent/utils/app_prefs.dart';
 
 class UnitController extends GetxController {
 
@@ -23,6 +24,7 @@ class UnitController extends GetxController {
   var currencyId = 0.obs;
   var isUnitLoading = false.obs;
   var isUpdateStatusLoading = false.obs;
+  var isAddFloorLoading = false.obs;
 
   @override
   void onInit() {
@@ -75,6 +77,39 @@ class UnitController extends GetxController {
     } catch (error) {
       print('Error fetching categories: $error');
     }
+
+  }
+
+  Future<void> addFloorToProperty(int propertyId, String name, String description) async {
+    isAddFloorLoading(true);
+
+    try {
+      final response = await AppConfig().supaBaseClient.from('floors').insert([
+        {
+          "property_id" : propertyId,
+          "name" : name,
+          "description" : description,
+          "created_by" : userStorage.read('userProfileId'),
+
+        }
+      ]).then((property) {
+        isAddFloorLoading(false);
+        Get.back();
+        Get.snackbar('SUCCESS', 'Floor added successfully',
+          titleText: Text('SUCCESS', style: AppTheme.greenTitle1,),
+        );
+      });
+
+      if (response.error != null) {
+        isAddFloorLoading(false);
+        throw response.error;
+      }
+
+    } catch (error) {
+      print('Error adding floor to property : $error');
+      isAddFloorLoading(false);
+    }
+
 
   }
 

@@ -611,11 +611,13 @@ isUserListLoading(true);
 
   }
 
-  fetchAllEmployeePropertiesInOrganization() async {
+  fetchAllEmployeePropertiesInOrganization(String userId) async {
     isEmployeePropertyLoading(true);
     try {
 
-      final response = await AppConfig().supaBaseClient.from('employee_properties').select().eq('user_id', userStorage.read('OrganizationId'))
+      final response = await AppConfig().supaBaseClient.from('employee_properties').select(
+        'id, user_id, role_id, organization_id, property_id, properties(name, location)'
+      ).eq('user_id', userId)
           .eq('organization_id', userStorage.read('OrganizationId'));
       final data = response as List<dynamic>;
       print('my Employee Properties are $response');
@@ -634,13 +636,13 @@ isUserListLoading(true);
 
   }
 
-  void listenToEmployeePropertiesInOrganizationChanges() {
+  void listenToEmployeePropertiesInOrganizationChanges(userId) {
     // Set up real-time listener
     AppConfig().supaBaseClient
         .from('employee_properties')
         .stream(primaryKey: ['id'])
         .listen((List<Map<String, dynamic>> data) {
-      fetchAllEmployeePropertiesInOrganization();
+      fetchAllEmployeePropertiesInOrganization(userId);
 
     });
 
@@ -669,12 +671,12 @@ isUserListLoading(true);
   //   }
   // }
 
-  addPropertyToEmployee(int propertyId, int roleId) async {
+  addPropertyToEmployee(int propertyId, int roleId, String userId) async {
 
     try {
       final response = await AppConfig().supaBaseClient.from('employee_properties').insert([
         {
-          "user_id" : userStorage.read('userId'),
+          "user_id" : userId,
           "property_id" : propertyId,
           "role_id" : roleId,
           "organization_id" : userStorage.read('OrganizationId'),

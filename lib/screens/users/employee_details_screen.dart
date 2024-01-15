@@ -56,6 +56,8 @@ class _EmployeeDetailsScreenState extends State<EmployeeDetailsScreen> {
     _propertyModelCont = SingleValueDropDownController();
     widget.userController.listenToEmployeePropertiesInOrganizationChanges(
         widget.userProfileModel.userId.toString());
+    
+    tenantController.listenToSpecificUserPropertyListChanges(widget.userProfileModel.userId.toString());
   }
 
   @override
@@ -192,7 +194,7 @@ class _EmployeeDetailsScreenState extends State<EmployeeDetailsScreen> {
                                                 PropertyModel>(
                                               hintText: 'Property',
                                               menuItems: tenantController
-                                                  .propertyModelList.value,
+                                                  .specificUserPropertyModelList.value,
                                               controller: _propertyModelCont,
                                               onChanged: (value) {
                                                 tenantController

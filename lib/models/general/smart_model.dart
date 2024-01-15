@@ -132,7 +132,7 @@ abstract class SmartPropertyModel {
   int getCategoryTypeId();
   String getLocation();
   String getSquareMeters();
-  String getMainImage();
+  int getMainImage();
   String getImageDocUrl();
 
 

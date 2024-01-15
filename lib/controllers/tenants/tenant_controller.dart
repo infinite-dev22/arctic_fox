@@ -47,6 +47,7 @@ class TenantController extends GetxController {
   RxList<SpecificTenantUnitModel> specificTenantUnitModelList = <SpecificTenantUnitModel>[].obs;
   RxList<TenantUnitScheduleModel> tenantUnitUnitScheduleListGroup = <TenantUnitScheduleModel>[].obs;
   RxList<PropertyModel> propertyModelList = <PropertyModel>[].obs;
+  RxList<PropertyModel> specificUserPropertyModelList = <PropertyModel>[].obs;
   RxList<DocumentsModel> specificTenantDocumentList = <DocumentsModel>[].obs;
   RxList<TenantProfileContactModel> specificTenantProfileContactList = <TenantProfileContactModel>[].obs;
   RxMap<dynamic, TenantUnitScheduleModel> tenantUnitUnitScheduleMap = <dynamic, TenantUnitScheduleModel>{}.obs;
@@ -87,6 +88,7 @@ class TenantController extends GetxController {
   var isSpecificTenantUnitScheduleLoading = false.obs;
   var isSpecificUnitsLoading = false.obs;
   var isPropertyModelListLoading = false.obs;
+  var isSpecificUserPropertyListLoading = false.obs;
   var selectedPropertyId = 0.obs;
   var isSpecificTenantProfileContactsLoading = false.obs;
 
@@ -1898,7 +1900,7 @@ setSpecificPaymentBalance(int balance){
     try {
 
       final response = await AppConfig().supaBaseClient.from('properties').select(
-        'id, name, description, organisation_id, square_meters, property_type_id, category_type_id, location, main_image'
+        'id, name, description, organisation_id, square_meters, property_type_id, category_type_id, location, main_image, documents!inner(*)'
       )
           .eq('organisation_id', userStorage.read('OrganizationId'));
       final data = response as List<dynamic>;
@@ -1925,6 +1927,44 @@ setSpecificPaymentBalance(int balance){
         .stream(primaryKey: ['id'])
         .listen((List<Map<String, dynamic>> data) {
       fetchAllPropertiesSpecificOrganization();
+
+    });
+
+  }
+
+
+  fetchAllSpecificUserProperties(String userId) async {
+    isSpecificUserPropertyListLoading(true);
+    try {
+
+      final response = await AppConfig().supaBaseClient.from('properties').select(
+          'id, name, description, organisation_id, square_meters, property_type_id, category_type_id, location, main_image, employee_properties!inner(*)'
+      )
+          .eq('organisation_id', userStorage.read('OrganizationId'));
+      final data = response as List<dynamic>;
+      print('my Specific User Properties are $response');
+      print(response.length);
+      print(data.length);
+      print(data);
+      isSpecificUserPropertyListLoading(false);
+
+      return specificUserPropertyModelList.assignAll(
+          data.map((json) => PropertyModel.fromJson(json)).toList());
+
+    } catch (error) {
+      print('Error fetching Specific Organization Properties: $error');
+      isSpecificUserPropertyListLoading(false);
+    }
+
+  }
+
+  void listenToSpecificUserPropertyListChanges(String userId) {
+    // Set up real-time listener
+    AppConfig().supaBaseClient
+        .from('properties')
+        .stream(primaryKey: ['id'])
+        .listen((List<Map<String, dynamic>> data) {
+      fetchAllSpecificUserProperties(userId);
 
     });
 

@@ -20,7 +20,7 @@ class PropertyModel extends SmartPropertyModel {
   int? propertyTypeId;
   int? categoryTypeId;
   String? location;
-  String? mainImage;
+  int? mainImage;
   DocumentsModel? documents;
 
   PropertyModel({
@@ -96,7 +96,7 @@ class PropertyModel extends SmartPropertyModel {
   }
 
   @override
-  String getMainImage() { return mainImage.toString();
+  int getMainImage() { return mainImage!;
   }
 
   @override

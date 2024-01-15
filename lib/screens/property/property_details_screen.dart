@@ -74,7 +74,7 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> with Tick
                                   child: TabBarView(
                                     // controller: propertyTabCont,
                                     children: [
-                                      PropertyDetailsTabScreen(propertyDetailsOptionsController: propertyDetailsOptionsController),
+                                      PropertyDetailsTabScreen(propertyDetailsOptionsController: propertyDetailsOptionsController, propertyModel: widget.propertyModel,),
                                       // FloorTabScreen(propertyDetailsOptionsController: propertyDetailsOptionsController,),
                                       RoomTabScreen(
                                           unitController: widget.unitController,
@@ -136,15 +136,14 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> with Tick
                                                     itemCount: 1,
                                                     builder: (context, index) {
                                                       return PhotoViewGalleryPageOptions(
-                                                        imageProvider: CachedNetworkImageProvider(
-                                                            'https://i.ibb.co/WVnBf75/view-geometric-buildings.jpg'),
+                                                        imageProvider: CachedNetworkImageProvider(widget.propertyModel.documents!.fileUrl.toString()),
                                                       );
                                                     },
                                                   ));
                                               print('tapped');
                                             },
                                             child: CachedNetworkImage(
-                                              imageUrl: 'https://i.ibb.co/WVnBf75/view-geometric-buildings.jpg',
+                                              imageUrl: widget.propertyModel.documents!.fileUrl.toString(),
                                               width: MediaQuery
                                                   .of(context)
                                                   .size
@@ -153,8 +152,7 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> with Tick
                                               errorWidget: (context, url, error) {
                                                 return Container(
                                                   child: Center(
-                                                    child: Image.network(
-                                                        'https://i.ibb.co/WVnBf75/view-geometric-buildings.jpg'),
+                                                    child: Image.asset('assets/auth/icon.png'),
                                                   ),
                                                 );
                                               },

@@ -42,15 +42,15 @@ class PropertyCardWidget extends StatelessWidget {
             children: [
               Expanded(
                 flex: 1,
-                // child: CachedNetworkImage(
-                //     imageUrl: propertyModel.mainImage.toString(),
-                //   fit: BoxFit.cover,
-                //   height: 25.h,
-                // ),
-                  child: Image.asset('assets/property/mall1.jpg',
-                    fit: BoxFit.cover,
-                    height: 25.h,
-                  ),
+                child: CachedNetworkImage(
+                    imageUrl: propertyModel.documents!.fileUrl.toString(),
+                  fit: BoxFit.cover,
+                  height: 25.h,
+                ),
+                //   child: Image.asset('assets/property/mall1.jpg',
+                //     fit: BoxFit.cover,
+                //     height: 25.h,
+                //   ),
               ),
 
               Expanded(
@@ -79,7 +79,7 @@ class PropertyCardWidget extends StatelessWidget {
                             children: [
                               Image.asset('assets/property/size.png'),
                               SizedBox(width: 2.w,),
-                              Text('673m', style: AppTheme.descriptionText1,)
+                              Text(propertyModel.squareMeters.toString(), style: AppTheme.descriptionText1,)
                             ],
                           ),
                         ],

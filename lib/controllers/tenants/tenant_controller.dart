@@ -1160,7 +1160,7 @@ setSpecificPaymentBalance(int balance){
       print('SPEcific tenants ==${specificTenantUnits.value}');
       // tenantUnitAmount.value = unitModel!.amount ?? specificTenantUnits.value.first.amount;
       setAmountForSpecificTenantUnit(unitModel);
-      setUnitNumber(specificTenantUnits.value.first.unitNumber);
+      setUnitNumber(specificTenantUnits.value.first.unitNumber!);
       print('SPEcific amount ==${tenantUnitAmount.value}');
       print(getAllUnitData);
 

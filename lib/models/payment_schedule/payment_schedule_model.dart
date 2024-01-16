@@ -11,9 +11,9 @@ PaymentScheduleModel paymentScheduleModelFromJson(String str) => PaymentSchedule
 String paymentScheduleModelToJson(PaymentScheduleModel data) => json.encode(data.toJson());
 
 class PaymentScheduleModel extends SmartPeriodModel{
-  int id;
-  String name;
-  int period;
+  int? id;
+  String? name;
+  int? period;
 
   PaymentScheduleModel({
     required this.id,
@@ -34,15 +34,15 @@ class PaymentScheduleModel extends SmartPeriodModel{
   };
 
   @override
-  int getId() { return id;
+  int getId() { return id!;
   }
 
   @override
-  String getName() { return name;
+  String getName() { return name!;
   }
 
   @override
-  int getPeriod() { return period;
+  int getPeriod() { return period!;
   }
 
 }

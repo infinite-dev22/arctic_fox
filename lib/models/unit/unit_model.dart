@@ -106,12 +106,15 @@ UnitModel unitModelFromJson(String str) => UnitModel.fromJson(json.decode(str));
 String unitModelToJson(UnitModel data) => json.encode(data.toJson());
 
 class UnitModel extends SmartUnitModel{
-  int id;
-  String unitNumber;
-  int floorId;
+  int? id;
+  String? unitNumber;
+  int? floorId;
   dynamic amount;
-  int unitType;
-  bool isAvailable;
+  int? unitType;
+  bool? isAvailable;
+  String? description;
+  int? periodId;
+  int? propertyId;
 
   UnitModel({
     required this.id,
@@ -120,6 +123,9 @@ class UnitModel extends SmartUnitModel{
     required this.amount,
     required this.unitType,
     required this.isAvailable,
+    required this.description,
+    required this.periodId,
+    required this.propertyId,
   });
 
   factory UnitModel.fromJson(Map<String, dynamic> json) => UnitModel(
@@ -129,6 +135,9 @@ class UnitModel extends SmartUnitModel{
     amount: json["amount"],
     unitType: json["unit_type"],
     isAvailable: json["is_available"],
+    description: json["description"],
+    periodId: json["period_id"],
+    propertyId: json["property_id"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -138,13 +147,44 @@ class UnitModel extends SmartUnitModel{
     "amount": amount,
     "unit_type": unitType,
     "is_available": isAvailable,
+    "description": description,
+    "period_id": periodId,
+    "property_id": propertyId,
   };
 
   @override
-  int getId() { return id;
+  int getId() { return id!;
   }
 
   @override
-  String getUnitNumber() { return unitNumber;
+  String getUnitNumber() { return unitNumber!;
+  }
+
+  @override
+  int getAmount() { return amount;
+  }
+
+  @override
+  bool getAvailability() { return isAvailable!;
+  }
+
+  @override
+  String getDescription() { return description!;
+  }
+
+  @override
+  int getFloorId() { return floorId!;
+  }
+
+  @override
+  int getPeriodId() { return periodId!;
+  }
+
+  @override
+  int getPropertyId() { return propertyId!;
+  }
+
+  @override
+  int getUnitType() { return unitType!;
   }
 }

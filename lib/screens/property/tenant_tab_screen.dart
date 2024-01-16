@@ -688,7 +688,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                                     tenantController.paymentList.value,
                                     onChanged: (value) {
                                       tenantController
-                                          .setPaymentScheduleId(value!.id);
+                                          .setPaymentScheduleId(value!.id!);
 
                                       if (tenantController
                                           .paymentScheduleId.value ==

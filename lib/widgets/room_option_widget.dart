@@ -389,7 +389,7 @@ class _RoomOptionWidgetState extends State<RoomOptionWidget> {
                 if (value == 1) {
                   showRoomEditBottomSheet(context, widget.roomModel.amount);
                 } else {
-                  widget.unitController!.deleteUnit(widget.roomModel.id);
+                  widget.unitController!.deleteUnit(widget.roomModel.id!);
                 }
               },
               itemBuilder: (context) {

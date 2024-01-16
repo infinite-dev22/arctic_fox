@@ -6,6 +6,8 @@ import 'dart:convert';
 
 import 'package:smart_rent/models/documents/documents_model.dart';
 import 'package:smart_rent/models/general/smart_model.dart';
+import 'package:smart_rent/models/payment_schedule/payment_schedule_model.dart';
+import 'package:smart_rent/models/unit/unit_model.dart';
 
 PropertyModel propertyModelFromJson(String str) => PropertyModel.fromJson(json.decode(str));
 
@@ -22,6 +24,8 @@ class PropertyModel extends SmartPropertyModel {
   String? location;
   int? mainImage;
   DocumentsModel? documents;
+  PaymentScheduleModel? paymentDurations;
+  UnitModel? units;
 
   PropertyModel({
     this.id,
@@ -34,6 +38,8 @@ class PropertyModel extends SmartPropertyModel {
     this.location,
     this.mainImage,
     this.documents,
+    this.paymentDurations,
+    this.units,
   });
 
   factory PropertyModel.fromJson(Map<String, dynamic> json) => PropertyModel(
@@ -47,6 +53,8 @@ class PropertyModel extends SmartPropertyModel {
     location: json["location"],
     mainImage: json["main_image"],
     documents: json["documents"] == null ? null : DocumentsModel.fromJson(json["documents"]),
+    paymentDurations: json["payment_schedules"] == null ? null : PaymentScheduleModel.fromJson(json["payment_schedules"]),
+    units: json["units"] == null ? null : UnitModel.fromJson(json["units"]),
 
   );
 
@@ -61,6 +69,8 @@ class PropertyModel extends SmartPropertyModel {
     "location": location,
     "main_image": mainImage,
     "documents": documents?.toJson(),
+    "payment_schedules": paymentDurations?.toJson(),
+    "units": units?.toJson(),
 
   };
 

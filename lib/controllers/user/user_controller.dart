@@ -162,24 +162,7 @@ isUserListLoading(true);
           });
         });
       });
-      // print('MY SPECIFIC Profile User RESPONSE IS ${response.data[0]['first_name']}');
-      // print('MY SPECIFIC Profile User  ID IS ${response.data[0]['user_id']}');
-      // userFirstname.value = response.data[0]['first_name'];
-      // userStorage.write('OrganizationId', response.data[0]['id']);
-      // await userStorage.write('userFirstname', response.data[0]['first_name']);
-      // await userStorage.write('userProfileId', response.data[0]['id']);
 
-      // final response = await AppConfig().supaBaseClient.from('user_profiles').select().eq('user_id', userStorage.read('userId')).execute();
-      // print('MY SPECIFIC Profile User RESPONSE IS ${response.data[0]['first_name']}');
-      // print('MY SPECIFIC Profile User  ID IS ${response.data[0]['user_id']}');
-      // userFirstname.value = response.data[0]['first_name'];
-      // // userStorage.write('OrganizationId', response.data[0]['id']);
-      // await userStorage.write('userFirstname', response.data[0]['first_name']);
-      // await userStorage.write('userProfileId', response.data[0]['id']);
-
-      // final response = await AppConfig().supaBaseClient.from('user_profiles').select().eq('user_id', userStorage.read('userId')).execute();
-      // print('MY SPECIFIC RESPONSE IS ${response.data[0]['first_name']}');
-      // userFirstname.value = response.data[0]['first_name'];
 
 
     }catch(error){

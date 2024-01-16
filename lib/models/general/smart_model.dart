@@ -11,6 +11,13 @@ abstract class SmartTenantTypeModel {
 abstract class SmartUnitModel {
   int getId();
   String getUnitNumber();
+  int getFloorId();
+  String getDescription();
+  int getPeriodId();
+  int getAmount();
+  int getUnitType();
+  bool getAvailability();
+  int getPropertyId();
 
 }
 
@@ -113,14 +120,14 @@ abstract class SmartUserRoleModel {
 
 }
 
-int? id;
-String? name;
-String? description;
-int? organisationId;
-String? squareMeters;
-int? propertyTypeId;
-int? categoryTypeId;
-String? location;
+// int? id;
+// String? name;
+// String? description;
+// int? organisationId;
+// String? squareMeters;
+// int? propertyTypeId;
+// int? categoryTypeId;
+// String? location;
 
 abstract class SmartPropertyModel {
 
@@ -134,6 +141,9 @@ abstract class SmartPropertyModel {
   String getSquareMeters();
   int getMainImage();
   String getImageDocUrl();
+  // int getUnitCount();
+  // int getAvailableUnits();
+  // int getOccupancy();
 
 
 }

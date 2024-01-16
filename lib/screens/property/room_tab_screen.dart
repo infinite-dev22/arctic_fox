@@ -287,7 +287,7 @@ class _RoomTabScreenState extends State<RoomTabScreen> {
                                 hintText: 'Per Month',
                                 menuItems: widget.unitController.paymentList.value,
                                 onChanged: (value) {
-                                  widget.unitController.setPaymentScheduleId(value!.id);
+                                  widget.unitController.setPaymentScheduleId(value!.id!);
                                 },
                               );
                             }),

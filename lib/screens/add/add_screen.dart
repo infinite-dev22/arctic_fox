@@ -480,6 +480,9 @@ class _AddScreenState extends State<AddScreen> {
                           userProfileModel: user,
                           userController: userController,
                           index: index,
+                          deleteFunction: (){
+                            userController.deleteUser(user.userId.toString());
+                          },
                           editFunction: () {
                             // if(  tenant.tenantTypeId == 2){
                             //   Get.to(() => UpdateCompanyTenantWithContactScreen(tenantModel: tenant));

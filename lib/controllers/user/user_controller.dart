@@ -685,6 +685,17 @@ isUserListLoading(true);
   }
 
 
+  deleteUser(String id) async{
+    await AppConfig().supaBaseClient
+        .from('user_profiles')
+        .delete()
+        .match({ 'user_id': id }).then((value) {
+      Get.back();
+    });
+
+    // fetchAllTenants();
+  }
+
 // void listenToChanges() {
   //   // Set up real-time listener
   //   AppConfig().supaBaseClient

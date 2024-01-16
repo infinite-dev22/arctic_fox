@@ -14,7 +14,8 @@ class TenantCardWidget extends StatelessWidget {
   final TenantController tenantController;
   final int index;
   final VoidCallback editFunction;
-  const TenantCardWidget({super.key, required this.tenantController, required this.index, required this.editFunction, required this.tenantModel});
+  final VoidCallback deleteFunction;
+  const TenantCardWidget({super.key, required this.tenantController, required this.index, required this.editFunction, required this.tenantModel, required this.deleteFunction});
 
   @override
   Widget build(BuildContext context) {
@@ -75,9 +76,7 @@ class TenantCardWidget extends StatelessWidget {
                                             child: AppButton(
                                               title: 'Remove',
                                               color: AppTheme.primaryColor,
-                                              function: () async {
-                                                // tenantController.deleteTenant(tenantController.tenantList[index].id);
-                                              },
+                                              function: deleteFunction,
                                             ),
                                           ),
 

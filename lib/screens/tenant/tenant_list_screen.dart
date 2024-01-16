@@ -404,13 +404,21 @@ class _TenantListScreenState extends State<TenantListScreen> {
                           tenantModel: tenant,
                           tenantController: widget.tenantController,
                           index: index,
+                          deleteFunction: ()async {
+                            if(  tenant.tenantTypeId == 2){
+                              widget.tenantController.deleteCompanyTenant(tenant.id);
+                            } else {
+                              widget.tenantController.deleteTenant(tenant.id);
+                            }
+                          },
                           editFunction: () {
                           if(  tenant.tenantTypeId == 2){
                               Get.to(() => UpdateCompanyTenantWithContactScreen(tenantModel: tenant));
                           } else {
                               Get.to(() => UpdateIndividualTenantScreen(tenantModel: tenant));
                           }
-                          },),
+                          },
+                              ),
                             )),
                       );
                     });

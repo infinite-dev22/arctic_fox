@@ -354,7 +354,7 @@ setSpecificPaymentBalance(int balance){
 
       final response = await AppConfig().supaBaseClient.from('tenants').select(
         'id, name, tenant_type_id, nation_id, tenant_no, business_type_id, description, documents(file_url, external_key, created_at), image, business_types(name), tenant_types(name), currency_symbol(country), tenant_profiles(email, date_of_birth, nin, gender, tenant_id, description, contact)'
-      ).order('created_at', ascending: false);
+      ).order('created_at');
       final data = response as List<dynamic>;
       print(response);
       print(response.length);
@@ -1018,7 +1018,28 @@ setSpecificPaymentBalance(int balance){
     await AppConfig().supaBaseClient
         .from('tenants')
         .delete()
-        .match({ 'id': id });
+        .match({ 'id': id }).then((value) {
+      Get.back();
+    });
+    // fetchAllTenants();
+  }
+
+  deleteCompanyTenant(int id) async{
+    await AppConfig().supaBaseClient
+        .from('tenant_profiles')
+        .delete()
+        .match({ 'tenant_id': id });
+    await AppConfig().supaBaseClient
+        .from('tenant_profile_contacts')
+        .delete()
+        .match({ 'tenant_id': id });
+    await AppConfig().supaBaseClient
+        .from('tenants')
+        .delete()
+        .match({ 'id': id }).then((value) {
+          Get.back();
+    });
+
     // fetchAllTenants();
   }
 
@@ -1902,7 +1923,7 @@ setSpecificPaymentBalance(int balance){
       final response = await AppConfig().supaBaseClient.from('properties').select(
         'id, name, description, organisation_id, square_meters, property_type_id, category_type_id, location, main_image, documents!inner(*)'
       )
-          .eq('organisation_id', userStorage.read('OrganizationId'));
+          .eq('organisation_id', userStorage.read('OrganizationId')).order('created_at');
       final data = response as List<dynamic>;
       print('my Properties are $response');
       print(response.length);

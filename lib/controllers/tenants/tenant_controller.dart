@@ -91,6 +91,8 @@ class TenantController extends GetxController {
   var isSpecificUserPropertyListLoading = false.obs;
   var selectedPropertyId = 0.obs;
   var isSpecificTenantProfileContactsLoading = false.obs;
+  var isAddTenantLoading = false.obs;
+
 
 
 
@@ -1049,6 +1051,7 @@ setSpecificPaymentBalance(int balance){
      Uint8List imageBytes, String fileExtension, String fileName
       ) async {
 
+    isAddTenantLoading(true);
     String uniqueId = uuid.v4();
 
     print('MY ORG ID == $organisationId');
@@ -1134,10 +1137,11 @@ setSpecificPaymentBalance(int balance){
         });
       });
 
-
+      isAddTenantLoading(false);
 
 
     } catch (error) {
+      isAddTenantLoading(false);
       print('Error adding tenant: $error');
     }
 
@@ -1243,6 +1247,7 @@ setSpecificPaymentBalance(int balance){
       Uint8List imageBytes, String fileExtension, String fileName
       ) async {
 
+    isAddTenantLoading(true);
     String uniqueId = uuid.v4();
 
 
@@ -1305,6 +1310,7 @@ setSpecificPaymentBalance(int balance){
 
       if(isAddContactPerson.isFalse) {
         // fetchAllTenants();
+        isAddTenantLoading(false);
         Get.back();
         Get.snackbar('SUCCESS', 'Tenant added to your list',
           titleText: Text(
@@ -1324,11 +1330,13 @@ setSpecificPaymentBalance(int balance){
               "created_by" : userStorage.read('userProfileId'),
             }
         );
+        isAddTenantLoading(false);
 
       }
 
     } catch (error) {
       print('Error adding tenant: $error');
+      isAddTenantLoading(false);
     }
 
   }
@@ -1338,6 +1346,7 @@ setSpecificPaymentBalance(int balance){
       int nationId, String? description, Uint8List imageBytes, String fileExtension, String fileName
       ) async {
 
+    isAddTenantLoading(true);
     String uniqueId = uuid.v4();
 
 
@@ -1392,9 +1401,11 @@ setSpecificPaymentBalance(int balance){
           Get.snackbar('Success', 'Added Company Without Contact Tenant');
         });
       });
+      isAddTenantLoading(false);
 
     } catch (error) {
       print('Error adding tenant: $error');
+      isAddTenantLoading(false);
     }
 
 

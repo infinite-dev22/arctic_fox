@@ -100,6 +100,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     Center(child: Bounceable(
                       onTap: () {
                         Get.to(() => ForgotPasswordScreen());
+                        usernameController.clear();
+                        passwordController.clear();
                       },
                       child: Text(
                         'Forgot Password!', style: AppTheme.subTextBold,),

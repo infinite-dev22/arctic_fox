@@ -21,6 +21,7 @@ import 'package:smart_rent/widgets/app_button.dart';
 import 'package:smart_rent/widgets/app_drop_downs.dart';
 import 'package:smart_rent/widgets/app_header.dart';
 import 'package:smart_rent/widgets/app_image_header.dart';
+import 'package:smart_rent/widgets/app_loader.dart';
 import 'package:smart_rent/widgets/app_password_textfield.dart';
 import 'package:smart_rent/widgets/app_textfield.dart';
 import 'package:smart_rent/widgets/tenant_card_widget.dart';
@@ -38,19 +39,19 @@ class AddScreen extends StatefulWidget {
 
 class _AddScreenState extends State<AddScreen> {
   final UserController userController =
-      Get.put(UserController(), permanent: true);
+  Get.put(UserController(), permanent: true);
 
   final _key = GlobalKey<ExpandableFabState>();
 
   final TextEditingController firstNameEditingController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController lastNameEditingController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController emailEditingController = TextEditingController();
   final TextEditingController passwordEditingController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController confirmPasswordEditingController =
-      TextEditingController();
+  TextEditingController();
   TextEditingController mobileCont = TextEditingController();
 
   final countryPicker = const FlCountryCodePicker();
@@ -75,304 +76,331 @@ class _AddScreenState extends State<AddScreen> {
         builder: (context, state) {
           return StatefulBuilder(
               builder: (BuildContext context, StateSetter setState) {
-            return WillPopScope(
-              onWillPop: () async {
-                firstNameEditingController.clear();
-                lastNameEditingController.clear();
-                emailEditingController.clear();
-                passwordEditingController.clear();
-                confirmPasswordEditingController.clear();
-                mobileCont.clear();
-                // propertyPic = File('');
-                return true;
-              },
-              child: Material(
-                color: AppTheme.whiteColor,
-                child: Column(
-                  children: [
-                    Material(
-                      elevation: 1,
-                      child: Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: 7.5.h,
-                        decoration: BoxDecoration(boxShadow: []),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 5.w, vertical: 2.h),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Bounceable(
-                                  onTap: () {
-                                    firstNameEditingController.clear();
-                                    lastNameEditingController.clear();
-                                    emailEditingController.clear();
-                                    passwordEditingController.clear();
-                                    confirmPasswordEditingController.clear();
-                                    mobileCont.clear();
-                                    // propertyPic = File('');
-
-                                    Get.back();
-                                  },
-                                  child: Text(
-                                    'Cancel',
-                                    style: TextStyle(
-                                      color: Colors.red,
-                                      fontSize: 17.5.sp,
-                                    ),
-                                  )),
-                              Text(
-                                'Add User',
-                                style: AppTheme.darkBlueTitle2,
-                              ),
-                              Bounceable(
-                                  onTap: () async {
-                                    if (firstNameEditingController
-                                            .text.isEmpty ||
-                                        lastNameEditingController
-                                            .text.isEmpty ||
-                                        emailEditingController.text.isEmpty ||
-                                        passwordEditingController
-                                            .text.isEmpty ||
+                return WillPopScope(
+                  onWillPop: () async {
+                    firstNameEditingController.clear();
+                    lastNameEditingController.clear();
+                    emailEditingController.clear();
+                    passwordEditingController.clear();
+                    confirmPasswordEditingController.clear();
+                    mobileCont.clear();
+                    // propertyPic = File('');
+                    return true;
+                  },
+                  child: Material(
+                    color: AppTheme.whiteColor,
+                    child: Column(
+                      children: [
+                        Material(
+                          elevation: 1,
+                          child: Container(
+                            width: MediaQuery
+                                .of(context)
+                                .size
+                                .width,
+                            height: 7.5.h,
+                            decoration: BoxDecoration(boxShadow: []),
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 5.w, vertical: 2.h),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment
+                                    .spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Bounceable(
+                                      onTap: () {
+                                        firstNameEditingController.clear();
+                                        lastNameEditingController.clear();
+                                        emailEditingController.clear();
+                                        passwordEditingController.clear();
                                         confirmPasswordEditingController
-                                            .text.isEmpty) {
-                                      Fluttertoast.showToast(
-                                          msg: 'fill in all fields',
-                                          gravity: ToastGravity.TOP);
-                                    } else {
-                                      if (mobileCont.text.length < 9) {
-                                        Fluttertoast.showToast(
-                                            msg: 'phone number is short',
-                                            gravity: ToastGravity.TOP);
-                                      } else if (mobileCont.text.length > 11) {
-                                        Fluttertoast.showToast(
-                                            msg: 'phone number is long',
-                                            gravity: ToastGravity.TOP);
-                                      } else if (firstNameEditingController
-                                              .text.length <
-                                          3) {
-                                        Fluttertoast.showToast(
-                                            msg: 'short first name',
-                                            gravity: ToastGravity.TOP);
-                                      } else if (lastNameEditingController
-                                              .text.length <
-                                          3) {
-                                        Fluttertoast.showToast(
-                                            msg: 'short last name',
-                                            gravity: ToastGravity.TOP);
-                                      } else if (passwordEditingController
-                                              .text.length <
-                                          6) {
-                                        Fluttertoast.showToast(
-                                            msg: 'short password : min is 6',
-                                            gravity: ToastGravity.TOP);
-                                      } else if (userController
-                                              .addedUserRoleId.value ==
-                                          0) {
-                                        Fluttertoast.showToast(
-                                            msg: 'add role',
-                                            gravity: ToastGravity.TOP);
-                                      } else if (passwordEditingController.text
-                                              .toString() !=
-                                          confirmPasswordEditingController.text
-                                              .toString()) {
-                                        Fluttertoast.showToast(
-                                            msg: 'mismatching passwords',
-                                            gravity: ToastGravity.TOP);
-                                      } else if (!_numberRegex.hasMatch(
-                                          passwordEditingController.text
-                                              .toString())) {
-                                        Fluttertoast.showToast(
-                                            msg: 'password must have a number',
-                                            gravity: ToastGravity.TOP);
-                                      } else if (!_numberRegex.hasMatch(
-                                          confirmPasswordEditingController.text
-                                              .toString())) {
-                                        Fluttertoast.showToast(
-                                            msg:
-                                                'confirm password must have a number',
-                                            gravity: ToastGravity.TOP);
-                                      } else {
-                                        await userController
-                                            .adminCreateUser(
-                                          emailEditingController.text
-                                              .trim()
-                                              .toString(),
-                                          passwordEditingController.text
-                                              .trim()
-                                              .toString(),
-                                          firstNameEditingController.text
-                                              .trim()
-                                              .toString(),
-                                          lastNameEditingController.text
-                                              .trim()
-                                              .toString(),
-                                          userController.addedUserRoleId.value,
-                                          countryCode.dialCode +
-                                              mobileCont.text.trim().toString(),
-                                        )
-                                            .then((value) {
-                                          emailEditingController.clear();
-                                          passwordEditingController.clear();
-                                          firstNameEditingController.clear();
-                                          lastNameEditingController.clear();
-                                          userController
-                                                  .addedUserRoleId.value ==
-                                              0;
-                                          Get.back();
-                                        });
-                                      }
-                                    }
+                                            .clear();
+                                        mobileCont.clear();
+                                        // propertyPic = File('');
 
-
-                                  },
-                                  child: Text(
-                                    'Add',
-                                    style: TextStyle(
-                                      color: AppTheme.primaryColor,
-                                      fontSize: 17.5.sp,
-                                    ),
-                                  )),
-                            ],
+                                        Get.back();
+                                      },
+                                      child: Text(
+                                        'Cancel',
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                          fontSize: 17.5.sp,
+                                        ),
+                                      )),
+                                  Text(
+                                    'Add User',
+                                    style: AppTheme.darkBlueTitle2,
+                                  ),
+                                  Obx(() {
+                                    return userController.isCreateAdminLoading.value ?
+                                    AppLoader(color: AppTheme.primaryColor,) :
+                                    Bounceable(
+                                        onTap: () async {
+                                          if (firstNameEditingController
+                                              .text.isEmpty ||
+                                              lastNameEditingController
+                                                  .text.isEmpty ||
+                                              emailEditingController.text
+                                                  .isEmpty ||
+                                              passwordEditingController
+                                                  .text.isEmpty ||
+                                              confirmPasswordEditingController
+                                                  .text.isEmpty) {
+                                            Fluttertoast.showToast(
+                                                msg: 'fill in all fields',
+                                                gravity: ToastGravity.TOP);
+                                          } else {
+                                            if (mobileCont.text.length < 9) {
+                                              Fluttertoast.showToast(
+                                                  msg: 'phone number is short',
+                                                  gravity: ToastGravity.TOP);
+                                            } else
+                                            if (mobileCont.text.length > 11) {
+                                              Fluttertoast.showToast(
+                                                  msg: 'phone number is long',
+                                                  gravity: ToastGravity.TOP);
+                                            } else
+                                            if (firstNameEditingController
+                                                .text.length <
+                                                3) {
+                                              Fluttertoast.showToast(
+                                                  msg: 'short first name',
+                                                  gravity: ToastGravity.TOP);
+                                            } else if (lastNameEditingController
+                                                .text.length <
+                                                3) {
+                                              Fluttertoast.showToast(
+                                                  msg: 'short last name',
+                                                  gravity: ToastGravity.TOP);
+                                            } else if (passwordEditingController
+                                                .text.length <
+                                                6) {
+                                              Fluttertoast.showToast(
+                                                  msg: 'short password : min is 6',
+                                                  gravity: ToastGravity.TOP);
+                                            } else if (userController
+                                                .addedUserRoleId.value ==
+                                                0) {
+                                              Fluttertoast.showToast(
+                                                  msg: 'add role',
+                                                  gravity: ToastGravity.TOP);
+                                            } else
+                                            if (passwordEditingController.text
+                                                .toString() !=
+                                                confirmPasswordEditingController
+                                                    .text
+                                                    .toString()) {
+                                              Fluttertoast.showToast(
+                                                  msg: 'mismatching passwords',
+                                                  gravity: ToastGravity.TOP);
+                                            } else if (!_numberRegex.hasMatch(
+                                                passwordEditingController.text
+                                                    .toString())) {
+                                              Fluttertoast.showToast(
+                                                  msg: 'password must have a number',
+                                                  gravity: ToastGravity.TOP);
+                                            } else if (!_numberRegex.hasMatch(
+                                                confirmPasswordEditingController
+                                                    .text
+                                                    .toString())) {
+                                              Fluttertoast.showToast(
+                                                  msg:
+                                                  'confirm password must have a number',
+                                                  gravity: ToastGravity.TOP);
+                                            } else {
+                                              await userController
+                                                  .adminCreateUser(
+                                                emailEditingController.text
+                                                    .trim()
+                                                    .toString(),
+                                                passwordEditingController.text
+                                                    .trim()
+                                                    .toString(),
+                                                firstNameEditingController.text
+                                                    .trim()
+                                                    .toString(),
+                                                lastNameEditingController.text
+                                                    .trim()
+                                                    .toString(),
+                                                userController.addedUserRoleId
+                                                    .value,
+                                                countryCode.dialCode +
+                                                    mobileCont.text.trim()
+                                                        .toString(),
+                                              )
+                                                  .then((value) {
+                                                emailEditingController.clear();
+                                                passwordEditingController
+                                                    .clear();
+                                                firstNameEditingController
+                                                    .clear();
+                                                lastNameEditingController
+                                                    .clear();
+                                                userController
+                                                    .addedUserRoleId.value ==
+                                                    0;
+                                                Get.back();
+                                              });
+                                            }
+                                          }
+                                        },
+                                        child: Text(
+                                          'Add',
+                                          style: TextStyle(
+                                            color: AppTheme.primaryColor,
+                                            fontSize: 17.5.sp,
+                                          ),
+                                        ));
+                                  }),
+                                ],
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    ),
-                    Padding(
-                      padding:
+                        Padding(
+                          padding:
                           EdgeInsets.symmetric(horizontal: 5.w, vertical: 1.h),
-                      child: SingleChildScrollView(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Obx(() {
-                              return CustomApiUserRoleDropdown<UserRoleModel>(
-                                hintText: 'Select Role e.g owner',
-                                menuItems: userController.userRoleList.value,
-                                onChanged: (value) {
-                                  userController.setAddedUserRoleId(value!.id!);
-                                },
-                              );
-                            }),
-                            SizedBox(
-                              height: 1.h,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          child: SingleChildScrollView(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
+                                Obx(() {
+                                  return CustomApiUserRoleDropdown<
+                                      UserRoleModel>(
+                                    hintText: 'Select Role e.g owner',
+                                    menuItems: userController.userRoleList
+                                        .value,
+                                    onChanged: (value) {
+                                      userController.setAddedUserRoleId(
+                                          value!.id!);
+                                    },
+                                  );
+                                }),
                                 SizedBox(
-                                  width: 42.5.w,
-                                  child: AuthTextField(
-                                    controller: firstNameEditingController,
-                                    hintText: 'Firstname',
-                                    obscureText: false,
+                                  height: 1.h,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment
+                                      .spaceBetween,
+                                  children: [
+                                    SizedBox(
+                                      width: 42.5.w,
+                                      child: AuthTextField(
+                                        controller: firstNameEditingController,
+                                        hintText: 'Firstname',
+                                        obscureText: false,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 42.5.w,
+                                      child: AuthTextField(
+                                        controller: lastNameEditingController,
+                                        hintText: 'Lastname',
+                                        obscureText: false,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 1.h,
+                                ),
+                                AuthTextField(
+                                  isEmail: true,
+                                  controller: emailEditingController,
+                                  hintText: 'Email',
+                                  obscureText: false,
+                                ),
+                                SizedBox(
+                                  height: 1.h,
+                                ),
+                                Container(
+                                  clipBehavior: Clip.antiAlias,
+                                  width: 90.w,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(
+                                          15.sp)),
+                                  child: TextFormField(
+                                    // maxLength: 9,
+                                    onChanged: (value) {
+                                      print(
+                                          'dialCode==${countryCode
+                                              .dialCode} code==${countryCode
+                                              .code} phone==${mobileCont
+                                              .text}');
+                                    },
+                                    textAlign: TextAlign.left,
+                                    keyboardType: TextInputType.phone,
+                                    controller: mobileCont,
+                                    validator: phoneValidator,
+                                    decoration: InputDecoration(
+                                      prefixIcon: Padding(
+                                        padding: EdgeInsets.only(left: 2.w),
+                                        child: Bounceable(
+                                          onTap: () async {
+                                            final code = await countryPicker
+                                                .showPicker(context: context);
+                                            setState(() {
+                                              countryCode = code!;
+                                            });
+                                            print(countryCode);
+                                          },
+                                          child: SizedBox(
+                                            width: 30.w,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                countryCode.flagImage,
+                                                Container(
+                                                  child: Text(countryCode
+                                                      .dialCode),
+                                                ),
+                                                const Icon(Icons
+                                                    .keyboard_arrow_down_outlined),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      border: InputBorder.none,
+                                      filled: true,
+                                      fillColor: AppTheme.appBgColor,
+                                      hintText: 'Enter Your Phone',
+                                      enabledBorder: InputBorder.none,
+                                      focusedBorder: InputBorder.none,
+                                      focusedErrorBorder: InputBorder.none,
+                                      errorBorder: InputBorder.none,
+                                    ),
                                   ),
                                 ),
                                 SizedBox(
-                                  width: 42.5.w,
-                                  child: AuthTextField(
-                                    controller: lastNameEditingController,
-                                    hintText: 'Lastname',
-                                    obscureText: false,
-                                  ),
+                                  height: 1.h,
+                                ),
+                                AppPasswordTextField(
+                                  controller: passwordEditingController,
+                                  hintText: 'Password',
+                                  fillColor: AppTheme.appBgColor,
+                                  // validator: passwordValidator,
+                                ),
+                                SizedBox(
+                                  height: 1.h,
+                                ),
+                                AppPasswordTextField(
+                                  controller: confirmPasswordEditingController,
+                                  hintText: 'Confirm Password',
+                                  fillColor: AppTheme.appBgColor,
+                                  // validator: (val) => MatchValidator(errorText: 'passwords do not match').validateMatch(val.toString(), ),
                                 ),
                               ],
                             ),
-                            SizedBox(
-                              height: 1.h,
-                            ),
-                            AuthTextField(
-                              isEmail: true,
-                              controller: emailEditingController,
-                              hintText: 'Email',
-                              obscureText: false,
-                            ),
-                            SizedBox(
-                              height: 1.h,
-                            ),
-                            Container(
-                              clipBehavior: Clip.antiAlias,
-                              width: 90.w,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(15.sp)),
-                              child: TextFormField(
-                                // maxLength: 9,
-                                onChanged: (value) {
-                                  print(
-                                      'dialCode==${countryCode.dialCode} code==${countryCode.code} phone==${mobileCont.text}');
-                                },
-                                textAlign: TextAlign.left,
-                                keyboardType: TextInputType.phone,
-                                controller: mobileCont,
-                                validator: phoneValidator,
-                                decoration: InputDecoration(
-                                  prefixIcon: Padding(
-                                    padding: EdgeInsets.only(left: 2.w),
-                                    child: Bounceable(
-                                      onTap: () async {
-                                        final code = await countryPicker
-                                            .showPicker(context: context);
-                                        setState(() {
-                                          countryCode = code!;
-                                        });
-                                        print(countryCode);
-                                      },
-                                      child: SizedBox(
-                                        width: 30.w,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            countryCode.flagImage,
-                                            Container(
-                                              child: Text(countryCode.dialCode),
-                                            ),
-                                            const Icon(Icons
-                                                .keyboard_arrow_down_outlined),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  border: InputBorder.none,
-                                  filled: true,
-                                  fillColor: AppTheme.appBgColor,
-                                  hintText: 'Enter Your Phone',
-                                  enabledBorder: InputBorder.none,
-                                  focusedBorder: InputBorder.none,
-                                  focusedErrorBorder: InputBorder.none,
-                                  errorBorder: InputBorder.none,
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 1.h,
-                            ),
-                            AppPasswordTextField(
-                              controller: passwordEditingController,
-                              hintText: 'Password',
-                              fillColor: AppTheme.appBgColor,
-                              // validator: passwordValidator,
-                            ),
-                            SizedBox(
-                              height: 1.h,
-                            ),
-                            AppPasswordTextField(
-                              controller: confirmPasswordEditingController,
-                              hintText: 'Confirm Password',
-                              fillColor: AppTheme.appBgColor,
-                              // validator: (val) => MatchValidator(errorText: 'passwords do not match').validateMatch(val.toString(), ),
-                            ),
-                          ],
+                          ),
                         ),
-                      ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
-            );
-          });
+                  ),
+                );
+              });
         },
       );
     });
@@ -414,7 +442,7 @@ class _AddScreenState extends State<AddScreen> {
     super.initState();
     userController.listenToAllUsersInSpecificOrganizationChanges();
     countryCode =
-        const CountryCode(name: 'Uganda', code: 'UG', dialCode: '+256');
+    const CountryCode(name: 'Uganda', code: 'UG', dialCode: '+256');
   }
 
   @override
@@ -427,47 +455,47 @@ class _AddScreenState extends State<AddScreen> {
         leading: Container(),
       ),
       floatingActionButtonLocation:
-          userStorage.read('roleId') == 4 ? null : ExpandableFab.location,
+      userStorage.read('roleId') == 4 ? null : ExpandableFab.location,
       floatingActionButton: userStorage.read('roleId') == 4
           ? Container()
           : ExpandableFab(
-              key: _key,
-              type: ExpandableFabType.up,
-              openButtonBuilder: RotateFloatingActionButtonBuilder(
-                child: Container(
-                  width: 14.w,
-                  height: 10.h,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.sp),
-                    color: AppTheme.primaryColor,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Center(
-                      child: Icon(
-                        Icons.add,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
-                fabSize: ExpandableFabSize.regular,
-                foregroundColor: Colors.transparent,
-                backgroundColor: Colors.transparent,
-                shape: const CircleBorder(),
-              ),
-              children: [],
-              onOpen: () {
-                final state = _key.currentState;
-                if (state != null) {
-                  debugPrint('isOpen:${state.isOpen}');
-                  state.toggle();
-                }
-                showAddUserBottomSheet(context);
-                // Get.to(() => AddPropertyScreen(),
-                //     transition: Transition.downToUp);
-              },
+        key: _key,
+        type: ExpandableFabType.up,
+        openButtonBuilder: RotateFloatingActionButtonBuilder(
+          child: Container(
+            width: 14.w,
+            height: 10.h,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10.sp),
+              color: AppTheme.primaryColor,
             ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                child: Icon(
+                  Icons.add,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+          fabSize: ExpandableFabSize.regular,
+          foregroundColor: Colors.transparent,
+          backgroundColor: Colors.transparent,
+          shape: const CircleBorder(),
+        ),
+        children: [],
+        onOpen: () {
+          final state = _key.currentState;
+          if (state != null) {
+            debugPrint('isOpen:${state.isOpen}');
+            state.toggle();
+          }
+          showAddUserBottomSheet(context);
+          // Get.to(() => AddPropertyScreen(),
+          //     transition: Transition.downToUp);
+        },
+      ),
       body: Padding(
         padding: EdgeInsets.only(left: 5.w, right: 5.w, top: 0.h),
         child: SingleChildScrollView(
@@ -520,15 +548,15 @@ class _AddScreenState extends State<AddScreen> {
                 return userController.isUserListLoading.value
                     ? Center(child: CircularProgressIndicator())
                     : ListView.builder(
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: userController.userProfileModelList.length,
-                        itemBuilder: (context, index) {
-                          var user = userController.userProfileModelList[index];
-                          return Padding(
-                            padding: EdgeInsets.only(top: 1.h),
-                            child: SlideInUp(
-                                child: UserCardWidget(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: userController.userProfileModelList.length,
+                    itemBuilder: (context, index) {
+                      var user = userController.userProfileModelList[index];
+                      return Padding(
+                        padding: EdgeInsets.only(top: 1.h),
+                        child: SlideInUp(
+                            child: UserCardWidget(
                               userProfileModel: user,
                               userController: userController,
                               index: index,
@@ -544,8 +572,8 @@ class _AddScreenState extends State<AddScreen> {
                                 // }
                               },
                             )),
-                          );
-                        });
+                      );
+                    });
               }),
             ],
           ),

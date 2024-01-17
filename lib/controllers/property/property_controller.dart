@@ -16,6 +16,7 @@ class PropertyController extends GetxController {
 
   var propertyTypeId = 0.obs;
   var categoryId = 0.obs;
+  var isAddPropertyLoading = false.obs;
 
   @override
   void onInit() {
@@ -84,6 +85,7 @@ class PropertyController extends GetxController {
       String createdBy, String updatedBy, Uint8List imageBytes, String fileExtension, String fileName
       ) async {
 
+    isAddPropertyLoading(true);
     try {
       final response =  await AppConfig().supaBaseClient.from('properties').insert(
           {
@@ -133,14 +135,10 @@ class PropertyController extends GetxController {
         Get.snackbar('Success', 'Added Property to your list');
       });
 
-      //     .then((property) {
-      //   Get.back();
-      //   Get.snackbar('SUCCESS', 'Property added to your list',
-      //     titleText: Text('SUCCESS', style: AppTheme.greenTitle1,),
-      //   );
-      // });
+      isAddPropertyLoading(false);
 
     } catch (error) {
+      isAddPropertyLoading(false);
       print('Error adding property: $error');
     }
 

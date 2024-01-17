@@ -33,6 +33,7 @@ class UserController extends GetxController {
   var addedUserRoleId = 0.obs;
   var isUserListLoading = false.obs;
   var isEmployeePropertyLoading = false.obs;
+  var isCreateAdminLoading = false.obs;
 
   var isPhoneSelected = false.obs;
   var isEmailSelected = false.obs;
@@ -189,8 +190,8 @@ isUserListLoading(true);
         await Get.deleteAll();
         Get.off(() => InitialScreen());
       });
-    } catch(error) {
-      Fluttertoast.showToast(msg: error.toString());
+    } on AuthException catch(error) {
+      Fluttertoast.showToast(msg: error.message.toString(), gravity: ToastGravity.TOP);
     }
   }
 
@@ -208,7 +209,7 @@ isUserListLoading(true);
 
     } on AuthException catch (error) {
       isSignUpLoading(false);
-      Fluttertoast.showToast(msg: error.message.toString(), backgroundColor: Colors.black);
+      Fluttertoast.showToast(msg: error.message.toString(), backgroundColor: Colors.black, gravity: ToastGravity.TOP);
       print('Error inserting into Users: $error');
     }
   }
@@ -229,7 +230,7 @@ isUserListLoading(true);
     } on AuthException catch (error) {
       isSignUpLoading(false);
       print('Error inserting into Users: $error');
-      Fluttertoast.showToast(msg: error.message.toString(), backgroundColor: Colors.black);
+      Fluttertoast.showToast(msg: error.message.toString(), backgroundColor: Colors.black, gravity: ToastGravity.TOP);
     }
 
   }
@@ -271,13 +272,13 @@ isUserListLoading(true);
 
 
       } else {
-        Fluttertoast.showToast(msg: 'Check your credentials');
+        Fluttertoast.showToast(msg: 'Check your credentials', gravity: ToastGravity.TOP);
       }
 
 
-    }  catch(error){
+    } on AuthException catch(error){
       print('Login Error is $error');
-      Fluttertoast.showToast(msg: error.toString());
+      Fluttertoast.showToast(msg: error.message.toString(), gravity: ToastGravity.TOP);
     }
   }
 
@@ -293,6 +294,7 @@ isUserListLoading(true);
   }
 
   Future<void> loginEmailUser(String email, String password) async {
+    isLoginLoading(true);
     try{
 
       final AuthResponse response = await AppConfig().supaBaseClient.auth.signInWithPassword(
@@ -321,15 +323,19 @@ isUserListLoading(true);
           });
         });
 
+        isLoginLoading(false);
+
 
       } else {
-        Fluttertoast.showToast(msg: 'Check your credentials');
+        Fluttertoast.showToast(msg: 'Check your credentials', gravity: ToastGravity.TOP);
+        isLoginLoading(false);
       }
 
 
-    }  catch(error){
+    } on AuthException catch(error){
       print('Login Error is $error');
-      Fluttertoast.showToast(msg: error.toString());
+      isLoginLoading(false);
+      Fluttertoast.showToast(msg: error.message.toString(), gravity: ToastGravity.TOP);
     }
   }
 
@@ -367,14 +373,14 @@ isUserListLoading(true);
 
       } else {
         isLoginLoading(false);
-        Fluttertoast.showToast(msg: 'Check your credentials');
+        Fluttertoast.showToast(msg: 'Check your credentials', gravity: ToastGravity.TOP);
       }
 
 
     } on AuthException catch(error){
       isLoginLoading(false);
       print('Login Error is $error');
-      Fluttertoast.showToast(msg: error.message, backgroundColor: Colors.black);
+      Fluttertoast.showToast(msg: error.message.toString(), gravity: ToastGravity.TOP);
     }
   }
 
@@ -407,13 +413,13 @@ isUserListLoading(true);
 
 
       } else {
-        Fluttertoast.showToast(msg: 'Check your credentials');
+        Fluttertoast.showToast(msg: 'Check your credentials', gravity: ToastGravity.TOP);
       }
 
 
-    }  catch(error){
+    } on AuthException catch(error){
       print('Login Error is $error');
-      Fluttertoast.showToast(msg: error.toString());
+      Fluttertoast.showToast(msg: error.message.toString(), gravity: ToastGravity.TOP);
     }
 
   }
@@ -525,9 +531,9 @@ isUserListLoading(true);
 
     try{
       if(res.user != null){
-        Get.snackbar('Account created successfully', 'you may login as');
+        Get.snackbar('Account created successfully', 'you may login as', );
       } else {
-        Fluttertoast.showToast(msg: 'Error Signing Up');
+        Fluttertoast.showToast(msg: 'Error Signing Up', gravity: ToastGravity.TOP);
       }
     } catch (e) {
 
@@ -538,17 +544,15 @@ isUserListLoading(true);
   Future<void> adminCreateUser(String email, String password,
       String firstName, String lastName, int role, String phone,
       ) async {
+    isCreateAdminLoading(true);
     try {
-      // final response = await AppConfig().supaBaseClient.from('users').upsert([data]);
+
       final AuthResponse response = await AppConfig().supaBaseClient.auth.signUp(password: password, email: email,);
-      // if (response.user != null) {
-      //   throw response.toString();
-      // }
-      // organisationId.value = response.data?.first['id'] ?? -1;
 
       print(response.user!.id);
       adminCreateUserProfile(response.user!.id.toString(), firstName, lastName, role, phone, email);
     } catch (error) {
+      isCreateAdminLoading(false);
       print('Error inserting into Users: $error');
     }
   }
@@ -571,13 +575,10 @@ isUserListLoading(true);
           "image" : null,
         }
       ]);
-
-      // userProfileId.value = response.data?.first['id'] ?? -1;
-      // print(userProfileId.value.toString());
-
-      // Get.back();
+      isCreateAdminLoading(false);
 
     } catch (error) {
+      isCreateAdminLoading(false);
       print('Error inserting into user Profile: $error');
     }
   }

@@ -18,6 +18,7 @@ class AppImageHeader extends StatelessWidget implements PreferredSizeWidget{
     return Padding(
       padding: EdgeInsets.only(top: 2.h),
       child: AppBar(
+        // backgroundColor: AppTheme.primaryColor,
         automaticallyImplyLeading: false,
         title: Image.asset(title, width: 50.w,),
         centerTitle: isTitleCentred ?? false,

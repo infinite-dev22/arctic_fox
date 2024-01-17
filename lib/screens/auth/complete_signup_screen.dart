@@ -305,6 +305,7 @@ class _CompleteSignUpScreenState extends State<CompleteSignUpScreen> {
                               lastNameEditingController.text.isEmpty ||
                               emailEditingController.text.isEmpty ||
                               passwordEditingController.text.isEmpty ||
+                              confirmPasswordEditingController.text.isEmpty ||
                               mobileCont.text.isEmpty
                           ) {
                             Fluttertoast.showToast(msg: 'fill in all fields');
@@ -351,6 +352,7 @@ class _CompleteSignUpScreenState extends State<CompleteSignUpScreen> {
                                   passwordEditingController.clear();
                                   firstNameEditingController.clear();
                                   lastNameEditingController.clear();
+                                  confirmPasswordEditingController.clear();
                                   mobileCont.clear();
                                   // Get.to(() => VerifyPhoneOtpScreen(phone: '${countryCode.dialCode}${mobileCont.text.trim()}'));
 
@@ -376,6 +378,7 @@ class _CompleteSignUpScreenState extends State<CompleteSignUpScreen> {
                                   passwordEditingController.clear();
                                   firstNameEditingController.clear();
                                   lastNameEditingController.clear();
+                                  confirmPasswordEditingController.clear();
                                   mobileCont.clear();
 
                                 });

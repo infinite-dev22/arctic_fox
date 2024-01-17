@@ -14,6 +14,7 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget{
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      // backgroundColor: AppTheme.primaryColor,
       automaticallyImplyLeading: false,
       title: Text(title ?? '', style: AppTheme.appTitle3,),
       centerTitle: true,

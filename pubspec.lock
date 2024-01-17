@@ -824,6 +824,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.0.3"
+  owesome_validator:
+    dependency: "direct main"
+    description:
+      name: owesome_validator
+      sha256: a7314a54e9ea29516f187b7203851a0fe5e7a065e4be91f575254a01463d77da
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.6"
   path:
     dependency: transitive
     description:

@@ -271,34 +271,36 @@ class _AddUserScreenState extends State<AddUserScreen> {
                       color: AppTheme.primaryColor,
                       function: () async {
 
-                        if (firstNameEditingController.text.isEmpty &&
-                            lastNameEditingController.text.isEmpty &&
-                            emailEditingController.text.isEmpty &&
+                        if (firstNameEditingController.text.isEmpty ||
+                            lastNameEditingController.text.isEmpty ||
+                            emailEditingController.text.isEmpty ||
+                            confirmPasswordEditingController.text.isEmpty ||
                             passwordEditingController.text.isEmpty) {
-                          Fluttertoast.showToast(msg: 'fill in all fields');
+                          Fluttertoast.showToast(msg: 'fill in all fields', gravity: ToastGravity.TOP);
                         } else {
-                          await userController
-                              .adminCreateUser(
-                                  emailEditingController.text.trim().toString(),
-                                  passwordEditingController.text
-                                      .trim()
-                                      .toString(),
-                                  firstNameEditingController.text
-                                      .trim()
-                                      .toString(),
-                                  lastNameEditingController.text
-                                      .trim()
-                                      .toString(),
-                                  userController.addedUserRoleId.value,
-                              countryCode.dialCode+mobileCont.text.trim().toString(),
-                          ).then((value) {
-                            emailEditingController.clear();
-                            passwordEditingController.clear();
-                            firstNameEditingController.clear();
-                            lastNameEditingController.clear();
-                            userController.addedUserRoleId.value == 0;
-                            Get.back();
-                          });
+                          // await userController
+                          //     .adminCreateUser(
+                          //         emailEditingController.text.trim().toString(),
+                          //         passwordEditingController.text
+                          //             .trim()
+                          //             .toString(),
+                          //         firstNameEditingController.text
+                          //             .trim()
+                          //             .toString(),
+                          //         lastNameEditingController.text
+                          //             .trim()
+                          //             .toString(),
+                          //         userController.addedUserRoleId.value,
+                          //     countryCode.dialCode+mobileCont.text.trim().toString(),
+                          // ).then((value) {
+                          //   emailEditingController.clear();
+                          //   passwordEditingController.clear();
+                          //   firstNameEditingController.clear();
+                          //   lastNameEditingController.clear();
+                          //   confirmPasswordEditingController.clear();
+                          //   userController.addedUserRoleId.value == 0;
+                          //   Get.back();
+                          // });
                         }
                       }),
                 ],

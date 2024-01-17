@@ -129,9 +129,9 @@ class _VerifyPhoneOtpScreenState extends State<VerifyPhoneOtpScreen> {
                         color: AppTheme.primaryColor,
                         function: () async {
                           if (otpTokenController.text.isEmpty) {
-                            Fluttertoast.showToast(msg: 'otp required');
+                            Fluttertoast.showToast(msg: 'otp required', gravity: ToastGravity.TOP);
                           } else if (otpTokenController.text.length < 6) {
-                            Fluttertoast.showToast(msg: 'Otp is short');
+                            Fluttertoast.showToast(msg: 'Otp is short', gravity: ToastGravity.TOP);
                           } else {
                             await authController.verifyPhoneOtp(
                               otpTokenController.text.trim().toString(),

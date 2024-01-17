@@ -84,10 +84,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           function: () async {
                             if (usernameController.text.length < 10) {
                               Fluttertoast.showToast(
-                                  msg: 'short or no username');
+                                  msg: 'short or no username', gravity: ToastGravity.TOP);
                             } else if (passwordController.text.length < 6) {
                               Fluttertoast.showToast(
-                                  msg: 'short or no password');
+                                  msg: 'short or no password', gravity: ToastGravity.TOP);
                             } else {
                               // Fluttertoast.showToast(msg: 'SUCCESS', backgroundColor: Colors.green);
                               userController.checkUsernameType(

@@ -80,9 +80,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                           bool isValid = isEmailValid(email);
 
                           if (email.isEmpty) {
-                            Fluttertoast.showToast(msg: 'Email Required');
+                            Fluttertoast.showToast(msg: 'Email Required', gravity: ToastGravity.TOP);
                           } else if (!isValid) {
-                            Fluttertoast.showToast(msg: 'Enter Correct Email');
+                            Fluttertoast.showToast(msg: 'Enter Correct Email', gravity: ToastGravity.TOP);
                           } else {
                             await authController.checkUserEmailAvailability(
                                 email);

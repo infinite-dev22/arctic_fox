@@ -90,11 +90,11 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
 
                         if(passwordEditingController.text.isEmpty && otpTokenController.text.isEmpty){
-                          Fluttertoast.showToast(msg: 'all fields required');
+                          Fluttertoast.showToast(msg: 'all fields required', gravity: ToastGravity.TOP);
                         } else if (passwordEditingController.text.length <6) {
-                          Fluttertoast.showToast(msg: 'Password is short');
+                          Fluttertoast.showToast(msg: 'Password is short', gravity: ToastGravity.TOP);
                         }  else if (otpTokenController.text.length <6) {
-                          Fluttertoast.showToast(msg: 'Otp is short');
+                          Fluttertoast.showToast(msg: 'Otp is short', gravity: ToastGravity.TOP);
                         } else {
 
                           await authController.resetUserPassword(

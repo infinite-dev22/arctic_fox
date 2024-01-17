@@ -42,6 +42,8 @@ class _CompleteSignUpScreenState extends State<CompleteSignUpScreen> {
   final countryPicker = const FlCountryCodePicker();
   late CountryCode countryCode;
 
+  final RegExp _numberRegex = RegExp(r'\d');
+
   final TextEditingController firstNameEditingController = TextEditingController();
   final TextEditingController lastNameEditingController = TextEditingController();
   final TextEditingController emailEditingController = TextEditingController();
@@ -323,10 +325,15 @@ class _CompleteSignUpScreenState extends State<CompleteSignUpScreen> {
                               Fluttertoast.showToast(
                                   msg: 'short last name');
                             } else if (passwordEditingController.text.length < 6) {
-                              Fluttertoast.showToast(
-                                  msg: 'short password : min is 6');
+                              Fluttertoast.showToast(msg: 'short password : min is 6');
                             } else if (passwordEditingController.text.toString() != confirmPasswordEditingController.text.toString()) {
                               Fluttertoast.showToast(msg: 'mismatching passwords');
+                            } else if (!_numberRegex.hasMatch(passwordEditingController.text.toString())) {
+                              Fluttertoast.showToast(
+                                  msg: 'password must have a number', gravity: ToastGravity.TOP);
+                            }  else if (!_numberRegex.hasMatch(confirmPasswordEditingController.text.toString())) {
+                              Fluttertoast.showToast(
+                                  msg: 'confirm password must have a number', gravity: ToastGravity.TOP);
                             }else {
                               print('EVERYTHING IS OKAY');
                               if (userController.isPhoneSelected.value ==

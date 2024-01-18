@@ -34,6 +34,7 @@ class UserController extends GetxController {
   var isUserListLoading = false.obs;
   var isEmployeePropertyLoading = false.obs;
   var isCreateAdminLoading = false.obs;
+  var isAddPropertyToEmployeeLoading = false.obs;
 
   var isPhoneSelected = false.obs;
   var isEmailSelected = false.obs;
@@ -600,7 +601,7 @@ isUserListLoading(true);
     try {
 
       final response = await AppConfig().supaBaseClient.from('employee_properties').select(
-        'id, user_id, role_id, organization_id, property_id, properties(name, location)'
+        '*, properties!inner(*)'
       ).eq('user_id', userId)
           .eq('organization_id', userStorage.read('OrganizationId'));
       final data = response as List<dynamic>;
@@ -656,7 +657,7 @@ isUserListLoading(true);
   // }
 
   addPropertyToEmployee(int propertyId, int roleId, String userId) async {
-
+    isAddPropertyToEmployeeLoading(true);
     try {
       final response = await AppConfig().supaBaseClient.from('employee_properties').insert([
         {
@@ -668,6 +669,7 @@ isUserListLoading(true);
           "updated_by" : userStorage.read('userProfileId'),
         }
       ]).then((property) {
+        isAddPropertyToEmployeeLoading(false);
         Get.back();
         Get.snackbar('SUCCESS', 'Property added to employee',
           titleText: Text('SUCCESS', style: AppTheme.greenTitle1,),
@@ -675,10 +677,12 @@ isUserListLoading(true);
       });
 
       if (response.error != null) {
+        isAddPropertyToEmployeeLoading(false);
         throw response.error;
       }
 
     } catch (error) {
+      isAddPropertyToEmployeeLoading(false);
       print('Error adding property: $error');
     }
 

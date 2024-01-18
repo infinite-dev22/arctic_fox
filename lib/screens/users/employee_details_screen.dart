@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:easy_data_table/easy_data_table.dart';
 import 'package:flutter/material.dart';
@@ -56,8 +57,9 @@ class _EmployeeDetailsScreenState extends State<EmployeeDetailsScreen> {
     _propertyModelCont = SingleValueDropDownController();
     widget.userController.listenToEmployeePropertiesInOrganizationChanges(
         widget.userProfileModel.userId.toString());
-    
-    tenantController.listenToSpecificUserPropertyListChanges(widget.userProfileModel.userId.toString());
+
+    tenantController.listenToSpecificUserPropertyListChanges(
+        widget.userProfileModel.userId.toString());
   }
 
   @override
@@ -65,18 +67,20 @@ class _EmployeeDetailsScreenState extends State<EmployeeDetailsScreen> {
     return WillPopScope(
       onWillPop: () async {
         print("After clicking the Android Back Button");
-         widget.userController.employeePropertyModelList.clear();
-        print('My EMployee properties before == ${widget.userController.employeePropertyModelList}');
+        widget.userController.employeePropertyModelList.clear();
+        print('My EMployee properties before == ${widget.userController
+            .employeePropertyModelList}');
         return true;
       },
       child: Scaffold(
         backgroundColor: AppTheme.whiteColor,
         appBar: AppImageHeader(
-          backFunction: (){
+          backFunction: () {
             print("After clicking the Android Back Button");
             widget.userController.employeePropertyModelList.clear();
             Get.back();
-            print('My EMployee properties before == ${widget.userController.employeePropertyModelList}');
+            print('My EMployee properties before == ${widget.userController
+                .employeePropertyModelList}');
           },
           title: 'assets/auth/logo.png',
           isTitleCentred: true,
@@ -178,7 +182,8 @@ class _EmployeeDetailsScreenState extends State<EmployeeDetailsScreen> {
                                     padding: EdgeInsets.symmetric(
                                         horizontal: 3.w, vertical: 2.h),
                                     child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment
+                                          .center,
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
                                         SizedBox(height: 1.h,),
@@ -194,7 +199,8 @@ class _EmployeeDetailsScreenState extends State<EmployeeDetailsScreen> {
                                                 PropertyModel>(
                                               hintText: 'Property',
                                               menuItems: tenantController
-                                                  .specificUserPropertyModelList.value,
+                                                  .specificUserPropertyModelList
+                                                  .value,
                                               controller: _propertyModelCont,
                                               onChanged: (value) {
                                                 tenantController
@@ -207,21 +213,27 @@ class _EmployeeDetailsScreenState extends State<EmployeeDetailsScreen> {
 
                                         SizedBox(
                                           width: 50.w,
-                                          child: AppButton(
-                                            title: 'Add to ${widget
-                                                .userProfileModel
-                                                .firstName}',
-                                            color: AppTheme.primaryColor,
-                                            function: () async {
-                                              widget.userController
-                                                  .addPropertyToEmployee(
-                                                  tenantController
-                                                      .selectedPropertyId.value,
-                                                  widget.userProfileModel.roleId!,
-                                                  widget.userProfileModel.userId!
-                                              );
-                                            },
-                                          ),
+                                          child: Obx(() {
+                                            return AppButton(
+                                              isLoading: widget.userController.isAddPropertyToEmployeeLoading.value,
+                                              title: 'Add to ${widget
+                                                  .userProfileModel
+                                                  .firstName}',
+                                              color: AppTheme.primaryColor,
+                                              function: () async {
+                                                widget.userController
+                                                    .addPropertyToEmployee(
+                                                    tenantController
+                                                        .selectedPropertyId
+                                                        .value,
+                                                    widget.userProfileModel
+                                                        .roleId!,
+                                                    widget.userProfileModel
+                                                        .userId!
+                                                );
+                                              },
+                                            );
+                                          }),
                                         )
 
                                       ],
@@ -248,6 +260,7 @@ class _EmployeeDetailsScreenState extends State<EmployeeDetailsScreen> {
                   ],
                 ),
 
+                SizedBox(height: 1.h,),
 
                 Obx(() {
                   return widget.userController.isEmployeePropertyLoading.value
@@ -259,21 +272,27 @@ class _EmployeeDetailsScreenState extends State<EmployeeDetailsScreen> {
                   //     :
                   // widget.userController.employeePropertyModelList.value.isEmpty && widget.userController.isEmployeePropertyLoading.value == false
                   //     ? Container()
-                  : widget.userController.employeePropertyModelList.value.isNotEmpty ? ListView.builder(
+                      : widget.userController.employeePropertyModelList.value
+                      .isNotEmpty ? ListView.builder(
                       shrinkWrap: true,
                       itemCount: widget.userController.employeePropertyModelList
                           .length,
                       itemBuilder: (context, index) {
                         var property = widget.userController
                             .employeePropertyModelList[index];
-                        return Text('${property.properties!.name}', style: AppTheme.blueSubText,);
-                        // return Card(
-                        //   child: Padding(padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
-                        //     child: Text('Property ${property.id}'),
-                        //   ),
-                        // );
+                        // return Text(property.properties!.name.toString(),
+                        //   style: AppTheme.blueSubText,);
+                        return Card(
+                          child: Padding(padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+                            child: ListTile(
+                              title: Text(property.properties!.name.toString(), style: AppTheme.blueSubText,),
+                              subtitle: Text(property.properties!.location.toString(), style: AppTheme.blackSubText,),
+                              trailing: Text(property.properties!.squareMeters.toString() + ' ' + 'sqm', style: AppTheme.subText,),
+                            ),
+                          ),
+                        );
 
-                      }) :  Container(
+                      }) : Container(
                     // child: Padding(
                     //   padding: EdgeInsets.symmetric(vertical: 15.h),
                     //   child: Center(

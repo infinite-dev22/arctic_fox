@@ -1983,7 +1983,7 @@ setSpecificPaymentBalance(int balance){
     try {
 
       final response = await AppConfig().supaBaseClient.from('properties').select(
-          'id, name, description, organisation_id, square_meters, property_type_id, category_type_id, location, main_image, employee_properties!inner(*)'
+          'id, name, description, organisation_id, square_meters, property_type_id, category_type_id, location, main_image'
       )
           .eq('organisation_id', userStorage.read('OrganizationId'));
       final data = response as List<dynamic>;

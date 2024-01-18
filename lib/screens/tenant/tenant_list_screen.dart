@@ -609,9 +609,32 @@ class _TenantListScreenState extends State<TenantListScreen> {
                                                           tenantBytes!,
                                                           tenantImageExtension!,
                                                           tenantFileName!
-                                                      );
+                                                      ).then((value) {
+                                                        firstNameController.clear();
+                                                        surnameNameController.clear();
+                                                        otherNameController.clear();
+                                                        phoneNoController.clear();
+                                                        companyNameController.clear();
+                                                        companyDescriptionController.clear();
+                                                        individualFirstNameController.clear();
+                                                        individualLastNameController.clear();
+                                                        individualEmailNameController.clear();
+                                                        individualPhoneNameController.clear();
+                                                        individualDateOfBirthController.clear();
+                                                        individualNinController.clear();
+                                                        individualDescriptionController.clear();
+                                                        individualGenderController.clear();
+                                                        contactFirstNameController.clear();
+                                                        contactLastNameController.clear();
+                                                        contactNinController.clear();
+                                                        contactDesignationController.clear();
+                                                        contactPhoneController.clear();
+                                                        contactEmailController.clear();
+                                                        tenantPic = File('');
+                                                        companyTenantPic = File('');
+                                                        Get.back();
+                                                      });
 
-                                                      Get.back();
                                                     }
 
 
@@ -671,9 +694,32 @@ class _TenantListScreenState extends State<TenantListScreen> {
                                                             companyTenantBytes!,
                                                             companyTenantImageExtension!,
                                                             companyTenantFileName!
-                                                        );
+                                                        ).then((value) {
+                                                          firstNameController.clear();
+                                                          surnameNameController.clear();
+                                                          otherNameController.clear();
+                                                          phoneNoController.clear();
+                                                          companyNameController.clear();
+                                                          companyDescriptionController.clear();
+                                                          individualFirstNameController.clear();
+                                                          individualLastNameController.clear();
+                                                          individualEmailNameController.clear();
+                                                          individualPhoneNameController.clear();
+                                                          individualDateOfBirthController.clear();
+                                                          individualNinController.clear();
+                                                          individualDescriptionController.clear();
+                                                          individualGenderController.clear();
+                                                          contactFirstNameController.clear();
+                                                          contactLastNameController.clear();
+                                                          contactNinController.clear();
+                                                          contactDesignationController.clear();
+                                                          contactPhoneController.clear();
+                                                          contactEmailController.clear();
+                                                          tenantPic = File('');
+                                                          companyTenantPic = File('');
+                                                          Get.back();
+                                                        });
 
-                                                        Get.back();
                                                       }
 
                                                     } else {
@@ -742,9 +788,32 @@ class _TenantListScreenState extends State<TenantListScreen> {
                                                             companyTenantBytes!,
                                                             companyTenantImageExtension!,
                                                             companyTenantFileName!
-                                                        );
+                                                        ).then((value) {
+                                                          firstNameController.clear();
+                                                          surnameNameController.clear();
+                                                          otherNameController.clear();
+                                                          phoneNoController.clear();
+                                                          companyNameController.clear();
+                                                          companyDescriptionController.clear();
+                                                          individualFirstNameController.clear();
+                                                          individualLastNameController.clear();
+                                                          individualEmailNameController.clear();
+                                                          individualPhoneNameController.clear();
+                                                          individualDateOfBirthController.clear();
+                                                          individualNinController.clear();
+                                                          individualDescriptionController.clear();
+                                                          individualGenderController.clear();
+                                                          contactFirstNameController.clear();
+                                                          contactLastNameController.clear();
+                                                          contactNinController.clear();
+                                                          contactDesignationController.clear();
+                                                          contactPhoneController.clear();
+                                                          contactEmailController.clear();
+                                                          tenantPic = File('');
+                                                          companyTenantPic = File('');
+                                                          Get.back();
+                                                        });
 
-                                                        Get.back();
                                                       }
 
                                                     } else {

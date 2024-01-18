@@ -327,7 +327,15 @@ class _PropertyListScreenState extends State<PropertyListScreen> {
                                                     propertyImageExtension!,
                                                     propertyFileName!
                                                   // "userStorage.read('userProfileId')",
-                                                );
+                                                ).then((value) {
+                                                  titleController.clear();
+                                                  addressController.clear();
+                                                  descriptionController.clear();
+                                                  locationController.clear();
+                                                  sqmController.clear();
+                                                  propertyPic = File('');
+                                                  print('Pic = ${propertyPic!.path}');
+                                                });
 
                                               }
 

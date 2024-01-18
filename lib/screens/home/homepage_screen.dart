@@ -878,7 +878,15 @@ class _HomePageState extends State<HomePage> {
                                                     propertyImageExtension!,
                                                     propertyFileName!
                                                   // "userStorage.read('userProfileId')",
-                                                );
+                                                ).then((value) {
+                                                propertyTitleController.clear();
+                                                    propertyAddressController.clear();
+                                                propertyDescriptionController.clear();
+                                                propertyLocationController.clear();
+                                                propertySqmController.clear();
+                                                propertyPic = File('');
+                                                print('Pic = ${propertyPic!.path}');
+                                                });
                                               }
                                             },
                                             child: Text('Add', style: TextStyle(
@@ -1095,6 +1103,7 @@ class _HomePageState extends State<HomePage> {
             builder: (context, state) {
               return StatefulBuilder(
                   builder: (BuildContext context, StateSetter setState) {
+
                     return WillPopScope(
                       onWillPop: () async {
                         firstNameController.clear();
@@ -1251,9 +1260,32 @@ class _HomePageState extends State<HomePage> {
                                                           tenantBytes!,
                                                           tenantImageExtension!,
                                                           tenantFileName!
-                                                      );
+                                                      ).then((value) {
+                                                        firstNameController.clear();
+                                                        surnameNameController.clear();
+                                                        otherNameController.clear();
+                                                        phoneNoController.clear();
+                                                        companyNameController.clear();
+                                                        companyDescriptionController.clear();
+                                                        individualFirstNameController.clear();
+                                                        individualLastNameController.clear();
+                                                        individualEmailNameController.clear();
+                                                        individualPhoneNameController.clear();
+                                                        individualDateOfBirthController.clear();
+                                                        individualNinController.clear();
+                                                        individualDescriptionController.clear();
+                                                        individualGenderController.clear();
+                                                        contactFirstNameController.clear();
+                                                        contactLastNameController.clear();
+                                                        contactNinController.clear();
+                                                        contactDesignationController.clear();
+                                                        contactPhoneController.clear();
+                                                        contactEmailController.clear();
+                                                        tenantPic = File('');
+                                                        companyTenantPic = File('');
+                                                        Get.back();
+                                                      });
 
-                                                      Get.back();
                                                     }
 
 
@@ -1313,9 +1345,32 @@ class _HomePageState extends State<HomePage> {
                                                             companyTenantBytes!,
                                                             companyTenantImageExtension!,
                                                             companyTenantFileName!
-                                                        );
+                                                        ).then((value) {
+                                                          firstNameController.clear();
+                                                          surnameNameController.clear();
+                                                          otherNameController.clear();
+                                                          phoneNoController.clear();
+                                                          companyNameController.clear();
+                                                          companyDescriptionController.clear();
+                                                          individualFirstNameController.clear();
+                                                          individualLastNameController.clear();
+                                                          individualEmailNameController.clear();
+                                                          individualPhoneNameController.clear();
+                                                          individualDateOfBirthController.clear();
+                                                          individualNinController.clear();
+                                                          individualDescriptionController.clear();
+                                                          individualGenderController.clear();
+                                                          contactFirstNameController.clear();
+                                                          contactLastNameController.clear();
+                                                          contactNinController.clear();
+                                                          contactDesignationController.clear();
+                                                          contactPhoneController.clear();
+                                                          contactEmailController.clear();
+                                                          tenantPic = File('');
+                                                          companyTenantPic = File('');
+                                                          Get.back();
+                                                        });
 
-                                                        Get.back();
                                                       }
 
                                                     } else {
@@ -1384,9 +1439,33 @@ class _HomePageState extends State<HomePage> {
                                                             companyTenantBytes!,
                                                             companyTenantImageExtension!,
                                                             companyTenantFileName!
-                                                        );
+                                                        ).then((value) {
 
-                                                        Get.back();
+                                                          firstNameController.clear();
+                                                          surnameNameController.clear();
+                                                          otherNameController.clear();
+                                                          phoneNoController.clear();
+                                                          companyNameController.clear();
+                                                          companyDescriptionController.clear();
+                                                          individualFirstNameController.clear();
+                                                          individualLastNameController.clear();
+                                                          individualEmailNameController.clear();
+                                                          individualPhoneNameController.clear();
+                                                          individualDateOfBirthController.clear();
+                                                          individualNinController.clear();
+                                                          individualDescriptionController.clear();
+                                                          individualGenderController.clear();
+                                                          contactFirstNameController.clear();
+                                                          contactLastNameController.clear();
+                                                          contactNinController.clear();
+                                                          contactDesignationController.clear();
+                                                          contactPhoneController.clear();
+                                                          contactEmailController.clear();
+                                                          tenantPic = File('');
+                                                          companyTenantPic = File('');
+                                                          Get.back();
+                                                        });
+
                                                       }
 
                                                     } else {

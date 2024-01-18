@@ -80,7 +80,7 @@ class PropertyController extends GetxController {
 
   }
 
-  addProperty(String name, String description, int organisationId, int propertyTypeId,
+  Future<void> addProperty(String name, String description, int organisationId, int propertyTypeId,
       categoryTypeId, String location, String squareMeters,
       String createdBy, String updatedBy, Uint8List imageBytes, String fileExtension, String fileName
       ) async {

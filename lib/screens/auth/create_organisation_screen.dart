@@ -70,7 +70,7 @@ class _CreateOrganisationScreenState extends State<CreateOrganisationScreen> {
                     ),
                     SizedBox(height: 1.h,),
 
-                    AuthTextField(
+                    DescriptionTextField(
                       inputFormatters: [
                         LengthLimitingTextInputFormatter(35),
                       ],
@@ -88,14 +88,14 @@ class _CreateOrganisationScreenState extends State<CreateOrganisationScreen> {
                       function: (){
 
                         if(businessNameController.text.isEmpty && descriptionController.text.isEmpty){
-                          Fluttertoast.showToast(msg: 'Fill all Fields');
+                          Fluttertoast.showToast(msg: 'Fill all Fields', gravity: ToastGravity.TOP);
                         } else if (businessNameController.text.length < 5){
 
-                          Fluttertoast.showToast(msg: 'Short business name');
+                          Fluttertoast.showToast(msg: 'Short business name', gravity: ToastGravity.TOP);
 
                         } else if (descriptionController.text.length < 5){
 
-                          Fluttertoast.showToast(msg: 'Too short description');
+                          Fluttertoast.showToast(msg: 'Too short description', gravity: ToastGravity.TOP);
 
                         }else {
 

@@ -268,7 +268,7 @@ class UnitController extends GetxController {
       ).eq('id', unitModel.id).then((value) {
         isUpdateStatusLoading(false);
         Get.back();
-        Fluttertoast.showToast(msg: '${unitModel.unitNumber} is now available');
+        Fluttertoast.showToast(msg: '${unitModel.unitNumber} is now available', gravity: ToastGravity.TOP);
       });
     } catch(error){
       isUpdateStatusLoading(false);

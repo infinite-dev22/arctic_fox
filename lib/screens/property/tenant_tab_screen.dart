@@ -145,7 +145,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
             : int.tryParse(dailyController.text)! * 1;
 
         if (dailyController.text.toString() == '0') {
-          Fluttertoast.showToast(msg: 'Enter Right Day');
+          Fluttertoast.showToast(msg: 'Enter Right Day', gravity: ToastGravity.TOP);
         } else {
           print('MY myDays are == ${dailyController.text.toString()}');
           print('Count myDays ' + myDays.toString());
@@ -164,7 +164,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
             : int.tryParse(weeklyController.text)! * 7;
 
         if (weeklyController.text.toString() == '0') {
-          Fluttertoast.showToast(msg: 'Enter Right week');
+          Fluttertoast.showToast(msg: 'Enter Right week', gravity: ToastGravity.TOP);
         } else {
           print('MY WEEKs are == ${weeklyController.text.toString()}');
           print('Count Weeks ' + myWeeks.toString());
@@ -181,7 +181,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
             : int.tryParse(monthlyController.text)! * 1;
 
         if (monthlyController.text.toString() == '0') {
-          Fluttertoast.showToast(msg: 'Enter Right Month');
+          Fluttertoast.showToast(msg: 'Enter Right Month', gravity: ToastGravity.TOP);
         } else {
           print('MY myMonths are == ${monthlyController.text.toString()}');
           print('Count myMonths ' + myMonths.toString());
@@ -198,7 +198,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
             : int.tryParse(yearlyController.text)! * 1;
 
         if (yearlyController.text.toString() == '0') {
-          Fluttertoast.showToast(msg: 'Enter Right years');
+          Fluttertoast.showToast(msg: 'Enter Right years', gravity: ToastGravity.TOP);
         } else {
           print('MY myYears are == ${yearlyController.text.toString()}');
           print('Count myYears ' + myYears.toString());
@@ -703,7 +703,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                                         if (dailyController.text.toString() ==
                                             '0') {
                                           Fluttertoast.showToast(
-                                              msg: 'Enter Right Day');
+                                              msg: 'Enter Right Day', gravity: ToastGravity.TOP);
                                         } else {
                                           print(
                                               'MY myDays are == ${dailyController
@@ -740,7 +740,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                                         if (weeklyController.text.toString() ==
                                             '0') {
                                           Fluttertoast.showToast(
-                                              msg: 'Enter Right week');
+                                              msg: 'Enter Right week', gravity: ToastGravity.TOP);
                                         } else {
                                           print(
                                               'MY WEEKs are == ${weeklyController
@@ -772,7 +772,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                                         if (monthlyController.text.toString() ==
                                             '0') {
                                           Fluttertoast.showToast(
-                                              msg: 'Enter Right Month');
+                                              msg: 'Enter Right Month', gravity: ToastGravity.TOP);
                                         } else {
                                           print(
                                               'MY myMonths are == ${monthlyController
@@ -804,7 +804,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                                         if (yearlyController.text.toString() ==
                                             '0') {
                                           Fluttertoast.showToast(
-                                              msg: 'Enter Right years');
+                                              msg: 'Enter Right years', gravity: ToastGravity.TOP);
                                         } else {
                                           print(
                                               'MY myYears are == ${yearlyController
@@ -904,7 +904,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                                         if (dailyController.text.toString() ==
                                             '0') {
                                           Fluttertoast.showToast(
-                                              msg: 'Enter Right Day');
+                                              msg: 'Enter Right Day', gravity: ToastGravity.TOP);
                                         } else {
                                           print(
                                               'MY myDays are == ${dailyController
@@ -941,7 +941,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                                         if (weeklyController.text.toString() ==
                                             '0') {
                                           Fluttertoast.showToast(
-                                              msg: 'Enter Right week');
+                                              msg: 'Enter Right week', gravity: ToastGravity.TOP);
                                         } else {
                                           print(
                                               'MY WEEKs are == ${weeklyController
@@ -973,7 +973,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                                         if (monthlyController.text.toString() ==
                                             '0') {
                                           Fluttertoast.showToast(
-                                              msg: 'Enter Right Month');
+                                              msg: 'Enter Right Month', gravity: ToastGravity.TOP);
                                         } else {
                                           print(
                                               'MY myMonths are == ${monthlyController
@@ -1005,7 +1005,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                                         if (yearlyController.text.toString() ==
                                             '0') {
                                           Fluttertoast.showToast(
-                                              msg: 'Enter Right years');
+                                              msg: 'Enter Right years', gravity: ToastGravity.TOP);
                                         } else {
                                           print(
                                               'MY myYears are == ${yearlyController
@@ -1109,7 +1109,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                             height: 2.h,
                           ),
 
-                          AuthTextField(
+                          DescriptionTextField(
                             controller: descriptionController,
                             hintText: 'Description',
                             obscureText: false,
@@ -1217,7 +1217,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
           : int.tryParse(dailyController.text)! * 1;
 
       if (dailyController.text.toString() == '0') {
-        Fluttertoast.showToast(msg: 'Enter Right Day');
+        Fluttertoast.showToast(msg: 'Enter Right Day', gravity: ToastGravity.TOP);
       } else {
         print('MY myDays are == ${dailyController.text.toString()}');
         print('Count myDays ' + myDays.toString());
@@ -1236,7 +1236,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
           : int.tryParse(weeklyController.text)! * 7;
 
       if (weeklyController.text.toString() == '0') {
-        Fluttertoast.showToast(msg: 'Enter Right week');
+        Fluttertoast.showToast(msg: 'Enter Right week', gravity: ToastGravity.TOP);
       } else {
         print('MY WEEKs are == ${weeklyController.text.toString()}');
         print('Count Weeks ' + myWeeks.toString());
@@ -1253,7 +1253,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
           : int.tryParse(monthlyController.text)! * 1;
 
       if (monthlyController.text.toString() == '0') {
-        Fluttertoast.showToast(msg: 'Enter Right Month');
+        Fluttertoast.showToast(msg: 'Enter Right Month', gravity: ToastGravity.TOP);
       } else {
         print('MY myMonths are == ${monthlyController.text.toString()}');
         print('Count myMonths ' + myMonths.toString());
@@ -1270,7 +1270,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
           : int.tryParse(yearlyController.text)! * 1;
 
       if (yearlyController.text.toString() == '0') {
-        Fluttertoast.showToast(msg: 'Enter Right years');
+        Fluttertoast.showToast(msg: 'Enter Right years', gravity: ToastGravity.TOP);
       } else {
         print('MY myYears are == ${yearlyController.text.toString()}');
         print('Count myYears ' + myYears.toString());

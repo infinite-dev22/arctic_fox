@@ -303,7 +303,7 @@ class _UpdateCompanyTenantWithContactScreenState
 
                         SizedBox(height: 1.h,),
 
-                        AuthTextField(
+                        DescriptionTextField(
                           controller: companyDescriptionController,
                           hintText: 'Description',
                           obscureText: false,
@@ -490,7 +490,7 @@ class _UpdateCompanyTenantWithContactScreenState
 
 
                   } else {
-                    Fluttertoast.showToast(msg: 'Fill in fields');
+                    Fluttertoast.showToast(msg: 'Fill in fields', gravity: ToastGravity.TOP);
                   }
 
                 },

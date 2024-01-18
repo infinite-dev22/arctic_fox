@@ -177,7 +177,7 @@ class _AddPropertyToEmployeeScreenState extends State<AddPropertyToEmployeeScree
                         if(firstNameEditingController.text.isEmpty && lastNameEditingController.text.isEmpty &&
                             emailEditingController.text.isEmpty && passwordEditingController.text.isEmpty
                         ) {
-                          Fluttertoast.showToast(msg: 'fill in all fields');
+                          Fluttertoast.showToast(msg: 'fill in all fields', gravity: ToastGravity.TOP);
 
                         } else {
 

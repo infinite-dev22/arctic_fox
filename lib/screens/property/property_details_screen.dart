@@ -175,13 +175,14 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> with Tick
                                   ),
 
                                   Positioned(
-                                    top: 5.h,
+                                    top: 7.5.h,
                                     left: 5.w,
                                     child: GestureDetector(
                                       onTap: () {
                                         Get.back();
                                       },
                                       child: CircleAvatar(
+                                        radius: 6.w,
                                         backgroundColor: Colors.white,
                                         child: Image.asset('assets/general/arrow-left.png'),
                                       ),
@@ -189,13 +190,14 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> with Tick
                                   ),
 
                                   Positioned(
-                                    top: 5.h,
+                                    top: 7.5.h,
                                     right: 5.w,
                                     child: Bounceable(
                                       onTap: () {
 
                                       },
                                       child: CircleAvatar(
+                                        radius: 6.w,
                                         backgroundColor: Colors.white,
                                         child: Image.asset('assets/general/share.png'),
                                       ),

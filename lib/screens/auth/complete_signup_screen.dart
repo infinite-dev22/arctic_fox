@@ -310,24 +310,24 @@ class _CompleteSignUpScreenState extends State<CompleteSignUpScreen> {
                               confirmPasswordEditingController.text.isEmpty ||
                               mobileCont.text.isEmpty
                           ) {
-                            Fluttertoast.showToast(msg: 'fill in all fields');
+                            Fluttertoast.showToast(msg: 'fill in all fields', gravity: ToastGravity.TOP);
                           }  else {
                             if (mobileCont.text.length < 9) {
                               Fluttertoast.showToast(
-                                  msg: 'phone number is short');
+                                  msg: 'phone number is short', gravity: ToastGravity.TOP);
                             } else if (mobileCont.text.length > 11) {
                               Fluttertoast.showToast(
-                                  msg: 'phone number is long');
+                                  msg: 'phone number is long', gravity: ToastGravity.TOP);
                             } else if (firstNameEditingController.text.length < 3) {
                               Fluttertoast.showToast(
-                                  msg: 'short first name');
+                                  msg: 'short first name', gravity: ToastGravity.TOP);
                             } else if (lastNameEditingController.text.length < 3) {
                               Fluttertoast.showToast(
-                                  msg: 'short last name');
+                                  msg: 'short last name', gravity: ToastGravity.TOP);
                             } else if (passwordEditingController.text.length < 6) {
-                              Fluttertoast.showToast(msg: 'short password : min is 6');
+                              Fluttertoast.showToast(msg: 'short password : min is 6', gravity: ToastGravity.TOP);
                             } else if (passwordEditingController.text.toString() != confirmPasswordEditingController.text.toString()) {
-                              Fluttertoast.showToast(msg: 'mismatching passwords');
+                              Fluttertoast.showToast(msg: 'mismatching passwords', gravity: ToastGravity.TOP);
                             } else if (!_numberRegex.hasMatch(passwordEditingController.text.toString())) {
                               Fluttertoast.showToast(
                                   msg: 'password must have a number', gravity: ToastGravity.TOP);

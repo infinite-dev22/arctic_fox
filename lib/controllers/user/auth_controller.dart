@@ -34,13 +34,13 @@ class AuthController extends GetxController {
         // Fluttertoast.showToast(msg: 'Email $email exists', backgroundColor: Colors.green);
       } else {
         isSendOtpLoading(false);
-        Fluttertoast.showToast(msg: 'User not found');
+        Fluttertoast.showToast(msg: 'User not found', gravity: ToastGravity.TOP);
       }
 
 
     } catch(e){
       isSendOtpLoading(false);
-      Fluttertoast.showToast(msg: e.toString());
+      Fluttertoast.showToast(msg: e.toString(), gravity: ToastGravity.TOP);
     }
   }
 
@@ -53,7 +53,7 @@ class AuthController extends GetxController {
       });
 
     } on AuthException catch(e){
-      Fluttertoast.showToast(msg: e.message);
+      Fluttertoast.showToast(msg: e.message, gravity: ToastGravity.TOP);
     }
   }
 
@@ -70,7 +70,7 @@ class AuthController extends GetxController {
 
     }  catch(error){
       print('Login Error is $error');
-      Fluttertoast.showToast(msg: error.toString());
+      Fluttertoast.showToast(msg: error.toString(), gravity: ToastGravity.TOP);
     }
   }
 
@@ -109,13 +109,13 @@ class AuthController extends GetxController {
 
 
       } else {
-        Fluttertoast.showToast(msg: 'Check your credentials');
+        Fluttertoast.showToast(msg: 'Check your credentials', gravity: ToastGravity.TOP);
       }
 
 
     }  catch(error){
       print('Login Error is $error');
-      Fluttertoast.showToast(msg: error.toString());
+      Fluttertoast.showToast(msg: error.toString(), gravity: ToastGravity.TOP);
     }
   }
 
@@ -168,13 +168,13 @@ class AuthController extends GetxController {
 
       } else {
         isVerifyPhoneOtpLoading(false);
-        Fluttertoast.showToast(msg: 'Check your credentials');
+        Fluttertoast.showToast(msg: 'Check your credentials', gravity: ToastGravity.TOP);
       }
 
 
     } on AuthException catch(error){
       isVerifyPhoneOtpLoading(false);
-      Fluttertoast.showToast(msg: error.message.toString());
+      Fluttertoast.showToast(msg: error.message.toString(), gravity: ToastGravity.TOP);
     }
 
   }
@@ -214,14 +214,14 @@ class AuthController extends GetxController {
 
       } else {
         isVerifyEmailOtpLoading(false);
-        Fluttertoast.showToast(msg: 'Check your credentials');
+        Fluttertoast.showToast(msg: 'Check your credentials', gravity: ToastGravity.TOP);
       }
 
 
     }  catch(error){
       isVerifyEmailOtpLoading(false);
       print('Login Error is $error');
-      Fluttertoast.showToast(msg: error.toString());
+      Fluttertoast.showToast(msg: error.toString(), gravity: ToastGravity.TOP);
     }
   }
 

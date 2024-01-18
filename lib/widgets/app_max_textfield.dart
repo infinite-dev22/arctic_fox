@@ -38,8 +38,7 @@ class AppMaxTextField extends StatelessWidget {
         SizedBox(
           height: 13.h,
           child: TextFormField(
-            validator: (val) =>
-            val!.isEmpty ? 'Required field, Please fill in.' : null,
+
             controller: controller,
             obscureText: obscureText,
             style: style,

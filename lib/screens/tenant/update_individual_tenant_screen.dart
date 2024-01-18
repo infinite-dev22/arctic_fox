@@ -481,7 +481,7 @@ class _UpdateIndividualTenantScreenState
                         SizedBox(height: 1.h,),
 
                         Obx(() {
-                          return AuthTextField(
+                          return DescriptionTextField(
                             controller: TextEditingController(
                                 text: tenantController.uIndividualDescription
                                     .value

@@ -459,7 +459,7 @@ class _HomePageState extends State<HomePage> {
 
                                   SizedBox(height: 1.h,),
 
-                                  AuthTextField(
+                                  DescriptionTextField(
                                     controller: propertyDescriptionController,
                                     hintText: 'Description',
                                     obscureText: false,
@@ -485,16 +485,19 @@ class _HomePageState extends State<HomePage> {
                                           if (widget.tenantController
                                               .selectedPropertyId.value == 0) {
                                             Fluttertoast.showToast(
-                                                msg: 'select property');
+                                                msg: 'select property',
+                                                gravity: ToastGravity.TOP);
                                           } else
                                           if (floorController.text.isEmpty) {
                                             Fluttertoast.showToast(
-                                                msg: 'floor name required');
+                                                msg: 'floor name required',
+                                                gravity: ToastGravity.TOP);
                                           } else
                                           if (floorController.text.length <=
                                               1) {
                                             Fluttertoast.showToast(
-                                                msg: 'floor name too short');
+                                                msg: 'floor name too short',
+                                                gravity: ToastGravity.TOP);
                                           } else {
                                             await unitController
                                                 .addFloorToProperty(
@@ -824,23 +827,31 @@ class _HomePageState extends State<HomePage> {
                                           .darkBlueTitle2,),
 
                                       Obx(() {
-                                        return propertyController.isAddPropertyLoading.value ?
-                                        AppLoader(color: AppTheme.primaryColor,) :
+                                        return propertyController
+                                            .isAddPropertyLoading.value
+                                            ?
+                                        AppLoader(color: AppTheme.primaryColor,)
+                                            :
                                         Bounceable(
                                             onTap: () async {
-
-                                              if(
-                                              propertyTitleController.text.isEmpty ||
-                                                  propertyLocationController.text.isEmpty ||
-                                              propertySqmController.text.isEmpty ||
-                                              propertyPic == null ||
-                                                  propertyController.propertyTypeId.value == 0 ||
-                                                  propertyController.categoryId.value == 0
+                                              if (
+                                              propertyTitleController.text
+                                                  .isEmpty ||
+                                                  propertyLocationController
+                                                      .text.isEmpty ||
+                                                  propertySqmController.text
+                                                      .isEmpty ||
+                                                  propertyPic == null ||
+                                                  propertyController
+                                                      .propertyTypeId.value ==
+                                                      0 ||
+                                                  propertyController.categoryId
+                                                      .value == 0
                                               ) {
-                                                Fluttertoast.showToast(msg: 'fill in all fields', gravity: ToastGravity.TOP);
-
+                                                Fluttertoast.showToast(
+                                                    msg: 'fill in all fields',
+                                                    gravity: ToastGravity.TOP);
                                               } else {
-
                                                 propertyController.addProperty(
                                                     propertyTitleController.text
                                                         .trim().toString(),
@@ -850,7 +861,8 @@ class _HomePageState extends State<HomePage> {
                                                         'OrganizationId'),
                                                     propertyController
                                                         .propertyTypeId.value,
-                                                    propertyController.categoryId
+                                                    propertyController
+                                                        .categoryId
                                                         .value,
                                                     propertyLocationController
                                                         .text.trim().toString(),
@@ -867,10 +879,7 @@ class _HomePageState extends State<HomePage> {
                                                     propertyFileName!
                                                   // "userStorage.read('userProfileId')",
                                                 );
-
                                               }
-
-
                                             },
                                             child: Text('Add', style: TextStyle(
                                               color: AppTheme.primaryColor,
@@ -988,7 +997,7 @@ class _HomePageState extends State<HomePage> {
                                     Bounceable(
                                       onTap: () {
                                         FullPicker(
-                                          prefixName: 'select property',
+                                          prefixName: 'add property',
                                           context: context,
                                           image: true,
                                           imageCamera: kDebugMode,
@@ -1183,176 +1192,218 @@ class _HomePageState extends State<HomePage> {
                                       Text('Add Tenant', style: AppTheme
                                           .darkBlueTitle2,),
 
-                                      Bounceable(
-                                          onTap: () async {
-                                            if (widget.tenantController
-                                                .tenantTypeId.value == 0) {
-                                              Fluttertoast.showToast(
-                                                  msg: 'Select Tenant Type');
-                                            } else {
+                                      Obx(() {
+                                        return widget.tenantController.isAddTenantLoading.value ?
+                                        AppLoader(color: AppTheme.primaryColor,) :
+                                          Bounceable(
+                                            onTap: () async {
                                               if (widget.tenantController
-                                                  .tenantTypeId.value == 1) {
-                                                if (_formKey.currentState!
-                                                    .validate() &&
-                                                    _individualFormKey
-                                                        .currentState!
-                                                        .validate()) {
-                                                  // Get.snackbar(
-                                                  //     'Posting Individual', 'Adding Individual Tenant');
-
-                                                  await widget.tenantController
-                                                      .addPersonalTenant(
-                                                      "${firstNameController
-                                                          .text
-                                                          .trim()} ${surnameNameController
-                                                          .text.trim()}",
-                                                      userStorage.read(
-                                                          'OrganizationId'),
-                                                      widget.tenantController
-                                                          .tenantTypeId.value,
-                                                      widget.tenantController
-                                                          .businessTypeId.value,
-                                                      userStorage.read(
-                                                          'userProfileId'),
-                                                      widget.tenantController
-                                                          .nationalityId.value,
-                                                      individualNinController
-                                                          .text.toString(),
-                                                      individualPhoneNameController
-                                                          .text.toString(),
-                                                      individualEmailNameController
-                                                          .text.toString(),
-                                                      individualDescriptionController
-                                                          .text.toString(),
-                                                      myDateOfBirth.value
-                                                          .toString(),
-                                                      widget.tenantController
-                                                          .newGender.value,
-                                                      tenantBytes!,
-                                                      tenantImageExtension!,
-                                                      tenantFileName!
-                                                  );
-
-                                                  Get.back();
-
-                                                  // tenantController.addIndividualTenant(
-                                                  //   "${firstNameController.text
-                                                  //       .trim()} ${surnameNameController.text.trim()}",
-                                                  //   12,
-                                                  //   tenantController.tenantTypeId.value,
-                                                  //   "userStorage.read('userProfileId')",
-                                                  //   tenantController.nationalityId.value,
-                                                  // );
-                                                } else {
-                                                  Fluttertoast.showToast(
-                                                      msg: 'Fill required fields');
-                                                }
+                                                  .tenantTypeId.value == 0) {
+                                                Fluttertoast.showToast(
+                                                    msg: 'Select Tenant Type',
+                                                    gravity: ToastGravity.TOP);
                                               } else {
                                                 if (widget.tenantController
-                                                    .isAddContactPerson
-                                                    .isFalse) {
+                                                    .tenantTypeId.value == 1) {
                                                   if (_formKey.currentState!
                                                       .validate() &&
-                                                      _companyFormKey
+                                                      _individualFormKey
                                                           .currentState!
                                                           .validate()) {
                                                     // Get.snackbar(
-                                                    //     'Posting Company', 'No Company Contact');
-                                                    await widget
-                                                        .tenantController
-                                                        .addCompanyTenantWithoutContact(
-                                                        companyNameController
-                                                            .text.toString(),
-                                                        userStorage.read(
-                                                            'OrganizationId'),
-                                                        widget.tenantController
-                                                            .tenantTypeId.value,
-                                                        widget.tenantController
-                                                            .businessTypeId
-                                                            .value,
-                                                        userStorage.read(
-                                                            'userProfileId'),
-                                                        widget.tenantController
-                                                            .nationalityId
-                                                            .value,
-                                                        companyDescriptionController
-                                                            .text.toString(),
-                                                        companyTenantBytes!,
-                                                        companyTenantImageExtension!,
-                                                        companyTenantFileName!
-                                                    );
+                                                    //     'Posting Individual', 'Adding Individual Tenant');
+                                                    if(tenantPic == null){
+                                                      Fluttertoast.showToast(
+                                                          msg: 'Tenant pic required',
+                                                          gravity: ToastGravity.TOP);
+                                                    } else {
+                                                      await widget
+                                                          .tenantController
+                                                          .addPersonalTenant(
+                                                          "${firstNameController
+                                                              .text
+                                                              .trim()} ${surnameNameController
+                                                              .text.trim()}",
+                                                          userStorage.read(
+                                                              'OrganizationId'),
+                                                          widget.tenantController
+                                                              .tenantTypeId.value,
+                                                          widget.tenantController
+                                                              .businessTypeId
+                                                              .value,
+                                                          userStorage.read(
+                                                              'userProfileId'),
+                                                          widget.tenantController
+                                                              .nationalityId
+                                                              .value,
+                                                          individualNinController
+                                                              .text.toString(),
+                                                          individualPhoneNameController
+                                                              .text.toString(),
+                                                          individualEmailNameController
+                                                              .text.toString(),
+                                                          individualDescriptionController
+                                                              .text.toString(),
+                                                          myDateOfBirth.value
+                                                              .toString(),
+                                                          widget.tenantController
+                                                              .newGender.value,
+                                                          tenantBytes!,
+                                                          tenantImageExtension!,
+                                                          tenantFileName!
+                                                      );
 
-                                                    Get.back();
+                                                      Get.back();
+                                                    }
+
+
+                                                    // tenantController.addIndividualTenant(
+                                                    //   "${firstNameController.text
+                                                    //       .trim()} ${surnameNameController.text.trim()}",
+                                                    //   12,
+                                                    //   tenantController.tenantTypeId.value,
+                                                    //   "userStorage.read('userProfileId')",
+                                                    //   tenantController.nationalityId.value,
+                                                    // );
                                                   } else {
                                                     Fluttertoast.showToast(
-                                                        msg: 'Fill in fields');
+                                                        msg: 'Fill required fields',
+                                                        gravity: ToastGravity
+                                                            .TOP);
                                                   }
                                                 } else {
-                                                  if (_formKey.currentState!
-                                                      .validate() &&
-                                                      _companyFormKey
-                                                          .currentState!
-                                                          .validate() &&
-                                                      _contactFormKey
-                                                          .currentState!
-                                                          .validate()) {
-                                                    // Get.snackbar(
-                                                    //     'Posting Company', 'With Company Contact');
-                                                    await widget
-                                                        .tenantController
-                                                        .addCompanyTenantWithContact(
-                                                        companyNameController
-                                                            .text.toString(),
-                                                        userStorage.read(
-                                                            'OrganizationId'),
-                                                        widget.tenantController
-                                                            .tenantTypeId.value,
-                                                        widget.tenantController
-                                                            .businessTypeId
-                                                            .value,
-                                                        userStorage.read(
-                                                            'userProfileId'),
-                                                        widget.tenantController
-                                                            .nationalityId
-                                                            .value,
-                                                        contactFirstNameController
-                                                            .text.trim()
-                                                            .toString(),
-                                                        contactLastNameController
-                                                            .text.trim()
-                                                            .toString(),
-                                                        contactNinController
-                                                            .text.trim()
-                                                            .toString(),
-                                                        contactDesignationController
-                                                            .text.trim()
-                                                            .toString(),
-                                                        contactPhoneController
-                                                            .text.trim()
-                                                            .toString(),
-                                                        contactEmailController
-                                                            .text.trim()
-                                                            .toString(),
-                                                        companyDescriptionController
-                                                            .text.toString(),
-                                                        companyTenantBytes!,
-                                                        companyTenantImageExtension!,
-                                                        companyTenantFileName!
-                                                    );
+                                                  if (widget.tenantController
+                                                      .isAddContactPerson
+                                                      .isFalse) {
+                                                    if (_formKey.currentState!
+                                                        .validate() &&
+                                                        _companyFormKey
+                                                            .currentState!
+                                                            .validate()) {
+                                                      // Get.snackbar(
+                                                      //     'Posting Company', 'No Company Contact');
+                                                      if(tenantPic == null){
+                                                        Fluttertoast.showToast(
+                                                            msg: 'Tenant pic required',
+                                                            gravity: ToastGravity.TOP);
+                                                      } else {
+                                                        await widget
+                                                            .tenantController
+                                                            .addCompanyTenantWithoutContact(
+                                                            companyNameController
+                                                                .text.toString(),
+                                                            userStorage.read(
+                                                                'OrganizationId'),
+                                                            widget
+                                                                .tenantController
+                                                                .tenantTypeId
+                                                                .value,
+                                                            widget
+                                                                .tenantController
+                                                                .businessTypeId
+                                                                .value,
+                                                            userStorage.read(
+                                                                'userProfileId'),
+                                                            widget
+                                                                .tenantController
+                                                                .nationalityId
+                                                                .value,
+                                                            companyDescriptionController
+                                                                .text.toString(),
+                                                            companyTenantBytes!,
+                                                            companyTenantImageExtension!,
+                                                            companyTenantFileName!
+                                                        );
 
-                                                    Get.back();
+                                                        Get.back();
+                                                      }
+
+                                                    } else {
+                                                      Fluttertoast.showToast(
+                                                          msg: 'Fill in fields',
+                                                          gravity: ToastGravity
+                                                              .TOP);
+                                                    }
                                                   } else {
-                                                    Fluttertoast.showToast(
-                                                        msg: 'Fill in fields');
+                                                    if (_formKey.currentState!
+                                                        .validate() &&
+                                                        _companyFormKey
+                                                            .currentState!
+                                                            .validate() &&
+                                                        _contactFormKey
+                                                            .currentState!
+                                                            .validate()) {
+                                                      // Get.snackbar(
+                                                      //     'Posting Company', 'With Company Contact');
+                                                      if(companyTenantPic == null) {
+                                                        Fluttertoast.showToast(
+                                                            msg: 'Company tenant pic required',
+                                                            gravity: ToastGravity.TOP);
+                                                      } else {
+                                                        await widget
+                                                            .tenantController
+                                                            .addCompanyTenantWithContact(
+                                                            companyNameController
+                                                                .text.toString(),
+                                                            userStorage.read(
+                                                                'OrganizationId'),
+                                                            widget
+                                                                .tenantController
+                                                                .tenantTypeId
+                                                                .value,
+                                                            widget
+                                                                .tenantController
+                                                                .businessTypeId
+                                                                .value,
+                                                            userStorage.read(
+                                                                'userProfileId'),
+                                                            widget
+                                                                .tenantController
+                                                                .nationalityId
+                                                                .value,
+                                                            contactFirstNameController
+                                                                .text.trim()
+                                                                .toString(),
+                                                            contactLastNameController
+                                                                .text.trim()
+                                                                .toString(),
+                                                            contactNinController
+                                                                .text.trim()
+                                                                .toString(),
+                                                            contactDesignationController
+                                                                .text.trim()
+                                                                .toString(),
+                                                            contactPhoneController
+                                                                .text.trim()
+                                                                .toString(),
+                                                            contactEmailController
+                                                                .text.trim()
+                                                                .toString(),
+                                                            companyDescriptionController
+                                                                .text.toString(),
+                                                            companyTenantBytes!,
+                                                            companyTenantImageExtension!,
+                                                            companyTenantFileName!
+                                                        );
+
+                                                        Get.back();
+                                                      }
+
+                                                    } else {
+                                                      Fluttertoast.showToast(
+                                                          msg: 'Fill in fields',
+                                                          gravity: ToastGravity
+                                                              .TOP);
+                                                    }
                                                   }
                                                 }
                                               }
-                                            }
-                                          },
-                                          child: Text('Add', style: TextStyle(
-                                            color: AppTheme.primaryColor,
-                                            fontSize: 17.5.sp,
-                                          ),)),
+                                            },
+                                            child: Text('Add', style: TextStyle(
+                                              color: AppTheme.primaryColor,
+                                              fontSize: 17.5.sp,
+                                            ),));
+                                      }),
 
                                     ],
                                   ),
@@ -1538,7 +1589,7 @@ class _HomePageState extends State<HomePage> {
 
                                                   SizedBox(height: 1.h,),
 
-                                                  AuthTextField(
+                                                  DescriptionTextField(
                                                     controller: individualDescriptionController,
                                                     hintText: 'Description',
                                                     obscureText: false,
@@ -1549,17 +1600,11 @@ class _HomePageState extends State<HomePage> {
                                                   Bounceable(
                                                     onTap: () {
                                                       FullPicker(
+                                                        prefixName: 'add tenant',
                                                         context: context,
-                                                        file: true,
                                                         image: true,
-                                                        video: true,
-                                                        videoCamera: true,
-                                                        imageCamera: true,
-                                                        voiceRecorder: true,
-                                                        videoCompressor: false,
-                                                        imageCropper: false,
-                                                        multiFile: true,
-                                                        url: true,
+                                                        imageCamera: kDebugMode,
+                                                        imageCropper: true,
                                                         onError: (int value) {
                                                           print(
                                                               " ----  onError ----=$value");
@@ -1607,8 +1652,8 @@ class _HomePageState extends State<HomePage> {
                                                       );
                                                     },
                                                     child: Container(
-                                                      width: 90.w,
-                                                      height: 15.h,
+                                                      width: 50.w,
+                                                      height: 30.h,
                                                       decoration: BoxDecoration(
                                                           color: AppTheme
                                                               .appBgColor,
@@ -1669,7 +1714,7 @@ class _HomePageState extends State<HomePage> {
 
                                                   SizedBox(height: 1.h,),
 
-                                                  AuthTextField(
+                                                  DescriptionTextField(
                                                     controller: companyDescriptionController,
                                                     hintText: 'Description',
                                                     obscureText: false,
@@ -1726,17 +1771,11 @@ class _HomePageState extends State<HomePage> {
                                             ? Bounceable(
                                           onTap: () {
                                             FullPicker(
+                                              prefixName: 'add tenant',
                                               context: context,
-                                              file: true,
                                               image: true,
-                                              video: true,
-                                              videoCamera: true,
-                                              imageCamera: true,
-                                              voiceRecorder: true,
-                                              videoCompressor: false,
-                                              imageCropper: false,
-                                              multiFile: true,
-                                              url: true,
+                                              imageCamera: kDebugMode,
+                                              imageCropper: true,
                                               onError: (int value) {
                                                 print(
                                                     " ----  onError ----=$value");
@@ -1777,8 +1816,8 @@ class _HomePageState extends State<HomePage> {
                                             );
                                           },
                                           child: Container(
-                                            width: 90.w,
-                                            height: 15.h,
+                                            width: 50.w,
+                                            height: 30.h,
                                             decoration: BoxDecoration(
                                                 color: AppTheme.appBgColor,
                                                 borderRadius: BorderRadius

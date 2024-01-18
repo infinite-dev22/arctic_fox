@@ -1441,7 +1441,7 @@ setSpecificPaymentBalance(int balance){
             "is_available" : 1,
           }
       ).eq('id', unitModel.id).then((value) {
-        Fluttertoast.showToast(msg: '${unitModel.unitNumber} is now available');
+        Fluttertoast.showToast(msg: '${unitModel.unitNumber} is now available', gravity: ToastGravity.TOP);
       });
     } catch(error){
       print(error);
@@ -1593,7 +1593,7 @@ setSpecificPaymentBalance(int balance){
           }
       );
       // fetchAllTenants();
-      Fluttertoast.showToast(msg: 'Update Succuessful');
+      Fluttertoast.showToast(msg: 'Update Successful', gravity: ToastGravity.TOP);
       Get.back();
 
     } catch (error) {

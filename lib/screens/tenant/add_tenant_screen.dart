@@ -463,7 +463,7 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
 
                           SizedBox(height: 1.h,),
 
-                          AuthTextField(
+                          DescriptionTextField(
                             controller: individualDescriptionController,
                             hintText: 'Description',
                             obscureText: false,
@@ -566,7 +566,7 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
 
                           SizedBox(height: 1.h,),
 
-                          AuthTextField(
+                          DescriptionTextField(
                             controller: companyDescriptionController,
                             hintText: 'Description',
                             obscureText: false,
@@ -784,7 +784,7 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                 color: AppTheme.primaryColor,
                 function: () async {
                   if (tenantController.tenantTypeId.value == 0) {
-                    Fluttertoast.showToast(msg: 'Select Tenant Type');
+                    Fluttertoast.showToast(msg: 'Select Tenant Type', gravity: ToastGravity.TOP);
                   } else {
                     if (tenantController.tenantTypeId.value == 1) {
                       if (_formKey.currentState!.validate() &&
@@ -822,7 +822,7 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                         //   tenantController.nationalityId.value,
                         // );
                       } else {
-                        Fluttertoast.showToast(msg: 'Fill required fields');
+                        Fluttertoast.showToast(msg: 'Fill required fields', gravity: ToastGravity.TOP);
                       }
                     } else {
                       if (tenantController.isAddContactPerson.isFalse) {
@@ -845,7 +845,7 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
 
                           Get.back();
                         } else {
-                          Fluttertoast.showToast(msg: 'Fill in fields');
+                          Fluttertoast.showToast(msg: 'Fill in fields', gravity: ToastGravity.TOP);
                         }
                       } else {
                         if (_formKey.currentState!.validate() &&
@@ -874,7 +874,7 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
 
                           Get.back();
                         } else {
-                          Fluttertoast.showToast(msg: 'Fill in fields');
+                          Fluttertoast.showToast(msg: 'Fill in fields', gravity: ToastGravity.TOP);
                         }
                       }
                     }

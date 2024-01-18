@@ -65,6 +65,8 @@ class TenantController extends GetxController {
 
   var isAddContactPerson = false.obs;
   var isAddNextOfKin = false.obs;
+  var isAddTenantToUnitLoading = false.obs;
+  var isPayForMultipleSchedulesLoading = false.obs;
 
   var nationalityId = 0.obs;
   var tenantTypeId = 0.obs;
@@ -526,6 +528,7 @@ setSpecificPaymentBalance(int balance){
   Future<void> payForMultipleTenantUnitSchedule(int tenantId, int unitId, String date1, String date2, int amount,
       int paid, int balance, String createdBy, String updatedBy,) async {
 
+    isPayForMultipleSchedulesLoading(true);
 
     Set uniqueNumbersSet = schedules.toSet();
 
@@ -556,6 +559,7 @@ setSpecificPaymentBalance(int balance){
 
 
     } catch (error) {
+      isPayForMultipleSchedulesLoading(false);
       print('Error updating Individual tenant: $error');
     }
 
@@ -1451,6 +1455,7 @@ setSpecificPaymentBalance(int balance){
   Future<void> addTenantToUnit( int tenantId, String createdBy,
       int unitId, String date1, String date2, int amount, int discount, List<Map<String, dynamic>> periodList
       ) async {
+    isAddTenantToUnitLoading(true);
 
     try {
       final response =  await AppConfig().supaBaseClient.from('tenant_units').insert(
@@ -1483,10 +1488,12 @@ setSpecificPaymentBalance(int balance){
       });
 
       if (response.error != null) {
+        isAddTenantToUnitLoading(false);
         throw response.error;
       }
 
     } catch (error) {
+      isAddTenantToUnitLoading(false);
       print('Error adding tenant: $error');
     }
 
@@ -1825,6 +1832,7 @@ setSpecificPaymentBalance(int balance){
             "updated_by" : updatedBy,
           }
       ).then((indTenant) {
+        isPayForMultipleSchedulesLoading(false);
         Get.back();
         Get.snackbar('SUCCESS', 'Tenant payment added',
           titleText: Text(
@@ -1833,10 +1841,12 @@ setSpecificPaymentBalance(int balance){
       });
 
       if (response.error != null) {
+        isPayForMultipleSchedulesLoading(false);
         throw response.error;
       }
 
     } catch (error) {
+      isPayForMultipleSchedulesLoading(false);
       print('Error adding tenant payment: $error');
     }
 
@@ -1908,6 +1918,7 @@ setSpecificPaymentBalance(int balance){
     try {
       final response =  await AppConfig().supaBaseClient.from('payment_schedule').insert
         (periodList).then((indTenant) {
+        isAddTenantToUnitLoading(false);
         Get.back();
         Get.snackbar('SUCCESS', 'Tenant Added',
           titleText: Text(
@@ -1916,10 +1927,12 @@ setSpecificPaymentBalance(int balance){
       });
 
       if (response.error != null) {
+        isAddTenantToUnitLoading(false);
         throw response.error;
       }
 
     } catch (error) {
+      isAddTenantToUnitLoading(false);
       print('Error adding payment schedule: $error');
     }
 

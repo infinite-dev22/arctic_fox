@@ -137,60 +137,61 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                               Text('Add Payment', style: AppTheme
                                   .darkBlueTitle2,),
 
-                              Bounceable(
-                                  onTap: () async {
-
-                                    await tenantController
-                                        .payForMultipleTenantUnitSchedule(
-                                      tenantController.tenantId.value,
-                                      tenantController.unitId.value,
-                                      selectedDate1.value.toIso8601String(),
-                                      selectedDate2.value.toIso8601String(),
-                                      int.parse(amountController.text),
-                                      int.parse(paidController.text),
-                                      int.parse(balanceController.text),
+                              Obx(() {
+                                return Bounceable(
+                                    onTap: () async {
+                                      await tenantController
+                                          .payForMultipleTenantUnitSchedule(
+                                        tenantController.tenantId.value,
+                                        tenantController.unitId.value,
+                                        selectedDate1.value.toIso8601String(),
+                                        selectedDate2.value.toIso8601String(),
+                                        int.parse(amountController.text),
+                                        int.parse(paidController.text),
+                                        int.parse(balanceController.text),
                                         userStorage.read('userProfileId'),
-                                      userStorage.read('userProfileId'),
-                                    );
+                                        userStorage.read('userProfileId'),
+                                      );
 
-                                    // await tenantController
-                                    //     .payForSpecificTenantUnitSchedule(
-                                    //   tenantController.tenantId.value,
-                                    //   tenantController.unitId.value,
-                                    //   selectedDate1.value.toIso8601String(),
-                                    //   selectedDate2.value.toIso8601String(),
-                                    //   int.parse(amountController.text),
-                                    //   int.parse(paidController.text),
-                                    //   int.parse(balanceController.text),
-                                    //   'userStorage.read('userProfileId')',
-                                    //   'userStorage.read('userProfileId')',
-                                    // );
+                                      // await tenantController
+                                      //     .payForSpecificTenantUnitSchedule(
+                                      //   tenantController.tenantId.value,
+                                      //   tenantController.unitId.value,
+                                      //   selectedDate1.value.toIso8601String(),
+                                      //   selectedDate2.value.toIso8601String(),
+                                      //   int.parse(amountController.text),
+                                      //   int.parse(paidController.text),
+                                      //   int.parse(balanceController.text),
+                                      //   'userStorage.read('userProfileId')',
+                                      //   'userStorage.read('userProfileId')',
+                                      // );
 
-                                    // await tenantController.addTenantPayment(
-                                    //   tenantController.tenantId.value,
-                                    //   tenantController.unitId.value,
-                                    //   selectedDate1.value.toIso8601String(),
-                                    //   selectedDate2.value.toIso8601String(),
-                                    //   int.parse(amountController.text),
-                                    //   int.parse(paidController.text),
-                                    //   int.parse(balanceController.text),
-                                    //   'userStorage.read('userProfileId')',
-                                    //   'userStorage.read('userProfileId')',
-                                    // );
+                                      // await tenantController.addTenantPayment(
+                                      //   tenantController.tenantId.value,
+                                      //   tenantController.unitId.value,
+                                      //   selectedDate1.value.toIso8601String(),
+                                      //   selectedDate2.value.toIso8601String(),
+                                      //   int.parse(amountController.text),
+                                      //   int.parse(paidController.text),
+                                      //   int.parse(balanceController.text),
+                                      //   'userStorage.read('userProfileId')',
+                                      //   'userStorage.read('userProfileId')',
+                                      // );
 
-                                    // Get.back();
+                                      // Get.back();
 
-                                    // Get.back();
-                                    // Get.snackbar('SUCCESS',
-                                    //   'Payment added to your property',
-                                    //   titleText: Text('SUCCESS',
-                                    //     style: AppTheme.greenTitle1,),
-                                    // );
-                                  },
-                                  child: Text('Add', style: TextStyle(
-                                    color: AppTheme.primaryColor,
-                                    fontSize: 17.5.sp,
-                                  ),)),
+                                      // Get.back();
+                                      // Get.snackbar('SUCCESS',
+                                      //   'Payment added to your property',
+                                      //   titleText: Text('SUCCESS',
+                                      //     style: AppTheme.greenTitle1,),
+                                      // );
+                                    },
+                                    child: Text('Add', style: TextStyle(
+                                      color: AppTheme.primaryColor,
+                                      fontSize: 17.5.sp,
+                                    ),));
+                              }),
 
                             ],
                           ),
@@ -588,9 +589,12 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                                   tenantController
                                       .fetchSpecificTenantsUnitSchedules()
                                       .then((value) {
-
-                                        amountController.text = tenantController.specificPaymentAmount.toString();
-                                        balanceController.text = tenantController.specificPaymentBalance.toString();
+                                    amountController.text =
+                                        tenantController.specificPaymentAmount
+                                            .toString();
+                                    balanceController.text =
+                                        tenantController.specificPaymentBalance
+                                            .toString();
 
                                     // amountController.text =
                                     //     tenantController.tenantUnitAmount
@@ -789,8 +793,10 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                                 ),
                                 onOptionSelected: (options) {
                                   for (var element in options) {
-                                    tenantController.schedules.add(element.value!);
-                                    print('My SChedules ${tenantController.schedules.value}');
+                                    tenantController.schedules.add(
+                                        element.value!);
+                                    print('My SChedules ${tenantController
+                                        .schedules.value}');
 
 
                                     // print(element.value.id);
@@ -829,7 +835,7 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                                 options: tenantController
                                     .specificTenantUnitScheduleList.value
                                     .map((schedule) {
-                                  return  ValueItem(
+                                  return ValueItem(
                                     label:
                                     'R${schedule.units!
                                         .unitNumber} | ${DateFormat(

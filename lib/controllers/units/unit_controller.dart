@@ -25,6 +25,7 @@ class UnitController extends GetxController {
   var isUnitLoading = false.obs;
   var isUpdateStatusLoading = false.obs;
   var isAddFloorLoading = false.obs;
+  var isAddUnitLoading = false.obs;
 
   @override
   void onInit() {
@@ -179,7 +180,7 @@ class UnitController extends GetxController {
       int unitTypeId, int periodId, String squareMeters,
       String createdBy, int unitNumber, int amount, String description
       ) async {
-
+    isAddUnitLoading(true);
     try {
       final response =  await AppConfig().supaBaseClient.from('units').insert(
           {
@@ -195,6 +196,7 @@ class UnitController extends GetxController {
             // "updated_by" : updatedBy,
           }
       ).then((property) {
+        isAddUnitLoading(false);
         Get.back();
         Get.snackbar('SUCCESS', 'Property added to your list',
           titleText: Text('SUCCESS', style: AppTheme.greenTitle1,),
@@ -202,10 +204,12 @@ class UnitController extends GetxController {
       });
 
       if (response.error != null) {
+        isAddUnitLoading(false);
         throw response.error;
       }
 
     } catch (error) {
+      isAddUnitLoading(false);
       print('Error adding property: $error');
     }
 

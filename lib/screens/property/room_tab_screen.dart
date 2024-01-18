@@ -18,6 +18,7 @@ import 'package:smart_rent/utils/app_prefs.dart';
 import 'package:smart_rent/utils/extra.dart';
 import 'package:smart_rent/widgets/app_button.dart';
 import 'package:smart_rent/widgets/app_drop_downs.dart';
+import 'package:smart_rent/widgets/app_loader.dart';
 import 'package:smart_rent/widgets/app_max_textfield.dart';
 import 'package:smart_rent/widgets/app_textfield.dart';
 import 'package:smart_rent/widgets/room_option_widget.dart';
@@ -100,11 +101,11 @@ class _RoomTabScreenState extends State<RoomTabScreen> {
                         height: 7.5.h,
                         decoration: BoxDecoration(
                             boxShadow: [
-
                             ]
                         ),
                         child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 5.w, vertical: 2.h),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -112,11 +113,11 @@ class _RoomTabScreenState extends State<RoomTabScreen> {
                               Bounceable(
                                   onTap: () {
                                     roomNameController.clear();
-                                   roomNumberController.clear();
+                                    roomNumberController.clear();
                                     sizeController.clear();
-                                 amountController.clear();
-                               descriptionController.clear();
-                                  unitNumberController.clear();
+                                    amountController.clear();
+                                    descriptionController.clear();
+                                    unitNumberController.clear();
                                     Get.back();
                                   },
                                   child: Text('Cancel', style: TextStyle(
@@ -127,27 +128,33 @@ class _RoomTabScreenState extends State<RoomTabScreen> {
                               Text('Add Unit', style: AppTheme
                                   .darkBlueTitle2,),
 
-                              Bounceable(
-                                  onTap: () async {
-                                    widget.unitController.addUnit(
-                                      widget.unitController.floorId.value,
-                                      widget.unitController.currencyId.value,
-                                      widget.unitController.unitTypeId.value,
-                                      widget.unitController.paymentScheduleId.value,
-                                      sizeController.text.trim(),
-                                      userStorage.read('userProfileId'),
-                                      int.parse(roomNumberController.text.trim()
-                                          .toString()),
-                                      int.parse(amountController.text.trim()
-                                          .toString()),
-                                      descriptionController.text.trim()
-                                          .toString(),
-                                    );
-                                  },
-                                  child: Text('Add', style: TextStyle(
-                                    color: AppTheme.primaryColor,
-                                    fontSize: 17.5.sp,
-                                  ),)),
+                              Obx(() {
+                                return widget.unitController.isAddUnitLoading.value ?
+                                AppLoader(color: AppTheme.primaryColor,) :
+                                  Bounceable(
+                                    onTap: () async {
+                                      widget.unitController.addUnit(
+                                        widget.unitController.floorId.value,
+                                        widget.unitController.currencyId.value,
+                                        widget.unitController.unitTypeId.value,
+                                        widget.unitController.paymentScheduleId
+                                            .value,
+                                        sizeController.text.trim(),
+                                        userStorage.read('userProfileId'),
+                                        int.parse(
+                                            roomNumberController.text.trim()
+                                                .toString()),
+                                        int.parse(amountController.text.trim()
+                                            .toString()),
+                                        descriptionController.text.trim()
+                                            .toString(),
+                                      );
+                                    },
+                                    child: Text('Add', style: TextStyle(
+                                      color: AppTheme.primaryColor,
+                                      fontSize: 17.5.sp,
+                                    ),));
+                              }),
 
                             ],
                           ),
@@ -172,11 +179,14 @@ class _RoomTabScreenState extends State<RoomTabScreen> {
                                 SizedBox(
                                   width: 42.5.w,
                                   child: Obx(() {
-                                    return CustomApiGenericDropdown<UnitTypeModel>(
+                                    return CustomApiGenericDropdown<
+                                        UnitTypeModel>(
                                       hintText: 'Unit Type',
-                                      menuItems: widget.unitController.unitTypeList.value,
+                                      menuItems: widget.unitController
+                                          .unitTypeList.value,
                                       onChanged: (value) {
-                                        widget.unitController.setUnitTypeId(value!.id);
+                                        widget.unitController.setUnitTypeId(
+                                            value!.id);
                                       },
                                     );
                                   }),
@@ -187,9 +197,11 @@ class _RoomTabScreenState extends State<RoomTabScreen> {
                                   child: Obx(() {
                                     return CustomApiGenericDropdown<FloorModel>(
                                       hintText: 'Level',
-                                      menuItems: widget.unitController.floorList.value,
+                                      menuItems: widget.unitController.floorList
+                                          .value,
                                       onChanged: (value) {
-                                        widget.unitController.setFloorId(value!.id);
+                                        widget.unitController.setFloorId(
+                                            value!.id);
                                       },
                                     );
                                   }),
@@ -285,9 +297,11 @@ class _RoomTabScreenState extends State<RoomTabScreen> {
                               return CustomPeriodApiGenericDropdown<
                                   PaymentScheduleModel>(
                                 hintText: 'Per Month',
-                                menuItems: widget.unitController.paymentList.value,
+                                menuItems: widget.unitController.paymentList
+                                    .value,
                                 onChanged: (value) {
-                                  widget.unitController.setPaymentScheduleId(value!.id!);
+                                  widget.unitController.setPaymentScheduleId(
+                                      value!.id!);
                                 },
                               );
                             }),
@@ -331,9 +345,11 @@ class _RoomTabScreenState extends State<RoomTabScreen> {
                               return CustomApiCurrencyDropdown<
                                   CurrencyModel>(
                                 hintText: 'Currency',
-                                menuItems: widget.unitController.currencyList.value,
+                                menuItems: widget.unitController.currencyList
+                                    .value,
                                 onChanged: (value) {
-                                  widget.unitController.setCurrencyId(value!.id);
+                                  widget.unitController.setCurrencyId(
+                                      value!.id);
                                 },
                               );
                             }),
@@ -517,9 +533,9 @@ class _RoomTabScreenState extends State<RoomTabScreen> {
                 ),
 
                 Align(alignment: Alignment.centerRight, child: Bounceable(
-                    onTap: (){
-                              showAsBottomSheet(context);
-                    },
+                  onTap: () {
+                    showAsBottomSheet(context);
+                  },
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.sp),
@@ -791,7 +807,7 @@ class _RoomTabScreenState extends State<RoomTabScreen> {
                   child: Image.asset('assets/auth/logo.png', width: 35.w),),
               )
                   : Expanded(
-                    child: ListView.builder(
+                child: ListView.builder(
                     physics: NeverScrollableScrollPhysics(),
                     itemCount: widget.unitController.roomList
                         .length,
@@ -806,7 +822,7 @@ class _RoomTabScreenState extends State<RoomTabScreen> {
                         unitController: widget.unitController,
                       );
                     }),
-                  );
+              );
             }),
           ],
         ),

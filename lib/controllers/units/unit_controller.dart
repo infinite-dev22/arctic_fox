@@ -36,7 +36,7 @@ class UnitController extends GetxController {
     fetchAllPayments();
     fetchAllCurrencies();
     // fetchAllPropertyUnits();
-    listenToUnitChanges();
+    // listenToUnitChanges();
   }
 
   setUnitTypeId(int id){
@@ -176,9 +176,9 @@ class UnitController extends GetxController {
   }
 
 
-  addUnit(int floorId, int currencyId,
+  Future<void> addUnit(int floorId, int currencyId,
       int unitTypeId, int periodId, String squareMeters,
-      String createdBy, int unitNumber, int amount, String description
+      String createdBy, int unitNumber, int amount, String description, int propertyId
       ) async {
     isAddUnitLoading(true);
     try {
@@ -193,6 +193,7 @@ class UnitController extends GetxController {
             "sq_meters" : squareMeters,
             "amount" : amount,
             "created_by" : createdBy,
+            "property_id" : propertyId,
             // "updated_by" : updatedBy,
           }
       ).then((property) {
@@ -216,13 +217,15 @@ class UnitController extends GetxController {
 
   }
 
-  void fetchAllPropertyUnits() async {
+  void fetchAllPropertyUnits(int propertyId) async {
     isUnitLoading(true);
     try {
 
-      final response = await AppConfig().supaBaseClient.from('units').select().order('created_at', ascending: false);
+      final response = await AppConfig().supaBaseClient.from('units').select()
+          .eq('property_id', propertyId)
+          .order('created_at', ascending: false);
       final data = response as List<dynamic>;
-      print(response);
+      print('MY property units are == $response');
       print(response.length);
       print(data.length);
       print(data);
@@ -242,13 +245,13 @@ class UnitController extends GetxController {
   }
 
 
-  void listenToUnitChanges() {
+  void listenToUnitChanges(int propertyId) {
     // Set up real-time listener
     AppConfig().supaBaseClient
         .from('units')
         .stream(primaryKey: ['id'])
         .listen((List<Map<String, dynamic>> data) {
-     fetchAllPropertyUnits();
+     fetchAllPropertyUnits(propertyId);
     });
 
   }

@@ -48,6 +48,7 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> with Tick
     super.initState();
     widget.unitController.fetchAllFloors(widget.propertyModel.id!);
     widget.tenantController.fetchOnlyAvailableUnits(widget.propertyModel.id!);
+    widget.unitController.listenToUnitChanges(widget.propertyModel.id!);
   }
 
   @override
@@ -78,7 +79,9 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> with Tick
                                       // FloorTabScreen(propertyDetailsOptionsController: propertyDetailsOptionsController,),
                                       RoomTabScreen(
                                           unitController: widget.unitController,
-                                          propertyDetailsOptionsController: propertyDetailsOptionsController),
+                                          propertyDetailsOptionsController: propertyDetailsOptionsController,
+                                           propertyModel: widget.propertyModel
+                                      ),
                                       TenantTabScreen(propertyDetailsOptionsController: propertyDetailsOptionsController,),
                                       PaymentTabScreen(
                                         propertyDetailsOptionsController: propertyDetailsOptionsController,

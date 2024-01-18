@@ -273,6 +273,13 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                         children: [
                           Bounceable(
                               onTap: () {
+                                tenantController.tenantId.value == 0;
+                                tenantController.unitId.value == 0;
+                                selectedDate2.value =
+                                    DateTime(selectedDate1.value.year,
+                                        selectedDate1.value.month,
+                                        selectedDate1.value.day);
+
                                 descriptionController.clear();
                                 dailyController.clear();
                                 weeklyController.clear();
@@ -388,16 +395,21 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                                             discountController.text.toString()),
                                         dividedAmounts
                                     ).then((value) async {
-                                      // tenantController.tenantId.value == 0;
-                                      // tenantController.unitId.value == 0;
-                                      // selectedDate2.value =
-                                      //     DateTime(selectedDate1.value.year,
-                                      //         selectedDate1.value.month,
-                                      //         selectedDate1.value.day);
-                                      // dailyController.clear();
-                                      // weeklyController.clear();
-                                      // monthlyController.clear();
-                                      // yearlyController.clear();
+                                      tenantController.tenantId.value == 0;
+                                      tenantController.unitId.value == 0;
+                                      selectedDate2.value =
+                                          DateTime(selectedDate1.value.year,
+                                              selectedDate1.value.month,
+                                              selectedDate1.value.day);
+
+                                      descriptionController.clear();
+                                      dailyController.clear();
+                                      weeklyController.clear();
+                                      monthlyController.clear();
+                                      yearlyController.clear();
+                                      lumpSumController.clear();
+                                      amountController.clear();
+                                      discountController.clear();
                                     });
 
 
@@ -1327,119 +1339,140 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(top: 5.h),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          SizedBox(
-            height: 3.h,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              SizedBox(
-                width: 75.w,
-                child: AuthTextField(
-                  controller: searchController,
-                  hintText: 'Search',
-                  obscureText: false,
-                ),
-              ),
+    return WillPopScope(
+      onWillPop: () async{
+        tenantController.tenantId.value == 0;
+        tenantController.unitId.value == 0;
+        selectedDate2.value =
+            DateTime(selectedDate1.value.year,
+                selectedDate1.value.month,
+                selectedDate1.value.day);
 
-              Align(
-                alignment: Alignment.centerRight,
-                child: Bounceable(
-                  onTap: () {
-                    showAsBottomSheet(context);
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.sp),
-                      color: AppTheme.primaryColor,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Center(
-                        child: Icon(
-                          Icons.add,
-                          color: Colors.white,
+        descriptionController.clear();
+        dailyController.clear();
+        weeklyController.clear();
+        monthlyController.clear();
+        yearlyController.clear();
+        lumpSumController.clear();
+        amountController.clear();
+        discountController.clear();
+
+        return true;
+      },
+      child: Padding(
+        padding: EdgeInsets.only(top: 5.h),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: 3.h,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(
+                  width: 75.w,
+                  child: AuthTextField(
+                    controller: searchController,
+                    hintText: 'Search',
+                    obscureText: false,
+                  ),
+                ),
+
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Bounceable(
+                    onTap: () {
+                      showAsBottomSheet(context);
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.sp),
+                        color: AppTheme.primaryColor,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Center(
+                          child: Icon(
+                            Icons.add,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
 
-              // SizedBox(
-              //   width: 30.w,
-              //   height: 6.5.h,
-              //   child: AppButton(
-              //       title: 'Add Tenant',
-              //       color: AppTheme.primaryColor,
-              //       function: () {
-              //         showAsBottomSheet(context);
-              //       }),
-              // ),
-            ],
-          ),
+                // SizedBox(
+                //   width: 30.w,
+                //   height: 6.5.h,
+                //   child: AppButton(
+                //       title: 'Add Tenant',
+                //       color: AppTheme.primaryColor,
+                //       function: () {
+                //         showAsBottomSheet(context);
+                //       }),
+                // ),
+              ],
+            ),
 
-          Obx(() {
-            var groupedData = tenantController.groupAllPropertyTenants();
-            return tenantController.isPropertyTenantLoading.value
-                ? Padding(
-              padding: EdgeInsets.symmetric(vertical: 15.h),
-              child: Center(
-                child: Image.asset('assets/auth/logo.png', width: 35.w),),
-            )
-                : Expanded(
-              child: ListView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  // itemCount: tenantController.propertyTenantList.length,
-                  itemCount: groupedData.length,
-                  itemBuilder: (context, index) {
-                    var key = groupedData.keys.toList()[index];
-                    var value = groupedData[key];
+            Obx(() {
+              var groupedData = tenantController.groupAllPropertyTenants();
+              return tenantController.isPropertyTenantLoading.value
+                  ? Padding(
+                padding: EdgeInsets.symmetric(vertical: 15.h),
+                child: Center(
+                  child: Image.asset('assets/auth/logo.png', width: 35.w),),
+              )
+                  : Expanded(
+                child: ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    // itemCount: tenantController.propertyTenantList.length,
+                    itemCount: groupedData.length,
+                    itemBuilder: (context, index) {
+                      var key = groupedData.keys.toList()[index];
+                      var value = groupedData[key];
 
-                    // var tenant = tenantController.propertyTenantList[index];
-                    return Padding(
-                      padding: EdgeInsets.only(bottom: 1.h),
-                      child: Card(
-                        child: ListTile(
-                          onTap: () {
-                            print('MY KEY ${key.runtimeType}');
-                            print('MY Value $value');
-                            // Get.to(() => TenantDetailsScreen(tenantController: tenantController, tenantId: int.parse(key),),
-                            //     transition: Transition.rightToLeftWithFade);
-                          },
-                          leading: ClipRRect(
-                            borderRadius: BorderRadius.circular(10.sp),
-                            child: Image.asset(
-                              'assets/avatar/rian.jpg',
-                              fit: BoxFit.cover,
+                      // var tenant = tenantController.propertyTenantList[index];
+                      return Padding(
+                        padding: EdgeInsets.only(bottom: 1.h),
+                        child: Card(
+                          child: ListTile(
+                            onTap: () {
+                              print('MY KEY ${key.runtimeType}');
+                              print('MY Value $value');
+                              // Get.to(() => TenantDetailsScreen(tenantController: tenantController, tenantId: int.parse(key),),
+                              //     transition: Transition.rightToLeftWithFade);
+                            },
+                            leading: ClipRRect(
+                              borderRadius: BorderRadius.circular(10.sp),
+                              child: Image.asset(
+                                'assets/avatar/rian.jpg',
+                                fit: BoxFit.cover,
+                              ),
                             ),
+                            title: Text(
+                              'Tenant $key',
+                              style: AppTheme.appTitle3,
+                            ),
+                            // subtitle: Text(
+                            //   '${amountFormatter.format(
+                            //       tenant.amount.toString())}/=',
+                            //   style: AppTheme.greenTitle2,
+                            // ),
+                            // trailing: Text(
+                            //   'Unit ${tenant.unitId}',
+                            //   style: AppTheme.subText,
+                            // ),
                           ),
-                          title: Text(
-                            'Tenant $key',
-                            style: AppTheme.appTitle3,
-                          ),
-                          // subtitle: Text(
-                          //   '${amountFormatter.format(
-                          //       tenant.amount.toString())}/=',
-                          //   style: AppTheme.greenTitle2,
-                          // ),
-                          // trailing: Text(
-                          //   'Unit ${tenant.unitId}',
-                          //   style: AppTheme.subText,
-                          // ),
                         ),
-                      ),
-                    );
-                  }),
-            );
-          })
-        ],
+                      );
+                    }),
+              );
+            })
+          ],
+        ),
       ),
     );
   }

@@ -127,6 +127,13 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                             children: [
                               Bounceable(
                                   onTap: () {
+                                    tenantController.tenantId.value == 0;
+                                    tenantController.unitId.value == 0;
+                                    selectedDate1.value = DateTime.now();
+                                    selectedDate2.value = DateTime.now();
+                                    amountController.clear();
+                                    paidController.clear();
+                                    balanceController.clear();
                                     Get.back();
                                   },
                                   child: Text('Cancel', style: TextStyle(
@@ -151,7 +158,15 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                                         int.parse(balanceController.text),
                                         userStorage.read('userProfileId'),
                                         userStorage.read('userProfileId'),
-                                      );
+                                      ).then((value) {
+                                        tenantController.tenantId.value == 0;
+                                        tenantController.unitId.value == 0;
+                                        selectedDate1.value = DateTime.now();
+                                        selectedDate2.value = DateTime.now();
+                                        amountController.clear();
+                                        paidController.clear();
+                                        balanceController.clear();
+                                      });
 
                                       // await tenantController
                                       //     .payForSpecificTenantUnitSchedule(

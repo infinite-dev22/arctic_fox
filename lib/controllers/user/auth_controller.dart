@@ -14,6 +14,7 @@ class AuthController extends GetxController {
   var isVerifyPhoneOtpLoading = false.obs;
   var isVerifyEmailOtpLoading = false.obs;
   var isSendOtpLoading = false.obs;
+  var isResetPasswordLoading = false.obs;
 
   Future<void> checkUserEmailAvailability(String email) async{
     isSendOtpLoading(true);
@@ -76,6 +77,7 @@ class AuthController extends GetxController {
 
 
   Future<void> resetUserPassword(String email, String resetToken, String password) async {
+    isResetPasswordLoading(true);
     try{
 
       final recovery = await AppConfig().supaBaseClient.auth.verifyOTP(
@@ -100,6 +102,7 @@ class AuthController extends GetxController {
         await userStorage.write('isLoggedIn', true).then((value) async{
           await userStorage.write('accessToken', session.accessToken).then((value) async{
             await userStorage.write('userId', user.id).then((value) async{
+              isResetPasswordLoading(false);
               Get.put(UserController()).getUserProfileData().then((value) {
                 Get.off(() => BottomNavBar());
               });
@@ -109,11 +112,13 @@ class AuthController extends GetxController {
 
 
       } else {
+        isResetPasswordLoading(false);
         Fluttertoast.showToast(msg: 'Check your credentials', gravity: ToastGravity.TOP);
       }
 
 
     }  catch(error){
+      isResetPasswordLoading(false);
       print('Login Error is $error');
       Fluttertoast.showToast(msg: error.toString(), gravity: ToastGravity.TOP);
     }

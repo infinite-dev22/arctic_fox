@@ -73,6 +73,175 @@ class _AddScreenState extends State<AddScreen> {
           snappings: [0.9],
           positioning: SnapPositioning.relativeToAvailableSpace,
         ),
+        headerBuilder: (context, setState){
+          return                         Material(
+            elevation: 1,
+            child: Container(
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width,
+              height: 7.5.h,
+              decoration: BoxDecoration(boxShadow: []),
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: 5.w, vertical: 2.h),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment
+                      .spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Bounceable(
+                        onTap: () {
+                          firstNameEditingController.clear();
+                          lastNameEditingController.clear();
+                          emailEditingController.clear();
+                          passwordEditingController.clear();
+                          confirmPasswordEditingController
+                              .clear();
+                          mobileCont.clear();
+                          // propertyPic = File('');
+
+                          Get.back();
+                        },
+                        child: Text(
+                          'Cancel',
+                          style: TextStyle(
+                            color: Colors.red,
+                            fontSize: 17.5.sp,
+                          ),
+                        )),
+                    Text(
+                      'Add User',
+                      style: AppTheme.darkBlueTitle2,
+                    ),
+                    Obx(() {
+                      return userController.isCreateAdminLoading.value ?
+                      AppLoader(color: AppTheme.primaryColor,) :
+                      Bounceable(
+                          onTap: () async {
+                            if (firstNameEditingController
+                                .text.isEmpty ||
+                                lastNameEditingController
+                                    .text.isEmpty ||
+                                emailEditingController.text
+                                    .isEmpty ||
+                                passwordEditingController
+                                    .text.isEmpty ||
+                                confirmPasswordEditingController
+                                    .text.isEmpty) {
+                              Fluttertoast.showToast(
+                                  msg: 'fill in all fields',
+                                  gravity: ToastGravity.TOP);
+                            } else {
+                              if (mobileCont.text.length < 9) {
+                                Fluttertoast.showToast(
+                                    msg: 'phone number is short',
+                                    gravity: ToastGravity.TOP);
+                              } else
+                              if (mobileCont.text.length > 11) {
+                                Fluttertoast.showToast(
+                                    msg: 'phone number is long',
+                                    gravity: ToastGravity.TOP);
+                              } else
+                              if (firstNameEditingController
+                                  .text.length <
+                                  3) {
+                                Fluttertoast.showToast(
+                                    msg: 'short first name',
+                                    gravity: ToastGravity.TOP);
+                              } else if (lastNameEditingController
+                                  .text.length <
+                                  3) {
+                                Fluttertoast.showToast(
+                                    msg: 'short last name',
+                                    gravity: ToastGravity.TOP);
+                              } else if (passwordEditingController
+                                  .text.length <
+                                  6) {
+                                Fluttertoast.showToast(
+                                    msg: 'short password : min is 6',
+                                    gravity: ToastGravity.TOP);
+                              } else if (userController
+                                  .addedUserRoleId.value ==
+                                  0) {
+                                Fluttertoast.showToast(
+                                    msg: 'add role',
+                                    gravity: ToastGravity.TOP);
+                              } else
+                              if (passwordEditingController.text
+                                  .toString() !=
+                                  confirmPasswordEditingController
+                                      .text
+                                      .toString()) {
+                                Fluttertoast.showToast(
+                                    msg: 'mismatching passwords',
+                                    gravity: ToastGravity.TOP);
+                              } else if (!_numberRegex.hasMatch(
+                                  passwordEditingController.text
+                                      .toString())) {
+                                Fluttertoast.showToast(
+                                    msg: 'password must have a number',
+                                    gravity: ToastGravity.TOP);
+                              } else if (!_numberRegex.hasMatch(
+                                  confirmPasswordEditingController
+                                      .text
+                                      .toString())) {
+                                Fluttertoast.showToast(
+                                    msg:
+                                    'confirm password must have a number',
+                                    gravity: ToastGravity.TOP);
+                              } else {
+                                await userController
+                                    .adminCreateUser(
+                                  emailEditingController.text
+                                      .trim()
+                                      .toString(),
+                                  passwordEditingController.text
+                                      .trim()
+                                      .toString(),
+                                  firstNameEditingController.text
+                                      .trim()
+                                      .toString(),
+                                  lastNameEditingController.text
+                                      .trim()
+                                      .toString(),
+                                  userController.addedUserRoleId
+                                      .value,
+                                  countryCode.dialCode +
+                                      mobileCont.text.trim()
+                                          .toString(),
+                                )
+                                    .then((value) {
+                                  emailEditingController.clear();
+                                  passwordEditingController
+                                      .clear();
+                                  firstNameEditingController
+                                      .clear();
+                                  lastNameEditingController
+                                      .clear();
+                                  userController
+                                      .addedUserRoleId.value ==
+                                      0;
+                                  Get.back();
+                                });
+                              }
+                            }
+                          },
+                          child: Text(
+                            'Add',
+                            style: TextStyle(
+                              color: AppTheme.primaryColor,
+                              fontSize: 17.5.sp,
+                            ),
+                          ));
+                    }),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
         builder: (context, state) {
           return StatefulBuilder(
               builder: (BuildContext context, StateSetter setState) {
@@ -91,173 +260,7 @@ class _AddScreenState extends State<AddScreen> {
                     color: AppTheme.whiteColor,
                     child: Column(
                       children: [
-                        Material(
-                          elevation: 1,
-                          child: Container(
-                            width: MediaQuery
-                                .of(context)
-                                .size
-                                .width,
-                            height: 7.5.h,
-                            decoration: BoxDecoration(boxShadow: []),
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 5.w, vertical: 2.h),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment
-                                    .spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Bounceable(
-                                      onTap: () {
-                                        firstNameEditingController.clear();
-                                        lastNameEditingController.clear();
-                                        emailEditingController.clear();
-                                        passwordEditingController.clear();
-                                        confirmPasswordEditingController
-                                            .clear();
-                                        mobileCont.clear();
-                                        // propertyPic = File('');
 
-                                        Get.back();
-                                      },
-                                      child: Text(
-                                        'Cancel',
-                                        style: TextStyle(
-                                          color: Colors.red,
-                                          fontSize: 17.5.sp,
-                                        ),
-                                      )),
-                                  Text(
-                                    'Add User',
-                                    style: AppTheme.darkBlueTitle2,
-                                  ),
-                                  Obx(() {
-                                    return userController.isCreateAdminLoading.value ?
-                                    AppLoader(color: AppTheme.primaryColor,) :
-                                    Bounceable(
-                                        onTap: () async {
-                                          if (firstNameEditingController
-                                              .text.isEmpty ||
-                                              lastNameEditingController
-                                                  .text.isEmpty ||
-                                              emailEditingController.text
-                                                  .isEmpty ||
-                                              passwordEditingController
-                                                  .text.isEmpty ||
-                                              confirmPasswordEditingController
-                                                  .text.isEmpty) {
-                                            Fluttertoast.showToast(
-                                                msg: 'fill in all fields',
-                                                gravity: ToastGravity.TOP);
-                                          } else {
-                                            if (mobileCont.text.length < 9) {
-                                              Fluttertoast.showToast(
-                                                  msg: 'phone number is short',
-                                                  gravity: ToastGravity.TOP);
-                                            } else
-                                            if (mobileCont.text.length > 11) {
-                                              Fluttertoast.showToast(
-                                                  msg: 'phone number is long',
-                                                  gravity: ToastGravity.TOP);
-                                            } else
-                                            if (firstNameEditingController
-                                                .text.length <
-                                                3) {
-                                              Fluttertoast.showToast(
-                                                  msg: 'short first name',
-                                                  gravity: ToastGravity.TOP);
-                                            } else if (lastNameEditingController
-                                                .text.length <
-                                                3) {
-                                              Fluttertoast.showToast(
-                                                  msg: 'short last name',
-                                                  gravity: ToastGravity.TOP);
-                                            } else if (passwordEditingController
-                                                .text.length <
-                                                6) {
-                                              Fluttertoast.showToast(
-                                                  msg: 'short password : min is 6',
-                                                  gravity: ToastGravity.TOP);
-                                            } else if (userController
-                                                .addedUserRoleId.value ==
-                                                0) {
-                                              Fluttertoast.showToast(
-                                                  msg: 'add role',
-                                                  gravity: ToastGravity.TOP);
-                                            } else
-                                            if (passwordEditingController.text
-                                                .toString() !=
-                                                confirmPasswordEditingController
-                                                    .text
-                                                    .toString()) {
-                                              Fluttertoast.showToast(
-                                                  msg: 'mismatching passwords',
-                                                  gravity: ToastGravity.TOP);
-                                            } else if (!_numberRegex.hasMatch(
-                                                passwordEditingController.text
-                                                    .toString())) {
-                                              Fluttertoast.showToast(
-                                                  msg: 'password must have a number',
-                                                  gravity: ToastGravity.TOP);
-                                            } else if (!_numberRegex.hasMatch(
-                                                confirmPasswordEditingController
-                                                    .text
-                                                    .toString())) {
-                                              Fluttertoast.showToast(
-                                                  msg:
-                                                  'confirm password must have a number',
-                                                  gravity: ToastGravity.TOP);
-                                            } else {
-                                              await userController
-                                                  .adminCreateUser(
-                                                emailEditingController.text
-                                                    .trim()
-                                                    .toString(),
-                                                passwordEditingController.text
-                                                    .trim()
-                                                    .toString(),
-                                                firstNameEditingController.text
-                                                    .trim()
-                                                    .toString(),
-                                                lastNameEditingController.text
-                                                    .trim()
-                                                    .toString(),
-                                                userController.addedUserRoleId
-                                                    .value,
-                                                countryCode.dialCode +
-                                                    mobileCont.text.trim()
-                                                        .toString(),
-                                              )
-                                                  .then((value) {
-                                                emailEditingController.clear();
-                                                passwordEditingController
-                                                    .clear();
-                                                firstNameEditingController
-                                                    .clear();
-                                                lastNameEditingController
-                                                    .clear();
-                                                userController
-                                                    .addedUserRoleId.value ==
-                                                    0;
-                                                Get.back();
-                                              });
-                                            }
-                                          }
-                                        },
-                                        child: Text(
-                                          'Add',
-                                          style: TextStyle(
-                                            color: AppTheme.primaryColor,
-                                            fontSize: 17.5.sp,
-                                          ),
-                                        ));
-                                  }),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
                         Padding(
                           padding:
                           EdgeInsets.symmetric(horizontal: 5.w, vertical: 1.h),
@@ -450,7 +453,7 @@ class _AddScreenState extends State<AddScreen> {
     return Scaffold(
       backgroundColor: AppTheme.whiteColor,
       appBar: AppImageHeader(
-        title: 'assets/auth/logo.png',
+        title: 'assets/auth/srw.png',
         isTitleCentred: true,
         leading: Container(),
       ),

@@ -224,7 +224,7 @@ class _UpdateCompanyTenantWithContactScreenState
     return Scaffold(
       backgroundColor: AppTheme.whiteColor,
       appBar: AppImageHeader(
-        title: 'assets/auth/logo.png',
+        title: 'assets/auth/srw.png',
         isTitleCentred: true,
       ),
       body: Padding(

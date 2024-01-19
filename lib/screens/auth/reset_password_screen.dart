@@ -1,8 +1,10 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
+import 'package:pinput/pinput.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/controllers/user/auth_controller.dart';
 import 'package:smart_rent/screens/auth/complete_signup_screen.dart';
@@ -15,6 +17,7 @@ import 'package:smart_rent/widgets/app_textfield.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
   final String email;
+
   const ResetPasswordScreen({super.key, required this.email});
 
   @override
@@ -39,7 +42,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       // backgroundColor: AppTheme.appBgColor,
       backgroundColor: AppTheme.whiteColor,
@@ -56,15 +58,66 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
                   // Center(child: Image.asset('assets/auth/otp.png')),
 
-                  Text('Reset Password' , style: AppTheme.appTitle2,),
+                  Text('Reset Password', style: AppTheme.appTitle2,),
+              Text('Enter OTP sent to ${widget.email}', style: AppTheme.blueSubText,),
 
-                  AuthTextField(
-                    isEmail: true,
-                    controller: otpTokenController,
-                    hintText: 'Enter Reset OTP',
-                    obscureText: false,
+                  FadeInRight(
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 5.h),
+                      child: Pinput(
+                        length: 6,
+                        controller: otpTokenController,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        validator: (otp) {
+                          return null;
+                        },
+                        // onChanged: (value){
+                        //   setState((){
+                        //     code = value;
+                        //   });
+                        // },
+                        defaultPinTheme: PinTheme(
+                          height: 10.h,
+                          width: 20.w,
+                          decoration: BoxDecoration(
+                            color: AppTheme.appBgColor,
+                            borderRadius: BorderRadius.circular(15.sp),
+                          ),
+                          textStyle: TextStyle(
+                            color: AppTheme.primaryColor,
+                            fontSize: 20.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
 
+                        errorPinTheme: PinTheme(
+                          height: 10.h,
+                          width: 20.w,
+                          decoration: BoxDecoration(
+                            color: AppTheme.appBgColor,
+                            borderRadius: BorderRadius.circular(15.sp),
+                            border: Border.all(
+                              color: Colors.red, width: 2,
+                            ),
+                          ),
+                          textStyle: TextStyle(
+                            color: AppTheme.primaryColor,
+                            fontSize: 20.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
+
+
+                  // AuthTextField(
+                  //   isEmail: true,
+                  //   controller: otpTokenController,
+                  //   hintText: 'Enter Reset OTP',
+                  //   obscureText: false,
+                  //
+                  // ),
                   SizedBox(height: 2.h,),
 
                   AppPasswordTextField(
@@ -83,37 +136,41 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
                   SizedBox(height: 3.h,),
 
-                  AppButton(
-                      title: 'Reset Password',
-                      color: AppTheme.primaryColor,
-                      function: ()async{
-
-
-                        if(passwordEditingController.text.isEmpty && otpTokenController.text.isEmpty){
-                          Fluttertoast.showToast(msg: 'all fields required', gravity: ToastGravity.TOP);
-                        } else if (passwordEditingController.text.length <6) {
-                          Fluttertoast.showToast(msg: 'Password is short', gravity: ToastGravity.TOP);
-                        }  else if (otpTokenController.text.length <6) {
-                          Fluttertoast.showToast(msg: 'Otp is short', gravity: ToastGravity.TOP);
-                        } else {
-
-                          await authController.resetUserPassword(
+                  Obx(() {
+                    return AppButton(
+                      isLoading: authController.isResetPasswordLoading.value,
+                        title: 'Reset Password',
+                        color: AppTheme.primaryColor,
+                        function: () async {
+                          if (passwordEditingController.text.isEmpty &&
+                              otpTokenController.text.isEmpty) {
+                            Fluttertoast.showToast(msg: 'all fields required',
+                                gravity: ToastGravity.TOP);
+                          } else
+                          if (passwordEditingController.text.length < 6) {
+                            Fluttertoast.showToast(msg: 'Password is short',
+                                gravity: ToastGravity.TOP);
+                          } else if (otpTokenController.text.length < 6) {
+                            Fluttertoast.showToast(
+                                msg: 'Otp is short', gravity: ToastGravity.TOP);
+                          } else {
+                            await authController.resetUserPassword(
                               widget.email,
                               otpTokenController.text.trim().toString(),
                               passwordEditingController.text.trim().toString(),
-                          );
+                            );
 
-                          // await authController.resetPassword(
-                          //     widget.email, passwordEditingController.text.trim());
+                            // await authController.resetPassword(
+                            //     widget.email, passwordEditingController.text.trim());
+                          }
                         }
 
-                      }
 
-
-                  ),
+                    );
+                  }),
                   SizedBox(height: 1.h,),
                   Center(child: Bounceable(
-                      onTap: (){
+                      onTap: () {
                         Get.off(() => InitialScreen());
                       },
                       child: Text('back', style: AppTheme.subTextBold,))),

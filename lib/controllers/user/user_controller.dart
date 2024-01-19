@@ -596,7 +596,7 @@ isUserListLoading(true);
 
   }
 
-  fetchAllEmployeePropertiesInOrganization(String userId) async {
+  Future<void> fetchAllEmployeePropertiesInOrganization(String userId) async {
     isEmployeePropertyLoading(true);
     try {
 
@@ -668,12 +668,15 @@ isUserListLoading(true);
           "created_by" : userStorage.read('userProfileId'),
           "updated_by" : userStorage.read('userProfileId'),
         }
-      ]).then((property) {
-        isAddPropertyToEmployeeLoading(false);
-        Get.back();
-        Get.snackbar('SUCCESS', 'Property added to employee',
-          titleText: Text('SUCCESS', style: AppTheme.greenTitle1,),
-        );
+      ]).then((property) async {
+        await fetchAllEmployeePropertiesInOrganization(userId).then((value) {
+          isAddPropertyToEmployeeLoading(false);
+          Get.back();
+          Get.snackbar('SUCCESS', 'Property added to employee',
+            titleText: Text('SUCCESS', style: AppTheme.greenTitle1,),
+          );
+        });
+
       });
 
       if (response.error != null) {

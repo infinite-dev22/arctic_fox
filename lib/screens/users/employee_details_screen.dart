@@ -55,7 +55,7 @@ class _EmployeeDetailsScreenState extends State<EmployeeDetailsScreen> {
         .userProfileModel.roleId == 2 ? 'Owner' :
     widget.userProfileModel.roleId == 3 ? 'Manager' : 'Finance Manager';
     _propertyModelCont = SingleValueDropDownController();
-    widget.userController.listenToEmployeePropertiesInOrganizationChanges(
+    widget.userController.fetchAllEmployeePropertiesInOrganization(
         widget.userProfileModel.userId.toString());
 
     tenantController.listenToSpecificUserPropertyListChanges(
@@ -82,7 +82,7 @@ class _EmployeeDetailsScreenState extends State<EmployeeDetailsScreen> {
             print('My EMployee properties before == ${widget.userController
                 .employeePropertyModelList}');
           },
-          title: 'assets/auth/logo.png',
+          title: 'assets/auth/srw.png',
           isTitleCentred: true,
         ),
 
@@ -93,7 +93,7 @@ class _EmployeeDetailsScreenState extends State<EmployeeDetailsScreen> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-
+                SizedBox(height: 1.h,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -126,7 +126,7 @@ class _EmployeeDetailsScreenState extends State<EmployeeDetailsScreen> {
                       onTap: () async {
                         final Uri phoneUri = Uri(
                             scheme: 'tel',
-                            path: ''
+                            path: widget.userProfileModel.phone.toString()
                         );
                         if (await canLaunchUrl(phoneUri)) {
                           await launchUrl(phoneUri);

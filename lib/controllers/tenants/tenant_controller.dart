@@ -357,8 +357,8 @@ setSpecificPaymentBalance(int balance){
     try {
 
       final response = await AppConfig().supaBaseClient.from('tenants').select(
-        'id, name, tenant_type_id, nation_id, tenant_no, business_type_id, description, documents(file_url, external_key, created_at), image, business_types(name), tenant_types(name), currency_symbol(country), tenant_profiles(email, date_of_birth, nin, gender, tenant_id, description, contact)'
-      ).order('created_at');
+        'id, name, tenant_type_id, nation_id, tenant_no, created_by, organisation_id, business_type_id, description, documents(file_url, external_key, created_at), image, business_types(name), tenant_types(name), currency_symbol(country), tenant_profiles(email, date_of_birth, nin, gender, tenant_id, description, contact)'
+      ).eq('organisation_id', userStorage.read('OrganizationId')) .order('created_at');
       final data = response as List<dynamic>;
       print(response);
       print(response.length);

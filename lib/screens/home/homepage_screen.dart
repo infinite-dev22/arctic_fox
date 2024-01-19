@@ -34,6 +34,7 @@ import 'package:smart_rent/utils/app_prefs.dart';
 import 'package:smart_rent/widgets/app_button.dart';
 import 'package:smart_rent/widgets/app_drop_downs.dart';
 import 'package:smart_rent/widgets/app_header.dart';
+import 'package:smart_rent/widgets/app_image_header.dart';
 import 'package:smart_rent/widgets/app_loader.dart';
 import 'package:smart_rent/widgets/app_max_textfield.dart';
 import 'package:smart_rent/widgets/app_textfield.dart';
@@ -561,14 +562,16 @@ class _HomePageState extends State<HomePage> {
         ),
 
         backgroundColor: AppTheme.whiteColor,
-        appBar: AppHeader(
-          title: 'Dashboard',
+
+        appBar: AppImageHeader(
           leading: Container(),
+          title: 'assets/auth/srw.png',
+          isTitleCentred: true,
           actions: [
             PopupMenuButton(
               icon: Padding(
                 padding: EdgeInsets.only(right: 5.w),
-                child: Image.asset('assets/home/sidely.png'),
+                child: Image.asset('assets/home/sidely.png', color: Colors.white,),
               ),
               onSelected: (value) async {
                 if (value == 1) {
@@ -587,6 +590,7 @@ class _HomePageState extends State<HomePage> {
 
           ],
         ),
+
         body: Padding(
           padding: EdgeInsets.only(left: 5.w, right: 5.w),
           child: SingleChildScrollView(
@@ -763,6 +767,129 @@ class _HomePageState extends State<HomePage> {
               snappings: [ 0.9],
               positioning: SnapPositioning.relativeToAvailableSpace,
             ),
+
+            headerBuilder: (context, setState){
+              return                             Material(
+                elevation: 1,
+                child: Container(
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width,
+                  height: 7.5.h,
+                  decoration: BoxDecoration(
+                      boxShadow: [
+                      ]
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 5.w, vertical: 2.h),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment
+                          .spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment
+                          .center,
+                      children: [
+
+                        Bounceable(
+                            onTap: () {
+                              propertyTitleController.clear();
+                              propertyAddressController.clear();
+                              propertyDescriptionController
+                                  .clear();
+                              propertyLocationController.clear();
+                              propertySqmController.clear();
+                              propertyPic = File('');
+                              print('Pic = ${propertyPic!.path}');
+
+                              Get.back();
+                            },
+                            child: Text(
+                              'Cancel', style: TextStyle(
+                              color: Colors.red,
+                              fontSize: 17.5.sp,
+                            ),)),
+
+                        Text('Add Property', style: AppTheme
+                            .darkBlueTitle2,),
+
+                        Obx(() {
+                          return propertyController
+                              .isAddPropertyLoading.value
+                              ?
+                          AppLoader(color: AppTheme.primaryColor,)
+                              :
+                          Bounceable(
+                              onTap: () async {
+                                if (
+                                propertyTitleController.text
+                                    .isEmpty ||
+                                    propertyLocationController
+                                        .text.isEmpty ||
+                                    propertySqmController.text
+                                        .isEmpty ||
+                                    propertyPic == null ||
+                                    propertyController
+                                        .propertyTypeId.value ==
+                                        0 ||
+                                    propertyController.categoryId
+                                        .value == 0
+                                ) {
+                                  Fluttertoast.showToast(
+                                      msg: 'fill in all fields',
+                                      gravity: ToastGravity.TOP);
+                                } else {
+                                  propertyController.addProperty(
+                                      propertyTitleController.text
+                                          .trim().toString(),
+                                      propertyDescriptionController
+                                          .text.trim().toString(),
+                                      userStorage.read(
+                                          'OrganizationId'),
+                                      propertyController
+                                          .propertyTypeId.value,
+                                      propertyController
+                                          .categoryId
+                                          .value,
+                                      propertyLocationController
+                                          .text.trim().toString(),
+                                      propertySqmController.text
+                                          .trim().toString(),
+                                      userStorage.read(
+                                          'userProfileId')
+                                          .toString(),
+                                      userStorage.read(
+                                          'userProfileId')
+                                          .toString(),
+                                      propertyBytes!,
+                                      propertyImageExtension!,
+                                      propertyFileName!
+                                    // "userStorage.read('userProfileId')",
+                                  ).then((value) {
+                                    propertyTitleController.clear();
+                                    propertyAddressController.clear();
+                                    propertyDescriptionController.clear();
+                                    propertyLocationController.clear();
+                                    propertySqmController.clear();
+                                    propertyPic = File('');
+                                    print('Pic = ${propertyPic!.path}');
+                                  });
+                                }
+                              },
+                              child: Text('Add', style: TextStyle(
+                                color: AppTheme.primaryColor,
+                                fontSize: 17.5.sp,
+                              ),));
+                        }),
+
+                      ],
+
+                    ),
+                  ),
+                ),
+              );
+            },
+
             builder: (context, state) {
               return StatefulBuilder(
                   builder: (BuildContext context, StateSetter setState) {
@@ -782,125 +909,7 @@ class _HomePageState extends State<HomePage> {
                         child: Column(
                           children: [
 
-                            Material(
-                              elevation: 1,
-                              child: Container(
-                                width: MediaQuery
-                                    .of(context)
-                                    .size
-                                    .width,
-                                height: 7.5.h,
-                                decoration: BoxDecoration(
-                                    boxShadow: [
-                                    ]
-                                ),
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 5.w, vertical: 2.h),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment
-                                        .spaceBetween,
-                                    crossAxisAlignment: CrossAxisAlignment
-                                        .center,
-                                    children: [
 
-                                      Bounceable(
-                                          onTap: () {
-                                            propertyTitleController.clear();
-                                            propertyAddressController.clear();
-                                            propertyDescriptionController
-                                                .clear();
-                                            propertyLocationController.clear();
-                                            propertySqmController.clear();
-                                            propertyPic = File('');
-                                            print('Pic = ${propertyPic!.path}');
-
-                                            Get.back();
-                                          },
-                                          child: Text(
-                                            'Cancel', style: TextStyle(
-                                            color: Colors.red,
-                                            fontSize: 17.5.sp,
-                                          ),)),
-
-                                      Text('Add Property', style: AppTheme
-                                          .darkBlueTitle2,),
-
-                                      Obx(() {
-                                        return propertyController
-                                            .isAddPropertyLoading.value
-                                            ?
-                                        AppLoader(color: AppTheme.primaryColor,)
-                                            :
-                                        Bounceable(
-                                            onTap: () async {
-                                              if (
-                                              propertyTitleController.text
-                                                  .isEmpty ||
-                                                  propertyLocationController
-                                                      .text.isEmpty ||
-                                                  propertySqmController.text
-                                                      .isEmpty ||
-                                                  propertyPic == null ||
-                                                  propertyController
-                                                      .propertyTypeId.value ==
-                                                      0 ||
-                                                  propertyController.categoryId
-                                                      .value == 0
-                                              ) {
-                                                Fluttertoast.showToast(
-                                                    msg: 'fill in all fields',
-                                                    gravity: ToastGravity.TOP);
-                                              } else {
-                                                propertyController.addProperty(
-                                                    propertyTitleController.text
-                                                        .trim().toString(),
-                                                    propertyDescriptionController
-                                                        .text.trim().toString(),
-                                                    userStorage.read(
-                                                        'OrganizationId'),
-                                                    propertyController
-                                                        .propertyTypeId.value,
-                                                    propertyController
-                                                        .categoryId
-                                                        .value,
-                                                    propertyLocationController
-                                                        .text.trim().toString(),
-                                                    propertySqmController.text
-                                                        .trim().toString(),
-                                                    userStorage.read(
-                                                        'userProfileId')
-                                                        .toString(),
-                                                    userStorage.read(
-                                                        'userProfileId')
-                                                        .toString(),
-                                                    propertyBytes!,
-                                                    propertyImageExtension!,
-                                                    propertyFileName!
-                                                  // "userStorage.read('userProfileId')",
-                                                ).then((value) {
-                                                propertyTitleController.clear();
-                                                    propertyAddressController.clear();
-                                                propertyDescriptionController.clear();
-                                                propertyLocationController.clear();
-                                                propertySqmController.clear();
-                                                propertyPic = File('');
-                                                print('Pic = ${propertyPic!.path}');
-                                                });
-                                              }
-                                            },
-                                            child: Text('Add', style: TextStyle(
-                                              color: AppTheme.primaryColor,
-                                              fontSize: 17.5.sp,
-                                            ),));
-                                      }),
-
-                                    ],
-
-                                  ),
-                                ),
-                              ),
-                            ),
 
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 5.w,
@@ -1100,6 +1109,360 @@ class _HomePageState extends State<HomePage> {
               snappings: [ 0.9],
               positioning: SnapPositioning.relativeToAvailableSpace,
             ),
+            headerBuilder: (context, state){
+               return  Material(
+                 elevation: 1,
+                 child: Container(
+                   width: MediaQuery
+                       .of(context)
+                       .size
+                       .width,
+                   height: 7.5.h,
+                   decoration: BoxDecoration(
+                       boxShadow: [
+                       ]
+                   ),
+                   child: Padding(
+                     padding: EdgeInsets.symmetric(
+                         horizontal: 5.w, vertical: 2.h),
+                     child: Row(
+                       mainAxisAlignment: MainAxisAlignment
+                           .spaceBetween,
+                       crossAxisAlignment: CrossAxisAlignment
+                           .center,
+                       children: [
+
+                         Bounceable(
+                             onTap: () {
+                               firstNameController.clear();
+                               surnameNameController.clear();
+                               otherNameController.clear();
+                               phoneNoController.clear();
+                               companyNameController.clear();
+                               companyDescriptionController
+                                   .clear();
+                               individualFirstNameController
+                                   .clear();
+                               individualLastNameController
+                                   .clear();
+                               individualEmailNameController
+                                   .clear();
+                               individualPhoneNameController
+                                   .clear();
+                               individualDateOfBirthController
+                                   .clear();
+                               individualNinController.clear();
+                               individualDescriptionController
+                                   .clear();
+                               individualGenderController.clear();
+                               contactFirstNameController.clear();
+                               contactLastNameController.clear();
+                               contactNinController.clear();
+                               contactDesignationController
+                                   .clear();
+                               contactPhoneController.clear();
+                               contactEmailController.clear();
+                               tenantPic = File('');
+                               companyTenantPic = File('');
+                               Get.back();
+                             },
+                             child: Text(
+                               'Cancel', style: TextStyle(
+                               color: Colors.red,
+                               fontSize: 17.5.sp,
+                             ),)),
+
+                         Text('Add Tenant', style: AppTheme
+                             .darkBlueTitle2,),
+
+                         Obx(() {
+                           return widget.tenantController.isAddTenantLoading.value ?
+                           AppLoader(color: AppTheme.primaryColor,) :
+                           Bounceable(
+                               onTap: () async {
+                                 if (widget.tenantController
+                                     .tenantTypeId.value == 0) {
+                                   Fluttertoast.showToast(
+                                       msg: 'Select Tenant Type',
+                                       gravity: ToastGravity.TOP);
+                                 } else {
+                                   if (widget.tenantController
+                                       .tenantTypeId.value == 1) {
+                                     if (_formKey.currentState!
+                                         .validate() &&
+                                         _individualFormKey
+                                             .currentState!
+                                             .validate()) {
+                                       // Get.snackbar(
+                                       //     'Posting Individual', 'Adding Individual Tenant');
+                                       if(tenantPic == null){
+                                         Fluttertoast.showToast(
+                                             msg: 'Tenant pic required',
+                                             gravity: ToastGravity.TOP);
+                                       } else {
+                                         await widget
+                                             .tenantController
+                                             .addPersonalTenant(
+                                             "${firstNameController
+                                                 .text
+                                                 .trim()} ${surnameNameController
+                                                 .text.trim()}",
+                                             userStorage.read(
+                                                 'OrganizationId'),
+                                             widget.tenantController
+                                                 .tenantTypeId.value,
+                                             widget.tenantController
+                                                 .businessTypeId
+                                                 .value,
+                                             userStorage.read(
+                                                 'userProfileId'),
+                                             widget.tenantController
+                                                 .nationalityId
+                                                 .value,
+                                             individualNinController
+                                                 .text.toString(),
+                                             individualPhoneNameController
+                                                 .text.toString(),
+                                             individualEmailNameController
+                                                 .text.toString(),
+                                             individualDescriptionController
+                                                 .text.toString(),
+                                             myDateOfBirth.value
+                                                 .toString(),
+                                             widget.tenantController
+                                                 .newGender.value,
+                                             tenantBytes!,
+                                             tenantImageExtension!,
+                                             tenantFileName!
+                                         ).then((value) {
+                                           firstNameController.clear();
+                                           surnameNameController.clear();
+                                           otherNameController.clear();
+                                           phoneNoController.clear();
+                                           companyNameController.clear();
+                                           companyDescriptionController.clear();
+                                           individualFirstNameController.clear();
+                                           individualLastNameController.clear();
+                                           individualEmailNameController.clear();
+                                           individualPhoneNameController.clear();
+                                           individualDateOfBirthController.clear();
+                                           individualNinController.clear();
+                                           individualDescriptionController.clear();
+                                           individualGenderController.clear();
+                                           contactFirstNameController.clear();
+                                           contactLastNameController.clear();
+                                           contactNinController.clear();
+                                           contactDesignationController.clear();
+                                           contactPhoneController.clear();
+                                           contactEmailController.clear();
+                                           tenantPic = File('');
+                                           companyTenantPic = File('');
+                                           Get.back();
+                                         });
+
+                                       }
+
+
+                                       // tenantController.addIndividualTenant(
+                                       //   "${firstNameController.text
+                                       //       .trim()} ${surnameNameController.text.trim()}",
+                                       //   12,
+                                       //   tenantController.tenantTypeId.value,
+                                       //   "userStorage.read('userProfileId')",
+                                       //   tenantController.nationalityId.value,
+                                       // );
+                                     } else {
+                                       Fluttertoast.showToast(
+                                           msg: 'Fill required fields',
+                                           gravity: ToastGravity
+                                               .TOP);
+                                     }
+                                   } else {
+                                     if (widget.tenantController
+                                         .isAddContactPerson
+                                         .isFalse) {
+                                       if (_formKey.currentState!
+                                           .validate() &&
+                                           _companyFormKey
+                                               .currentState!
+                                               .validate()) {
+                                         // Get.snackbar(
+                                         //     'Posting Company', 'No Company Contact');
+                                         if(tenantPic == null){
+                                           Fluttertoast.showToast(
+                                               msg: 'Tenant pic required',
+                                               gravity: ToastGravity.TOP);
+                                         } else {
+                                           await widget
+                                               .tenantController
+                                               .addCompanyTenantWithoutContact(
+                                               companyNameController
+                                                   .text.toString(),
+                                               userStorage.read(
+                                                   'OrganizationId'),
+                                               widget
+                                                   .tenantController
+                                                   .tenantTypeId
+                                                   .value,
+                                               widget
+                                                   .tenantController
+                                                   .businessTypeId
+                                                   .value,
+                                               userStorage.read(
+                                                   'userProfileId'),
+                                               widget
+                                                   .tenantController
+                                                   .nationalityId
+                                                   .value,
+                                               companyDescriptionController
+                                                   .text.toString(),
+                                               companyTenantBytes!,
+                                               companyTenantImageExtension!,
+                                               companyTenantFileName!
+                                           ).then((value) {
+                                             firstNameController.clear();
+                                             surnameNameController.clear();
+                                             otherNameController.clear();
+                                             phoneNoController.clear();
+                                             companyNameController.clear();
+                                             companyDescriptionController.clear();
+                                             individualFirstNameController.clear();
+                                             individualLastNameController.clear();
+                                             individualEmailNameController.clear();
+                                             individualPhoneNameController.clear();
+                                             individualDateOfBirthController.clear();
+                                             individualNinController.clear();
+                                             individualDescriptionController.clear();
+                                             individualGenderController.clear();
+                                             contactFirstNameController.clear();
+                                             contactLastNameController.clear();
+                                             contactNinController.clear();
+                                             contactDesignationController.clear();
+                                             contactPhoneController.clear();
+                                             contactEmailController.clear();
+                                             tenantPic = File('');
+                                             companyTenantPic = File('');
+                                             Get.back();
+                                           });
+
+                                         }
+
+                                       } else {
+                                         Fluttertoast.showToast(
+                                             msg: 'Fill in fields',
+                                             gravity: ToastGravity
+                                                 .TOP);
+                                       }
+                                     } else {
+                                       if (_formKey.currentState!
+                                           .validate() &&
+                                           _companyFormKey
+                                               .currentState!
+                                               .validate() &&
+                                           _contactFormKey
+                                               .currentState!
+                                               .validate()) {
+                                         // Get.snackbar(
+                                         //     'Posting Company', 'With Company Contact');
+                                         if(companyTenantPic == null) {
+                                           Fluttertoast.showToast(
+                                               msg: 'Company tenant pic required',
+                                               gravity: ToastGravity.TOP);
+                                         } else {
+                                           await widget
+                                               .tenantController
+                                               .addCompanyTenantWithContact(
+                                               companyNameController
+                                                   .text.toString(),
+                                               userStorage.read(
+                                                   'OrganizationId'),
+                                               widget
+                                                   .tenantController
+                                                   .tenantTypeId
+                                                   .value,
+                                               widget
+                                                   .tenantController
+                                                   .businessTypeId
+                                                   .value,
+                                               userStorage.read(
+                                                   'userProfileId'),
+                                               widget
+                                                   .tenantController
+                                                   .nationalityId
+                                                   .value,
+                                               contactFirstNameController
+                                                   .text.trim()
+                                                   .toString(),
+                                               contactLastNameController
+                                                   .text.trim()
+                                                   .toString(),
+                                               contactNinController
+                                                   .text.trim()
+                                                   .toString(),
+                                               contactDesignationController
+                                                   .text.trim()
+                                                   .toString(),
+                                               contactPhoneController
+                                                   .text.trim()
+                                                   .toString(),
+                                               contactEmailController
+                                                   .text.trim()
+                                                   .toString(),
+                                               companyDescriptionController
+                                                   .text.toString(),
+                                               companyTenantBytes!,
+                                               companyTenantImageExtension!,
+                                               companyTenantFileName!
+                                           ).then((value) {
+
+                                             firstNameController.clear();
+                                             surnameNameController.clear();
+                                             otherNameController.clear();
+                                             phoneNoController.clear();
+                                             companyNameController.clear();
+                                             companyDescriptionController.clear();
+                                             individualFirstNameController.clear();
+                                             individualLastNameController.clear();
+                                             individualEmailNameController.clear();
+                                             individualPhoneNameController.clear();
+                                             individualDateOfBirthController.clear();
+                                             individualNinController.clear();
+                                             individualDescriptionController.clear();
+                                             individualGenderController.clear();
+                                             contactFirstNameController.clear();
+                                             contactLastNameController.clear();
+                                             contactNinController.clear();
+                                             contactDesignationController.clear();
+                                             contactPhoneController.clear();
+                                             contactEmailController.clear();
+                                             tenantPic = File('');
+                                             companyTenantPic = File('');
+                                             Get.back();
+                                           });
+
+                                         }
+
+                                       } else {
+                                         Fluttertoast.showToast(
+                                             msg: 'Fill in fields',
+                                             gravity: ToastGravity
+                                                 .TOP);
+                                       }
+                                     }
+                                   }
+                                 }
+                               },
+                               child: Text('Add', style: TextStyle(
+                                 color: AppTheme.primaryColor,
+                                 fontSize: 17.5.sp,
+                               ),));
+                         }),
+
+                       ],
+                     ),
+                   ),
+                 ),);
+            },
             builder: (context, state) {
               return StatefulBuilder(
                   builder: (BuildContext context, StateSetter setState) {
@@ -1135,359 +1498,6 @@ class _HomePageState extends State<HomePage> {
                         color: AppTheme.whiteColor,
                         child: Column(
                           children: [
-
-                            Material(
-                              elevation: 1,
-                              child: Container(
-                                width: MediaQuery
-                                    .of(context)
-                                    .size
-                                    .width,
-                                height: 7.5.h,
-                                decoration: BoxDecoration(
-                                    boxShadow: [
-                                    ]
-                                ),
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 5.w, vertical: 2.h),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment
-                                        .spaceBetween,
-                                    crossAxisAlignment: CrossAxisAlignment
-                                        .center,
-                                    children: [
-
-                                      Bounceable(
-                                          onTap: () {
-                                            firstNameController.clear();
-                                            surnameNameController.clear();
-                                            otherNameController.clear();
-                                            phoneNoController.clear();
-                                            companyNameController.clear();
-                                            companyDescriptionController
-                                                .clear();
-                                            individualFirstNameController
-                                                .clear();
-                                            individualLastNameController
-                                                .clear();
-                                            individualEmailNameController
-                                                .clear();
-                                            individualPhoneNameController
-                                                .clear();
-                                            individualDateOfBirthController
-                                                .clear();
-                                            individualNinController.clear();
-                                            individualDescriptionController
-                                                .clear();
-                                            individualGenderController.clear();
-                                            contactFirstNameController.clear();
-                                            contactLastNameController.clear();
-                                            contactNinController.clear();
-                                            contactDesignationController
-                                                .clear();
-                                            contactPhoneController.clear();
-                                            contactEmailController.clear();
-                                            tenantPic = File('');
-                                            companyTenantPic = File('');
-                                            Get.back();
-                                          },
-                                          child: Text(
-                                            'Cancel', style: TextStyle(
-                                            color: Colors.red,
-                                            fontSize: 17.5.sp,
-                                          ),)),
-
-                                      Text('Add Tenant', style: AppTheme
-                                          .darkBlueTitle2,),
-
-                                      Obx(() {
-                                        return widget.tenantController.isAddTenantLoading.value ?
-                                        AppLoader(color: AppTheme.primaryColor,) :
-                                          Bounceable(
-                                            onTap: () async {
-                                              if (widget.tenantController
-                                                  .tenantTypeId.value == 0) {
-                                                Fluttertoast.showToast(
-                                                    msg: 'Select Tenant Type',
-                                                    gravity: ToastGravity.TOP);
-                                              } else {
-                                                if (widget.tenantController
-                                                    .tenantTypeId.value == 1) {
-                                                  if (_formKey.currentState!
-                                                      .validate() &&
-                                                      _individualFormKey
-                                                          .currentState!
-                                                          .validate()) {
-                                                    // Get.snackbar(
-                                                    //     'Posting Individual', 'Adding Individual Tenant');
-                                                    if(tenantPic == null){
-                                                      Fluttertoast.showToast(
-                                                          msg: 'Tenant pic required',
-                                                          gravity: ToastGravity.TOP);
-                                                    } else {
-                                                      await widget
-                                                          .tenantController
-                                                          .addPersonalTenant(
-                                                          "${firstNameController
-                                                              .text
-                                                              .trim()} ${surnameNameController
-                                                              .text.trim()}",
-                                                          userStorage.read(
-                                                              'OrganizationId'),
-                                                          widget.tenantController
-                                                              .tenantTypeId.value,
-                                                          widget.tenantController
-                                                              .businessTypeId
-                                                              .value,
-                                                          userStorage.read(
-                                                              'userProfileId'),
-                                                          widget.tenantController
-                                                              .nationalityId
-                                                              .value,
-                                                          individualNinController
-                                                              .text.toString(),
-                                                          individualPhoneNameController
-                                                              .text.toString(),
-                                                          individualEmailNameController
-                                                              .text.toString(),
-                                                          individualDescriptionController
-                                                              .text.toString(),
-                                                          myDateOfBirth.value
-                                                              .toString(),
-                                                          widget.tenantController
-                                                              .newGender.value,
-                                                          tenantBytes!,
-                                                          tenantImageExtension!,
-                                                          tenantFileName!
-                                                      ).then((value) {
-                                                        firstNameController.clear();
-                                                        surnameNameController.clear();
-                                                        otherNameController.clear();
-                                                        phoneNoController.clear();
-                                                        companyNameController.clear();
-                                                        companyDescriptionController.clear();
-                                                        individualFirstNameController.clear();
-                                                        individualLastNameController.clear();
-                                                        individualEmailNameController.clear();
-                                                        individualPhoneNameController.clear();
-                                                        individualDateOfBirthController.clear();
-                                                        individualNinController.clear();
-                                                        individualDescriptionController.clear();
-                                                        individualGenderController.clear();
-                                                        contactFirstNameController.clear();
-                                                        contactLastNameController.clear();
-                                                        contactNinController.clear();
-                                                        contactDesignationController.clear();
-                                                        contactPhoneController.clear();
-                                                        contactEmailController.clear();
-                                                        tenantPic = File('');
-                                                        companyTenantPic = File('');
-                                                        Get.back();
-                                                      });
-
-                                                    }
-
-
-                                                    // tenantController.addIndividualTenant(
-                                                    //   "${firstNameController.text
-                                                    //       .trim()} ${surnameNameController.text.trim()}",
-                                                    //   12,
-                                                    //   tenantController.tenantTypeId.value,
-                                                    //   "userStorage.read('userProfileId')",
-                                                    //   tenantController.nationalityId.value,
-                                                    // );
-                                                  } else {
-                                                    Fluttertoast.showToast(
-                                                        msg: 'Fill required fields',
-                                                        gravity: ToastGravity
-                                                            .TOP);
-                                                  }
-                                                } else {
-                                                  if (widget.tenantController
-                                                      .isAddContactPerson
-                                                      .isFalse) {
-                                                    if (_formKey.currentState!
-                                                        .validate() &&
-                                                        _companyFormKey
-                                                            .currentState!
-                                                            .validate()) {
-                                                      // Get.snackbar(
-                                                      //     'Posting Company', 'No Company Contact');
-                                                      if(tenantPic == null){
-                                                        Fluttertoast.showToast(
-                                                            msg: 'Tenant pic required',
-                                                            gravity: ToastGravity.TOP);
-                                                      } else {
-                                                        await widget
-                                                            .tenantController
-                                                            .addCompanyTenantWithoutContact(
-                                                            companyNameController
-                                                                .text.toString(),
-                                                            userStorage.read(
-                                                                'OrganizationId'),
-                                                            widget
-                                                                .tenantController
-                                                                .tenantTypeId
-                                                                .value,
-                                                            widget
-                                                                .tenantController
-                                                                .businessTypeId
-                                                                .value,
-                                                            userStorage.read(
-                                                                'userProfileId'),
-                                                            widget
-                                                                .tenantController
-                                                                .nationalityId
-                                                                .value,
-                                                            companyDescriptionController
-                                                                .text.toString(),
-                                                            companyTenantBytes!,
-                                                            companyTenantImageExtension!,
-                                                            companyTenantFileName!
-                                                        ).then((value) {
-                                                          firstNameController.clear();
-                                                          surnameNameController.clear();
-                                                          otherNameController.clear();
-                                                          phoneNoController.clear();
-                                                          companyNameController.clear();
-                                                          companyDescriptionController.clear();
-                                                          individualFirstNameController.clear();
-                                                          individualLastNameController.clear();
-                                                          individualEmailNameController.clear();
-                                                          individualPhoneNameController.clear();
-                                                          individualDateOfBirthController.clear();
-                                                          individualNinController.clear();
-                                                          individualDescriptionController.clear();
-                                                          individualGenderController.clear();
-                                                          contactFirstNameController.clear();
-                                                          contactLastNameController.clear();
-                                                          contactNinController.clear();
-                                                          contactDesignationController.clear();
-                                                          contactPhoneController.clear();
-                                                          contactEmailController.clear();
-                                                          tenantPic = File('');
-                                                          companyTenantPic = File('');
-                                                          Get.back();
-                                                        });
-
-                                                      }
-
-                                                    } else {
-                                                      Fluttertoast.showToast(
-                                                          msg: 'Fill in fields',
-                                                          gravity: ToastGravity
-                                                              .TOP);
-                                                    }
-                                                  } else {
-                                                    if (_formKey.currentState!
-                                                        .validate() &&
-                                                        _companyFormKey
-                                                            .currentState!
-                                                            .validate() &&
-                                                        _contactFormKey
-                                                            .currentState!
-                                                            .validate()) {
-                                                      // Get.snackbar(
-                                                      //     'Posting Company', 'With Company Contact');
-                                                      if(companyTenantPic == null) {
-                                                        Fluttertoast.showToast(
-                                                            msg: 'Company tenant pic required',
-                                                            gravity: ToastGravity.TOP);
-                                                      } else {
-                                                        await widget
-                                                            .tenantController
-                                                            .addCompanyTenantWithContact(
-                                                            companyNameController
-                                                                .text.toString(),
-                                                            userStorage.read(
-                                                                'OrganizationId'),
-                                                            widget
-                                                                .tenantController
-                                                                .tenantTypeId
-                                                                .value,
-                                                            widget
-                                                                .tenantController
-                                                                .businessTypeId
-                                                                .value,
-                                                            userStorage.read(
-                                                                'userProfileId'),
-                                                            widget
-                                                                .tenantController
-                                                                .nationalityId
-                                                                .value,
-                                                            contactFirstNameController
-                                                                .text.trim()
-                                                                .toString(),
-                                                            contactLastNameController
-                                                                .text.trim()
-                                                                .toString(),
-                                                            contactNinController
-                                                                .text.trim()
-                                                                .toString(),
-                                                            contactDesignationController
-                                                                .text.trim()
-                                                                .toString(),
-                                                            contactPhoneController
-                                                                .text.trim()
-                                                                .toString(),
-                                                            contactEmailController
-                                                                .text.trim()
-                                                                .toString(),
-                                                            companyDescriptionController
-                                                                .text.toString(),
-                                                            companyTenantBytes!,
-                                                            companyTenantImageExtension!,
-                                                            companyTenantFileName!
-                                                        ).then((value) {
-
-                                                          firstNameController.clear();
-                                                          surnameNameController.clear();
-                                                          otherNameController.clear();
-                                                          phoneNoController.clear();
-                                                          companyNameController.clear();
-                                                          companyDescriptionController.clear();
-                                                          individualFirstNameController.clear();
-                                                          individualLastNameController.clear();
-                                                          individualEmailNameController.clear();
-                                                          individualPhoneNameController.clear();
-                                                          individualDateOfBirthController.clear();
-                                                          individualNinController.clear();
-                                                          individualDescriptionController.clear();
-                                                          individualGenderController.clear();
-                                                          contactFirstNameController.clear();
-                                                          contactLastNameController.clear();
-                                                          contactNinController.clear();
-                                                          contactDesignationController.clear();
-                                                          contactPhoneController.clear();
-                                                          contactEmailController.clear();
-                                                          tenantPic = File('');
-                                                          companyTenantPic = File('');
-                                                          Get.back();
-                                                        });
-
-                                                      }
-
-                                                    } else {
-                                                      Fluttertoast.showToast(
-                                                          msg: 'Fill in fields',
-                                                          gravity: ToastGravity
-                                                              .TOP);
-                                                    }
-                                                  }
-                                                }
-                                              }
-                                            },
-                                            child: Text('Add', style: TextStyle(
-                                              color: AppTheme.primaryColor,
-                                              fontSize: 17.5.sp,
-                                            ),));
-                                      }),
-
-                                    ],
-                                  ),
-                                ),
-                              ),),
 
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 5.w,

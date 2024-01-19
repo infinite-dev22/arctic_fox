@@ -125,7 +125,7 @@ class _PropertyListScreenState extends State<PropertyListScreen> {
       backgroundColor: AppTheme.whiteColor,
       appBar: AppImageHeader(
         isTitleCentred: true,
-        title: 'assets/auth/logo.png',
+        title: 'assets/auth/srw.png',
         // actions: [
         //   Padding(
         //     padding: EdgeInsets.only(right: 5.w),
@@ -221,6 +221,121 @@ class _PropertyListScreenState extends State<PropertyListScreen> {
               snappings: [ 0.9],
               positioning: SnapPositioning.relativeToAvailableSpace,
             ),
+            headerBuilder: (context, state) {
+              return  Material(
+                elevation: 1,
+                child: Container(
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width,
+                  height: 7.5.h,
+                  decoration: BoxDecoration(
+                      boxShadow: [
+                      ]
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 5.w, vertical: 2.h),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment
+                          .spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment
+                          .center,
+                      children: [
+
+                        Bounceable(
+                            onTap: () {
+                              titleController.clear();
+                              addressController.clear();
+                              descriptionController
+                                  .clear();
+                              locationController.clear();
+                              sqmController.clear();
+                              propertyPic = File('');
+                              print('Pic = ${propertyPic!.path}');
+
+                              Get.back();
+                            },
+                            child: Text(
+                              'Cancel', style: TextStyle(
+                              color: Colors.red,
+                              fontSize: 17.5.sp,
+                            ),)),
+
+                        Text('Add Property', style: AppTheme
+                            .darkBlueTitle2,),
+
+                        Obx(() {
+                          return propertyController.isAddPropertyLoading.value ?
+                          AppLoader(color: AppTheme.primaryColor,) :
+                          Bounceable(
+                              onTap: () async {
+
+                                if(
+                                titleController.text.isEmpty ||
+                                    locationController.text.isEmpty ||
+                                    sqmController.text.isEmpty ||
+                                    propertyPic == null ||
+                                    propertyController.propertyTypeId.value == 0 ||
+                                    propertyController.categoryId.value == 0
+                                ) {
+                                  Fluttertoast.showToast(msg: 'fill in all fields', gravity: ToastGravity.TOP);
+
+                                } else {
+
+                                  propertyController.addProperty(
+                                      titleController.text
+                                          .trim().toString(),
+                                      descriptionController
+                                          .text.trim().toString(),
+                                      userStorage.read(
+                                          'OrganizationId'),
+                                      propertyController
+                                          .propertyTypeId.value,
+                                      propertyController.categoryId
+                                          .value,
+                                      locationController
+                                          .text.trim().toString(),
+                                      sqmController.text
+                                          .trim().toString(),
+                                      userStorage.read(
+                                          'userProfileId')
+                                          .toString(),
+                                      userStorage.read(
+                                          'userProfileId')
+                                          .toString(),
+                                      propertyBytes!,
+                                      propertyImageExtension!,
+                                      propertyFileName!
+                                    // "userStorage.read('userProfileId')",
+                                  ).then((value) {
+                                    titleController.clear();
+                                    addressController.clear();
+                                    descriptionController.clear();
+                                    locationController.clear();
+                                    sqmController.clear();
+                                    propertyPic = File('');
+                                    print('Pic = ${propertyPic!.path}');
+                                  });
+
+                                }
+
+
+                              },
+                              child: Text('Add', style: TextStyle(
+                                color: AppTheme.primaryColor,
+                                fontSize: 17.5.sp,
+                              ),));
+                        }),
+
+                      ],
+
+                    ),
+                  ),
+                ),
+              );
+            },
             builder: (context, state) {
               return StatefulBuilder(
                   builder: (BuildContext context, StateSetter setState) {
@@ -239,120 +354,6 @@ class _PropertyListScreenState extends State<PropertyListScreen> {
                         color: AppTheme.whiteColor,
                         child: Column(
                           children: [
-
-                            Material(
-                              elevation: 1,
-                              child: Container(
-                                width: MediaQuery
-                                    .of(context)
-                                    .size
-                                    .width,
-                                height: 7.5.h,
-                                decoration: BoxDecoration(
-                                    boxShadow: [
-                                    ]
-                                ),
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 5.w, vertical: 2.h),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment
-                                        .spaceBetween,
-                                    crossAxisAlignment: CrossAxisAlignment
-                                        .center,
-                                    children: [
-
-                                      Bounceable(
-                                          onTap: () {
-                                            titleController.clear();
-                                            addressController.clear();
-                                            descriptionController
-                                                .clear();
-                                            locationController.clear();
-                                            sqmController.clear();
-                                            propertyPic = File('');
-                                            print('Pic = ${propertyPic!.path}');
-
-                                            Get.back();
-                                          },
-                                          child: Text(
-                                            'Cancel', style: TextStyle(
-                                            color: Colors.red,
-                                            fontSize: 17.5.sp,
-                                          ),)),
-
-                                      Text('Add Property', style: AppTheme
-                                          .darkBlueTitle2,),
-
-                                      Obx(() {
-                                        return propertyController.isAddPropertyLoading.value ?
-                                        AppLoader(color: AppTheme.primaryColor,) :
-                                        Bounceable(
-                                            onTap: () async {
-
-                                              if(
-                                              titleController.text.isEmpty ||
-                                                  locationController.text.isEmpty ||
-                                                  sqmController.text.isEmpty ||
-                                                  propertyPic == null ||
-                                                  propertyController.propertyTypeId.value == 0 ||
-                                                  propertyController.categoryId.value == 0
-                                              ) {
-                                                Fluttertoast.showToast(msg: 'fill in all fields', gravity: ToastGravity.TOP);
-
-                                              } else {
-
-                                                propertyController.addProperty(
-                                                    titleController.text
-                                                        .trim().toString(),
-                                                    descriptionController
-                                                        .text.trim().toString(),
-                                                    userStorage.read(
-                                                        'OrganizationId'),
-                                                    propertyController
-                                                        .propertyTypeId.value,
-                                                    propertyController.categoryId
-                                                        .value,
-                                                    locationController
-                                                        .text.trim().toString(),
-                                                    sqmController.text
-                                                        .trim().toString(),
-                                                    userStorage.read(
-                                                        'userProfileId')
-                                                        .toString(),
-                                                    userStorage.read(
-                                                        'userProfileId')
-                                                        .toString(),
-                                                    propertyBytes!,
-                                                    propertyImageExtension!,
-                                                    propertyFileName!
-                                                  // "userStorage.read('userProfileId')",
-                                                ).then((value) {
-                                                  titleController.clear();
-                                                  addressController.clear();
-                                                  descriptionController.clear();
-                                                  locationController.clear();
-                                                  sqmController.clear();
-                                                  propertyPic = File('');
-                                                  print('Pic = ${propertyPic!.path}');
-                                                });
-
-                                              }
-
-
-                                            },
-                                            child: Text('Add', style: TextStyle(
-                                              color: AppTheme.primaryColor,
-                                              fontSize: 17.5.sp,
-                                            ),));
-                                      }),
-
-                                    ],
-
-                                  ),
-                                ),
-                              ),
-                            ),
 
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 5.w,

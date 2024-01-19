@@ -99,12 +99,12 @@ class _AddUserScreenState extends State<AddUserScreen> {
     return Scaffold(
       backgroundColor: AppTheme.whiteColor,
       appBar: AppImageHeader(
-        title: 'assets/auth/logo.png',
+        title: 'assets/auth/srw.png',
         isTitleCentred: true,
       ),
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 5.w),
+          padding: EdgeInsets.symmetric(horizontal: 5),
           child: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
             child: Form(

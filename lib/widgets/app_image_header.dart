@@ -15,27 +15,24 @@ class AppImageHeader extends StatelessWidget implements PreferredSizeWidget{
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(top: 2.h),
-      child: AppBar(
-        // backgroundColor: AppTheme.primaryColor,
-        automaticallyImplyLeading: false,
-        title: Image.asset(title, width: 50.w,),
-        centerTitle: isTitleCentred ?? false,
-        actions: actions ?? [
-          Padding(
-            padding: EdgeInsets.only(right: 5.w),
-            child: Image.asset('assets/home/sidely.png'),
-          )
-        ],
-        leading: leading ?? GestureDetector(
-            onTap: backFunction ?? (){Get.back();},
-            child:  Image.asset('assets/general/back.png')),
-      ),
+    return AppBar(
+      backgroundColor: AppTheme.primaryColor,
+      automaticallyImplyLeading: false,
+      title: Image.asset(title, width: 50.w, color: Colors.white,),
+      centerTitle: isTitleCentred ?? false,
+      actions: actions ?? [
+        Padding(
+          padding: EdgeInsets.only(right: 5.w),
+          child: Image.asset('assets/home/sidely.png', color: Colors.white,),
+        )
+      ],
+      leading: leading ?? GestureDetector(
+          onTap: backFunction ?? (){Get.back();},
+          child:  Image.asset('assets/general/back.png', color: Colors.white,)),
     );
   }
 
   @override
-  Size get preferredSize =>  Size.fromHeight(10.h);
+  Size get preferredSize =>  Size.fromHeight(8.h);
 
 }

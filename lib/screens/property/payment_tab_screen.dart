@@ -99,120 +99,121 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
               snappings: [ 0.9],
               positioning: SnapPositioning.relativeToAvailableSpace,
             ),
+            headerBuilder: (context, state){
+              return                     Material(
+                elevation: 1,
+                child: Container(
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width,
+                  height: 7.5.h,
+                  decoration: BoxDecoration(
+                      boxShadow: [
+                      ]
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 5.w, vertical: 2.h),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Bounceable(
+                            onTap: () {
+                              tenantController.tenantId.value == 0;
+                              tenantController.unitId.value == 0;
+                              selectedDate1.value = DateTime.now();
+                              selectedDate2.value = DateTime.now();
+                              amountController.clear();
+                              paidController.clear();
+                              balanceController.clear();
+                              Get.back();
+                            },
+                            child: Text('Cancel', style: TextStyle(
+                              color: Colors.red,
+                              fontSize: 17.5.sp,
+                            ),)),
+
+                        Text('Add Payment', style: AppTheme
+                            .darkBlueTitle2,),
+
+                        Obx(() {
+                          return Bounceable(
+                              onTap: () async {
+                                await tenantController
+                                    .payForMultipleTenantUnitSchedule(
+                                  tenantController.tenantId.value,
+                                  tenantController.unitId.value,
+                                  selectedDate1.value.toIso8601String(),
+                                  selectedDate2.value.toIso8601String(),
+                                  int.parse(amountController.text),
+                                  int.parse(paidController.text),
+                                  int.parse(balanceController.text),
+                                  userStorage.read('userProfileId'),
+                                  userStorage.read('userProfileId'),
+                                ).then((value) {
+                                  tenantController.tenantId.value == 0;
+                                  tenantController.unitId.value == 0;
+                                  selectedDate1.value = DateTime.now();
+                                  selectedDate2.value = DateTime.now();
+                                  amountController.clear();
+                                  paidController.clear();
+                                  balanceController.clear();
+                                });
+
+                                // await tenantController
+                                //     .payForSpecificTenantUnitSchedule(
+                                //   tenantController.tenantId.value,
+                                //   tenantController.unitId.value,
+                                //   selectedDate1.value.toIso8601String(),
+                                //   selectedDate2.value.toIso8601String(),
+                                //   int.parse(amountController.text),
+                                //   int.parse(paidController.text),
+                                //   int.parse(balanceController.text),
+                                //   'userStorage.read('userProfileId')',
+                                //   'userStorage.read('userProfileId')',
+                                // );
+
+                                // await tenantController.addTenantPayment(
+                                //   tenantController.tenantId.value,
+                                //   tenantController.unitId.value,
+                                //   selectedDate1.value.toIso8601String(),
+                                //   selectedDate2.value.toIso8601String(),
+                                //   int.parse(amountController.text),
+                                //   int.parse(paidController.text),
+                                //   int.parse(balanceController.text),
+                                //   'userStorage.read('userProfileId')',
+                                //   'userStorage.read('userProfileId')',
+                                // );
+
+                                // Get.back();
+
+                                // Get.back();
+                                // Get.snackbar('SUCCESS',
+                                //   'Payment added to your property',
+                                //   titleText: Text('SUCCESS',
+                                //     style: AppTheme.greenTitle1,),
+                                // );
+                              },
+                              child: Text('Add', style: TextStyle(
+                                color: AppTheme.primaryColor,
+                                fontSize: 17.5.sp,
+                              ),));
+                        }),
+
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
             builder: (context, state) {
               return Material(
                 color: AppTheme.whiteColor,
                 // color: Colors.white,
                 child: Column(
                   children: [
-
-                    Material(
-                      elevation: 1,
-                      child: Container(
-                        width: MediaQuery
-                            .of(context)
-                            .size
-                            .width,
-                        height: 7.5.h,
-                        decoration: BoxDecoration(
-                            boxShadow: [
-                            ]
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 5.w, vertical: 2.h),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Bounceable(
-                                  onTap: () {
-                                    tenantController.tenantId.value == 0;
-                                    tenantController.unitId.value == 0;
-                                    selectedDate1.value = DateTime.now();
-                                    selectedDate2.value = DateTime.now();
-                                    amountController.clear();
-                                    paidController.clear();
-                                    balanceController.clear();
-                                    Get.back();
-                                  },
-                                  child: Text('Cancel', style: TextStyle(
-                                    color: Colors.red,
-                                    fontSize: 17.5.sp,
-                                  ),)),
-
-                              Text('Add Payment', style: AppTheme
-                                  .darkBlueTitle2,),
-
-                              Obx(() {
-                                return Bounceable(
-                                    onTap: () async {
-                                      await tenantController
-                                          .payForMultipleTenantUnitSchedule(
-                                        tenantController.tenantId.value,
-                                        tenantController.unitId.value,
-                                        selectedDate1.value.toIso8601String(),
-                                        selectedDate2.value.toIso8601String(),
-                                        int.parse(amountController.text),
-                                        int.parse(paidController.text),
-                                        int.parse(balanceController.text),
-                                        userStorage.read('userProfileId'),
-                                        userStorage.read('userProfileId'),
-                                      ).then((value) {
-                                        tenantController.tenantId.value == 0;
-                                        tenantController.unitId.value == 0;
-                                        selectedDate1.value = DateTime.now();
-                                        selectedDate2.value = DateTime.now();
-                                        amountController.clear();
-                                        paidController.clear();
-                                        balanceController.clear();
-                                      });
-
-                                      // await tenantController
-                                      //     .payForSpecificTenantUnitSchedule(
-                                      //   tenantController.tenantId.value,
-                                      //   tenantController.unitId.value,
-                                      //   selectedDate1.value.toIso8601String(),
-                                      //   selectedDate2.value.toIso8601String(),
-                                      //   int.parse(amountController.text),
-                                      //   int.parse(paidController.text),
-                                      //   int.parse(balanceController.text),
-                                      //   'userStorage.read('userProfileId')',
-                                      //   'userStorage.read('userProfileId')',
-                                      // );
-
-                                      // await tenantController.addTenantPayment(
-                                      //   tenantController.tenantId.value,
-                                      //   tenantController.unitId.value,
-                                      //   selectedDate1.value.toIso8601String(),
-                                      //   selectedDate2.value.toIso8601String(),
-                                      //   int.parse(amountController.text),
-                                      //   int.parse(paidController.text),
-                                      //   int.parse(balanceController.text),
-                                      //   'userStorage.read('userProfileId')',
-                                      //   'userStorage.read('userProfileId')',
-                                      // );
-
-                                      // Get.back();
-
-                                      // Get.back();
-                                      // Get.snackbar('SUCCESS',
-                                      //   'Payment added to your property',
-                                      //   titleText: Text('SUCCESS',
-                                      //     style: AppTheme.greenTitle1,),
-                                      // );
-                                    },
-                                    child: Text('Add', style: TextStyle(
-                                      color: AppTheme.primaryColor,
-                                      fontSize: 17.5.sp,
-                                    ),));
-                              }),
-
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
 
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 5.w,

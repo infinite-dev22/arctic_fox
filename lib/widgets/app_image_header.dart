@@ -18,7 +18,7 @@ class AppImageHeader extends StatelessWidget implements PreferredSizeWidget{
     return AppBar(
       backgroundColor: AppTheme.primaryColor,
       automaticallyImplyLeading: false,
-      title: Image.asset(title, width: 50.w, color: Colors.white,),
+      title: Image.asset(title, width: 70.w, color: Colors.white,),
       centerTitle: isTitleCentred ?? false,
       actions: actions ?? [
         Padding(
@@ -33,6 +33,6 @@ class AppImageHeader extends StatelessWidget implements PreferredSizeWidget{
   }
 
   @override
-  Size get preferredSize =>  Size.fromHeight(8.h);
+  Size get preferredSize =>  Size.fromHeight(6.h);
 
 }

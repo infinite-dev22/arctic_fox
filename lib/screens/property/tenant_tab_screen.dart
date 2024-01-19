@@ -250,29 +250,147 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
           snappings: [0.9],
           positioning: SnapPositioning.relativeToAvailableSpace,
         ),
-        builder: (context, state) {
-          return Material(
-            color: AppTheme.whiteColor,
-            child: Column(
-              children: [
-                Material(
-                  elevation: 1,
-                  child: Container(
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width,
-                    height: 7.5.h,
-                    decoration: BoxDecoration(boxShadow: []),
-                    child: Padding(
-                      padding:
-                      EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Bounceable(
-                              onTap: () {
+        headerBuilder: (context, state){
+          return                 Material(
+            elevation: 1,
+            child: Container(
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width,
+              height: 7.5.h,
+              decoration: BoxDecoration(boxShadow: []),
+              child: Padding(
+                padding:
+                EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Bounceable(
+                        onTap: () {
+                          tenantController.tenantId.value == 0;
+                          tenantController.unitId.value == 0;
+                          selectedDate2.value =
+                              DateTime(selectedDate1.value.year,
+                                  selectedDate1.value.month,
+                                  selectedDate1.value.day);
+
+                          descriptionController.clear();
+                          dailyController.clear();
+                          weeklyController.clear();
+                          monthlyController.clear();
+                          yearlyController.clear();
+                          lumpSumController.clear();
+                          amountController.clear();
+                          discountController.clear();
+                          Get.back();
+                        },
+                        child: Text(
+                          'Cancel',
+                          style: TextStyle(
+                            color: Colors.red,
+                            fontSize: 17.5.sp,
+                          ),
+                        )),
+                    Text(
+                      'Add Tenant',
+                      style: AppTheme.darkBlueTitle2,
+                    ),
+                    Obx(() {
+                      return tenantController.isAddTenantToUnitLoading.value ?
+                      AppLoader(color: AppTheme.primaryColor,) :
+                      Bounceable(
+                          onTap: () async {
+                            if (tenantController.paymentScheduleId
+                                .value ==
+                                3) {
+                              List<Map<String, dynamic>>
+                              divideAmountMonthly(DateTime startDate,
+                                  DateTime endDate,
+                                  int totalAmount) {
+                                final dividedAmounts =
+                                <Map<String, dynamic>>[];
+
+                                final monthsInPeriod = endDate.month -
+                                    startDate.month +
+                                    12 * (endDate.year - startDate.year);
+
+                                // final amountPerMonth = totalAmount / monthsInPeriod;
+
+                                for (int i = 0; i < monthsInPeriod; i++) {
+                                  final currentDate = DateTime(
+                                      startDate.year,
+                                      startDate.month + i,
+                                      startDate.day);
+                                  // Define the end date of the next period
+                                  final toDate = DateTime(
+                                      currentDate.year,
+                                      currentDate.month + 1,
+                                      currentDate
+                                          .day); // Next period is 30 days
+
+                                  // final currentAmount = (i == monthsInPeriod - 1) ? totalAmount - (amountPerMonth * i) : amountPerMonth;
+
+                                  // final mDividedAmount = {
+                                  //   'from_date': currentDate.toIso8601String(),
+                                  //   'to_date': toDate.toIso8601String(),
+                                  //   'amount': totalAmount,
+                                  // };
+
+                                  final mDividedAmount = {
+                                    "amount": totalAmount,
+                                    "paid": 0,
+                                    "balance": totalAmount,
+                                    "unit_id": tenantController
+                                        .specificUnitId
+                                        .value,
+                                    "from_date": currentDate
+                                        .toIso8601String(),
+                                    "to_date": toDate.toIso8601String(),
+                                    "date_posted": DateTime.now()
+                                        .toIso8601String(),
+                                    "tenant_id": tenantController.tenantId
+                                        .value,
+                                    "created_by": userStorage.read(
+                                        'userProfileId'),
+                                    "updated_by": userStorage.read(
+                                        'userProfileId'),
+                                  };
+
+                                  dividedAmounts.add(mDividedAmount);
+                                  // print(dividedAmounts);
+                                }
+
+                                return dividedAmounts;
+                              }
+
+                              final dividedAmounts = divideAmountMonthly(
+                                  selectedDate1.value,
+                                  selectedDate2.value,
+                                  int.parse(
+                                      discountController.text
+                                          .toString()));
+
+                              print(
+                                  'Monthly Divided Amounts: $dividedAmounts');
+                              print(
+                                  'Monthly Divided Amounts: ${dividedAmounts
+                                      .length}');
+
+                              await tenantController.addTenantToUnit(
+                                  tenantController.tenantId.value,
+                                  userStorage.read('userProfileId'),
+                                  tenantController.specificUnitId.value,
+                                  selectedDate1.value.toString(),
+                                  selectedDate2.value.toString(),
+                                  // date2Controller.text.trim().toString(),
+                                  int.parse(
+                                      amountController.text.toString()),
+                                  int.parse(
+                                      discountController.text.toString()),
+                                  dividedAmounts
+                              ).then((value) async {
                                 tenantController.tenantId.value == 0;
                                 tenantController.unitId.value == 0;
                                 selectedDate2.value =
@@ -288,329 +406,214 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                                 lumpSumController.clear();
                                 amountController.clear();
                                 discountController.clear();
-                                Get.back();
-                              },
-                              child: Text(
-                                'Cancel',
-                                style: TextStyle(
-                                  color: Colors.red,
-                                  fontSize: 17.5.sp,
-                                ),
-                              )),
-                          Text(
-                            'Add Tenant',
-                            style: AppTheme.darkBlueTitle2,
-                          ),
-                          Obx(() {
-                            return tenantController.isAddTenantToUnitLoading.value ?
-                            AppLoader(color: AppTheme.primaryColor,) :
-                              Bounceable(
-                                onTap: () async {
-                                  if (tenantController.paymentScheduleId
-                                      .value ==
-                                      3) {
-                                    List<Map<String, dynamic>>
-                                    divideAmountMonthly(DateTime startDate,
-                                        DateTime endDate,
-                                        int totalAmount) {
-                                      final dividedAmounts =
-                                      <Map<String, dynamic>>[];
-
-                                      final monthsInPeriod = endDate.month -
-                                          startDate.month +
-                                          12 * (endDate.year - startDate.year);
-
-                                      // final amountPerMonth = totalAmount / monthsInPeriod;
-
-                                      for (int i = 0; i < monthsInPeriod; i++) {
-                                        final currentDate = DateTime(
-                                            startDate.year,
-                                            startDate.month + i,
-                                            startDate.day);
-                                        // Define the end date of the next period
-                                        final toDate = DateTime(
-                                            currentDate.year,
-                                            currentDate.month + 1,
-                                            currentDate
-                                                .day); // Next period is 30 days
-
-                                        // final currentAmount = (i == monthsInPeriod - 1) ? totalAmount - (amountPerMonth * i) : amountPerMonth;
-
-                                        // final mDividedAmount = {
-                                        //   'from_date': currentDate.toIso8601String(),
-                                        //   'to_date': toDate.toIso8601String(),
-                                        //   'amount': totalAmount,
-                                        // };
-
-                                        final mDividedAmount = {
-                                          "amount": totalAmount,
-                                          "paid": 0,
-                                          "balance": totalAmount,
-                                          "unit_id": tenantController
-                                              .specificUnitId
-                                              .value,
-                                          "from_date": currentDate
-                                              .toIso8601String(),
-                                          "to_date": toDate.toIso8601String(),
-                                          "date_posted": DateTime.now()
-                                              .toIso8601String(),
-                                          "tenant_id": tenantController.tenantId
-                                              .value,
-                                          "created_by": userStorage.read(
-                                              'userProfileId'),
-                                          "updated_by": userStorage.read(
-                                              'userProfileId'),
-                                        };
-
-                                        dividedAmounts.add(mDividedAmount);
-                                        // print(dividedAmounts);
-                                      }
-
-                                      return dividedAmounts;
-                                    }
-
-                                    final dividedAmounts = divideAmountMonthly(
-                                        selectedDate1.value,
-                                        selectedDate2.value,
-                                        int.parse(
-                                            discountController.text
-                                                .toString()));
-
-                                    print(
-                                        'Monthly Divided Amounts: $dividedAmounts');
-                                    print(
-                                        'Monthly Divided Amounts: ${dividedAmounts
-                                            .length}');
-
-                                    await tenantController.addTenantToUnit(
-                                        tenantController.tenantId.value,
-                                        userStorage.read('userProfileId'),
-                                        tenantController.specificUnitId.value,
-                                        selectedDate1.value.toString(),
-                                        selectedDate2.value.toString(),
-                                        // date2Controller.text.trim().toString(),
-                                        int.parse(
-                                            amountController.text.toString()),
-                                        int.parse(
-                                            discountController.text.toString()),
-                                        dividedAmounts
-                                    ).then((value) async {
-                                      tenantController.tenantId.value == 0;
-                                      tenantController.unitId.value == 0;
-                                      selectedDate2.value =
-                                          DateTime(selectedDate1.value.year,
-                                              selectedDate1.value.month,
-                                              selectedDate1.value.day);
-
-                                      descriptionController.clear();
-                                      dailyController.clear();
-                                      weeklyController.clear();
-                                      monthlyController.clear();
-                                      yearlyController.clear();
-                                      lumpSumController.clear();
-                                      amountController.clear();
-                                      discountController.clear();
-                                    });
+                              });
 
 
-                                    // tenantController.addPaymentSchedule(
-                                    //   tenantController.tenantId.value,
-                                    //   tenantController.unitId.value,
-                                    //   selectedDate1.value.toString(),
-                                    //   selectedDate2.value.toString(),
-                                    //   int.parse(
-                                    //       discountController.text.toString()),
-                                    //   0,
-                                    //   int.parse(
-                                    //       discountController.text.toString()),
-                                    //   'userStorage.read('userProfileId')',
-                                    //   'userStorage.read('userProfileId')',
-                                    // );
+                              // tenantController.addPaymentSchedule(
+                              //   tenantController.tenantId.value,
+                              //   tenantController.unitId.value,
+                              //   selectedDate1.value.toString(),
+                              //   selectedDate2.value.toString(),
+                              //   int.parse(
+                              //       discountController.text.toString()),
+                              //   0,
+                              //   int.parse(
+                              //       discountController.text.toString()),
+                              //   'userStorage.read('userProfileId')',
+                              //   'userStorage.read('userProfileId')',
+                              // );
 
-                                    // tenantController.addPaymentSchedule(
-                                    //   tenantController.tenantId.value,
-                                    //   "userStorage.read('userProfileId')",
-                                    //   tenantController.unitId.value,
-                                    //   selectedDate1.value.toString(),
-                                    //   selectedDate2.value.toString(),
-                                    //   // date2Controller.text.trim().toString(),
-                                    //   int.parse(amountController.text.toString()),
-                                    //   int.parse(discountController.text.toString()),
-                                    // );
+                              // tenantController.addPaymentSchedule(
+                              //   tenantController.tenantId.value,
+                              //   "userStorage.read('userProfileId')",
+                              //   tenantController.unitId.value,
+                              //   selectedDate1.value.toString(),
+                              //   selectedDate2.value.toString(),
+                              //   // date2Controller.text.trim().toString(),
+                              //   int.parse(amountController.text.toString()),
+                              //   int.parse(discountController.text.toString()),
+                              // );
 
-                                    // final startDate = DateTime.now();
-                                    // final endDate = startDate.add(Duration(days: 180));
-                                    //
-                                    // final amount = 6000.0;
-                                    //
-                                    // List<Map<String, dynamic>> divideAmountMonthly(DateTime startDate, DateTime endDate, double totalAmount) {
-                                    //   final dividedAmounts = <Map<String, dynamic>>[];
-                                    //
-                                    //
-                                    //   final monthsInPeriod = endDate.month - startDate.month + 12 * (endDate.year - startDate.year);
-                                    //
-                                    //
-                                    //   final amountPerMonth = totalAmount / monthsInPeriod;
-                                    //
-                                    //
-                                    //   for (int i = 0; i < monthsInPeriod; i++) {
-                                    //
-                                    //
-                                    //     final currentDate = DateTime(startDate.year, startDate.month + i, startDate.day);
-                                    //     // Define the end date of the next period
-                                    //     final toDate = DateTime(currentDate.year, currentDate.month + 1, currentDate.day); // Next period is 30 days
-                                    //
-                                    //     final currentAmount = (i == monthsInPeriod - 1) ? totalAmount - (amountPerMonth * i) : amountPerMonth;
-                                    //
-                                    //     final mDividedAmount = {
-                                    //       'from_date': currentDate.toIso8601String(),
-                                    //       'to_date': toDate.toIso8601String(),
-                                    //       'amount': currentAmount,
-                                    //     };
-                                    //
-                                    //     dividedAmounts.add(mDividedAmount);
-                                    //     // print(dividedAmounts);
-                                    //   }
-                                    //
-                                    //   return dividedAmounts;
-                                    // }
-                                    //
-                                    //
-                                    // final dividedAmounts = divideAmountMonthly(startDate, endDate, amount);
-                                    //
-                                    //
-                                    // print('Divided Amounts: $dividedAmounts');
-                                  } else if (tenantController
-                                      .paymentScheduleId.value ==
-                                      1) {
-                                    // List<Map<String, dynamic>> divideAmountMonthly(DateTime startDate, DateTime endDate, double totalAmount) {
-                                    //   final dividedAmounts = <Map<String, dynamic>>[];
-                                    //
-                                    //
-                                    //   // final daysInPeriod = endDate.day - startDate.day + int.parse(dailyController.text.toString()) * (endDate.month - startDate.month);
-                                    //   //
-                                    //   // print('These days $daysInPeriod');
-                                    //   // print('end day $daysInPeriod');
-                                    //   // print('start day $daysInPeriod');
-                                    //   // // print('start day $daysInPeriod');
-                                    //
-                                    //   // final amountPerMonth = totalAmount / daysInPeriod;
-                                    //
-                                    //
-                                    //
-                                    //
-                                    //   for (int i = 0; i < int.parse(amountController.text); i++) {
-                                    //
-                                    //
-                                    //     final currentDate = DateTime(startDate.year, startDate.month, startDate.day + i);
-                                    //     // Define the end date of the next period
-                                    //     final toDate = DateTime(currentDate.year, currentDate.month, currentDate.day + 1); // Next period is 30 days
-                                    //
-                                    //     // final currentAmount = (i == daysInPeriod - 1) ? totalAmount - (amountPerMonth * i) : amountPerMonth;
-                                    //
-                                    //     final mDividedAmount = {
-                                    //       'from_date': currentDate.toIso8601String(),
-                                    //       'to_date': toDate.toIso8601String(),
-                                    //       'amount': totalAmount,
-                                    //     };
-                                    //
-                                    //     dividedAmounts.add(mDividedAmount);
-                                    //     // print(dividedAmounts);
-                                    //   }
-                                    //
-                                    //   return dividedAmounts;
-                                    // }
-                                    //
-                                    //
-                                    // final dividedAmounts = divideAmountMonthly(
-                                    //     selectedDate1.value,
-                                    //     selectedDate2.value,
-                                    //     double.parse(discountController.text.toString()));
-                                    //
-                                    //
-                                    // print('Daily Divided Amounts: $dividedAmounts');
-                                    //
-                                  } else if (tenantController
-                                      .paymentScheduleId.value ==
-                                      2) {
-                                    //
-                                    // List<Map<String, dynamic>> divideAmountMonthly(DateTime startDate, DateTime endDate, double totalAmount) {
-                                    //   final dividedAmounts = <Map<String, dynamic>>[];
-                                    //
-                                    //
-                                    //   final weeksInPeriod = endDate.day - startDate.day + 30 * (endDate.month - startDate.month);
-                                    //
-                                    //
-                                    //   // final amountPerMonth = totalAmount / daysInPeriod;
-                                    //
-                                    //
-                                    //   for (int i = 0; i < weeksInPeriod; i++) {
-                                    //
-                                    //
-                                    //     final currentDate = DateTime(startDate.year, startDate.month, startDate.day + i);
-                                    //     // Define the end date of the next period
-                                    //     final toDate = DateTime(currentDate.year, currentDate.month, currentDate.day + 1); // Next period is 30 days
-                                    //
-                                    //     // final currentAmount = (i == daysInPeriod - 1) ? totalAmount - (amountPerMonth * i) : amountPerMonth;
-                                    //
-                                    //     final mDividedAmount = {
-                                    //       'from_date': currentDate.toIso8601String(),
-                                    //       'to_date': toDate.toIso8601String(),
-                                    //       'amount': totalAmount,
-                                    //     };
-                                    //
-                                    //     dividedAmounts.add(mDividedAmount);
-                                    //     // print(dividedAmounts);
-                                    //   }
-                                    //
-                                    //   return dividedAmounts;
-                                    // }
-                                    //
-                                    //
-                                    // final dividedAmounts = divideAmountMonthly(
-                                    //     selectedDate1.value,
-                                    //     selectedDate2.value,
-                                    //     double.parse(discountController.text.toString()));
-                                    //
-                                    //
-                                    // print('Daily Divided Amounts: $dividedAmounts');
-                                  } else {}
+                              // final startDate = DateTime.now();
+                              // final endDate = startDate.add(Duration(days: 180));
+                              //
+                              // final amount = 6000.0;
+                              //
+                              // List<Map<String, dynamic>> divideAmountMonthly(DateTime startDate, DateTime endDate, double totalAmount) {
+                              //   final dividedAmounts = <Map<String, dynamic>>[];
+                              //
+                              //
+                              //   final monthsInPeriod = endDate.month - startDate.month + 12 * (endDate.year - startDate.year);
+                              //
+                              //
+                              //   final amountPerMonth = totalAmount / monthsInPeriod;
+                              //
+                              //
+                              //   for (int i = 0; i < monthsInPeriod; i++) {
+                              //
+                              //
+                              //     final currentDate = DateTime(startDate.year, startDate.month + i, startDate.day);
+                              //     // Define the end date of the next period
+                              //     final toDate = DateTime(currentDate.year, currentDate.month + 1, currentDate.day); // Next period is 30 days
+                              //
+                              //     final currentAmount = (i == monthsInPeriod - 1) ? totalAmount - (amountPerMonth * i) : amountPerMonth;
+                              //
+                              //     final mDividedAmount = {
+                              //       'from_date': currentDate.toIso8601String(),
+                              //       'to_date': toDate.toIso8601String(),
+                              //       'amount': currentAmount,
+                              //     };
+                              //
+                              //     dividedAmounts.add(mDividedAmount);
+                              //     // print(dividedAmounts);
+                              //   }
+                              //
+                              //   return dividedAmounts;
+                              // }
+                              //
+                              //
+                              // final dividedAmounts = divideAmountMonthly(startDate, endDate, amount);
+                              //
+                              //
+                              // print('Divided Amounts: $dividedAmounts');
+                            } else if (tenantController
+                                .paymentScheduleId.value ==
+                                1) {
+                              // List<Map<String, dynamic>> divideAmountMonthly(DateTime startDate, DateTime endDate, double totalAmount) {
+                              //   final dividedAmounts = <Map<String, dynamic>>[];
+                              //
+                              //
+                              //   // final daysInPeriod = endDate.day - startDate.day + int.parse(dailyController.text.toString()) * (endDate.month - startDate.month);
+                              //   //
+                              //   // print('These days $daysInPeriod');
+                              //   // print('end day $daysInPeriod');
+                              //   // print('start day $daysInPeriod');
+                              //   // // print('start day $daysInPeriod');
+                              //
+                              //   // final amountPerMonth = totalAmount / daysInPeriod;
+                              //
+                              //
+                              //
+                              //
+                              //   for (int i = 0; i < int.parse(amountController.text); i++) {
+                              //
+                              //
+                              //     final currentDate = DateTime(startDate.year, startDate.month, startDate.day + i);
+                              //     // Define the end date of the next period
+                              //     final toDate = DateTime(currentDate.year, currentDate.month, currentDate.day + 1); // Next period is 30 days
+                              //
+                              //     // final currentAmount = (i == daysInPeriod - 1) ? totalAmount - (amountPerMonth * i) : amountPerMonth;
+                              //
+                              //     final mDividedAmount = {
+                              //       'from_date': currentDate.toIso8601String(),
+                              //       'to_date': toDate.toIso8601String(),
+                              //       'amount': totalAmount,
+                              //     };
+                              //
+                              //     dividedAmounts.add(mDividedAmount);
+                              //     // print(dividedAmounts);
+                              //   }
+                              //
+                              //   return dividedAmounts;
+                              // }
+                              //
+                              //
+                              // final dividedAmounts = divideAmountMonthly(
+                              //     selectedDate1.value,
+                              //     selectedDate2.value,
+                              //     double.parse(discountController.text.toString()));
+                              //
+                              //
+                              // print('Daily Divided Amounts: $dividedAmounts');
+                              //
+                            } else if (tenantController
+                                .paymentScheduleId.value ==
+                                2) {
+                              //
+                              // List<Map<String, dynamic>> divideAmountMonthly(DateTime startDate, DateTime endDate, double totalAmount) {
+                              //   final dividedAmounts = <Map<String, dynamic>>[];
+                              //
+                              //
+                              //   final weeksInPeriod = endDate.day - startDate.day + 30 * (endDate.month - startDate.month);
+                              //
+                              //
+                              //   // final amountPerMonth = totalAmount / daysInPeriod;
+                              //
+                              //
+                              //   for (int i = 0; i < weeksInPeriod; i++) {
+                              //
+                              //
+                              //     final currentDate = DateTime(startDate.year, startDate.month, startDate.day + i);
+                              //     // Define the end date of the next period
+                              //     final toDate = DateTime(currentDate.year, currentDate.month, currentDate.day + 1); // Next period is 30 days
+                              //
+                              //     // final currentAmount = (i == daysInPeriod - 1) ? totalAmount - (amountPerMonth * i) : amountPerMonth;
+                              //
+                              //     final mDividedAmount = {
+                              //       'from_date': currentDate.toIso8601String(),
+                              //       'to_date': toDate.toIso8601String(),
+                              //       'amount': totalAmount,
+                              //     };
+                              //
+                              //     dividedAmounts.add(mDividedAmount);
+                              //     // print(dividedAmounts);
+                              //   }
+                              //
+                              //   return dividedAmounts;
+                              // }
+                              //
+                              //
+                              // final dividedAmounts = divideAmountMonthly(
+                              //     selectedDate1.value,
+                              //     selectedDate2.value,
+                              //     double.parse(discountController.text.toString()));
+                              //
+                              //
+                              // print('Daily Divided Amounts: $dividedAmounts');
+                            } else {}
 
-                                  // if (_formKey.currentState!.validate()) {
-                                  //   // print(selectedDate1.value.toString().runtimeType);
-                                  //   // print(date2Controller.text.trim().runtimeType);
-                                  //   // print('1st date ${selectedDate3.value}');
-                                  //   // print('2nd date ${DateTime.parse(date2Controller.text)}');
-                                  //
-                                  //   tenantController.addTenantToUnit(
-                                  //     tenantController.tenantId.value,
-                                  //     "userStorage.read('userProfileId')",
-                                  //     tenantController.unitId.value,
-                                  //     selectedDate1.value.toString(),
-                                  //     selectedDate2.value.toString(),
-                                  //     // date2Controller.text.trim().toString(),
-                                  //     int.parse(amountController.text.toString()),
-                                  //     int.parse(discountController.text.toString()),
-                                  //   );
-                                  //
-                                  //
-                                  // } else {
-                                  //
-                                  // }
-                                },
-                                child: Text(
-                                  'Add',
-                                  style: TextStyle(
-                                    color: AppTheme.primaryColor,
-                                    fontSize: 17.5.sp,
-                                  ),
-                                ));
-                          }),
-                        ],
-                      ),
-                    ),
-                  ),
+                            // if (_formKey.currentState!.validate()) {
+                            //   // print(selectedDate1.value.toString().runtimeType);
+                            //   // print(date2Controller.text.trim().runtimeType);
+                            //   // print('1st date ${selectedDate3.value}');
+                            //   // print('2nd date ${DateTime.parse(date2Controller.text)}');
+                            //
+                            //   tenantController.addTenantToUnit(
+                            //     tenantController.tenantId.value,
+                            //     "userStorage.read('userProfileId')",
+                            //     tenantController.unitId.value,
+                            //     selectedDate1.value.toString(),
+                            //     selectedDate2.value.toString(),
+                            //     // date2Controller.text.trim().toString(),
+                            //     int.parse(amountController.text.toString()),
+                            //     int.parse(discountController.text.toString()),
+                            //   );
+                            //
+                            //
+                            // } else {
+                            //
+                            // }
+                          },
+                          child: Text(
+                            'Add',
+                            style: TextStyle(
+                              color: AppTheme.primaryColor,
+                              fontSize: 17.5.sp,
+                            ),
+                          ));
+                    }),
+                  ],
                 ),
+              ),
+            ),
+          );
+        },
+        builder: (context, state) {
+          return Material(
+            color: AppTheme.whiteColor,
+            child: Column(
+              children: [
+
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 1.h),
                   child: SingleChildScrollView(

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:advanced_search/advanced_search.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -59,6 +60,8 @@ class _PropertyListScreenState extends State<PropertyListScreen> {
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController locationController = TextEditingController();
   final TextEditingController sqmController = TextEditingController();
+
+  List<String> searchableList = ['Orange', 'Watermelon', 'Banana'];
 
 
 
@@ -170,6 +173,9 @@ class _PropertyListScreenState extends State<PropertyListScreen> {
 
                 );
               }),
+
+
+
 
               Obx(() {
                 return widget.tenantController.isPropertyModelListLoading.value

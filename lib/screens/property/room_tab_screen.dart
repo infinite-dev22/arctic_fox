@@ -87,100 +87,101 @@ class _RoomTabScreenState extends State<RoomTabScreen> {
               snappings: [ 0.9],
               positioning: SnapPositioning.relativeToAvailableSpace,
             ),
+            headerBuilder: (context, state){
+            return  Material(
+                elevation: 1,
+                child: Container(
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width,
+                  height: 7.5.h,
+                  decoration: BoxDecoration(
+                      boxShadow: [
+                      ]
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 5.w, vertical: 2.h),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Bounceable(
+                            onTap: () {
+                              widget.unitController.floorId.value == 0;
+                              widget.unitController.currencyId.value  == 0;
+                              widget.unitController.unitTypeId.value == 0;
+                              widget.unitController.paymentScheduleId.value == 0;
+                              sizeController.clear();
+                              roomNumberController.clear();
+                              amountController.clear();
+                              descriptionController.clear();
+                              roomNameController.clear();
+                              unitNumberController.clear();
+                              Get.back();
+                            },
+                            child: Text('Cancel', style: TextStyle(
+                              color: Colors.red,
+                              fontSize: 17.5.sp,
+                            ),)),
+
+                        Text('Add Unit', style: AppTheme
+                            .darkBlueTitle2,),
+
+                        Obx(() {
+                          return widget.unitController.isAddUnitLoading.value ?
+                          AppLoader(color: AppTheme.primaryColor,) :
+                          Bounceable(
+                              onTap: () async {
+                                widget.unitController.addUnit(
+                                    widget.unitController.floorId.value,
+                                    widget.unitController.currencyId.value,
+                                    widget.unitController.unitTypeId.value,
+                                    widget.unitController.paymentScheduleId
+                                        .value,
+                                    sizeController.text.trim(),
+                                    userStorage.read('userProfileId'),
+                                    int.parse(
+                                        roomNumberController.text.trim()
+                                            .toString()),
+                                    int.parse(amountController.text.trim()
+                                        .toString()),
+                                    descriptionController.text.trim()
+                                        .toString(),
+                                    widget.propertyModel.id!
+
+                                ).then((value) {
+                                  widget.unitController.floorId.value == 0;
+                                  widget.unitController.currencyId.value  == 0;
+                                  widget.unitController.unitTypeId.value == 0;
+                                  widget.unitController.paymentScheduleId.value == 0;
+                                  sizeController.clear();
+                                  roomNumberController.clear();
+                                  amountController.clear();
+                                  descriptionController.clear();
+                                  roomNameController.clear();
+                                  unitNumberController.clear();
+
+                                });
+                              },
+                              child: Text('Add', style: TextStyle(
+                                color: AppTheme.primaryColor,
+                                fontSize: 17.5.sp,
+                              ),));
+                        }),
+
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
             builder: (context, state) {
               return Material(
                 color: AppTheme.whiteColor,
                 child: Column(
                   children: [
-
-                    Material(
-                      elevation: 1,
-                      child: Container(
-                        width: MediaQuery
-                            .of(context)
-                            .size
-                            .width,
-                        height: 7.5.h,
-                        decoration: BoxDecoration(
-                            boxShadow: [
-                            ]
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 5.w, vertical: 2.h),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Bounceable(
-                                  onTap: () {
-                                    widget.unitController.floorId.value == 0;
-                                    widget.unitController.currencyId.value  == 0;
-                                    widget.unitController.unitTypeId.value == 0;
-                                    widget.unitController.paymentScheduleId.value == 0;
-                                    sizeController.clear();
-                                    roomNumberController.clear();
-                                    amountController.clear();
-                                    descriptionController.clear();
-                                    roomNameController.clear();
-                                    unitNumberController.clear();
-                                    Get.back();
-                                  },
-                                  child: Text('Cancel', style: TextStyle(
-                                    color: Colors.red,
-                                    fontSize: 17.5.sp,
-                                  ),)),
-
-                              Text('Add Unit', style: AppTheme
-                                  .darkBlueTitle2,),
-
-                              Obx(() {
-                                return widget.unitController.isAddUnitLoading.value ?
-                                AppLoader(color: AppTheme.primaryColor,) :
-                                  Bounceable(
-                                    onTap: () async {
-                                      widget.unitController.addUnit(
-                                        widget.unitController.floorId.value,
-                                        widget.unitController.currencyId.value,
-                                        widget.unitController.unitTypeId.value,
-                                        widget.unitController.paymentScheduleId
-                                            .value,
-                                        sizeController.text.trim(),
-                                        userStorage.read('userProfileId'),
-                                        int.parse(
-                                            roomNumberController.text.trim()
-                                                .toString()),
-                                        int.parse(amountController.text.trim()
-                                            .toString()),
-                                        descriptionController.text.trim()
-                                            .toString(),
-                                        widget.propertyModel.id!
-
-                                      ).then((value) {
-                                        widget.unitController.floorId.value == 0;
-                                        widget.unitController.currencyId.value  == 0;
-                                        widget.unitController.unitTypeId.value == 0;
-                                        widget.unitController.paymentScheduleId.value == 0;
-                                        sizeController.clear();
-                                        roomNumberController.clear();
-                                        amountController.clear();
-                                        descriptionController.clear();
-                                        roomNameController.clear();
-                                        unitNumberController.clear();
-
-                                      });
-                                    },
-                                    child: Text('Add', style: TextStyle(
-                                      color: AppTheme.primaryColor,
-                                      fontSize: 17.5.sp,
-                                    ),));
-                              }),
-
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
 
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 5.w,

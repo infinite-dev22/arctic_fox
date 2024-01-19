@@ -80,63 +80,65 @@ class _RoomOptionWidgetState extends State<RoomOptionWidget> {
               snappings: [ 0.9],
               positioning: SnapPositioning.relativeToAvailableSpace,
             ),
+            headerBuilder: (context, state){
+              return                     Material(
+                elevation: 1,
+                child: Container(
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width,
+                  height: 7.5.h,
+                  decoration: BoxDecoration(
+                      boxShadow: [
+                      ]
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 5.w, vertical: 2.h),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Bounceable(
+                            onTap: () {
+                              Get.back();
+                            },
+                            child: Text('Cancel', style: TextStyle(
+                              color: Colors.red,
+                              fontSize: 17.5.sp,
+                            ),)),
+
+                        Text('Edit Unit', style: AppTheme
+                            .darkBlueTitle2,),
+
+                        Bounceable(
+                            onTap: () async {
+                              Get.back();
+                              Get.snackbar(
+                                'SUCCESS', 'Unit edited successfully',
+                                titleText: Text('SUCCESS',
+                                  style: AppTheme.greenTitle1,),
+                              );
+                            },
+                            child: Text('Update', style: TextStyle(
+                              color: AppTheme.primaryColor,
+                              fontSize: 17.5.sp,
+                            ),)),
+
+
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
             builder: (context, state) {
               return Material(
                 color: AppTheme.appBgColor,
                 child: Column(
                   children: [
 
-                    Material(
-                      elevation: 1,
-                      child: Container(
-                        width: MediaQuery
-                            .of(context)
-                            .size
-                            .width,
-                        height: 7.5.h,
-                        decoration: BoxDecoration(
-                            boxShadow: [
-                            ]
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 5.w, vertical: 2.h),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Bounceable(
-                                  onTap: () {
-                                    Get.back();
-                                  },
-                                  child: Text('Cancel', style: TextStyle(
-                                    color: Colors.red,
-                                    fontSize: 17.5.sp,
-                                  ),)),
-
-                              Text('Edit Unit', style: AppTheme
-                                  .darkBlueTitle2,),
-
-                              Bounceable(
-                                  onTap: () async {
-                                    Get.back();
-                                    Get.snackbar(
-                                      'SUCCESS', 'Unit edited successfully',
-                                      titleText: Text('SUCCESS',
-                                        style: AppTheme.greenTitle1,),
-                                    );
-                                  },
-                                  child: Text('Update', style: TextStyle(
-                                    color: AppTheme.primaryColor,
-                                    fontSize: 17.5.sp,
-                                  ),)),
-
-
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
 
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 5.w,

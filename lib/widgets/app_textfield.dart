@@ -294,6 +294,7 @@ class AmountTextField extends StatelessWidget {
   final Function(String)? onChanged;
   final Function()? onTap;
   final TextInputType? keyBoardType;
+  final List<TextInputFormatter>? inputFormatters;
 
   const AmountTextField({
     super.key,
@@ -307,7 +308,7 @@ class AmountTextField extends StatelessWidget {
     this.enabled = true,
     this.onChanged,
     this.onTap, this.keyBoardType,
-    this.suffix,
+    this.suffix, this.inputFormatters,
   });
 
   @override
@@ -315,6 +316,9 @@ class AmountTextField extends StatelessWidget {
     return SizedBox(
       height: 50,
       child: TextFormField(
+        inputFormatters: inputFormatters ?? [
+          LengthLimitingTextInputFormatter(35),
+        ],
         cursorColor: AppTheme.gray45,
         validator: (val) =>
         val!.isEmpty ? 'Required field, Please fill in.' : null,

@@ -269,17 +269,20 @@ class UnitController extends GetxController {
     // fetchAllPropertyUnits();
   }
 
-  Future<void> updateUnitStatusAvailable(UnitModel unitModel)async{
+  Future<void> updateUnitStatusAvailable(UnitModel unitModel, int propertyId)async{
     isUpdateStatusLoading(true);
     try{
       await AppConfig().supaBaseClient.from('units').update(
           {
             "is_available" : 1,
           }
-      ).eq('id', unitModel.id).then((value) {
-        isUpdateStatusLoading(false);
-        Get.back();
-        Fluttertoast.showToast(msg: '${unitModel.unitNumber} is now available', gravity: ToastGravity.TOP);
+      ).eq('id', unitModel.id).then((value) async{
+        await Get.put(TenantController()).fetchOnlyAvailableUnits(propertyId).then((value) {
+          isUpdateStatusLoading(false);
+          Get.back();
+          Fluttertoast.showToast(msg: '${unitModel.unitNumber} is now available', gravity: ToastGravity.TOP);
+        });
+
       });
     } catch(error){
       isUpdateStatusLoading(false);

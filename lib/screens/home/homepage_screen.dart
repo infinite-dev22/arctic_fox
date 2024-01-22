@@ -335,7 +335,7 @@ class _HomePageState extends State<HomePage> {
                     debugPrint('isOpen:${state.isOpen}');
                     state.toggle();
                   }
-                  showAddPTenantBottomSheet(context);
+                  showAddTenantBottomSheet(context);
                   // Get.to(() => AddTenantScreen(),
                   //     transition: Transition.downToUp);
                 },
@@ -1093,7 +1093,7 @@ class _HomePageState extends State<HomePage> {
   }
 
 
-  void showAddPTenantBottomSheet(BuildContext context) async {
+  void showAddTenantBottomSheet(BuildContext context) async {
     final result = await showSlidingBottomSheet(
         context,
         builder: (context) {

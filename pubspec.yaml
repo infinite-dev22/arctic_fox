@@ -84,6 +84,7 @@ dependencies:
   flutter_expandable_fab: ^2.0.0
   owesome_validator: ^0.0.6
   advanced_search: ^2.2.3
+  pattern_formatter: ^3.0.0
 #  multi_dropdown: ^2.1.2
 
 #  supabase: ^1.11.11

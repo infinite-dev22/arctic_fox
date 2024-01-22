@@ -17,22 +17,22 @@ class ChatScreen extends StatelessWidget {
           children: [
             Center(child: Text('Chat Screen', style: AppTheme.appTitle3,)),
 
-            chatController.obx((state) {
-              return Expanded(
-                child: ListView.builder(
-                  itemCount: chatController.chatModelList.length,
-                    itemBuilder: (context, index){
-                      var chat = chatController.chatModelList[index];
-                  return Text(chat.message.toString());
-                }),
-              );
-            },
-              onEmpty: Text('Empty Chats'),
-              onError: (error){
-              return Text('big error');
-              },
-              onLoading: CircularProgressIndicator(),
-            )
+            // chatController.obx((state) {
+            //   return Expanded(
+            //     child: ListView.builder(
+            //       itemCount: chatController.chatModelList.length,
+            //         itemBuilder: (context, index){
+            //           var chat = chatController.chatModelList[index];
+            //       return Text(chat.message.toString());
+            //     }),
+            //   );
+            // },
+            //   onEmpty: Text('Empty Chats'),
+            //   onError: (error){
+            //   return Text('big error');
+            //   },
+            //   onLoading: CircularProgressIndicator(),
+            // )
 
           ],
         ),

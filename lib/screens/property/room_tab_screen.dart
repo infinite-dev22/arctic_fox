@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:pattern_formatter/pattern_formatter.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/controllers/property_options/property_details_options_controller.dart';
 import 'package:smart_rent/controllers/units/unit_controller.dart';
@@ -144,9 +145,9 @@ class _RoomTabScreenState extends State<RoomTabScreen> {
                                     userStorage.read('userProfileId'),
                                     int.parse(
                                         roomNumberController.text.trim()
-                                            .toString()),
+                                            .replaceAll(',', '').toString()),
                                     int.parse(amountController.text.trim()
-                                        .toString()),
+                                        .replaceAll(',', '').toString()),
                                     descriptionController.text.trim()
                                         .toString(),
                                     widget.propertyModel.id!
@@ -380,6 +381,9 @@ class _RoomTabScreenState extends State<RoomTabScreen> {
                               hintText: 'Amount',
                               obscureText: false,
                               keyBoardType: TextInputType.number,
+                              inputFormatters: [
+                                ThousandsFormatter(),
+                              ],
                             ),
 
                             SizedBox(height: 1.h,),

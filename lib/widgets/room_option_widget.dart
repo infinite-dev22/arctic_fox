@@ -454,7 +454,7 @@ class _RoomOptionWidgetState extends State<RoomOptionWidget> {
                                     function: () async {
                                       await widget.unitController!
                                           .updateUnitStatusAvailable(
-                                          widget.roomModel);
+                                          widget.roomModel, widget.roomModel.propertyId!);
                                     });
                               })),
                         ],

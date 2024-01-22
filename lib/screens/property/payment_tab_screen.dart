@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
 import 'package:overlay_loader_with_app_icon/overlay_loader_with_app_icon.dart';
+import 'package:pattern_formatter/pattern_formatter.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/config/app_config.dart';
 import 'package:smart_rent/controllers/property_options/property_details_options_controller.dart';
@@ -152,9 +153,9 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                                   tenantController.unitId.value,
                                   selectedDate1.value.toIso8601String(),
                                   selectedDate2.value.toIso8601String(),
-                                  int.parse(amountController.text),
-                                  int.parse(paidController.text),
-                                  int.parse(balanceController.text),
+                                  int.parse(amountController.text.replaceAll(',', '').toString()),
+                                  int.parse(paidController.text.replaceAll(',', '').toString()),
+                                  int.parse(balanceController.text.replaceAll(',', '').toString()),
                                   userStorage.read('userProfileId'),
                                   userStorage.read('userProfileId'),
                                 ).then((value) {
@@ -611,11 +612,11 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                                       .fetchSpecificTenantsUnitSchedules()
                                       .then((value) {
                                     amountController.text =
-                                        tenantController.specificPaymentAmount
-                                            .toString();
+                                        amountFormatter.format(tenantController.specificPaymentAmount
+                                            .toString());
                                     balanceController.text =
-                                        tenantController.specificPaymentBalance
-                                            .toString();
+                                        amountFormatter.format(tenantController.specificPaymentBalance
+                                            .toString());
 
                                     // amountController.text =
                                     //     tenantController.tenantUnitAmount
@@ -890,6 +891,9 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
 
                             Obx(() {
                               return AmountTextField(
+                                inputFormatters: [
+                                  ThousandsFormatter(),
+                                ],
                                 controller: amountController,
                                 hintText: 'Amount',
                                 obscureText: false,
@@ -909,6 +913,9 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                               children: [
                                 SizedBox(
                                   child: AuthTextField(
+                                    inputFormatters: [
+                                      ThousandsFormatter(),
+                                    ],
                                     controller: paidController,
                                     hintText: 'Paid',
                                     obscureText: false,
@@ -931,6 +938,9 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                                 SizedBox(
                                   width: 40.w,
                                   child: AuthTextField(
+                                    inputFormatters: [
+                                      ThousandsFormatter(),
+                                    ],
                                     controller: balanceController,
                                     hintText: 'Balance',
                                     obscureText: false,

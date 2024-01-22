@@ -1463,7 +1463,8 @@ setSpecificPaymentBalance(int balance){
   }
 
   Future<void> addTenantToUnit( int tenantId, String createdBy,
-      int unitId, String date1, String date2, int amount, int discount, List<Map<String, dynamic>> periodList
+      int unitId, String date1, String date2, int amount, int discount, List<Map<String, dynamic>> periodList,
+      int propertyId
       ) async {
     isAddTenantToUnitLoading(true);
 
@@ -1478,6 +1479,7 @@ setSpecificPaymentBalance(int balance){
             "created_by" : createdBy,
             "from_date" : date1,
             "to_date" : date2,
+            "property_id": propertyId
             // "updated_at" : DateTime.now(),
           }
       ).then((tenant) async{

@@ -299,6 +299,7 @@ class _TenantListScreenState extends State<TenantListScreen> {
       appBar: AppImageHeader(
         title: 'assets/auth/srw.png',
         isTitleCentred: true,
+
       ),
 
       floatingActionButtonLocation: userStorage.read('roleId') == 4 ? null : ExpandableFab.location,
@@ -382,10 +383,8 @@ class _TenantListScreenState extends State<TenantListScreen> {
                 ],
               ),
 
-              Obx(() {
-                return widget.tenantController.isTenantListLoading.value
-                    ? Center(child: CircularProgressIndicator())
-                    : ListView.builder(
+              widget.tenantController.obx((state) {
+                return  ListView.builder(
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemCount: widget.tenantController.tenantList.length,
@@ -403,28 +402,78 @@ class _TenantListScreenState extends State<TenantListScreen> {
                                 ));
                               },
                               child: TenantCardWidget(
-                          tenantModel: tenant,
-                          tenantController: widget.tenantController,
-                          index: index,
-                          deleteFunction: ()async {
-                            if(  tenant.tenantTypeId == 2){
-                              widget.tenantController.deleteCompanyTenant(tenant.id);
-                            } else {
-                              widget.tenantController.deleteTenant(tenant.id);
-                            }
-                          },
-                          editFunction: () {
-                          if(  tenant.tenantTypeId == 2){
-                              Get.to(() => UpdateCompanyTenantWithContactScreen(tenantModel: tenant));
-                          } else {
-                              Get.to(() => UpdateIndividualTenantScreen(tenantModel: tenant));
-                          }
-                          },
+                                tenantModel: tenant,
+                                tenantController: widget.tenantController,
+                                index: index,
+                                deleteFunction: ()async {
+                                  if(  tenant.tenantTypeId == 2){
+                                    widget.tenantController.deleteCompanyTenant(tenant.id);
+                                  } else {
+                                    widget.tenantController.deleteTenant(tenant.id);
+                                  }
+                                },
+                                editFunction: () {
+                                  if(  tenant.tenantTypeId == 2){
+                                    Get.to(() => UpdateCompanyTenantWithContactScreen(tenantModel: tenant));
+                                  } else {
+                                    Get.to(() => UpdateIndividualTenantScreen(tenantModel: tenant));
+                                  }
+                                },
                               ),
                             )),
                       );
                     });
-              }),
+              },
+                onEmpty: Center(child: Text('No Tenants'),),
+                onLoading: AppLoader(),
+                onError: (error){
+                return Text('print $error');
+                }
+              )
+
+              // Obx(() {
+              //   return widget.tenantController.isTenantListLoading.value
+              //       ? Center(child: CircularProgressIndicator())
+              //       : ListView.builder(
+              //       physics: NeverScrollableScrollPhysics(),
+              //       shrinkWrap: true,
+              //       itemCount: widget.tenantController.tenantList.length,
+              //       itemBuilder: (context, index) {
+              //         var tenant = widget.tenantController.tenantList[index];
+              //         return Padding(
+              //           padding: EdgeInsets.only(top: 1.h),
+              //           child: SlideInUp(
+              //               child: Bounceable(
+              //                 onTap: (){
+              //                   Get.to(() => TenantDetailsScreen(
+              //                     tenantController: widget.tenantController,
+              //                     tenantId: tenant.id,
+              //                     tenantModel: tenant,
+              //                   ));
+              //                 },
+              //                 child: TenantCardWidget(
+              //             tenantModel: tenant,
+              //             tenantController: widget.tenantController,
+              //             index: index,
+              //             deleteFunction: ()async {
+              //               if(  tenant.tenantTypeId == 2){
+              //                 widget.tenantController.deleteCompanyTenant(tenant.id);
+              //               } else {
+              //                 widget.tenantController.deleteTenant(tenant.id);
+              //               }
+              //             },
+              //             editFunction: () {
+              //             if(  tenant.tenantTypeId == 2){
+              //                 Get.to(() => UpdateCompanyTenantWithContactScreen(tenantModel: tenant));
+              //             } else {
+              //                 Get.to(() => UpdateIndividualTenantScreen(tenantModel: tenant));
+              //             }
+              //             },
+              //                 ),
+              //               )),
+              //         );
+              //       });
+              // }),
 
             ],
           ),
@@ -599,6 +648,7 @@ class _TenantListScreenState extends State<TenantListScreen> {
                                           contactEmailController.clear();
                                           tenantPic = File('');
                                           companyTenantPic = File('');
+                                          companyTenantPic = null;
                                           Get.back();
                                         });
 
@@ -630,9 +680,9 @@ class _TenantListScreenState extends State<TenantListScreen> {
                                               .validate()) {
                                         // Get.snackbar(
                                         //     'Posting Company', 'No Company Contact');
-                                        if(tenantPic == null){
+                                        if(companyTenantPic == null){
                                           Fluttertoast.showToast(
-                                              msg: 'Tenant pic required',
+                                              msg: 'Company tenant pic required',
                                               gravity: ToastGravity.TOP);
                                         } else {
                                           await widget
@@ -684,6 +734,7 @@ class _TenantListScreenState extends State<TenantListScreen> {
                                             contactEmailController.clear();
                                             tenantPic = File('');
                                             companyTenantPic = File('');
+                                            companyTenantPic = null;
                                             Get.back();
                                           });
 
@@ -778,6 +829,7 @@ class _TenantListScreenState extends State<TenantListScreen> {
                                             contactEmailController.clear();
                                             tenantPic = File('');
                                             companyTenantPic = File('');
+                                            companyTenantPic = null;
                                             Get.back();
                                           });
 

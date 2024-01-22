@@ -105,6 +105,7 @@ abstract class SmartSpecificTenantUnitModel {
   int getAmount();
   int getTenantId();
   int getUnitId();
+  int getPropertyId();
   DateTime getFromDate();
   DateTime getToDate();
 

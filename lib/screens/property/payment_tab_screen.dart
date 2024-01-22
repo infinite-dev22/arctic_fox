@@ -13,6 +13,7 @@ import 'package:smart_rent/config/app_config.dart';
 import 'package:smart_rent/controllers/property_options/property_details_options_controller.dart';
 import 'package:smart_rent/controllers/tenants/tenant_controller.dart';
 import 'package:smart_rent/controllers/units/unit_controller.dart';
+import 'package:smart_rent/models/property/property_model.dart';
 import 'package:smart_rent/models/schedule/tenant_unit_schedule.dart';
 import 'package:smart_rent/models/tenant/tenant_model.dart';
 import 'package:smart_rent/models/unit/specific_tenant_unit_model.dart';
@@ -22,16 +23,18 @@ import 'package:smart_rent/utils/app_prefs.dart';
 import 'package:smart_rent/utils/extra.dart';
 import 'package:smart_rent/widgets/app_button.dart';
 import 'package:smart_rent/widgets/app_drop_downs.dart';
+import 'package:smart_rent/widgets/app_loader.dart';
 import 'package:smart_rent/widgets/app_textfield.dart';
 import 'package:smart_rent/widgets/payment_card_widget.dart';
 import 'package:wtf_sliding_sheet/wtf_sliding_sheet.dart';
 
 class PaymentTabScreen extends StatefulWidget {
   final UnitController unitController;
+  final PropertyModel propertyModel;
   final PropertyDetailsOptionsController propertyDetailsOptionsController;
 
   const PaymentTabScreen(
-      {super.key, required this.propertyDetailsOptionsController, required this.unitController});
+      {super.key, required this.propertyDetailsOptionsController, required this.unitController, required this.propertyModel});
 
   @override
   State<PaymentTabScreen> createState() => _PaymentTabScreenState();
@@ -100,7 +103,7 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
               positioning: SnapPositioning.relativeToAvailableSpace,
             ),
             headerBuilder: (context, state){
-              return                     Material(
+              return   Material(
                 elevation: 1,
                 child: Container(
                   width: MediaQuery
@@ -139,7 +142,9 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                             .darkBlueTitle2,),
 
                         Obx(() {
-                          return Bounceable(
+                          return tenantController.isPayForMultipleSchedulesLoading.value ?
+                          AppLoader(color: AppTheme.primaryColor,) :
+                          Bounceable(
                               onTap: () async {
                                 await tenantController
                                     .payForMultipleTenantUnitSchedule(
@@ -348,7 +353,7 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                                   tenantController.getTenantUnits(null).then((
                                       value) {
                                     // tenantController.fetchSpecificTenantsUnitSchedules();
-                                    tenantController.getSpecificTenantUnits();
+                                    tenantController.getSpecificTenantUnits(widget.propertyModel.id!);
 
                                     // amountController.text =
                                     //     tenantController.tenantUnitAmount
@@ -813,6 +818,8 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                                         element.value!);
                                     print('My SChedules ${tenantController
                                         .schedules.value}');
+                              print('My element = $element');
+                              print('My options = $options');
 
 
                                     // print(element.value.id);

@@ -19,6 +19,7 @@ class SpecificTenantUnitModel extends SmartSpecificTenantUnitModel{
   Units? units;
   int? unitId;
   int? tenantId;
+  int? propertyId;
 
   SpecificTenantUnitModel({
     this.id,
@@ -29,6 +30,7 @@ class SpecificTenantUnitModel extends SmartSpecificTenantUnitModel{
     this.units,
     this.unitId,
     this.tenantId,
+    this.propertyId,
   });
 
   factory SpecificTenantUnitModel.fromJson(Map<String, dynamic> json) => SpecificTenantUnitModel(
@@ -40,6 +42,7 @@ class SpecificTenantUnitModel extends SmartSpecificTenantUnitModel{
     units: json["units"] == null ? null : Units.fromJson(json["units"]),
     unitId: json["unit_id"],
     tenantId: json["tenant_id"],
+    propertyId: json["property_id"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -51,6 +54,7 @@ class SpecificTenantUnitModel extends SmartSpecificTenantUnitModel{
     "units": units?.toJson(),
     "unit_id": unitId,
     "tenant_id": tenantId,
+    "property_id": propertyId,
   };
 
   @override
@@ -83,6 +87,10 @@ class SpecificTenantUnitModel extends SmartSpecificTenantUnitModel{
 
   @override
   String getTenantName() { return tenants!.name.toString();
+  }
+
+  @override
+  int getPropertyId() { return propertyId!;
   }
 }
 

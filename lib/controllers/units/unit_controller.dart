@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:smart_rent/config/app_config.dart';
+import 'package:smart_rent/controllers/tenants/tenant_controller.dart';
 import 'package:smart_rent/models/currency/currency_model.dart';
 import 'package:smart_rent/models/floor/floor_model.dart';
 import 'package:smart_rent/models/payment_schedule/payment_schedule_model.dart';
@@ -196,12 +197,15 @@ class UnitController extends GetxController {
             "property_id" : propertyId,
             // "updated_by" : updatedBy,
           }
-      ).then((property) {
-        isAddUnitLoading(false);
-        Get.back();
-        Get.snackbar('SUCCESS', 'Property added to your list',
-          titleText: Text('SUCCESS', style: AppTheme.greenTitle1,),
-        );
+      ).then((property) async{
+        await Get.put(TenantController()).fetchOnlyAvailableUnits(propertyId).then((value) {
+          isAddUnitLoading(false);
+          Get.back();
+          Get.snackbar('SUCCESS', 'Property added to your list',
+            titleText: Text('SUCCESS', style: AppTheme.greenTitle1,),
+          );
+        });
+
       });
 
       if (response.error != null) {
@@ -217,7 +221,7 @@ class UnitController extends GetxController {
 
   }
 
-  void fetchAllPropertyUnits(int propertyId) async {
+  Future<void> fetchAllPropertyUnits(int propertyId) async {
     isUnitLoading(true);
     try {
 

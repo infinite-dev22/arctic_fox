@@ -27,7 +27,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:uuid/uuid.dart';
 import "package:collection/collection.dart";
 
-class TenantController extends GetxController {
+class TenantController extends GetxController with StateMixin {
 
   RxList<NationalityModel> nationalityList = <NationalityModel>[].obs;
   RxList<SalutationModel> salutationList = <SalutationModel>[].obs;
@@ -353,25 +353,35 @@ setSpecificPaymentBalance(int balance){
 
 
   Future<void> fetchAllTenants() async {
-    isTenantListLoading(true);
+    // isTenantListLoading(true);
     try {
 
       final response = await AppConfig().supaBaseClient.from('tenants').select(
         'id, name, tenant_type_id, nation_id, tenant_no, created_by, organisation_id, business_type_id, description, documents(file_url, external_key, created_at), image, business_types(name), tenant_types(name), currency_symbol(country), tenant_profiles(email, date_of_birth, nin, gender, tenant_id, description, contact)'
       ).eq('organisation_id', userStorage.read('OrganizationId')) .order('created_at');
       final data = response as List<dynamic>;
-      print(response);
+      print('MY TENANTS RESPONSE: $response');
       print(response.length);
       print(data.length);
       print(data);
-      isTenantListLoading(false);
+      // isTenantListLoading(false);
 
-      return tenantList.assignAll(
+      tenantList.assignAll(
           data.map((json) => TenantModel.fromJson(json)).toList());
+      if(tenantList.isNotEmpty){
+        change(tenantList, status: RxStatus.success());
+      } else {
+        change(tenantList, status: RxStatus.empty());
 
-    } catch (error) {
+      }
+
+      // return tenantList.assignAll(
+      //     data.map((json) => TenantModel.fromJson(json)).toList());
+
+    } on PostgrestException catch (error) {
+      change(null, status: RxStatus.error('Error ${error.code}'));
       print('Error fetching Tenants Rent: $error');
-      isTenantListLoading(false);
+      // isTenantListLoading(false);
     }
 
   }
@@ -838,7 +848,7 @@ setSpecificPaymentBalance(int balance){
   }
 
 
-  void fetchOnlyAvailableUnits(int propertyId) async {
+  Future<void> fetchOnlyAvailableUnits(int propertyId) async {
 
     try {
 
@@ -1211,13 +1221,13 @@ setSpecificPaymentBalance(int balance){
   }
 
 
-  Future<void> getSpecificTenantUnits() async {
+  Future<void> getSpecificTenantUnits(int propertyId) async {
     isSpecificUnitsLoading(true);
     try {
 
       final response = await AppConfig().supaBaseClient.from('tenant_units').select(
-          'id, from_date, to_date, amount, tenant_id, unit_id, tenants(name), units(unit_number)'
-      ).eq('tenant_id', tenantId) .order('created_at', ascending: false);
+          'id, from_date, to_date, amount, tenant_id, unit_id, tenants(name), units(unit_number), property_id'
+      ).eq('tenant_id', tenantId).eq('property_id', propertyId).order('created_at', ascending: false);
 
       final data = response as List<dynamic>;
 

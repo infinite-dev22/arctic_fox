@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/models/property/property_model.dart';
 import 'package:smart_rent/styles/app_theme.dart';
+import 'package:smart_rent/utils/extra.dart';
+
 
 
 class PropertyCardWidget extends StatelessWidget {
@@ -11,6 +13,10 @@ class PropertyCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    var availablePercentage= ((propertyModel.propertyUnitModel!.available! / propertyModel.propertyUnitModel!.totalUnits!.toInt()) * 100).ceil();
+    var occupiedPercentage= ((propertyModel.propertyUnitModel!.occupied! / propertyModel.propertyUnitModel!.totalUnits!.toInt()) * 100).ceil();
+
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 1.h),
       child: ClipRRect(
@@ -72,12 +78,12 @@ class PropertyCardWidget extends StatelessWidget {
                             children: [
                               Image.asset('assets/property/bed.png'),
                               SizedBox(width: 2.w,),
-                              Text('40 units', style: AppTheme.descriptionText1,)
+                              Text('${propertyModel.propertyUnitModel!.totalUnits.toString()} units', style: AppTheme.descriptionText1,)
                             ],
                           ),
                           Row(
                             children: [
-                              Image.asset('assets/property/size.png'),
+                              Text('sqm'),
                               SizedBox(width: 2.w,),
                               Text(propertyModel.squareMeters.toString(), style: AppTheme.descriptionText1,)
                             ],
@@ -89,7 +95,7 @@ class PropertyCardWidget extends StatelessWidget {
                         children: [
                           Image.asset('assets/property/bed.png'),
                           SizedBox(width: 2.w,),
-                          Text('Occupancy - 65%', style: AppTheme.descriptionText1,)
+                          Text('Occupied - ${propertyModel.propertyUnitModel!.occupied.toString()} units ($occupiedPercentage%)', style: AppTheme.descriptionText1,)
                         ],
                       ),
 
@@ -97,16 +103,17 @@ class PropertyCardWidget extends StatelessWidget {
                         children: [
                           Image.asset('assets/property/bed.png'),
                           SizedBox(width: 2.w,),
-                          Text('Available - 15 units (35%', style: AppTheme.descriptionText1,)
+                          Text('Available - ${propertyModel.propertyUnitModel!.available.toString()} units (${availablePercentage}%)', style: AppTheme.descriptionText1,)
                         ],
                       ),
 
                       Row(
                         children: [
-                          Text('UGX 850,000', style: AppTheme.cardPrice1,),
+                          Text(amountFormatter.format(propertyModel.propertyUnitModel!.revenue.toString()), style: AppTheme.cardPrice1,),
                           Text('/ month', style: AppTheme.subText,),
                         ],
-                      )
+                      ),
+
 
                     ],
                   ),

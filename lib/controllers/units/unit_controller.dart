@@ -183,6 +183,18 @@ class UnitController extends GetxController {
       ) async {
     isAddUnitLoading(true);
     try {
+
+      final propertyUnitsResponse = await AppConfig().supaBaseClient.from('property_units').select().execute();
+      // final propertyUnitsData = propertyUnitsResponse as List<dynamic>;
+
+      final currentTotalUnits = propertyUnitsResponse.data![0]['total_units'] as int;
+      final currentAvailableUnits = propertyUnitsResponse.data![0]['available'] as int;
+
+      final updatedTotalUnits = currentTotalUnits + 1;
+      final updatedAvailableUnits = currentAvailableUnits + 1;
+
+      print('Property Units Add RESPONSE== $propertyUnitsResponse');
+
       final response =  await AppConfig().supaBaseClient.from('units').insert(
           {
             "unit_type" : unitTypeId,
@@ -198,12 +210,22 @@ class UnitController extends GetxController {
             // "updated_by" : updatedBy,
           }
       ).then((property) async{
-        await Get.put(TenantController()).fetchOnlyAvailableUnits(propertyId).then((value) {
-          isAddUnitLoading(false);
-          Get.back();
-          Get.snackbar('SUCCESS', 'Property added to your list',
-            titleText: Text('SUCCESS', style: AppTheme.greenTitle1,),
-          );
+        await AppConfig().supaBaseClient.from('property_units').update(
+            {
+              "total_units": updatedTotalUnits,
+              "available": updatedAvailableUnits,
+              "updated_by" : createdBy,
+            }
+        ).eq('property_id', propertyId).then((value) async{
+          await Get.put(TenantController()).fetchOnlyAvailableUnits(propertyId).then((value) async{
+            await Get.put(TenantController()).fetchAllPropertiesSpecificOrganization().then((value) async{
+              isAddUnitLoading(false);
+              Get.back();
+              Get.snackbar('SUCCESS', 'Property added to your list',
+                titleText: Text('SUCCESS', style: AppTheme.greenTitle1,),
+              );
+            });
+          });
         });
 
       });
@@ -272,18 +294,40 @@ class UnitController extends GetxController {
   Future<void> updateUnitStatusAvailable(UnitModel unitModel, int propertyId)async{
     isUpdateStatusLoading(true);
     try{
-      await AppConfig().supaBaseClient.from('units').update(
-          {
-            "is_available" : 1,
-          }
-      ).eq('id', unitModel.id).then((value) async{
-        await Get.put(TenantController()).fetchOnlyAvailableUnits(propertyId).then((value) {
-          isUpdateStatusLoading(false);
-          Get.back();
-          Fluttertoast.showToast(msg: '${unitModel.unitNumber} is now available', gravity: ToastGravity.TOP);
-        });
 
+
+      final propertyUnitsResponse = await AppConfig().supaBaseClient.from('property_units').select().execute();
+      // final propertyUnitsData = propertyUnitsResponse as List<dynamic>;
+
+      final currentAvailableUnits = propertyUnitsResponse.data![0]['available'] as int;
+      final currentOccupiedUnits = propertyUnitsResponse.data![0]['occupied'] as int;
+
+      final updatedAvailableUnits = currentAvailableUnits + 1;
+      final updatedOccupiedUnits = currentOccupiedUnits - 1;
+
+
+      print('Property Units Add RESPONSE== $propertyUnitsResponse');
+
+      await AppConfig().supaBaseClient.from('property_units').update(
+          {
+            "available": updatedAvailableUnits,
+            "occupied": updatedOccupiedUnits,
+          }
+      ).eq('property_id', propertyId).then((value) async{
+        await AppConfig().supaBaseClient.from('units').update(
+            {
+              "is_available" : 1,
+            }
+        ).eq('id', unitModel.id).then((value) async{
+          await Get.put(TenantController()).fetchOnlyAvailableUnits(propertyId).then((value) {
+            isUpdateStatusLoading(false);
+            Get.back();
+            Fluttertoast.showToast(msg: '${unitModel.unitNumber} is now available', gravity: ToastGravity.TOP);
+          });
+
+        });
       });
+
     } catch(error){
       isUpdateStatusLoading(false);
       print(error);

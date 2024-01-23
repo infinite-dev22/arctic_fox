@@ -1469,6 +1469,20 @@ setSpecificPaymentBalance(int balance){
     isAddTenantToUnitLoading(true);
 
     try {
+
+      final propertyUnitsResponse = await AppConfig().supaBaseClient.from('property_units').select().execute();
+      // final propertyUnitsData = propertyUnitsResponse as List<dynamic>;
+
+      final currentAvailableUnits = propertyUnitsResponse.data![0]['available'] as int;
+      final currentOccupiedUnits = propertyUnitsResponse.data![0]['occupied'] as int;
+      final currentRevenue = propertyUnitsResponse.data![0]['revenue'] as int;
+
+      final updatedAvailableUnits = currentAvailableUnits - 1;
+      final updatedOccupiedUnits = currentOccupiedUnits + 1;
+      final updatedRevenue  = currentRevenue + discount;
+
+      print('Property Units Add RESPONSE== $propertyUnitsResponse');
+
       final response =  await AppConfig().supaBaseClient.from('tenant_units').insert(
           {
             "amount" : amount,
@@ -1488,9 +1502,23 @@ setSpecificPaymentBalance(int balance){
             {
               "is_available" : 0,
             }
-        ).eq('id', unitId);
+        ).eq('id', unitId).then((value) async {
+          await AppConfig().supaBaseClient.from('property_units').update(
+              {
+                "available": updatedAvailableUnits,
+                "occupied": updatedOccupiedUnits,
+                "updated_by" : createdBy,
+                "revenue" : updatedRevenue,
+              }
+          ).eq('property_id', propertyId).then((value) async{
+            await Get.put(TenantController()).fetchAllPropertiesSpecificOrganization().then((value) async{
+              await addPaymentSchedule(periodList);
+            });
 
-        await addPaymentSchedule(periodList);
+          });
+        });
+
+        // await addPaymentSchedule(periodList);
 
         // Get.back();
         // Get.snackbar('SUCCESS', 'Tenant added to unit',
@@ -1952,14 +1980,13 @@ setSpecificPaymentBalance(int balance){
   }
 
 
-  fetchAllPropertiesSpecificOrganization() async {
+  Future<void> fetchAllPropertiesSpecificOrganization() async {
     isPropertyModelListLoading(true);
     try {
 
       final response = await AppConfig().supaBaseClient.from('properties').select(
-        'id, name, description, organisation_id, square_meters, property_type_id, category_type_id, location, main_image, documents!inner(*)'
-      )
-          .eq('organisation_id', userStorage.read('OrganizationId')).order('created_at');
+        'id, name, description, organisation_id, square_meters, property_type_id, category_type_id, location, main_image, documents!inner(*), property_units!inner(*))'
+      ).eq('organisation_id', userStorage.read('OrganizationId')).order('created_at');
       final data = response as List<dynamic>;
       print('my Properties are $response');
       print(response.length);
@@ -1970,8 +1997,9 @@ setSpecificPaymentBalance(int balance){
       return propertyModelList.assignAll(
           data.map((json) => PropertyModel.fromJson(json)).toList());
 
-    } catch (error) {
+    } on PostgrestException catch (error) {
       print('Error fetching Specific Organization Properties: $error');
+      print('Error fetching Specific Organization Properties details: ${error.details}');
       isPropertyModelListLoading(false);
     }
 

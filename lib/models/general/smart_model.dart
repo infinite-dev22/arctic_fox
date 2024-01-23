@@ -164,3 +164,12 @@ abstract class SmartEmployeePropertyModel {
 
 
 }
+
+abstract class SmartPropertyUnitModel {
+  int getId();
+  int getPropertyId();
+  int getTotalUnits();
+  int getAvailableUnits();
+  int getOccupiedUnits();
+  int getRevenue();
+}

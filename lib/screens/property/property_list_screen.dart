@@ -129,19 +129,6 @@ class _PropertyListScreenState extends State<PropertyListScreen> {
       appBar: AppImageHeader(
         isTitleCentred: true,
         title: 'assets/auth/srw.png',
-        // actions: [
-        //   Padding(
-        //     padding: EdgeInsets.only(right: 5.w),
-        //     child: Column(
-        //       mainAxisAlignment: MainAxisAlignment.start,
-        //       crossAxisAlignment: CrossAxisAlignment.center,
-        //       children: [
-        //         Image.asset('assets/home/profile.png'),
-        //         Text('Profile')
-        //       ],
-        //     ),
-        //   ),
-        // ],
       ),
 
       body: Padding(

@@ -10,8 +10,9 @@ class AppImageHeader extends StatelessWidget implements PreferredSizeWidget{
   final Widget? leading;
   final bool? isTitleCentred;
   final VoidCallback? backFunction;
+  final PreferredSizeWidget? bottom;
 
-  const AppImageHeader({super.key, required this.title,  this.actions,  this.leading, this.isTitleCentred, this.backFunction});
+  const AppImageHeader({super.key, required this.title,  this.actions,  this.leading, this.isTitleCentred, this.backFunction, this.bottom});
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +21,7 @@ class AppImageHeader extends StatelessWidget implements PreferredSizeWidget{
       automaticallyImplyLeading: false,
       title: Image.asset(title, width: 70.w, color: Colors.white,),
       centerTitle: isTitleCentred ?? false,
+      bottom: bottom,
       actions: actions ?? [
         Padding(
           padding: EdgeInsets.only(right: 5.w),

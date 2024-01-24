@@ -6,6 +6,7 @@ import 'package:smart_rent/controllers/tenants/tenant_controller.dart';
 import 'package:smart_rent/models/currency/currency_model.dart';
 import 'package:smart_rent/models/floor/floor_model.dart';
 import 'package:smart_rent/models/payment_schedule/payment_schedule_model.dart';
+import 'package:smart_rent/models/property/property_model.dart';
 import 'package:smart_rent/models/unit/unit_model.dart';
 import 'package:smart_rent/models/unit/unit_type_model.dart';
 import 'package:smart_rent/styles/app_theme.dart';
@@ -27,6 +28,10 @@ class UnitController extends GetxController {
   var isUpdateStatusLoading = false.obs;
   var isAddFloorLoading = false.obs;
   var isAddUnitLoading = false.obs;
+  var specificPropertyTotal = 0.obs;
+  var specificPropertiesAvailable = 0.obs;
+  var specificPropertiesOccupied= 0.obs;
+  var specificPropertyRevenue= 0.obs;
 
   @override
   void onInit() {
@@ -38,6 +43,26 @@ class UnitController extends GetxController {
     fetchAllCurrencies();
     // fetchAllPropertyUnits();
     // listenToUnitChanges();
+  }
+
+  setSpecificPropertyTotal(int total){
+    specificPropertyTotal.value = total;
+    print('New total is $total');
+  }
+
+  setSpecificPropertyRevenue(int revenue){
+    specificPropertyRevenue.value = revenue;
+    print('New total revenue is $revenue');
+  }
+
+  setSpecificPropertiesAvailable(int available){
+    specificPropertiesAvailable.value = available;
+    print('New available is $available');
+  }
+
+  setSpecificPropertiesOccupied(int occupied){
+    specificPropertiesOccupied.value = occupied;
+    print('New occupied is $occupied');
   }
 
   setUnitTypeId(int id){
@@ -241,6 +266,97 @@ class UnitController extends GetxController {
     }
 
 
+  }
+
+
+  countPropertyTotalUnits(PropertyModel propertyModel) async {
+    final response = await AppConfig().supaBaseClient.from('units').select().eq('property_id', propertyModel.id).execute();
+
+    print(response);
+    print(response);
+
+
+    // int rowCount = data.length;
+    print('MY property units count is == ${specificPropertyTotal.value}');
+    print('MY property units response is == ${response.data}');
+    print('MY property units length is == ${response.data.length}');
+
+    return response.data.length;
+  }
+
+
+  countPropertyAvailableUnits(PropertyModel propertyModel) async {
+    final response = await AppConfig().supaBaseClient.from('units').select().eq('is_available', true).eq('property_id', propertyModel.id);
+
+    final data = response as List<dynamic>;
+    print(response);
+    print(response);
+    print(data.length);
+    print(data);
+
+    setSpecificPropertiesAvailable(data.length);
+
+    int rowCount = data.length;
+    print('MY property available units count is == ${specificPropertiesAvailable.value}');
+
+    return rowCount;
+  }
+
+  countPropertyOccupiedUnits(PropertyModel propertyModel) async {
+    final response = await AppConfig().supaBaseClient.from('units').select().eq('is_available', false).eq('property_id', propertyModel.id);
+
+    final data = response as List<dynamic>;
+    print(response);
+    print(response);
+    print(data.length);
+    print(data);
+
+    setSpecificPropertiesAvailable(data.length);
+
+    int rowCount = data.length;
+    print('MY property occupied units count is == ${specificPropertiesOccupied.value}');
+
+    return rowCount;
+  }
+
+
+  countPropertyRevenue(PropertyModel propertyModel) async {
+    final response = await AppConfig().supaBaseClient.from('tenant_units').select('discount').eq('property_id', propertyModel.id);
+
+    final data = response as List<dynamic>;
+    print(response);
+    print(response);
+    print(data.length);
+    print(data);
+    print('new revenue == $data');
+    print('new revenue == ${data[0]}');
+    print('new discount == ${data[0]['discount']}');
+    // double sum = data[0]['discount'].fold(0, (previous, current) => previous + (current ?? 0));
+
+    int calculatedSum = 0;
+    for (var property in data) {
+      // Assuming the column contains integer values
+      calculatedSum += property['discount'] as int;
+    }
+
+
+    print('new calculated Sum == $calculatedSum');
+
+    // // Extract the values from the response
+    // List<dynamic> discountValues = data[0]['discount'];
+    //
+    // // Calculate the sum using the fold method
+    // double sum = discountValues.fold(0, (previous, current) => previous + (current ?? 0));
+    //
+    // int rowSum = sum.toInt();
+    // setSpecificPropertiesAvailable(rowSum);
+    //
+    //
+    // print('MY property revenue count is == ${rowSum}');
+    // print('MY property revenue count is == ${specificPropertyRevenue.value}');
+
+
+    return calculatedSum;
   }
 
   Future<void> fetchAllPropertyUnits(int propertyId) async {

@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:smart_rent/controllers/units/unit_controller.dart';
 import 'package:smart_rent/models/property/property_model.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 import 'package:smart_rent/utils/extra.dart';
@@ -9,13 +10,31 @@ import 'package:smart_rent/utils/extra.dart';
 
 class PropertyCardWidget extends StatelessWidget {
   final PropertyModel propertyModel;
-  const PropertyCardWidget({super.key,required this.propertyModel});
+  final UnitController unitController;
+  const PropertyCardWidget({super.key,required this.propertyModel, required this.unitController});
 
   @override
   Widget build(BuildContext context) {
 
-    var availablePercentage= ((propertyModel.propertyUnitModel!.available! / propertyModel.propertyUnitModel!.totalUnits!.toInt()) * 100).ceil();
-    var occupiedPercentage= ((propertyModel.propertyUnitModel!.occupied! / propertyModel.propertyUnitModel!.totalUnits!.toInt()) * 100).ceil();
+
+    // var availablePercentage= ((propertyModel.propertyUnitModel!.available! / propertyModel.propertyUnitModel!.totalUnits!.toInt()) * 100).ceil();
+    // var occupiedPercentage= ((propertyModel.propertyUnitModel!.occupied! / propertyModel.propertyUnitModel!.totalUnits!.toInt()) * 100).ceil();
+
+    double available = propertyModel.propertyUnitModel!.available!.toDouble();
+    double occupied = propertyModel.propertyUnitModel!.occupied!.toDouble();
+    double revenue = propertyModel.propertyUnitModel!.revenue!.toDouble();
+
+    // Calculate percentage
+    double availablePercentage = (available / revenue) * 100;
+    double occupiedPercentage = (occupied / revenue) * 100;
+
+    // Round off to two decimal places
+    double roundedAvailable = double.parse(availablePercentage.toStringAsFixed(2));
+    double roundedOccupied = double.parse(occupiedPercentage.toStringAsFixed(2));
+
+    // Print the result
+    print('The result as a percentage: $roundedAvailable%');
+    print('The result as a percentage: $roundedOccupied%');
 
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 1.h),
@@ -78,7 +97,11 @@ class PropertyCardWidget extends StatelessWidget {
                             children: [
                               Image.asset('assets/property/bed.png'),
                               SizedBox(width: 2.w,),
-                              Text('${propertyModel.propertyUnitModel!.totalUnits.toString()} units', style: AppTheme.descriptionText1,)
+                              // Text('${propertyModel.propertyUnitModel!.totalUnits.toString()} units', style: AppTheme.descriptionText1,)
+                              FutureBuilder(future: unitController.countPropertyTotalUnits(propertyModel),
+                                  builder: (context, snapshot){
+                                    return Text('${snapshot.data?.toString() ?? '0'} units', style: AppTheme.descriptionText1,);
+                                  }),
                             ],
                           ),
                           Row(
@@ -91,11 +114,16 @@ class PropertyCardWidget extends StatelessWidget {
                         ],
                       ),
 
+
+
                       Row(
                         children: [
                           Image.asset('assets/property/bed.png'),
                           SizedBox(width: 2.w,),
-                          Text('Occupied - ${propertyModel.propertyUnitModel!.occupied.toString()} units ($occupiedPercentage%)', style: AppTheme.descriptionText1,)
+                          FutureBuilder(future: unitController.countPropertyAvailableUnits(propertyModel),
+                              builder: (context, snapshot){
+                                return Text('Available - ${snapshot.data?.toString() ?? '0'}', style: AppTheme.descriptionText1,);
+                              }),
                         ],
                       ),
 
@@ -103,13 +131,18 @@ class PropertyCardWidget extends StatelessWidget {
                         children: [
                           Image.asset('assets/property/bed.png'),
                           SizedBox(width: 2.w,),
-                          Text('Available - ${propertyModel.propertyUnitModel!.available.toString()} units (${availablePercentage}%)', style: AppTheme.descriptionText1,)
-                        ],
+                          FutureBuilder(future: unitController.countPropertyOccupiedUnits(propertyModel),
+                              builder: (context, snapshot){
+                                return Text('Occupied - ${snapshot.data?.toString() ?? '0'}', style: AppTheme.descriptionText1,);
+                              }),                        ],
                       ),
 
                       Row(
                         children: [
-                          Text(amountFormatter.format(propertyModel.propertyUnitModel!.revenue.toString()), style: AppTheme.cardPrice1,),
+                          FutureBuilder(future: unitController.countPropertyRevenue(propertyModel),
+                              builder: (context, snapshot){
+                                return Text(amountFormatter.format('${snapshot.data?.toString() ?? ''}'), style: AppTheme.cardPrice1,);
+                              }),
                           Text('/ month', style: AppTheme.subText,),
                         ],
                       ),

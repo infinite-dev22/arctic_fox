@@ -515,6 +515,9 @@ class _HomePageState extends State<HomePage> {
                                               propertyDescriptionController
                                                   .clear();
                                               floorName == '';
+                                              _propertyModelCont.clearDropDown();
+                                              widget.tenantController.selectedPropertyId.value == 0;
+                                              widget.tenantController.setSelectedPropertyId(0);
                                             });
                                           }
 

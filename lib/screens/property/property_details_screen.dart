@@ -806,6 +806,10 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> with Tick
     widget.unitController.fetchAllFloors(widget.propertyModel.id!);
     widget.tenantController.fetchOnlyAvailableUnits(widget.propertyModel.id!);
     widget.unitController.listenToUnitChanges(widget.propertyModel.id!);
+    widget.unitController.countPropertyTotalUnits(widget.propertyModel);
+    widget.unitController.countPropertyAvailableUnits(widget.propertyModel);
+    widget.unitController.countPropertyOccupiedUnits(widget.propertyModel);
+    widget.unitController.countPropertyRevenue(widget.propertyModel);
   }
 
   @override

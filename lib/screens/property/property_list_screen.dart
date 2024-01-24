@@ -181,22 +181,22 @@ class _PropertyListScreenState extends State<PropertyListScreen> {
                       // var occupiedPercentage= ((propertyModel.propertyUnitModel!.occupied! / propertyModel.propertyUnitModel!.totalUnits!.toInt()) * 100).ceil();
 
 
-                      // Sample numbers
-                      double available = property.propertyUnitModel!.available!.toDouble();
-                      double occupied = property.propertyUnitModel!.occupied!.toDouble();
-                      double revenue = property.propertyUnitModel!.revenue!.toDouble();
-
-                      // Calculate percentage
-                      double availablePercentage = (available / revenue) * 100;
-                      double occupiedPercentage = (occupied / revenue) * 100;
-
-                      // Round off to two decimal places
-                      double roundedAvailable = double.parse(availablePercentage.toStringAsFixed(2));
-                      double roundedOccupied = double.parse(occupiedPercentage.toStringAsFixed(2));
-
-                      // Print the result
-                      print('The result as a percentage: $roundedAvailable%');
-                      print('The result as a percentage: $roundedOccupied%');
+                      // // Sample numbers
+                      // double available = property.propertyUnitModel!.available!.toDouble();
+                      // double occupied = property.propertyUnitModel!.occupied!.toDouble();
+                      // double revenue = property.propertyUnitModel!.revenue!.toDouble();
+                      //
+                      // // Calculate percentage
+                      // double availablePercentage = (available / revenue) * 100;
+                      // double occupiedPercentage = (occupied / revenue) * 100;
+                      //
+                      // // Round off to two decimal places
+                      // double roundedAvailable = double.parse(availablePercentage.toStringAsFixed(2));
+                      // double roundedOccupied = double.parse(occupiedPercentage.toStringAsFixed(2));
+                      //
+                      // // Print the result
+                      // print('The result as a percentage: $roundedAvailable%');
+                      // print('The result as a percentage: $roundedOccupied%');
 
 
                       return Bounceable(

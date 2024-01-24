@@ -128,26 +128,14 @@ class PropertyController extends GetxController {
             "main_image" : docResponse.data[0]['id'],
           }
       ).eq('id', response.data[0]['id']).then((value) async{
-        await AppConfig().supaBaseClient.from('property_units').insert(
-            {
-              "property_id" : response.data[0]['id'],
-              "total_units": 0,
-              "available": 0,
-              "occupied": 0,
-              "created_by" : createdBy,
-              "revenue" : 0,
-            }
-        ).then((value) {
-          print('MY DOCResponse == $docResponse');
-          print('MY DOCID == ${docResponse.data[0]['id']}');
+        print('MY DOCResponse == $docResponse');
+        print('MY DOCID == ${docResponse.data[0]['id']}');
 
-          Get.back();
-          Get.snackbar('Success', 'Added Property to your list');
-          isAddPropertyLoading(false);
-        });
+        Get.back();
+        Get.snackbar('Success', 'Added Property to your list');
+        isAddPropertyLoading(false);
 
       });
-
 
 
     } catch (error) {

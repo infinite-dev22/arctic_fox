@@ -20,21 +20,21 @@ class PropertyCardWidget extends StatelessWidget {
     // var availablePercentage= ((propertyModel.propertyUnitModel!.available! / propertyModel.propertyUnitModel!.totalUnits!.toInt()) * 100).ceil();
     // var occupiedPercentage= ((propertyModel.propertyUnitModel!.occupied! / propertyModel.propertyUnitModel!.totalUnits!.toInt()) * 100).ceil();
 
-    double available = propertyModel.propertyUnitModel!.available!.toDouble();
-    double occupied = propertyModel.propertyUnitModel!.occupied!.toDouble();
-    double revenue = propertyModel.propertyUnitModel!.revenue!.toDouble();
-
-    // Calculate percentage
-    double availablePercentage = (available / revenue) * 100;
-    double occupiedPercentage = (occupied / revenue) * 100;
-
-    // Round off to two decimal places
-    double roundedAvailable = double.parse(availablePercentage.toStringAsFixed(2));
-    double roundedOccupied = double.parse(occupiedPercentage.toStringAsFixed(2));
-
-    // Print the result
-    print('The result as a percentage: $roundedAvailable%');
-    print('The result as a percentage: $roundedOccupied%');
+    // double available = propertyModel.propertyUnitModel!.available!.toDouble();
+    // double occupied = propertyModel.propertyUnitModel!.occupied!.toDouble();
+    // double revenue = propertyModel.propertyUnitModel!.revenue!.toDouble();
+    //
+    // // Calculate percentage
+    // double availablePercentage = (available / revenue) * 100;
+    // double occupiedPercentage = (occupied / revenue) * 100;
+    //
+    // // Round off to two decimal places
+    // double roundedAvailable = double.parse(availablePercentage.toStringAsFixed(2));
+    // double roundedOccupied = double.parse(occupiedPercentage.toStringAsFixed(2));
+    //
+    // // Print the result
+    // print('The result as a percentage: $roundedAvailable%');
+    // print('The result as a percentage: $roundedOccupied%');
 
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 1.h),
@@ -100,7 +100,7 @@ class PropertyCardWidget extends StatelessWidget {
                               // Text('${propertyModel.propertyUnitModel!.totalUnits.toString()} units', style: AppTheme.descriptionText1,)
                               FutureBuilder(future: unitController.countPropertyTotalUnits(propertyModel),
                                   builder: (context, snapshot){
-                                    return Text('${snapshot.data?.toString() ?? '0'} units', style: AppTheme.descriptionText1,);
+                                    return Text('${snapshot.data?.toString() ?? '0'} ${snapshot.data?.toString() == '1' ? 'unit' : 'units'}', style: AppTheme.descriptionText1,);
                                   }),
                             ],
                           ),
@@ -120,10 +120,16 @@ class PropertyCardWidget extends StatelessWidget {
                         children: [
                           Image.asset('assets/property/bed.png'),
                           SizedBox(width: 2.w,),
-                          FutureBuilder(future: unitController.countPropertyAvailableUnits(propertyModel),
-                              builder: (context, snapshot){
-                                return Text('Available - ${snapshot.data?.toString() ?? '0'}', style: AppTheme.descriptionText1,);
-                              }),
+                          Row(
+                            children: [
+                              FutureBuilder(
+                                  future: unitController.countPropertyAvailableUnits(propertyModel),
+                                  builder: (context, snapshot){
+                                    return Text('Available - ${snapshot.data?.toString() ?? '0'} ${snapshot.data?.toString() == '1' ? 'unit' : 'units'} ', style: AppTheme.descriptionText1,);
+                                  }),
+
+                            ],
+                          ),
                         ],
                       ),
 
@@ -133,7 +139,7 @@ class PropertyCardWidget extends StatelessWidget {
                           SizedBox(width: 2.w,),
                           FutureBuilder(future: unitController.countPropertyOccupiedUnits(propertyModel),
                               builder: (context, snapshot){
-                                return Text('Occupied - ${snapshot.data?.toString() ?? '0'}', style: AppTheme.descriptionText1,);
+                                return Text('Occupied - ${snapshot.data?.toString() ?? '0'} ${snapshot.data?.toString() == '1' ? 'unit' : 'units'}', style: AppTheme.descriptionText1,);
                               }),                        ],
                       ),
 
@@ -141,7 +147,7 @@ class PropertyCardWidget extends StatelessWidget {
                         children: [
                           FutureBuilder(future: unitController.countPropertyRevenue(propertyModel),
                               builder: (context, snapshot){
-                                return Text(amountFormatter.format('${snapshot.data?.toString() ?? ''}'), style: AppTheme.cardPrice1,);
+                                return Text(amountFormatter.format('${snapshot.data?.toString() ?? '0'}'), style: AppTheme.cardPrice1,);
                               }),
                           Text('/ month', style: AppTheme.subText,),
                         ],

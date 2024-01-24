@@ -33,6 +33,13 @@ class UnitController extends GetxController {
   var specificPropertiesOccupied= 0.obs;
   var specificPropertyRevenue= 0.obs;
 
+  int? availableCount;
+  int? occupiedCount;
+  int? totalUnitsCount;
+  int? revenueCount;
+  double? availablePercentage;
+  double? occupiedPercentage;
+
   @override
   void onInit() {
     // TODO: implement onInit
@@ -209,17 +216,6 @@ class UnitController extends GetxController {
     isAddUnitLoading(true);
     try {
 
-      final propertyUnitsResponse = await AppConfig().supaBaseClient.from('property_units').select().execute();
-      // final propertyUnitsData = propertyUnitsResponse as List<dynamic>;
-
-      final currentTotalUnits = propertyUnitsResponse.data![0]['total_units'] as int;
-      final currentAvailableUnits = propertyUnitsResponse.data![0]['available'] as int;
-
-      final updatedTotalUnits = currentTotalUnits + 1;
-      final updatedAvailableUnits = currentAvailableUnits + 1;
-
-      print('Property Units Add RESPONSE== $propertyUnitsResponse');
-
       final response =  await AppConfig().supaBaseClient.from('units').insert(
           {
             "unit_type" : unitTypeId,
@@ -235,24 +231,15 @@ class UnitController extends GetxController {
             // "updated_by" : updatedBy,
           }
       ).then((property) async{
-        await AppConfig().supaBaseClient.from('property_units').update(
-            {
-              "total_units": updatedTotalUnits,
-              "available": updatedAvailableUnits,
-              "updated_by" : createdBy,
-            }
-        ).eq('property_id', propertyId).then((value) async{
-          await Get.put(TenantController()).fetchOnlyAvailableUnits(propertyId).then((value) async{
-            await Get.put(TenantController()).fetchAllPropertiesSpecificOrganization().then((value) async{
-              isAddUnitLoading(false);
-              Get.back();
-              Get.snackbar('SUCCESS', 'Property added to your list',
-                titleText: Text('SUCCESS', style: AppTheme.greenTitle1,),
-              );
-            });
+        await Get.put(TenantController()).fetchOnlyAvailableUnits(propertyId).then((value) async{
+          await Get.put(TenantController()).fetchAllPropertiesSpecificOrganization().then((value) async{
+            isAddUnitLoading(false);
+            Get.back();
+            Get.snackbar('SUCCESS', 'Property added to your list',
+              titleText: Text('SUCCESS', style: AppTheme.greenTitle1,),
+            );
           });
         });
-
       });
 
       if (response.error != null) {
@@ -277,11 +264,12 @@ class UnitController extends GetxController {
 
 
     // int rowCount = data.length;
+    totalUnitsCount = response.data.length;
     print('MY property units count is == ${specificPropertyTotal.value}');
     print('MY property units response is == ${response.data}');
     print('MY property units length is == ${response.data.length}');
 
-    return response.data.length;
+    return totalUnitsCount;
   }
 
 
@@ -296,10 +284,39 @@ class UnitController extends GetxController {
 
     setSpecificPropertiesAvailable(data.length);
 
+    // int rowCount = data.length;
+    availableCount = data.length;
+    print('MY property available units count is == ${specificPropertiesAvailable.value}');
+
+    return availableCount;
+  }
+
+  countPropertyAvailableUnitsPercentage(PropertyModel propertyModel) async {
+    final response = await AppConfig().supaBaseClient.from('units').select().eq('is_available', true).eq('property_id', propertyModel.id);
+
+    final data = response as List<dynamic>;
+    print(response);
+    print(data.length);
+    print(data);
+
+    setSpecificPropertiesAvailable(data.length);
+
+    double available = availableCount!.toDouble();
+    double total = totalUnitsCount!.toDouble();
+
+    // Calculate percentage
+    double availablePercentage = (available / total) * 100;
+
+    // Round off to two decimal places
+    double roundedAvailable = double.parse(availablePercentage.toStringAsFixed(2));
+
+    // Print the result
+    print('The result as a percentage: $roundedAvailable%');
+
     int rowCount = data.length;
     print('MY property available units count is == ${specificPropertiesAvailable.value}');
 
-    return rowCount;
+    return roundedAvailable;
   }
 
   countPropertyOccupiedUnits(PropertyModel propertyModel) async {
@@ -313,10 +330,11 @@ class UnitController extends GetxController {
 
     setSpecificPropertiesAvailable(data.length);
 
-    int rowCount = data.length;
+    // int rowCount = data.length;
+    occupiedCount = data.length;
     print('MY property occupied units count is == ${specificPropertiesOccupied.value}');
 
-    return rowCount;
+    return occupiedCount;
   }
 
 
@@ -411,37 +429,17 @@ class UnitController extends GetxController {
     isUpdateStatusLoading(true);
     try{
 
-
-      final propertyUnitsResponse = await AppConfig().supaBaseClient.from('property_units').select().execute();
-      // final propertyUnitsData = propertyUnitsResponse as List<dynamic>;
-
-      final currentAvailableUnits = propertyUnitsResponse.data![0]['available'] as int;
-      final currentOccupiedUnits = propertyUnitsResponse.data![0]['occupied'] as int;
-
-      final updatedAvailableUnits = currentAvailableUnits + 1;
-      final updatedOccupiedUnits = currentOccupiedUnits - 1;
-
-
-      print('Property Units Add RESPONSE== $propertyUnitsResponse');
-
-      await AppConfig().supaBaseClient.from('property_units').update(
+      await AppConfig().supaBaseClient.from('units').update(
           {
-            "available": updatedAvailableUnits,
-            "occupied": updatedOccupiedUnits,
+            "is_available" : 1,
           }
-      ).eq('property_id', propertyId).then((value) async{
-        await AppConfig().supaBaseClient.from('units').update(
-            {
-              "is_available" : 1,
-            }
-        ).eq('id', unitModel.id).then((value) async{
-          await Get.put(TenantController()).fetchOnlyAvailableUnits(propertyId).then((value) {
-            isUpdateStatusLoading(false);
-            Get.back();
-            Fluttertoast.showToast(msg: '${unitModel.unitNumber} is now available', gravity: ToastGravity.TOP);
-          });
-
+      ).eq('id', unitModel.id).then((value) async{
+        await Get.put(TenantController()).fetchOnlyAvailableUnits(propertyId).then((value) {
+          isUpdateStatusLoading(false);
+          Get.back();
+          Fluttertoast.showToast(msg: '${unitModel.unitNumber} is now available', gravity: ToastGravity.TOP);
         });
+
       });
 
     } catch(error){

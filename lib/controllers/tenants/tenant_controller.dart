@@ -158,7 +158,7 @@ class TenantController extends GetxController with StateMixin {
     fetchAllBusinessTypes();
     fetchAllPayments();
     // fetchNestedTenantsUnits();
-    listenToPropertyTenantListChanges();
+    // listenToPropertyTenantListChanges();
 listenToTenantPaymentChanges();
     listenToPropertyModelListChanges();
 // fetchAllPaymentSchedules();
@@ -429,11 +429,11 @@ setSpecificPaymentBalance(int balance){
 
   }
 
-  void fetchAllPropertyTenants() async {
+  void fetchAllPropertyTenants(int propertyId) async {
     isPropertyTenantLoading(true);
     try {
 
-      final response = await AppConfig().supaBaseClient.from('tenant_units').select().order('created_at', ascending: false);
+      final response = await AppConfig().supaBaseClient.from('tenant_units').select('*, tenants(*)').eq('property_id', propertyId).order('created_at', ascending: false);
       final data = response as List<dynamic>;
       print('PROPERTY ALL TENANT RESPONSE IS ${response}');
       print(response.length);
@@ -639,7 +639,7 @@ setSpecificPaymentBalance(int balance){
     Map<String, dynamic> groupedData = {};
 
     for (var item in propertyTenantList) {
-      var key = item.tenantId;
+      var key = item.tenantModel!.name;
       groupedData[key.toString()] = (groupedData[key] ?? 0) + 1;
 
       // if (groupedData.containsKey(key)) {
@@ -649,7 +649,7 @@ setSpecificPaymentBalance(int balance){
       // }
     }
 
-    print(groupedData);
+    print('Grouped property $groupedData');
     print(groupedData.length);
     return groupedData;
   }
@@ -793,13 +793,13 @@ setSpecificPaymentBalance(int balance){
   }
 
 
-  void listenToPropertyTenantListChanges() {
+  void listenToPropertyTenantListChanges(int propertyId) {
     // Set up real-time listener
     AppConfig().supaBaseClient
         .from('tenant_units')
         .stream(primaryKey: ['id'])
         .listen((List<Map<String, dynamic>> data) {
-          fetchAllPropertyTenants();
+          fetchAllPropertyTenants(propertyId);
 
     });
 
@@ -1470,19 +1470,6 @@ setSpecificPaymentBalance(int balance){
 
     try {
 
-      final propertyUnitsResponse = await AppConfig().supaBaseClient.from('property_units').select().execute();
-      // final propertyUnitsData = propertyUnitsResponse as List<dynamic>;
-
-      final currentAvailableUnits = propertyUnitsResponse.data![0]['available'] as int;
-      final currentOccupiedUnits = propertyUnitsResponse.data![0]['occupied'] as int;
-      final currentRevenue = propertyUnitsResponse.data![0]['revenue'] as int;
-
-      final updatedAvailableUnits = currentAvailableUnits - 1;
-      final updatedOccupiedUnits = currentOccupiedUnits + 1;
-      final updatedRevenue  = currentRevenue + discount;
-
-      print('Property Units Add RESPONSE== $propertyUnitsResponse');
-
       final response =  await AppConfig().supaBaseClient.from('tenant_units').insert(
           {
             "amount" : amount,
@@ -1503,19 +1490,10 @@ setSpecificPaymentBalance(int balance){
               "is_available" : 0,
             }
         ).eq('id', unitId).then((value) async {
-          await AppConfig().supaBaseClient.from('property_units').update(
-              {
-                "available": updatedAvailableUnits,
-                "occupied": updatedOccupiedUnits,
-                "updated_by" : createdBy,
-                "revenue" : updatedRevenue,
-              }
-          ).eq('property_id', propertyId).then((value) async{
-            await Get.put(TenantController()).fetchAllPropertiesSpecificOrganization().then((value) async{
-              await addPaymentSchedule(periodList);
-            });
-
+          await Get.put(TenantController()).fetchAllPropertiesSpecificOrganization().then((value) async{
+            await addPaymentSchedule(periodList);
           });
+
         });
 
         // await addPaymentSchedule(periodList);
@@ -1898,9 +1876,10 @@ setSpecificPaymentBalance(int balance){
 
     try {
 
-      final response = await AppConfig().supaBaseClient.from('payments').select().order('created_at');
+      final response = await AppConfig().supaBaseClient.from('payments').select('*, units(*), tenants(*)').order('created_at');
       final data = response as List<dynamic>;
       print(response);
+      print('MY PROPERTY Payments RESPONSE ==$response');
       print(response.length);
       print(data.length);
       print(data);
@@ -1985,7 +1964,7 @@ setSpecificPaymentBalance(int balance){
     try {
 
       final response = await AppConfig().supaBaseClient.from('properties').select(
-        'id, name, description, organisation_id, square_meters, property_type_id, category_type_id, location, main_image, documents!inner(*), property_units!inner(*))'
+        'id, name, description, organisation_id, square_meters, property_type_id, category_type_id, location, main_image, documents!inner(*)'
       ).eq('organisation_id', userStorage.read('OrganizationId')).order('created_at');
       final data = response as List<dynamic>;
       print('my Properties are $response');

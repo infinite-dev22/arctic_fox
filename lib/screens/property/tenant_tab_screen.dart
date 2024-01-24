@@ -1566,7 +1566,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                               ),
                             ),
                             title: Text(
-                              'Tenant $key',
+                              '${key}',
                               style: AppTheme.appTitle3,
                             ),
                             // subtitle: Text(

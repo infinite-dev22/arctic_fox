@@ -159,7 +159,7 @@ class TenantController extends GetxController with StateMixin {
     fetchAllPayments();
     // fetchNestedTenantsUnits();
     // listenToPropertyTenantListChanges();
-listenToTenantPaymentChanges();
+// listenToTenantPaymentChanges();
     listenToPropertyModelListChanges();
 // fetchAllPaymentSchedules();
     // listenToPropertyPaymentScheduleChanges();
@@ -1436,13 +1436,13 @@ setSpecificPaymentBalance(int balance){
 
   }
 
-  void listenToTenantPaymentChanges() {
+  void listenToTenantPaymentChanges(int propertyId) {
     // Set up real-time listener
     AppConfig().supaBaseClient
         .from('payments')
         .stream(primaryKey: ['id'])
         .listen((List<Map<String, dynamic>> data) {
-      fetchAllTenantPayments();
+      fetchAllTenantPayments(propertyId);
     });
 
   }
@@ -1871,12 +1871,12 @@ setSpecificPaymentBalance(int balance){
 
   }
 
-  void fetchAllTenantPayments() async {
+  void fetchAllTenantPayments(int propertyId) async {
     isTenantPaymentsLoading(true);
 
     try {
 
-      final response = await AppConfig().supaBaseClient.from('payments').select('*, units(*), tenants(*)').order('created_at');
+      final response = await AppConfig().supaBaseClient.from('payments').select('*, units(*), tenants(*)').eq('units.property_id', propertyId) .order('created_at');
       final data = response as List<dynamic>;
       print(response);
       print('MY PROPERTY Payments RESPONSE ==$response');

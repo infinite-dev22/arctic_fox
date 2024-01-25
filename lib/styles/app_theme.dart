@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:google_fonts/google_fonts.dart' as gf;
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 
@@ -49,85 +49,85 @@ class AppTheme{
 
 
 
-  static TextStyle get appTitleLarge => GoogleFonts.hind(
+  static TextStyle get appTitleLarge => gf.GoogleFonts.hind(
     color: blueTitleColor1,
     fontSize: 35.sp,
     fontWeight: FontWeight.w700,
   );
 
-  static TextStyle get appFieldTitle => GoogleFonts.karla(
+  static TextStyle get appFieldTitle => gf.GoogleFonts.karla(
     color: darkGray,
     fontSize: 16.sp,
     fontWeight: FontWeight.w400,
   );
 
-  static TextStyle get subText => GoogleFonts.hind(
+  static TextStyle get subText => gf.GoogleFonts.hind(
     color: greyTextColor1,
     fontSize: 18.sp,
     fontWeight: FontWeight.w400,
   );
 
-  static TextStyle get descriptionText1 => GoogleFonts.hind(
+  static TextStyle get descriptionText1 => gf.GoogleFonts.hind(
     color: foundationColor,
     fontSize: 18.sp,
     fontWeight: FontWeight.w400,
   );
 
-  static TextStyle get gray70Text => GoogleFonts.hind(
+  static TextStyle get gray70Text => gf.GoogleFonts.hind(
     color: gray70Color,
     fontSize: 18.sp,
     fontWeight: FontWeight.w400,
   );
 
-  static TextStyle get gray70Text2 => GoogleFonts.hind(
+  static TextStyle get gray70Text2 => gf.GoogleFonts.hind(
     color: gray70Color,
     fontSize: 16.sp,
     fontWeight: FontWeight.w400,
   );
 
-  static TextStyle get subTextInter1 => GoogleFonts.inter(
+  static TextStyle get subTextInter1 => gf.GoogleFonts.inter(
     color: gray60Color,
     fontSize: 18.sp,
     fontWeight: FontWeight.w400,
   );
 
-  static TextStyle get darkBlueText1 => GoogleFonts.hind(
+  static TextStyle get darkBlueText1 => gf.GoogleFonts.hind(
     color: darkBlueColor,
     fontSize: 18.sp,
     fontWeight: FontWeight.w500,
   );
 
-  static TextStyle get darkBlueTitle2 => GoogleFonts.hind(
+  static TextStyle get darkBlueTitle2 => gf.GoogleFonts.hind(
     color: darkBlueColor,
     fontSize: 20.sp,
     fontWeight: FontWeight.w500,
   );
 
-  static TextStyle get darkBlueTitle => GoogleFonts.hind(
+  static TextStyle get darkBlueTitle => gf.GoogleFonts.hind(
     color: darkBlueColor,
     fontSize: 22.5.sp,
     fontWeight: FontWeight.w700,
   );
 
-  static TextStyle get purpleText1 => GoogleFonts.hind(
+  static TextStyle get purpleText1 => gf.GoogleFonts.hind(
     color: purpleColor1,
     fontSize: 18.sp,
     fontWeight: FontWeight.w700,
   );
 
-  static TextStyle get orangeSubText => GoogleFonts.hind(
+  static TextStyle get orangeSubText => gf.GoogleFonts.hind(
     color: orange1,
     fontSize: 16.sp,
     fontWeight: FontWeight.w400,
   );
 
-  static TextStyle get subTextBold => GoogleFonts.hind(
+  static TextStyle get subTextBold => gf.GoogleFonts.hind(
     color: blackColor1,
     fontSize: 18.sp,
     fontWeight: FontWeight.w700,
   );
 
-  static TextStyle get subTextBold2 => GoogleFonts.hind(
+  static TextStyle get subTextBold2 => gf.GoogleFonts.hind(
     color: blackColor1,
     fontSize: 15.sp,
     fontWeight: FontWeight.w700,
@@ -135,107 +135,107 @@ class AppTheme{
 
 
 
-  static TextStyle get buttonText => GoogleFonts.hind(
+  static TextStyle get buttonText => gf.GoogleFonts.hind(
     color: whiteColor,
     fontSize: 18.sp,
     fontWeight: FontWeight.w700,
   );
 
-  static TextStyle get italicTitle => GoogleFonts.hind(
+  static TextStyle get italicTitle => gf.GoogleFonts.hind(
     color: blueTitleColor1,
     fontSize: 20.sp,
     fontWeight: FontWeight.w400,
     fontStyle: FontStyle.italic,
   );
 
-  static TextStyle get appTitle7 => GoogleFonts.hind(
+  static TextStyle get appTitle7 => gf.GoogleFonts.hind(
     color: blueTitleColor1,
     fontSize: 20.sp,
     fontWeight: FontWeight.bold,
     fontStyle: FontStyle.normal,
   );
 
-  static TextStyle get appTitle1 => GoogleFonts.hind(
+  static TextStyle get appTitle1 => gf.GoogleFonts.hind(
     color: blueTitleColor1,
     fontSize: 22.5.sp,
     fontWeight: FontWeight.w700,
   );
 
-  static TextStyle get greenTitle1 => GoogleFonts.hind(
+  static TextStyle get greenTitle1 => gf.GoogleFonts.hind(
     color: greenColor,
     fontSize: 20.sp,
     fontWeight: FontWeight.bold,
   );
 
-  static TextStyle get greenTitle2 => GoogleFonts.hind(
+  static TextStyle get greenTitle2 => gf.GoogleFonts.hind(
     color: greenColor,
     fontSize: 17.sp,
     fontWeight: FontWeight.bold,
   );
 
-  static TextStyle get appTitle2 => GoogleFonts.hind(
+  static TextStyle get appTitle2 => gf.GoogleFonts.hind(
     color: blueTitleColor1,
     fontSize: 25.sp,
     fontWeight: FontWeight.w700,
   );
 
-  static TextStyle get blueAppTitle => GoogleFonts.hind(
+  static TextStyle get blueAppTitle => gf.GoogleFonts.hind(
     color: AppTheme.primaryColor,
     fontSize: 25.sp,
     fontWeight: FontWeight.w700,
   );
 
-  static TextStyle get appTitle3 => GoogleFonts.hind(
+  static TextStyle get appTitle3 => gf.GoogleFonts.hind(
     color: blackColor2,
     fontSize: 20.sp,
     fontWeight: FontWeight.w700,
   );
 
-  static TextStyle get blueAppTitle3 => GoogleFonts.hind(
+  static TextStyle get blueAppTitle3 => gf.GoogleFonts.hind(
     color: blueTitleColor2,
     fontSize: 20.sp,
     fontWeight: FontWeight.w700,
   );
 
-  static TextStyle get appTitle4 => GoogleFonts.hind(
+  static TextStyle get appTitle4 => gf.GoogleFonts.hind(
     color: blackColor2,
     fontSize: 17.sp,
     fontWeight: FontWeight.w400,
   );
 
-  static TextStyle get appTitle5 => GoogleFonts.hind(
+  static TextStyle get appTitle5 => gf.GoogleFonts.hind(
     color: blackColor2,
     fontSize: 25.sp,
     fontWeight: FontWeight.w700,
   );
 
-  static TextStyle get appTitle6 => GoogleFonts.hind(
+  static TextStyle get appTitle6 => gf.GoogleFonts.hind(
     color: foundationColor,
     fontSize: 20.sp,
     fontWeight: FontWeight.w400,
   );
 
-  static TextStyle get cardPrice1 => GoogleFonts.hind(
+  static TextStyle get cardPrice1 => gf.GoogleFonts.hind(
     color: shadowColor,
     fontSize: 20.sp,
     fontWeight: FontWeight.w700,
   );
 
 
-  static TextStyle get blueSubText => GoogleFonts.hind(
+  static TextStyle get blueSubText => gf.GoogleFonts.hind(
     color: blueTitleColor2,
     fontSize: 17.5.sp,
     fontWeight: FontWeight.bold,
   );
 
-  static TextStyle get blackSubText => GoogleFonts.hind(
+  static TextStyle get blackSubText => gf.GoogleFonts.hind(
     color: Colors.black,
     fontSize: 17.5.sp,
     fontWeight: FontWeight.bold,
   );
 
 
-  static TextStyle get subTextBold1 => GoogleFonts.hind(
+  static TextStyle get subTextBold1 => gf.GoogleFonts.hind(
     color: darkGray,
     fontSize: 17.5.sp,
     fontWeight: FontWeight.w700,

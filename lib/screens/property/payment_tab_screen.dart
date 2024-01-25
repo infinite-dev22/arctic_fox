@@ -801,6 +801,8 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                             //     height: 1.h,);
                             // }),
 
+
+
                             Obx(() {
                               return MultiSelectDropDown(
                                 inputDecoration: BoxDecoration(
@@ -821,7 +823,6 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                                         .schedules.value}');
                               print('My element = $element');
                               print('My options = $options');
-
 
                                     // print(element.value.id);
                                     // tenantController.setSpecificScheduleId(
@@ -886,6 +887,9 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
 
                               );
                             }),
+
+
+
 
                             SizedBox(height: 1.h,),
 

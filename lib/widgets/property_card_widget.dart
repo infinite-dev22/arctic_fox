@@ -11,7 +11,8 @@ import 'package:smart_rent/utils/extra.dart';
 class PropertyCardWidget extends StatelessWidget {
   final PropertyModel propertyModel;
   final UnitController unitController;
-  const PropertyCardWidget({super.key,required this.propertyModel, required this.unitController});
+  final int index;
+  const PropertyCardWidget({super.key,required this.propertyModel, required this.unitController, required this.index});
 
   @override
   Widget build(BuildContext context) {
@@ -145,7 +146,7 @@ class PropertyCardWidget extends StatelessWidget {
 
                       Row(
                         children: [
-                          FutureBuilder(future: unitController.countPropertyRevenue(propertyModel),
+                          FutureBuilder(future: unitController.countPropertyRevenue(propertyModel, index),
                               builder: (context, snapshot){
                                 return Text(amountFormatter.format('${snapshot.data?.toString() ?? '0'}'), style: AppTheme.cardPrice1,);
                               }),

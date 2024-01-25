@@ -208,6 +208,7 @@ class _PropertyListScreenState extends State<PropertyListScreen> {
                                   tenantController: widget.tenantController,));
                           },
                           child: SlideInUp(child: PropertyCardWidget(
+                            index: index,
                             propertyModel: property,
                             unitController: widget.unitController,
                           )));

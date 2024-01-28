@@ -433,7 +433,7 @@ setSpecificPaymentBalance(int balance){
     isPropertyTenantLoading(true);
     try {
 
-      final response = await AppConfig().supaBaseClient.from('tenant_units').select('*, tenants(*)').eq('property_id', propertyId).order('created_at', ascending: false);
+      final response = await AppConfig().supaBaseClient.from('tenant_units').select('*, tenants(*, documents(*), currency_symbol(*), tenant_types(*), business_types(*))').eq('property_id', propertyId).order('created_at', ascending: false);
       final data = response as List<dynamic>;
       print('PROPERTY ALL TENANT RESPONSE IS ${response}');
       print(response.length);
@@ -445,7 +445,7 @@ setSpecificPaymentBalance(int balance){
           data.map((json) => PropertyTenantModel.fromJson(json)).toList());
 
     } catch (error) {
-      print('Error fetching Tenants: $error');
+      print('Error fetching property Tenants units: $error');
       isPropertyTenantLoading(false);
     }
 
@@ -633,26 +633,58 @@ setSpecificPaymentBalance(int balance){
 
 
 
-  Map<String, dynamic> groupAllPropertyTenants() {
+  // Map<String, dynamic> groupAllPropertyTenants() {
+  //
+  //
+  //   Map<String, dynamic> groupedData = {};
+  //
+  //   for (var item in propertyTenantList) {
+  //     var key = item.tenantModel!.name;
+  //     groupedData[key.toString()] = (groupedData[key] ?? 0) + 1;
+  //
+  //     // if (groupedData.containsKey(key)) {
+  //     //   groupedData[key.toString()] += 1;
+  //     // } else {
+  //     //   groupedData[key.toString()] = 1;
+  //     // }
+  //   }
+  //
+  //   print('Grouped property $groupedData');
+  //   print(groupedData.length);
+  //   return groupedData;
+  // }
 
 
-    Map<String, dynamic> groupedData = {};
+  // Map<String, dynamic> groupAllPropertyTenants() {
+  //
+  //
+  //   Map<String, dynamic> groupedData = {};
+  //
+  //   for (var item in propertyTenantList) {
+  //     var key = item.tenantModel!.name;
+  //     groupedData[key.toString()] = (groupedData[key] ?? 0) + 1;
+  //
+  //     // if (groupedData.containsKey(key)) {
+  //     //   groupedData[key.toString()] += 1;
+  //     // } else {
+  //     //   groupedData[key.toString()] = 1;
+  //     // }
+  //   }
+  //
+  //   print('Grouped property $groupedData');
+  //   print(groupedData.length);
+  //   return groupedData;
+  // }
 
-    for (var item in propertyTenantList) {
-      var key = item.tenantModel!.name;
-      groupedData[key.toString()] = (groupedData[key] ?? 0) + 1;
-
-      // if (groupedData.containsKey(key)) {
-      //   groupedData[key.toString()] += 1;
-      // } else {
-      //   groupedData[key.toString()] = 1;
-      // }
+  Map<K, List<V>> groupAllPropertyTenants<K, V>(List<V> list, K Function(V) getKey) {
+    final Map<K, List<V>> groupedData = {};
+    for (final element in list) {
+      final key = getKey(element);
+      groupedData.putIfAbsent(key, () => []).add(element);
     }
-
-    print('Grouped property $groupedData');
-    print(groupedData.length);
     return groupedData;
   }
+
 
 
   void fetchAllPaymentSchedules(int tenantId) async {
@@ -1876,7 +1908,8 @@ setSpecificPaymentBalance(int balance){
 
     try {
 
-      final response = await AppConfig().supaBaseClient.from('payments').select('*, units(*), tenants(*)').eq('units.property_id', propertyId) .order('created_at');
+      // final response = await AppConfig().supaBaseClient.from('payments').select('*, units(*), tenants(*)').eq('units.property_id', propertyId).eq('tenants.organisation_id', userStorage.read('OrganizationId')).order('created_at');
+      final response = await AppConfig().supaBaseClient.from('payments').select('*, units!inner(*), tenants!inner(*)').eq('units.property_id', propertyId).eq('tenants.organisation_id', userStorage.read('OrganizationId')).order('created_at');
       final data = response as List<dynamic>;
       print(response);
       print('MY PROPERTY Payments RESPONSE ==$response');
@@ -1892,7 +1925,35 @@ setSpecificPaymentBalance(int balance){
       print('Error fetching tenant payments: $error');
     }
 
+  }
 
+  Map<K, List<V>> groupAllTenantPayments<K, V>(List<V> list, K Function(V) getKey) {
+    final Map<K, List<V>> groupedData = {};
+    for (final element in list) {
+      final key = getKey(element);
+      groupedData.putIfAbsent(key, () => []).add(element);
+    }
+    return groupedData;
+  }
+
+  callAllTenantsPaymentsFunction() async{
+    print('Tenants Payments function response ==');
+
+    var tenantPaymentResponse = await AppConfig()
+        .supaBaseClient
+        .rpc('grouped_payments');
+    // var response;
+    // await AppConfig()
+    //     .supaBaseClient
+    //     .rpc('property_revenue', params: {"arg_id": propertyModel.organisationId})
+    //     .then((value) => response = value[index])
+    //     .onError((error, stackTrace) {
+    //   print(error);
+    //   print(stackTrace);
+    // });
+
+    print('Tenants Payments function response == is $tenantPaymentResponse');
+    return tenantPaymentResponse;
   }
 
 

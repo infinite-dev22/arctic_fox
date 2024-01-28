@@ -11,6 +11,7 @@ abstract class SmartTenantTypeModel {
 abstract class SmartUnitModel {
   int getId();
   String getUnitNumber();
+  String getUnitName();
   int getFloorId();
   String getDescription();
   int getPeriodId();

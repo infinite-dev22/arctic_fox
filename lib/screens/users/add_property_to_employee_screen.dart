@@ -148,7 +148,7 @@ class _AddPropertyToEmployeeScreenState extends State<AddPropertyToEmployeeScree
                   AppPasswordTextField(
                     controller: passwordEditingController,
                     hintText: 'Password',
-                    fillColor: AppTheme.appBgColor,
+                    fillColor: AppTheme.appWidgetColor,
                     // validator: passwordValidator,
                   ),
 

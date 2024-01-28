@@ -4,6 +4,7 @@
 
 import 'dart:convert';
 
+import 'package:smart_rent/models/floor/floor_model.dart';
 import 'package:smart_rent/models/general/smart_model.dart';
 
 
@@ -108,6 +109,7 @@ String unitModelToJson(UnitModel data) => json.encode(data.toJson());
 class UnitModel extends SmartUnitModel{
   int? id;
   String? unitNumber;
+  String? name;
   int? floorId;
   dynamic amount;
   int? unitType;
@@ -115,10 +117,12 @@ class UnitModel extends SmartUnitModel{
   String? description;
   int? periodId;
   int? propertyId;
+  FloorModel? floorModel;
 
   UnitModel({
     required this.id,
     required this.unitNumber,
+    required this.name,
     required this.floorId,
     required this.amount,
     required this.unitType,
@@ -126,11 +130,13 @@ class UnitModel extends SmartUnitModel{
     required this.description,
     required this.periodId,
     required this.propertyId,
+    required this.floorModel,
   });
 
   factory UnitModel.fromJson(Map<String, dynamic> json) => UnitModel(
     id: json["id"],
     unitNumber: json["unit_number"],
+    name: json["name"],
     floorId: json["floor_id"],
     amount: json["amount"],
     unitType: json["unit_type"],
@@ -138,11 +144,13 @@ class UnitModel extends SmartUnitModel{
     description: json["description"],
     periodId: json["period_id"],
     propertyId: json["property_id"],
+    floorModel: json["floors"] == null ? null : FloorModel.fromJson(json["floors"]),
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
     "unit_number": unitNumber,
+    "name": name,
     "floor_id": floorId,
     "amount": amount,
     "unit_type": unitType,
@@ -150,6 +158,7 @@ class UnitModel extends SmartUnitModel{
     "description": description,
     "period_id": periodId,
     "property_id": propertyId,
+    "floors": floorModel?.toJson(),
   };
 
   @override
@@ -186,5 +195,9 @@ class UnitModel extends SmartUnitModel{
 
   @override
   int getUnitType() { return unitType!;
+  }
+
+  @override
+  String getUnitName() { return name!;
   }
 }

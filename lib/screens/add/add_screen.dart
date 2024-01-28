@@ -368,7 +368,7 @@ class _AddScreenState extends State<AddScreen> {
                                       ),
                                       border: InputBorder.none,
                                       filled: true,
-                                      fillColor: AppTheme.appBgColor,
+                                      fillColor: AppTheme.appWidgetColor,
                                       hintText: 'Enter Your Phone',
                                       enabledBorder: InputBorder.none,
                                       focusedBorder: InputBorder.none,
@@ -383,7 +383,7 @@ class _AddScreenState extends State<AddScreen> {
                                 AppPasswordTextField(
                                   controller: passwordEditingController,
                                   hintText: 'Password',
-                                  fillColor: AppTheme.appBgColor,
+                                  fillColor: AppTheme.appWidgetColor,
                                   // validator: passwordValidator,
                                 ),
                                 SizedBox(
@@ -392,7 +392,7 @@ class _AddScreenState extends State<AddScreen> {
                                 AppPasswordTextField(
                                   controller: confirmPasswordEditingController,
                                   hintText: 'Confirm Password',
-                                  fillColor: AppTheme.appBgColor,
+                                  fillColor: AppTheme.appWidgetColor,
                                   // validator: (val) => MatchValidator(errorText: 'passwords do not match').validateMatch(val.toString(), ),
                                 ),
                               ],

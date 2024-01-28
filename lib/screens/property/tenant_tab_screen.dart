@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:date_picker_plus/date_picker_plus.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
@@ -260,8 +261,8 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
           snappings: [0.9],
           positioning: SnapPositioning.relativeToAvailableSpace,
         ),
-        headerBuilder: (context, state){
-          return                 Material(
+        headerBuilder: (context, state) {
+          return Material(
             elevation: 1,
             child: Container(
               width: MediaQuery
@@ -400,11 +401,13 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
                                   selectedDate2.value.toString(),
                                   // date2Controller.text.trim().toString(),
                                   int.parse(
-                                      amountController.text.replaceAll(',', '').toString()),
+                                      amountController.text.replaceAll(',', '')
+                                          .toString()),
                                   int.parse(
-                                      discountController.text.replaceAll(',', '').toString()),
+                                      discountController.text.replaceAll(
+                                          ',', '').toString()),
                                   dividedAmounts,
-                                widget.propertyModel.id!
+                                  widget.propertyModel.id!
 
                               ).then((value) async {
                                 tenantController.tenantId.value == 0;
@@ -631,713 +634,766 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
           );
         },
         builder: (context, state) {
-          return StatefulBuilder(builder: (BuildContext context, StateSetter setState){
-            return Material(
-              color: AppTheme.whiteColor,
-              child: Column(
-                children: [
+          return StatefulBuilder(
+              builder: (BuildContext context, StateSetter setState) {
+                return Material(
+                  color: AppTheme.whiteColor,
+                  child: Column(
+                    children: [
 
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 1.h),
-                    child: SingleChildScrollView(
-                      child: Form(
-                        key: _formKey,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              height: 1.h,
-                            ),
-                            //
-                            // Obx(() {
-                            //   return CustomApiGenericTenantModelDropdown(
-                            //     hintText: 'Select Tenant',
-                            //     menuItems: tenantController.tenantList.value,
-                            //     onChanged: (value) {
-                            //       tenantController.setTenantId(value!.id);
-                            //     },
-                            //   );
-                            // }),
-
-
-                            Obx(() {
-                              return SearchableTenantDropDown<TenantModel>(
-                                hintText: 'Tenant',
-                                menuItems: tenantController.tenantList.value,
-                                controller: _cnt,
-                                onChanged: (value) {
-                                  print(value.value.id);
-                                  tenantController.setTenantId(value.value.id);
-                                  print(
-                                      'MY TEnant is ${tenantController.tenantId
-                                          .value}');
-                                },
-                              );
-                            }),
-
-                            // Obx(() {
-                            //   return SearchableUnitDropDown<UnitModel>(
-                            //     hintText: 'Unit',
-                            //     menuItems: tenantController.unitList.value,
-                            //     controller: _unitCont,
-                            //     onChanged: (value) {
-                            //       print(value.value.id);
-                            //       tenantController.setUnitId(value.value.id);
-                            //       tenantController
-                            //           .setUnitAmount(value.value.amount);
-                            //       amountController.text =
-                            //           value.value.amount.toString();
-                            //       discountController.text =
-                            //           value.value.amount.toString();
-                            //       print(
-                            //           'MY Unit is ${tenantController.unitId
-                            //               .value}');
-                            //       print(
-                            //           'MY Amount is ${tenantController.unitAmount
-                            //               .value}');
-                            //     },
-                            //   );
-                            // }),
-
-
-                            Obx(() {
-                              return SearchableUnitDropDown<UnitModel>(
-                                hintText: 'Unit',
-                                menuItems: tenantController.specificUnitList
-                                    .value,
-                                controller: _unitCont,
-                                onChanged: (value) {
-                                  print(value.value.id);
-                                  tenantController.setSpecificUnitId(
-                                      value.value.id);
-                                  tenantController
-                                      .setUnitAmount(value.value.amount);
-                                  amountController.text =
-                                      amountFormatter.format(value.value.amount.toString());
-                                  discountController.text =
-                                      amountFormatter.format(value.value.amount.toString());
-                                  print(
-                                      'MY Unit is ${tenantController
-                                          .specificUnitId
-                                          .value}');
-                                  print(
-                                      'MY Amount is ${tenantController.unitAmount
-                                          .value}');
-                                },
-                              );
-                            }),
-
-
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 5.w, vertical: 1.h),
+                        child: SingleChildScrollView(
+                          child: Form(
+                            key: _formKey,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 SizedBox(
-                                  width: 42.5.w,
-                                  child: Obx(() {
-                                    return CustomPeriodApiGenericDropdown<
-                                        PaymentScheduleModel>(
-                                      hintText: 'Per Month',
-                                      menuItems:
-                                      tenantController.paymentList.value,
-                                      onChanged: (value) {
-                                        tenantController
-                                            .setPaymentScheduleId(value!.id!);
-
-                                        if (tenantController
-                                            .paymentScheduleId.value ==
-                                            1) {
-                                          var myDays =
-                                          dailyController.text.isEmpty
-                                              ? 1 * 1
-                                              : int.tryParse(
-                                              dailyController.text)! *
-                                              1;
-
-                                          if (dailyController.text.toString() ==
-                                              '0') {
-                                            Fluttertoast.showToast(
-                                                msg: 'Enter Right Day',
-                                                gravity: ToastGravity.TOP);
-                                          } else {
-                                            print(
-                                                'MY myDays are == ${dailyController
-                                                    .text.toString()}');
-                                            print('Count myDays ' +
-                                                myDays.toString());
-                                            selectedDate2.value = DateTime(
-                                                selectedDate1.value.year,
-                                                selectedDate1.value.month,
-                                                selectedDate1.value.day + myDays);
-                                            date2Controller.text =
-                                            '${DateFormat('MM/dd/yyyy').format(
-                                                DateTime(selectedDate1.value.year,
-                                                    selectedDate1.value.month,
-                                                    selectedDate1.value.day +
-                                                        myDays))}';
-                                            print(
-                                                'my seelected date ${selectedDate2
-                                                    .value}');
-                                            print(
-                                                'my date date ${date2Controller
-                                                    .text}');
-                                          }
-                                        } else if (tenantController
-                                            .paymentScheduleId.value ==
-                                            2) {
-                                          var myWeeks = weeklyController
-                                              .text.isEmpty
-                                              ? 1 * 7
-                                              : int.tryParse(
-                                              weeklyController.text)! *
-                                              7;
-
-                                          if (weeklyController.text.toString() ==
-                                              '0') {
-                                            Fluttertoast.showToast(
-                                                msg: 'Enter Right week',
-                                                gravity: ToastGravity.TOP);
-                                          } else {
-                                            print(
-                                                'MY WEEKs are == ${weeklyController
-                                                    .text.toString()}');
-                                            print('Count Weeks ' +
-                                                myWeeks.toString());
-                                            selectedDate2.value = DateTime(
-                                                selectedDate1.value.year,
-                                                selectedDate1.value.month,
-                                                selectedDate1.value.day +
-                                                    myWeeks);
-                                            date2Controller.text =
-                                            '${DateFormat('MM/dd/yyyy').format(
-                                                DateTime(selectedDate1.value.year,
-                                                    selectedDate1.value.month,
-                                                    selectedDate1.value.day +
-                                                        myWeeks))}';
-                                          }
-                                        } else if (tenantController
-                                            .paymentScheduleId.value ==
-                                            3) {
-                                          var myMonths = monthlyController
-                                              .text.isEmpty
-                                              ? 1 * 1
-                                              : int.tryParse(
-                                              monthlyController.text)! *
-                                              1;
-
-                                          if (monthlyController.text.toString() ==
-                                              '0') {
-                                            Fluttertoast.showToast(
-                                                msg: 'Enter Right Month',
-                                                gravity: ToastGravity.TOP);
-                                          } else {
-                                            print(
-                                                'MY myMonths are == ${monthlyController
-                                                    .text.toString()}');
-                                            print('Count myMonths ' +
-                                                myMonths.toString());
-                                            selectedDate2.value = DateTime(
-                                                selectedDate1.value.year,
-                                                selectedDate1.value.month +
-                                                    myMonths,
-                                                selectedDate1.value.day);
-                                            date2Controller.text =
-                                            '${DateFormat('MM/dd/yyyy').format(
-                                                DateTime(selectedDate1.value.year,
-                                                    selectedDate1.value.month +
-                                                        myMonths,
-                                                    selectedDate1.value.day))}';
-                                          }
-                                        } else if (tenantController
-                                            .paymentScheduleId.value ==
-                                            4) {
-                                          var myYears = yearlyController
-                                              .text.isEmpty
-                                              ? 1 * 1
-                                              : int.tryParse(
-                                              yearlyController.text)! *
-                                              1;
-
-                                          if (yearlyController.text.toString() ==
-                                              '0') {
-                                            Fluttertoast.showToast(
-                                                msg: 'Enter Right years',
-                                                gravity: ToastGravity.TOP);
-                                          } else {
-                                            print(
-                                                'MY myYears are == ${yearlyController
-                                                    .text.toString()}');
-                                            print('Count myYears ' +
-                                                myYears.toString());
-                                            selectedDate2.value = DateTime(
-                                                selectedDate1.value.year +
-                                                    myYears,
-                                                selectedDate1.value.month,
-                                                selectedDate1.value.day);
-                                            date2Controller.text =
-                                            '${DateFormat('MM/dd/yyyy').format(
-                                                DateTime(selectedDate1.value
-                                                    .year + myYears, selectedDate1
-                                                    .value.month, selectedDate1
-                                                    .value.day))}';
-                                          }
-                                        } else {
-                                          // date2Controller.text = '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day))}';
-                                        }
-                                      },
-                                    );
-                                  }),
+                                  height: 1.h,
                                 ),
-                                tenantController.paymentScheduleId.value == 10
-                                    ? SizedBox(
-                                  child: Obx(() {
-                                    return AuthTextField(
-                                      controller: tenantController
-                                          .paymentScheduleId
-                                          .value ==
-                                          10
-                                          ? lumpSumController
-                                          : TextEditingController(
-                                          text: null),
-                                      hintText: 'Enter LumpSum',
-                                      obscureText: false,
-                                    );
-                                  }),
-                                  width: 42.5.w,
-                                )
-                                    : Container(),
-                                SizedBox(
-                                  child: Obx(() {
-                                    return AuthTextField(
-                                      controller: tenantController
-                                          .paymentScheduleId.value ==
-                                          1
-                                          ? dailyController
-                                          : tenantController
-                                          .paymentScheduleId.value ==
-                                          2
-                                          ? weeklyController
-                                          : tenantController.paymentScheduleId
-                                          .value ==
-                                          3
-                                          ? monthlyController
-                                          : tenantController
-                                          .paymentScheduleId
-                                          .value ==
-                                          4
-                                          ? yearlyController
-                                          : TextEditingController(
-                                          text: null),
-                                      hintText: tenantController
-                                          .paymentScheduleId.value ==
-                                          1
-                                          ? 'Enter No. Of Days'
-                                          : tenantController
-                                          .paymentScheduleId.value ==
-                                          2
-                                          ? 'Enter No. Of Weeks'
-                                          : tenantController.paymentScheduleId
-                                          .value ==
-                                          3
-                                          ? 'Enter No. Of Months'
-                                          : tenantController
-                                          .paymentScheduleId
-                                          .value ==
-                                          4
-                                          ? 'Enter No. Of Years'
-                                          : 'Specific Period',
-                                      obscureText: false,
-                                      keyBoardType: TextInputType.number,
-                                      onChanged: (value) {
-                                        if (tenantController
-                                            .paymentScheduleId.value ==
-                                            1) {
-                                          var myDays =
-                                          dailyController.text.isEmpty
-                                              ? 1 * 1
-                                              : int.tryParse(
-                                              dailyController.text)! *
-                                              1;
-
-                                          if (dailyController.text.toString() ==
-                                              '0') {
-                                            Fluttertoast.showToast(
-                                                msg: 'Enter Right Day',
-                                                gravity: ToastGravity.TOP);
-                                          } else {
-                                            print(
-                                                'MY myDays are == ${dailyController
-                                                    .text.toString()}');
-                                            print('Count myDays ' +
-                                                myDays.toString());
-                                            selectedDate2.value = DateTime(
-                                                selectedDate1.value.year,
-                                                selectedDate1.value.month,
-                                                selectedDate1.value.day + myDays);
-                                            date2Controller.text =
-                                            '${DateFormat('MM/dd/yyyy').format(
-                                                DateTime(selectedDate1.value.year,
-                                                    selectedDate1.value.month,
-                                                    selectedDate1.value.day +
-                                                        myDays))}';
-                                            print(
-                                                'my seelected date ${selectedDate2
-                                                    .value}');
-                                            print(
-                                                'my date date ${date2Controller
-                                                    .text}');
-                                          }
-                                        } else if (tenantController
-                                            .paymentScheduleId.value ==
-                                            2) {
-                                          var myWeeks = weeklyController
-                                              .text.isEmpty
-                                              ? 1 * 7
-                                              : int.tryParse(
-                                              weeklyController.text)! *
-                                              7;
-
-                                          if (weeklyController.text.toString() ==
-                                              '0') {
-                                            Fluttertoast.showToast(
-                                                msg: 'Enter Right week',
-                                                gravity: ToastGravity.TOP);
-                                          } else {
-                                            print(
-                                                'MY WEEKs are == ${weeklyController
-                                                    .text.toString()}');
-                                            print('Count Weeks ' +
-                                                myWeeks.toString());
-                                            selectedDate2.value = DateTime(
-                                                selectedDate1.value.year,
-                                                selectedDate1.value.month,
-                                                selectedDate1.value.day +
-                                                    myWeeks);
-                                            date2Controller.text =
-                                            '${DateFormat('MM/dd/yyyy').format(
-                                                DateTime(selectedDate1.value.year,
-                                                    selectedDate1.value.month,
-                                                    selectedDate1.value.day +
-                                                        myWeeks))}';
-                                          }
-                                        } else if (tenantController
-                                            .paymentScheduleId.value ==
-                                            3) {
-                                          var myMonths = monthlyController
-                                              .text.isEmpty
-                                              ? 1 * 1
-                                              : int.tryParse(
-                                              monthlyController.text)! *
-                                              1;
-
-                                          if (monthlyController.text.toString() ==
-                                              '0') {
-                                            Fluttertoast.showToast(
-                                                msg: 'Enter Right Month',
-                                                gravity: ToastGravity.TOP);
-                                          } else {
-                                            print(
-                                                'MY myMonths are == ${monthlyController
-                                                    .text.toString()}');
-                                            print('Count myMonths ' +
-                                                myMonths.toString());
-                                            selectedDate2.value = DateTime(
-                                                selectedDate1.value.year,
-                                                selectedDate1.value.month +
-                                                    myMonths,
-                                                selectedDate1.value.day);
-                                            date2Controller.text =
-                                            '${DateFormat('MM/dd/yyyy').format(
-                                                DateTime(selectedDate1.value.year,
-                                                    selectedDate1.value.month +
-                                                        myMonths,
-                                                    selectedDate1.value.day))}';
-                                          }
-                                        } else if (tenantController
-                                            .paymentScheduleId.value ==
-                                            4) {
-                                          var myYears = yearlyController
-                                              .text.isEmpty
-                                              ? 1 * 1
-                                              : int.tryParse(
-                                              yearlyController.text)! *
-                                              1;
-
-                                          if (yearlyController.text.toString() ==
-                                              '0') {
-                                            Fluttertoast.showToast(
-                                                msg: 'Enter Right years',
-                                                gravity: ToastGravity.TOP);
-                                          } else {
-                                            print(
-                                                'MY myYears are == ${yearlyController
-                                                    .text.toString()}');
-                                            print('Count myYears ' +
-                                                myYears.toString());
-                                            selectedDate2.value = DateTime(
-                                                selectedDate1.value.year +
-                                                    myYears,
-                                                selectedDate1.value.month,
-                                                selectedDate1.value.day);
-                                            date2Controller.text =
-                                            '${DateFormat('MM/dd/yyyy').format(
-                                                DateTime(selectedDate1.value
-                                                    .year + myYears, selectedDate1
-                                                    .value.month, selectedDate1
-                                                    .value.day))}';
-                                          }
-                                        } else {
-                                          // date2Controller.text = '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day))}';
-                                        }
-                                      },
-                                    );
-                                  }),
-                                  width: 42.5.w,
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 1.h,
-                            ),
-
-                            // Text('From', style: AppTheme.appFieldTitle,),
-                            //
-                            // AuthTextField(
-                            //   onTap: () {
-                            //     _selectDate1(context);
-                            //   },
-                            //   controller: date1Controller,
-                            //   hintText: "From",
-                            //   obscureText: false,
-                            // ),
-
-                            DateTextField(
-                              style: TextStyle(color: Colors.transparent),
-                              onTap: () {
-                                _selectDate1(context);
-                              },
-                              controller: date1Controller,
-                              hintText: "From",
-                              obscureText: false,
-                            ),
-
-                            SizedBox(
-                              height: 1.h,
-                            ),
-
-                            DateTextField(
-                              style: TextStyle(color: Colors.transparent),
-                              onTap: () {
-                                _selectDate2(context);
-                              },
-                              controller: date2Controller,
-                              hintText: "To",
-                              obscureText: false,
-                              enabled: false,
-                            ),
-
-                            SizedBox(
-                              height: 1.h,
-                            ),
-
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                SizedBox(
-                                  child: AuthTextField(
-                                    controller: amountController,
-                                    hintText: 'Amount',
-                                    obscureText: false,
-                                    keyBoardType: TextInputType.number,
-                                    enabled: false,
-                                    inputFormatters: [
-                                      ThousandsFormatter(),
-                                    ],
-                                  ),
-                                  width: 42.5.w,
-                                ),
-                                SizedBox(
-                                  child: AuthTextField(
-                                    controller: discountController,
-                                    hintText: 'Discounted Amount',
-                                    obscureText: false,
-                                    keyBoardType: TextInputType.number,
-                                    inputFormatters: [
-                                      ThousandsFormatter(),
-                                    ],
-                                  ),
-                                  width: 42.5.w,
-                                ),
-                              ],
-                            ),
-
-                            SizedBox(
-                              height: 2.h,
-                            ),
-
-                            DescriptionTextField(
-                              controller: descriptionController,
-                              hintText: 'Description',
-                              obscureText: false,
-                              keyBoardType: TextInputType.text,
-                            ),
-
-                            SizedBox(
-                              height: 2.h,
-                            ),
+                                //
+                                // Obx(() {
+                                //   return CustomApiGenericTenantModelDropdown(
+                                //     hintText: 'Select Tenant',
+                                //     menuItems: tenantController.tenantList.value,
+                                //     onChanged: (value) {
+                                //       tenantController.setTenantId(value!.id);
+                                //     },
+                                //   );
+                                // }),
 
 
-                            // AppButton(
-                            //   title: 'Add Tenant',
-                            //   color: AppTheme.primaryColor,
-                            //   function: () {
-                            //     if (_formKey.currentState!.validate()) {
-                            //       tenantController.addTenantToUnit(
-                            //         tenantController.tenantId.value,
-                            //         "userStorage.read('userProfileId')",
-                            //         tenantController.unitId.value,
-                            //         selectedDate1.value.toString(),
-                            //         date2Controller.text.trim().toString(),
-                            //         int.parse(amountController.text.toString()),
-                            //         int.parse(discountController.text.toString()),
-                            //       );
-                            //     } else {}
-                            //   },
-                            // ),
-
-                            // DateAccordion(dateController: date1Controller),
-
-                            Center(
-                              child: Bounceable(
-                                onTap: () {
-                                  FullPicker(
-                                    prefixName: 'add tenant',
-                                    context: context,
-                                    image: true,
-                                    imageCamera: kDebugMode,
-                                    imageCropper: true,
-                                    onError: (int value) {
+                                Obx(() {
+                                  return SearchableTenantDropDown<TenantModel>(
+                                    hintText: 'Tenant',
+                                    menuItems: tenantController.tenantList
+                                        .value,
+                                    controller: _cnt,
+                                    onChanged: (value) {
+                                      print(value.value.id);
+                                      tenantController.setTenantId(
+                                          value.value.id);
                                       print(
-                                          " ----  onError ----=$value");
-                                    },
-                                    onSelected: (
-                                        value) async {
-                                      print(
-                                          " ----  onSelected ----");
-
-                                      setState(() {
-                                        tenantPic =
-                                            value.file
-                                                .first;
-                                        tenantImagePath =
-                                            value.file
-                                                .first!
-                                                .path;
-                                        tenantImageExtension =
-                                            value.file
-                                                .first!
-                                                .path
-                                                .split('.')
-                                                .last;
-                                        tenantFileName =
-                                            value.file
-                                                .first!
-                                                .path
-                                                .split('/')
-                                                .last;
-                                      });
-                                      tenantBytes =
-                                      await tenantPic!
-                                          .readAsBytes();
-                                      print(
-                                          'MY PIC == $tenantPic');
-                                      print(
-                                          'MY path == $tenantImagePath');
-                                      print(
-                                          'MY bytes == $tenantBytes');
-                                      print(
-                                          'MY extension == $tenantImageExtension');
-                                      print(
-                                          'MY FILE NAME == $tenantFileName');
+                                          'MY TEnant is ${tenantController
+                                              .tenantId
+                                              .value}');
                                     },
                                   );
-                                },
-                                child: Container(
-                                  width: 50.w,
-                                  height: 20.h,
-                                  decoration: BoxDecoration(
-                                      color: AppTheme
-                                          .appBgColor,
-                                      borderRadius: BorderRadius
-                                          .circular(15.sp),
-                                      image: DecorationImage(
-                                          image: FileImage(
-                                              tenantPic ??
-                                                  File('')),
-                                          fit: BoxFit.cover)
-                                  ),
-                                  child: tenantPic == null
-                                      ? Center(
-                                    child: Text(
-                                        'Upload profile pic'),)
-                                      : null,
+                                }),
+
+                                // Obx(() {
+                                //   return SearchableUnitDropDown<UnitModel>(
+                                //     hintText: 'Unit',
+                                //     menuItems: tenantController.unitList.value,
+                                //     controller: _unitCont,
+                                //     onChanged: (value) {
+                                //       print(value.value.id);
+                                //       tenantController.setUnitId(value.value.id);
+                                //       tenantController
+                                //           .setUnitAmount(value.value.amount);
+                                //       amountController.text =
+                                //           value.value.amount.toString();
+                                //       discountController.text =
+                                //           value.value.amount.toString();
+                                //       print(
+                                //           'MY Unit is ${tenantController.unitId
+                                //               .value}');
+                                //       print(
+                                //           'MY Amount is ${tenantController.unitAmount
+                                //               .value}');
+                                //     },
+                                //   );
+                                // }),
+
+
+                                Obx(() {
+                                  return SearchableUnitDropDown<UnitModel>(
+                                    hintText: 'Unit',
+                                    menuItems: tenantController.specificUnitList
+                                        .value,
+                                    controller: _unitCont,
+                                    onChanged: (value) {
+                                      print(value.value.id);
+                                      tenantController.setSpecificUnitId(
+                                          value.value.id);
+                                      tenantController
+                                          .setUnitAmount(value.value.amount);
+                                      amountController.text =
+                                          amountFormatter.format(
+                                              value.value.amount.toString());
+                                      discountController.text =
+                                          amountFormatter.format(
+                                              value.value.amount.toString());
+                                      print(
+                                          'MY Unit is ${tenantController
+                                              .specificUnitId
+                                              .value}');
+                                      print(
+                                          'MY Amount is ${tenantController
+                                              .unitAmount
+                                              .value}');
+                                    },
+                                  );
+                                }),
+
+
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment
+                                      .spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SizedBox(
+                                      width: 42.5.w,
+                                      child: Obx(() {
+                                        return CustomPeriodApiGenericDropdown<
+                                            PaymentScheduleModel>(
+                                          hintText: 'Per Month',
+                                          menuItems:
+                                          tenantController.paymentList.value,
+                                          onChanged: (value) {
+                                            tenantController
+                                                .setPaymentScheduleId(
+                                                value!.id!);
+
+                                            if (tenantController
+                                                .paymentScheduleId.value ==
+                                                1) {
+                                              var myDays =
+                                              dailyController.text.isEmpty
+                                                  ? 1 * 1
+                                                  : int.tryParse(
+                                                  dailyController.text)! *
+                                                  1;
+
+                                              if (dailyController.text
+                                                  .toString() ==
+                                                  '0') {
+                                                Fluttertoast.showToast(
+                                                    msg: 'Enter Right Day',
+                                                    gravity: ToastGravity.TOP);
+                                              } else {
+                                                print(
+                                                    'MY myDays are == ${dailyController
+                                                        .text.toString()}');
+                                                print('Count myDays ' +
+                                                    myDays.toString());
+                                                selectedDate2.value = DateTime(
+                                                    selectedDate1.value.year,
+                                                    selectedDate1.value.month,
+                                                    selectedDate1.value.day +
+                                                        myDays);
+                                                date2Controller.text =
+                                                '${DateFormat('MM/dd/yyyy')
+                                                    .format(
+                                                    DateTime(selectedDate1.value
+                                                        .year,
+                                                        selectedDate1.value
+                                                            .month,
+                                                        selectedDate1.value
+                                                            .day +
+                                                            myDays))}';
+                                                print(
+                                                    'my seelected date ${selectedDate2
+                                                        .value}');
+                                                print(
+                                                    'my date date ${date2Controller
+                                                        .text}');
+                                              }
+                                            } else if (tenantController
+                                                .paymentScheduleId.value ==
+                                                2) {
+                                              var myWeeks = weeklyController
+                                                  .text.isEmpty
+                                                  ? 1 * 7
+                                                  : int.tryParse(
+                                                  weeklyController.text)! *
+                                                  7;
+
+                                              if (weeklyController.text
+                                                  .toString() ==
+                                                  '0') {
+                                                Fluttertoast.showToast(
+                                                    msg: 'Enter Right week',
+                                                    gravity: ToastGravity.TOP);
+                                              } else {
+                                                print(
+                                                    'MY WEEKs are == ${weeklyController
+                                                        .text.toString()}');
+                                                print('Count Weeks ' +
+                                                    myWeeks.toString());
+                                                selectedDate2.value = DateTime(
+                                                    selectedDate1.value.year,
+                                                    selectedDate1.value.month,
+                                                    selectedDate1.value.day +
+                                                        myWeeks);
+                                                date2Controller.text =
+                                                '${DateFormat('MM/dd/yyyy')
+                                                    .format(
+                                                    DateTime(selectedDate1.value
+                                                        .year,
+                                                        selectedDate1.value
+                                                            .month,
+                                                        selectedDate1.value
+                                                            .day +
+                                                            myWeeks))}';
+                                              }
+                                            } else if (tenantController
+                                                .paymentScheduleId.value ==
+                                                3) {
+                                              var myMonths = monthlyController
+                                                  .text.isEmpty
+                                                  ? 1 * 1
+                                                  : int.tryParse(
+                                                  monthlyController.text)! *
+                                                  1;
+
+                                              if (monthlyController.text
+                                                  .toString() ==
+                                                  '0') {
+                                                Fluttertoast.showToast(
+                                                    msg: 'Enter Right Month',
+                                                    gravity: ToastGravity.TOP);
+                                              } else {
+                                                print(
+                                                    'MY myMonths are == ${monthlyController
+                                                        .text.toString()}');
+                                                print('Count myMonths ' +
+                                                    myMonths.toString());
+                                                selectedDate2.value = DateTime(
+                                                    selectedDate1.value.year,
+                                                    selectedDate1.value.month +
+                                                        myMonths,
+                                                    selectedDate1.value.day);
+                                                date2Controller.text =
+                                                '${DateFormat('MM/dd/yyyy')
+                                                    .format(
+                                                    DateTime(selectedDate1.value
+                                                        .year,
+                                                        selectedDate1.value
+                                                            .month +
+                                                            myMonths,
+                                                        selectedDate1.value
+                                                            .day))}';
+                                              }
+                                            } else if (tenantController
+                                                .paymentScheduleId.value ==
+                                                4) {
+                                              var myYears = yearlyController
+                                                  .text.isEmpty
+                                                  ? 1 * 1
+                                                  : int.tryParse(
+                                                  yearlyController.text)! *
+                                                  1;
+
+                                              if (yearlyController.text
+                                                  .toString() ==
+                                                  '0') {
+                                                Fluttertoast.showToast(
+                                                    msg: 'Enter Right years',
+                                                    gravity: ToastGravity.TOP);
+                                              } else {
+                                                print(
+                                                    'MY myYears are == ${yearlyController
+                                                        .text.toString()}');
+                                                print('Count myYears ' +
+                                                    myYears.toString());
+                                                selectedDate2.value = DateTime(
+                                                    selectedDate1.value.year +
+                                                        myYears,
+                                                    selectedDate1.value.month,
+                                                    selectedDate1.value.day);
+                                                date2Controller.text =
+                                                '${DateFormat('MM/dd/yyyy')
+                                                    .format(
+                                                    DateTime(selectedDate1.value
+                                                        .year + myYears,
+                                                        selectedDate1
+                                                            .value.month,
+                                                        selectedDate1
+                                                            .value.day))}';
+                                              }
+                                            } else {
+                                              // date2Controller.text = '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day))}';
+                                            }
+                                          },
+                                        );
+                                      }),
+                                    ),
+                                    tenantController.paymentScheduleId.value ==
+                                        10
+                                        ? SizedBox(
+                                      child: Obx(() {
+                                        return AuthTextField(
+                                          controller: tenantController
+                                              .paymentScheduleId
+                                              .value ==
+                                              10
+                                              ? lumpSumController
+                                              : TextEditingController(
+                                              text: null),
+                                          hintText: 'Enter LumpSum',
+                                          obscureText: false,
+                                        );
+                                      }),
+                                      width: 42.5.w,
+                                    )
+                                        : Container(),
+                                    SizedBox(
+                                      child: Obx(() {
+                                        return AuthTextField(
+                                          controller: tenantController
+                                              .paymentScheduleId.value ==
+                                              1
+                                              ? dailyController
+                                              : tenantController
+                                              .paymentScheduleId.value ==
+                                              2
+                                              ? weeklyController
+                                              : tenantController
+                                              .paymentScheduleId
+                                              .value ==
+                                              3
+                                              ? monthlyController
+                                              : tenantController
+                                              .paymentScheduleId
+                                              .value ==
+                                              4
+                                              ? yearlyController
+                                              : TextEditingController(
+                                              text: null),
+                                          hintText: tenantController
+                                              .paymentScheduleId.value ==
+                                              1
+                                              ? 'Enter No. Of Days'
+                                              : tenantController
+                                              .paymentScheduleId.value ==
+                                              2
+                                              ? 'Enter No. Of Weeks'
+                                              : tenantController
+                                              .paymentScheduleId
+                                              .value ==
+                                              3
+                                              ? 'Enter No. Of Months'
+                                              : tenantController
+                                              .paymentScheduleId
+                                              .value ==
+                                              4
+                                              ? 'Enter No. Of Years'
+                                              : 'Specific Period',
+                                          obscureText: false,
+                                          keyBoardType: TextInputType.number,
+                                          onChanged: (value) {
+                                            if (tenantController
+                                                .paymentScheduleId.value ==
+                                                1) {
+                                              var myDays =
+                                              dailyController.text.isEmpty
+                                                  ? 1 * 1
+                                                  : int.tryParse(
+                                                  dailyController.text)! *
+                                                  1;
+
+                                              if (dailyController.text
+                                                  .toString() ==
+                                                  '0') {
+                                                Fluttertoast.showToast(
+                                                    msg: 'Enter Right Day',
+                                                    gravity: ToastGravity.TOP);
+                                              } else {
+                                                print(
+                                                    'MY myDays are == ${dailyController
+                                                        .text.toString()}');
+                                                print('Count myDays ' +
+                                                    myDays.toString());
+                                                selectedDate2.value = DateTime(
+                                                    selectedDate1.value.year,
+                                                    selectedDate1.value.month,
+                                                    selectedDate1.value.day +
+                                                        myDays);
+                                                date2Controller.text =
+                                                '${DateFormat('MM/dd/yyyy')
+                                                    .format(
+                                                    DateTime(selectedDate1.value
+                                                        .year,
+                                                        selectedDate1.value
+                                                            .month,
+                                                        selectedDate1.value
+                                                            .day +
+                                                            myDays))}';
+                                                print(
+                                                    'my seelected date ${selectedDate2
+                                                        .value}');
+                                                print(
+                                                    'my date date ${date2Controller
+                                                        .text}');
+                                              }
+                                            } else if (tenantController
+                                                .paymentScheduleId.value ==
+                                                2) {
+                                              var myWeeks = weeklyController
+                                                  .text.isEmpty
+                                                  ? 1 * 7
+                                                  : int.tryParse(
+                                                  weeklyController.text)! *
+                                                  7;
+
+                                              if (weeklyController.text
+                                                  .toString() ==
+                                                  '0') {
+                                                Fluttertoast.showToast(
+                                                    msg: 'Enter Right week',
+                                                    gravity: ToastGravity.TOP);
+                                              } else {
+                                                print(
+                                                    'MY WEEKs are == ${weeklyController
+                                                        .text.toString()}');
+                                                print('Count Weeks ' +
+                                                    myWeeks.toString());
+                                                selectedDate2.value = DateTime(
+                                                    selectedDate1.value.year,
+                                                    selectedDate1.value.month,
+                                                    selectedDate1.value.day +
+                                                        myWeeks);
+                                                date2Controller.text =
+                                                '${DateFormat('MM/dd/yyyy')
+                                                    .format(
+                                                    DateTime(selectedDate1.value
+                                                        .year,
+                                                        selectedDate1.value
+                                                            .month,
+                                                        selectedDate1.value
+                                                            .day +
+                                                            myWeeks))}';
+                                              }
+                                            } else if (tenantController
+                                                .paymentScheduleId.value ==
+                                                3) {
+                                              var myMonths = monthlyController
+                                                  .text.isEmpty
+                                                  ? 1 * 1
+                                                  : int.tryParse(
+                                                  monthlyController.text)! *
+                                                  1;
+
+                                              if (monthlyController.text
+                                                  .toString() ==
+                                                  '0') {
+                                                Fluttertoast.showToast(
+                                                    msg: 'Enter Right Month',
+                                                    gravity: ToastGravity.TOP);
+                                              } else {
+                                                print(
+                                                    'MY myMonths are == ${monthlyController
+                                                        .text.toString()}');
+                                                print('Count myMonths ' +
+                                                    myMonths.toString());
+                                                selectedDate2.value = DateTime(
+                                                    selectedDate1.value.year,
+                                                    selectedDate1.value.month +
+                                                        myMonths,
+                                                    selectedDate1.value.day);
+                                                date2Controller.text =
+                                                '${DateFormat('MM/dd/yyyy')
+                                                    .format(
+                                                    DateTime(selectedDate1.value
+                                                        .year,
+                                                        selectedDate1.value
+                                                            .month +
+                                                            myMonths,
+                                                        selectedDate1.value
+                                                            .day))}';
+                                              }
+                                            } else if (tenantController
+                                                .paymentScheduleId.value ==
+                                                4) {
+                                              var myYears = yearlyController
+                                                  .text.isEmpty
+                                                  ? 1 * 1
+                                                  : int.tryParse(
+                                                  yearlyController.text)! *
+                                                  1;
+
+                                              if (yearlyController.text
+                                                  .toString() ==
+                                                  '0') {
+                                                Fluttertoast.showToast(
+                                                    msg: 'Enter Right years',
+                                                    gravity: ToastGravity.TOP);
+                                              } else {
+                                                print(
+                                                    'MY myYears are == ${yearlyController
+                                                        .text.toString()}');
+                                                print('Count myYears ' +
+                                                    myYears.toString());
+                                                selectedDate2.value = DateTime(
+                                                    selectedDate1.value.year +
+                                                        myYears,
+                                                    selectedDate1.value.month,
+                                                    selectedDate1.value.day);
+                                                date2Controller.text =
+                                                '${DateFormat('MM/dd/yyyy')
+                                                    .format(
+                                                    DateTime(selectedDate1.value
+                                                        .year + myYears,
+                                                        selectedDate1
+                                                            .value.month,
+                                                        selectedDate1
+                                                            .value.day))}';
+                                              }
+                                            } else {
+                                              // date2Controller.text = '${DateFormat('E, d MMM yyyy').format(DateTime(selectedDate1.value.year, selectedDate1.value.month, selectedDate1.value.day))}';
+                                            }
+                                          },
+                                        );
+                                      }),
+                                      width: 42.5.w,
+                                    ),
+                                  ],
                                 ),
-                              ),
-                            )
+                                SizedBox(
+                                  height: 1.h,
+                                ),
 
-                            // Bounceable(
-                            //   onTap: () {
-                            //     pickAddTenantFile();
-                            //   },
-                            //   child: Container(
-                            //       height: 15.h,
-                            //       width: 90.w,
-                            //       decoration: BoxDecoration(
-                            //         color: AppTheme.appBgColor,
-                            //         borderRadius: BorderRadius.circular(15.sp),
-                            //       ),
-                            //       child: Center(
-                            //           child: Column(
-                            //             mainAxisAlignment: MainAxisAlignment
-                            //                 .center,
-                            //             crossAxisAlignment: CrossAxisAlignment
-                            //                 .center,
-                            //             children: [
-                            //               Icon(Icons.upload_file),
-                            //               Text(
-                            //                 'Upload File',
-                            //                 style: TextStyle(
-                            //                   color: AppTheme.inActiveColor,
-                            //                   fontSize: 16,
-                            //                 ),
-                            //               ),
-                            //             ],
-                            //           ))),
-                            // ),
+                                // Text('From', style: AppTheme.appFieldTitle,),
+                                //
+                                // AuthTextField(
+                                //   onTap: () {
+                                //     _selectDate1(context);
+                                //   },
+                                //   controller: date1Controller,
+                                //   hintText: "From",
+                                //   obscureText: false,
+                                // ),
 
-                            // AppButton(
-                            //     title: 'Get only free rooms',
-                            //     color: AppTheme.primaryColor,
-                            //     function: () async{
-                            //       // tenantController.fetchOnlyAvailableUnits();
-                            //       await AppConfig().supaBaseClient.from('units').update(
-                            //           {
-                            //             "is_available" : 0,
-                            //           }
-                            //       ).eq('id', tenantController.specificUnitId.value);
-                            //     },
-                            // ),
+                                DateTextField(
+                                  style: TextStyle(color: Colors.transparent),
+                                  onTap: () {
+                                    _selectDate1(context);
+                                  },
+                                  controller: date1Controller,
+                                  hintText: "From",
+                                  obscureText: false,
+                                ),
 
-                          ],
+                                SizedBox(
+                                  height: 1.h,
+                                ),
+
+                                DateTextField(
+                                  style: TextStyle(color: Colors.transparent),
+                                  onTap: () {
+                                    _selectDate2(context);
+                                  },
+                                  controller: date2Controller,
+                                  hintText: "To",
+                                  obscureText: false,
+                                  enabled: false,
+                                ),
+
+                                SizedBox(
+                                  height: 1.h,
+                                ),
+
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment
+                                      .spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SizedBox(
+                                      child: AuthTextField(
+                                        controller: amountController,
+                                        hintText: 'Amount',
+                                        obscureText: false,
+                                        keyBoardType: TextInputType.number,
+                                        enabled: false,
+                                        inputFormatters: [
+                                          ThousandsFormatter(),
+                                        ],
+                                      ),
+                                      width: 42.5.w,
+                                    ),
+                                    SizedBox(
+                                      child: AuthTextField(
+                                        controller: discountController,
+                                        hintText: 'Discounted Amount',
+                                        obscureText: false,
+                                        keyBoardType: TextInputType.number,
+                                        inputFormatters: [
+                                          ThousandsFormatter(),
+                                        ],
+                                      ),
+                                      width: 42.5.w,
+                                    ),
+                                  ],
+                                ),
+
+                                SizedBox(
+                                  height: 2.h,
+                                ),
+
+                                DescriptionTextField(
+                                  controller: descriptionController,
+                                  hintText: 'Description',
+                                  obscureText: false,
+                                  keyBoardType: TextInputType.text,
+                                ),
+
+                                SizedBox(
+                                  height: 2.h,
+                                ),
+
+
+                                // AppButton(
+                                //   title: 'Add Tenant',
+                                //   color: AppTheme.primaryColor,
+                                //   function: () {
+                                //     if (_formKey.currentState!.validate()) {
+                                //       tenantController.addTenantToUnit(
+                                //         tenantController.tenantId.value,
+                                //         "userStorage.read('userProfileId')",
+                                //         tenantController.unitId.value,
+                                //         selectedDate1.value.toString(),
+                                //         date2Controller.text.trim().toString(),
+                                //         int.parse(amountController.text.toString()),
+                                //         int.parse(discountController.text.toString()),
+                                //       );
+                                //     } else {}
+                                //   },
+                                // ),
+
+                                // DateAccordion(dateController: date1Controller),
+
+                                Center(
+                                  child: Bounceable(
+                                    onTap: () {
+                                      FullPicker(
+                                        prefixName: 'add tenant',
+                                        context: context,
+                                        image: true,
+                                        imageCamera: kDebugMode,
+                                        imageCropper: true,
+                                        onError: (int value) {
+                                          print(
+                                              " ----  onError ----=$value");
+                                        },
+                                        onSelected: (value) async {
+                                          print(
+                                              " ----  onSelected ----");
+
+                                          setState(() {
+                                            tenantPic =
+                                                value.file
+                                                    .first;
+                                            tenantImagePath =
+                                                value.file
+                                                    .first!
+                                                    .path;
+                                            tenantImageExtension =
+                                                value.file
+                                                    .first!
+                                                    .path
+                                                    .split('.')
+                                                    .last;
+                                            tenantFileName =
+                                                value.file
+                                                    .first!
+                                                    .path
+                                                    .split('/')
+                                                    .last;
+                                          });
+                                          tenantBytes =
+                                          await tenantPic!
+                                              .readAsBytes();
+                                          print(
+                                              'MY PIC == $tenantPic');
+                                          print(
+                                              'MY path == $tenantImagePath');
+                                          print(
+                                              'MY bytes == $tenantBytes');
+                                          print(
+                                              'MY extension == $tenantImageExtension');
+                                          print(
+                                              'MY FILE NAME == $tenantFileName');
+                                        },
+                                      );
+                                    },
+                                    child: Container(
+                                      width: 50.w,
+                                      height: 20.h,
+                                      decoration: BoxDecoration(
+                                          color: AppTheme
+                                              .appWidgetColor,
+                                          borderRadius: BorderRadius
+                                              .circular(15.sp),
+                                          image: DecorationImage(
+                                              image: FileImage(
+                                                  tenantPic ??
+                                                      File('')),
+                                              fit: BoxFit.cover)
+                                      ),
+                                      child: tenantPic == null
+                                          ? Center(
+                                        child: Text(
+                                            'Upload profile pic'),)
+                                          : null,
+                                    ),
+                                  ),
+                                )
+
+                                // Bounceable(
+                                //   onTap: () {
+                                //     pickAddTenantFile();
+                                //   },
+                                //   child: Container(
+                                //       height: 15.h,
+                                //       width: 90.w,
+                                //       decoration: BoxDecoration(
+                                //         color: AppTheme.appBgColor,
+                                //         borderRadius: BorderRadius.circular(15.sp),
+                                //       ),
+                                //       child: Center(
+                                //           child: Column(
+                                //             mainAxisAlignment: MainAxisAlignment
+                                //                 .center,
+                                //             crossAxisAlignment: CrossAxisAlignment
+                                //                 .center,
+                                //             children: [
+                                //               Icon(Icons.upload_file),
+                                //               Text(
+                                //                 'Upload File',
+                                //                 style: TextStyle(
+                                //                   color: AppTheme.inActiveColor,
+                                //                   fontSize: 16,
+                                //                 ),
+                                //               ),
+                                //             ],
+                                //           ))),
+                                // ),
+
+                                // AppButton(
+                                //     title: 'Get only free rooms',
+                                //     color: AppTheme.primaryColor,
+                                //     function: () async{
+                                //       // tenantController.fetchOnlyAvailableUnits();
+                                //       await AppConfig().supaBaseClient.from('units').update(
+                                //           {
+                                //             "is_available" : 0,
+                                //           }
+                                //       ).eq('id', tenantController.specificUnitId.value);
+                                //     },
+                                // ),
+
+                              ],
+                            ),
+                          ),
                         ),
                       ),
-                    ),
+                    ],
                   ),
-                ],
-              ),
-            );
-          });
+                );
+              });
         },
       );
     });
@@ -1450,7 +1506,7 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async{
+      onWillPop: () async {
         tenantController.tenantId.value == 0;
         tenantController.unitId.value == 0;
         selectedDate2.value =
@@ -1529,61 +1585,117 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
               ],
             ),
 
-            Obx(() {
-              var groupedData = tenantController.groupAllPropertyTenants();
-              return tenantController.isPropertyTenantLoading.value
-                  ? Padding(
-                padding: EdgeInsets.symmetric(vertical: 15.h),
-                child: Center(
-                  child: Image.asset('assets/auth/logo.png', width: 35.w),),
-              )
-                  : Expanded(
-                child: ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    // itemCount: tenantController.propertyTenantList.length,
-                    itemCount: groupedData.length,
-                    itemBuilder: (context, index) {
-                      var key = groupedData.keys.toList()[index];
-                      var value = groupedData[key];
 
-                      // var tenant = tenantController.propertyTenantList[index];
-                      return Padding(
-                        padding: EdgeInsets.only(bottom: 1.h),
-                        child: Card(
-                          child: ListTile(
-                            onTap: () {
-                              print('MY KEY ${key.runtimeType}');
-                              print('MY Value $value');
-                              // Get.to(() => TenantDetailsScreen(tenantController: tenantController, tenantId: int.parse(key),),
-                              //     transition: Transition.rightToLeftWithFade);
+            Obx(() {
+
+              var groupedData =
+              tenantController.groupAllPropertyTenants(tenantController.propertyTenantList.value, (entry) => entry.tenantId);
+
+              return Expanded(
+                child: ListView.builder(
+                  itemCount: groupedData.length,
+                    itemBuilder: (context, index) {
+                      final key = groupedData.keys.elementAt(index);
+                      final group = groupedData[key];
+
+                      return ListView.builder(
+                        shrinkWrap: true,
+                          itemCount: group!.length,
+                          itemBuilder: (context, innerIndex) {
+                        final entry = group[innerIndex];
+                        return Padding(
+                          padding: EdgeInsets.only(bottom: 1.h),
+                          child: Bounceable(
+                            onTap: (){
+                              Get.to(() => TenantDetailsScreen(
+                                tenantController: tenantController,
+                                tenantId: entry.tenantId!,
+                                tenantModel: entry.tenantModel!,
+                              ));
                             },
-                            leading: ClipRRect(
-                              borderRadius: BorderRadius.circular(10.sp),
-                              child: Image.asset(
-                                'assets/avatar/rian.jpg',
-                                fit: BoxFit.cover,
+                            child: Card(
+                              child: ListTile(
+                                leading: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10.sp),
+                                  child: CachedNetworkImage(
+                                    width: 20.w,
+                                      imageUrl: entry.tenantModel!.getImageDocUrl(),
+                                    fit: BoxFit.cover,
+                                  )
+                                ),
+                                title: Text(entry.tenantModel!.name.toString(),
+                                  style: AppTheme.appTitle3,
+                                ),
+                                subtitle: Text(
+                                  '${entry.tenantModel!.tenantTypes!.name}',
+                                  style: AppTheme.subText,
+                                ),
                               ),
                             ),
-                            title: Text(
-                              '${key}',
-                              style: AppTheme.appTitle3,
-                            ),
-                            // subtitle: Text(
-                            //   '${amountFormatter.format(
-                            //       tenant.amount.toString())}/=',
-                            //   style: AppTheme.greenTitle2,
-                            // ),
-                            // trailing: Text(
-                            //   'Unit ${tenant.unitId}',
-                            //   style: AppTheme.subText,
-                            // ),
                           ),
-                        ),
-                      );
+                        );
+                      });
                     }),
               );
             })
+
+            // Obx(() {
+            //   var groupedData = tenantController.groupAllPropertyTenants();
+            //   return tenantController.isPropertyTenantLoading.value
+            //       ? Padding(
+            //     padding: EdgeInsets.symmetric(vertical: 15.h),
+            //     child: Center(
+            //       child: Image.asset('assets/auth/logo.png', width: 35.w),),
+            //   )
+            //       : Expanded(
+            //     child: ListView.builder(
+            //         physics: NeverScrollableScrollPhysics(),
+            //         shrinkWrap: true,
+            //         // itemCount: tenantController.propertyTenantList.length,
+            //         itemCount: groupedData.length,
+            //         itemBuilder: (context, index) {
+            //           var key = groupedData.keys.toList()[index];
+            //           var value = groupedData[key];
+            //
+            //           // var tenant = tenantController.propertyTenantList[index];
+            //           return Padding(
+            //             padding: EdgeInsets.only(bottom: 1.h),
+            //             child: Card(
+            //               child: ListTile(
+            //                 onTap: () {
+            //                   print('MY KEY ${key.runtimeType}');
+            //                   print('MY Value $value');
+            //                   // Get.to(() => TenantDetailsScreen(tenantController: tenantController, tenantId: int.parse(key),),
+            //                   //     transition: Transition.rightToLeftWithFade);
+            //                 },
+            //                 leading: ClipRRect(
+            //                   borderRadius: BorderRadius.circular(10.sp),
+            //                   child: Image.asset(
+            //                     'assets/avatar/rian.jpg',
+            //                     fit: BoxFit.cover,
+            //                   ),
+            //                 ),
+            //                 title: Text(
+            //                   '${key}',
+            //                   style: AppTheme.appTitle3,
+            //                 ),
+            //                 // subtitle: Text(
+            //                 //   '${amountFormatter.format(
+            //                 //       tenant.amount.toString())}/=',
+            //                 //   style: AppTheme.greenTitle2,
+            //                 // ),
+            //                 // trailing: Text(
+            //                 //   'Unit ${tenant.unitId}',
+            //                 //   style: AppTheme.subText,
+            //                 // ),
+            //               ),
+            //             ),
+            //           );
+            //         }),
+            //   );
+            // }),
+
+
           ],
         ),
       ),

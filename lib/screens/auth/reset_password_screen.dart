@@ -80,7 +80,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                           height: 10.h,
                           width: 20.w,
                           decoration: BoxDecoration(
-                            color: AppTheme.appBgColor,
+                            color: AppTheme.appWidgetColor,
                             borderRadius: BorderRadius.circular(15.sp),
                           ),
                           textStyle: TextStyle(
@@ -94,7 +94,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                           height: 10.h,
                           width: 20.w,
                           decoration: BoxDecoration(
-                            color: AppTheme.appBgColor,
+                            color: AppTheme.appWidgetColor,
                             borderRadius: BorderRadius.circular(15.sp),
                             border: Border.all(
                               color: Colors.red, width: 2,
@@ -123,7 +123,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   AppPasswordTextField(
                     controller: passwordEditingController,
                     hintText: 'Enter New Password',
-                    fillColor: AppTheme.appBgColor,
+                    fillColor: AppTheme.appWidgetColor,
                     // validator: passwordValidator,
                   ),
 

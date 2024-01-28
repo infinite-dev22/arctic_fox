@@ -14,7 +14,7 @@ class _PropertyTabOptionsWidgetState extends State<PropertyTabOptionsWidget> {
     return DefaultTabController(
       length: 3,
       child: Scaffold(
-        backgroundColor: AppTheme.appBgColor,
+        backgroundColor: AppTheme.appWidgetColor,
         appBar: AppBar(
           bottom: TabBar(
             tabs: [

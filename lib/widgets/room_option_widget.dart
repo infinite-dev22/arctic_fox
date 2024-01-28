@@ -379,7 +379,7 @@ class _RoomOptionWidgetState extends State<RoomOptionWidget> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Unit ${widget.roomModel.unitNumber}',
+            Text('${widget.roomModel.name}${widget.roomModel.unitNumber}',
               style: AppTheme.subTextBold,),
             SizedBox(width: 10.w,),
             Text('${amountFormatter.format(
@@ -426,7 +426,7 @@ class _RoomOptionWidgetState extends State<RoomOptionWidget> {
         subtitle: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Level ${widget.roomModel.id}', style: AppTheme.subText,),
+            Text('${widget.roomModel.floorModel!.name}', style: AppTheme.subText,),
             Bounceable(
               onTap: () async {
                 if (widget.roomModel.isAvailable == false) {

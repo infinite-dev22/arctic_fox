@@ -75,7 +75,7 @@ class _TenantDetailsScreenState extends State<TenantDetailsScreen> with TickerPr
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
+          SizedBox(height: 1.h,),
           Center(
             child: CircleAvatar(
               backgroundImage: CachedNetworkImageProvider(widget.tenantModel.documents!.fileUrl.toString()),

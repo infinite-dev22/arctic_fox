@@ -70,7 +70,7 @@ class AppSearchTextField extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20.sp),
               ),
               // fillColor: fillColor,
-              fillColor: AppTheme.appBgColor,
+              fillColor: AppTheme.appWidgetColor,
               filled: true,
               hintText: hintText,
               hintStyle: TextStyle(

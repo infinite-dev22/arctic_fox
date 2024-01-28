@@ -202,7 +202,7 @@ class _CompleteSignUpScreenState extends State<CompleteSignUpScreen> {
                         ),
                         border: InputBorder.none,
                         filled: true,
-                        fillColor: AppTheme.appBgColor,
+                        fillColor: AppTheme.appWidgetColor,
                         hintText: 'Enter Your Phone',
                         enabledBorder: InputBorder.none,
                         focusedBorder: InputBorder.none,
@@ -229,7 +229,7 @@ class _CompleteSignUpScreenState extends State<CompleteSignUpScreen> {
                   AppPasswordTextField(
                     controller: passwordEditingController,
                     hintText: 'Password',
-                    fillColor: AppTheme.appBgColor,
+                    fillColor: AppTheme.appWidgetColor,
                     // validator: passwordValidator,
                   ),
 
@@ -238,7 +238,7 @@ class _CompleteSignUpScreenState extends State<CompleteSignUpScreen> {
                   AppPasswordTextField(
                     controller: confirmPasswordEditingController,
                     hintText: 'Confirm Password',
-                    fillColor: AppTheme.appBgColor,
+                    fillColor: AppTheme.appWidgetColor,
                   ),
 
                   SizedBox(height: 1.h,),
@@ -254,10 +254,10 @@ class _CompleteSignUpScreenState extends State<CompleteSignUpScreen> {
                           borderRadius: 30.0,
                           padding: 2.0,
                           activeToggleColor: AppTheme.primaryColor,
-                          inactiveToggleColor: AppTheme.appBgColor,
+                          inactiveToggleColor: AppTheme.appWidgetColor,
 
                           activeColor: AppTheme.primaryColor,
-                          inactiveColor: AppTheme.appBgColor,
+                          inactiveColor: AppTheme.appWidgetColor,
                           activeIcon: Icon(Icons.phone, color: Colors.white),
                           inactiveIcon: Icon(Icons.email,),
                           onToggle: (val) {

@@ -806,7 +806,7 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                             Obx(() {
                               return MultiSelectDropDown(
                                 inputDecoration: BoxDecoration(
-                                  color: AppTheme.appBgColor,
+                                  color: AppTheme.appWidgetColor,
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 showClearIcon: true,
@@ -1143,6 +1143,7 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                 ),
               ),
 
+
               Align(alignment: Alignment.centerRight, child: Bounceable(
                 onTap: () {
                   showAsBottomSheet(context);
@@ -1178,8 +1179,18 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
           // isLoading: tenantController.isTenantUnitListLoading.value,
           // appIcon:  Image.asset('assets/auth/logo.png'),
 
+          // AppButton(title: 'Call payments', color: Colors.green,
+          //     function: (){
+          //   tenantController.callAllTenantsPaymentsFunction();
+          //     }),
+
 
           Obx(() {
+
+            var groupedData =
+            tenantController.groupAllTenantPayments(tenantController.tenantPaymentList.value, (entry) => entry.unitId);
+
+
             return tenantController.isTenantPaymentsLoading.value
                 ? Padding(
               padding: EdgeInsets.symmetric(vertical: 15.h),
@@ -1190,7 +1201,7 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
               child: ListView.builder(
                   physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
-                  itemCount: tenantController.tenantPaymentList.length,
+                  itemCount: groupedData.length,
                   itemBuilder: (context, index) {
                     var payment = tenantController.tenantPaymentList[index];
 
@@ -1198,6 +1209,28 @@ class _PaymentTabScreenState extends State<PaymentTabScreen> {
                   }),
             );
           }),
+
+
+
+          // Obx(() {
+          //   return tenantController.isTenantPaymentsLoading.value
+          //       ? Padding(
+          //     padding: EdgeInsets.symmetric(vertical: 15.h),
+          //     child: Center(
+          //       child: Image.asset('assets/auth/logo.png', width: 35.w),),
+          //   )
+          //       : Expanded(
+          //     child: ListView.builder(
+          //         physics: NeverScrollableScrollPhysics(),
+          //         shrinkWrap: true,
+          //         itemCount: tenantController.tenantPaymentList.length,
+          //         itemBuilder: (context, index) {
+          //           var payment = tenantController.tenantPaymentList[index];
+          //
+          //           return PaymentCardWidget(tenantPaymentModel: payment);
+          //         }),
+          //   );
+          // }),
 
 
         ],

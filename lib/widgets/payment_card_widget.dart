@@ -70,9 +70,9 @@ class PaymentCardWidget extends StatelessWidget {
     return Card(
       child: ListTile(
         title: Text(
-          '${tenantPaymentModel.tenantModel!.name}', style: AppTheme.appTitle3,),
+          '${tenantPaymentModel.tenantModel?.name}', style: AppTheme.appTitle3,),
         subtitle: Text(
-          'Unit ${tenantPaymentModel.unitModel!.unitNumber.toString()}', style: AppTheme.subText,),
+          'Unit ${tenantPaymentModel.unitModel?.unitNumber.toString()}', style: AppTheme.subText,),
         trailing: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,

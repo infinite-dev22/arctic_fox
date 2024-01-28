@@ -222,7 +222,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
                         ),
                         border: InputBorder.none,
                         filled: true,
-                        fillColor: AppTheme.appBgColor,
+                        fillColor: AppTheme.appWidgetColor,
                         hintText: 'Enter Your Phone',
                         enabledBorder: InputBorder.none,
                         focusedBorder: InputBorder.none,
@@ -239,7 +239,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
                   AppPasswordTextField(
                     controller: passwordEditingController,
                     hintText: 'Password',
-                    fillColor: AppTheme.appBgColor,
+                    fillColor: AppTheme.appWidgetColor,
                     // validator: passwordValidator,
                   ),
 

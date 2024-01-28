@@ -71,7 +71,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       controller: passwordController,
                       hintText: 'password',
                       // fillColor: AppTheme.textBoxColor,
-                      fillColor: AppTheme.appBgColor,
+                      fillColor: AppTheme.appWidgetColor,
                     ),
 
                     SizedBox(height: 2.h,),

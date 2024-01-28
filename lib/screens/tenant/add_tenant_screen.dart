@@ -517,7 +517,7 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                               width: 90.w,
                               height: 15.h,
                               decoration: BoxDecoration(
-                                  color: AppTheme.appBgColor,
+                                  color: AppTheme.appWidgetColor,
                                   borderRadius: BorderRadius.circular(15.sp),
                                   image: DecorationImage(
                                       image: FileImage(tenantPic ?? File('')),
@@ -649,7 +649,7 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                     width: 90.w,
                     height: 15.h,
                     decoration: BoxDecoration(
-                        color: AppTheme.appBgColor,
+                        color: AppTheme.appWidgetColor,
                         borderRadius: BorderRadius.circular(15.sp),
                         image: DecorationImage(image: FileImage(
                             companyTenantPic ?? File('')), fit: BoxFit.cover)

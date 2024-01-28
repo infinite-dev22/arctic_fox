@@ -146,6 +146,7 @@ class _RoomTabScreenState extends State<RoomTabScreen> {
                                     int.parse(
                                         roomNumberController.text.trim()
                                             .replaceAll(',', '').toString()),
+                                    roomNameController.text.trim(),
                                     int.parse(amountController.text.trim()
                                         .replaceAll(',', '').toString()),
                                     descriptionController.text.trim()
@@ -223,7 +224,7 @@ class _RoomTabScreenState extends State<RoomTabScreen> {
                                           .value,
                                       onChanged: (value) {
                                         widget.unitController.setFloorId(
-                                            value!.id);
+                                            value!.id!);
                                       },
                                     );
                                   }),
@@ -267,6 +268,7 @@ class _RoomTabScreenState extends State<RoomTabScreen> {
                               controller: sizeController,
                               hintText: 'Square Meters',
                               obscureText: false,
+                              keyBoardType: TextInputType.number,
                             ),
 
                             // Row(
@@ -392,7 +394,7 @@ class _RoomTabScreenState extends State<RoomTabScreen> {
                               controller: descriptionController,
                               hintText: 'Description',
                               obscureText: false,
-                              fillColor: AppTheme.appBgColor,
+                              fillColor: AppTheme.appWidgetColor,
                             ),
 
                             // SizedBox(height: 2.h,),

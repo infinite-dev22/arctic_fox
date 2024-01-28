@@ -216,7 +216,7 @@ class SearchableTenantDropDown<T extends SmartTenantModel> extends StatelessWidg
         textFieldDecoration: InputDecoration(
           filled: true,
           // fillColor: AppTheme.textBoxColor,
-          fillColor: AppTheme.appBgColor,
+          fillColor: AppTheme.appWidgetColor,
           hintText: 'Select $hintText',
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
@@ -277,7 +277,7 @@ class SearchableTenantUnitScheduleDropDown<T extends SmartTenantUnitScheduleMode
         textFieldDecoration: InputDecoration(
           filled: true,
           // fillColor: AppTheme.textBoxColor,
-          fillColor: AppTheme.appBgColor,
+          fillColor: AppTheme.appWidgetColor,
           hintText: 'Select $hintText',
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
@@ -337,7 +337,7 @@ class SearchableUnitDropDown<T extends SmartUnitModel> extends StatelessWidget {
         textFieldDecoration: InputDecoration(
           filled: true,
           // fillColor: AppTheme.textBoxColor,
-          fillColor: AppTheme.appBgColor,
+          fillColor: AppTheme.appWidgetColor,
           hintText: 'Select $hintText',
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
@@ -396,7 +396,7 @@ class SearchableSpecificTenantUnitDropDown<T extends SmartSpecificTenantUnitMode
         textFieldDecoration: InputDecoration(
           filled: true,
           // fillColor: AppTheme.textBoxColor,
-          fillColor: AppTheme.appBgColor,
+          fillColor: AppTheme.appWidgetColor,
           hintText: 'Select $hintText',
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
@@ -453,7 +453,7 @@ class CustomGenericDropdown<T> extends StatelessWidget {
               contentPadding:  EdgeInsets.symmetric(vertical: 16),
               filled: true,
               // fillColor: AppTheme.textBoxColor,
-              fillColor: AppTheme.appBgColor,
+              fillColor: AppTheme.appWidgetColor,
               border: OutlineInputBorder(
                 borderSide: BorderSide.none,
                 borderRadius: BorderRadius.circular(10),
@@ -545,7 +545,7 @@ class CustomApiGenericDropdown<T extends SmartModel> extends StatelessWidget {
               contentPadding:  EdgeInsets.symmetric(vertical: 16),
               filled: true,
               // fillColor: AppTheme.textBoxColor,
-              fillColor: AppTheme.appBgColor,
+              fillColor: AppTheme.appWidgetColor,
               border: OutlineInputBorder(
                 borderSide: BorderSide.none,
                 borderRadius: BorderRadius.circular(10),
@@ -637,7 +637,7 @@ class CustomPeriodApiGenericDropdown<T extends SmartPeriodModel> extends Statele
               contentPadding:  EdgeInsets.symmetric(vertical: 16),
               filled: true,
               // fillColor: AppTheme.textBoxColor,
-              fillColor: AppTheme.appBgColor,
+              fillColor: AppTheme.appWidgetColor,
               border: OutlineInputBorder(
                 borderSide: BorderSide.none,
                 borderRadius: BorderRadius.circular(10),
@@ -728,7 +728,7 @@ class CustomUpdateApiGenericDropdown<T extends SmartModel> extends StatelessWidg
               contentPadding:  EdgeInsets.symmetric(vertical: 16),
               filled: true,
               // fillColor: AppTheme.textBoxColor,
-              fillColor: AppTheme.appBgColor,
+              fillColor: AppTheme.appWidgetColor,
               border: OutlineInputBorder(
                 borderSide: BorderSide.none,
                 borderRadius: BorderRadius.circular(10),
@@ -904,7 +904,7 @@ class CustomApiTenantTypeDropdown<T extends SmartTenantTypeModel> extends Statel
               contentPadding: const EdgeInsets.symmetric(vertical: 16),
               filled: true,
               // fillColor: AppTheme.textBoxColor,
-              fillColor: AppTheme.appBgColor,
+              fillColor: AppTheme.appWidgetColor,
               border: OutlineInputBorder(
                 borderSide: BorderSide.none,
                 borderRadius: BorderRadius.circular(10),
@@ -990,7 +990,7 @@ class CustomApiUnitDropdown<T extends SmartUnitModel> extends StatelessWidget {
               contentPadding: const EdgeInsets.symmetric(vertical: 16),
               filled: true,
               // fillColor: AppTheme.textBoxColor,
-              fillColor: AppTheme.appBgColor,
+              fillColor: AppTheme.appWidgetColor,
               border: OutlineInputBorder(
                 borderSide: BorderSide.none,
                 borderRadius: BorderRadius.circular(10),
@@ -1075,7 +1075,7 @@ class CustomApiCurrencyDropdown<T extends SmartCurrencyModel> extends StatelessW
               contentPadding: const EdgeInsets.symmetric(vertical: 16),
               filled: true,
               // fillColor: AppTheme.textBoxColor,
-              fillColor: AppTheme.appBgColor,
+              fillColor: AppTheme.appWidgetColor,
               border: OutlineInputBorder(
                 borderSide: BorderSide.none,
                 borderRadius: BorderRadius.circular(10),
@@ -1160,7 +1160,7 @@ class CustomApiNationalityDropdown<T extends SmartNationalityModel> extends Stat
               contentPadding: const EdgeInsets.symmetric(vertical: 16),
               filled: true,
               // fillColor: AppTheme.textBoxColor,
-              fillColor: AppTheme.appBgColor,
+              fillColor: AppTheme.appWidgetColor,
               border: OutlineInputBorder(
                 borderSide: BorderSide.none,
                 borderRadius: BorderRadius.circular(10),
@@ -1244,7 +1244,7 @@ class CustomUpdateApiNationalityDropdown<T extends SmartNationalityModel> extend
               contentPadding: const EdgeInsets.symmetric(vertical: 16),
               filled: true,
               // fillColor: AppTheme.textBoxColor,
-              fillColor: AppTheme.appBgColor,
+              fillColor: AppTheme.appWidgetColor,
               border: OutlineInputBorder(
                 borderSide: BorderSide.none,
                 borderRadius: BorderRadius.circular(10),
@@ -1425,7 +1425,7 @@ class CustomApiUserRoleDropdown<T extends SmartUserRoleModel> extends StatelessW
               contentPadding:  EdgeInsets.symmetric(vertical: 16),
               filled: true,
               // fillColor: AppTheme.textBoxColor,
-              fillColor: AppTheme.appBgColor,
+              fillColor: AppTheme.appWidgetColor,
               border: OutlineInputBorder(
                 borderSide: BorderSide.none,
                 borderRadius: BorderRadius.circular(10),
@@ -1511,7 +1511,7 @@ class SearchablePropertyModelListDropDown<T extends SmartPropertyModel> extends 
         textFieldDecoration: InputDecoration(
           filled: true,
           // fillColor: AppTheme.textBoxColor,
-          fillColor: AppTheme.appBgColor,
+          fillColor: AppTheme.appWidgetColor,
           hintText: 'Select $hintText',
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),

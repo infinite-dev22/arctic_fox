@@ -1008,7 +1008,7 @@ class _HomePageState extends State<HomePage> {
                                       controller: propertyDescriptionController,
                                       hintText: 'Description',
                                       obscureText: false,
-                                      fillColor: AppTheme.appBgColor,
+                                      fillColor: AppTheme.appWidgetColor,
                                     ),
 
 
@@ -1060,7 +1060,7 @@ class _HomePageState extends State<HomePage> {
                                         width: 50.w,
                                         height: 30.h,
                                         decoration: BoxDecoration(
-                                            color: AppTheme.appBgColor,
+                                            color: AppTheme.appWidgetColor,
                                             borderRadius: BorderRadius.circular(
                                                 15.sp),
                                             image: DecorationImage(
@@ -1748,7 +1748,7 @@ class _HomePageState extends State<HomePage> {
                                                       height: 30.h,
                                                       decoration: BoxDecoration(
                                                           color: AppTheme
-                                                              .appBgColor,
+                                                              .appWidgetColor,
                                                           borderRadius: BorderRadius
                                                               .circular(15.sp),
                                                           image: DecorationImage(
@@ -1911,7 +1911,7 @@ class _HomePageState extends State<HomePage> {
                                             width: 50.w,
                                             height: 30.h,
                                             decoration: BoxDecoration(
-                                                color: AppTheme.appBgColor,
+                                                color: AppTheme.appWidgetColor,
                                                 borderRadius: BorderRadius
                                                     .circular(15.sp),
                                                 image: DecorationImage(

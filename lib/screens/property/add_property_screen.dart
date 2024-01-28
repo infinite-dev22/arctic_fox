@@ -186,7 +186,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                   controller: descriptionController,
                   hintText: 'Description',
                   obscureText: false,
-                fillColor: AppTheme.appBgColor,
+                fillColor: AppTheme.appWidgetColor,
               ),
 
 
@@ -238,7 +238,7 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                   width: 90.w,
                   height: 15.h,
                   decoration: BoxDecoration(
-                      color: AppTheme.appBgColor,
+                      color: AppTheme.appWidgetColor,
                       borderRadius: BorderRadius.circular(15.sp),
                       image: DecorationImage(
                           image: FileImage(propertyPic ?? File('')),

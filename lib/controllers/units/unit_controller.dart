@@ -206,6 +206,7 @@ class UnitController extends GetxController {
       String squareMeters,
       String createdBy,
       int unitNumber,
+      String name,
       int amount,
       String description,
       int propertyId) async {
@@ -218,6 +219,7 @@ class UnitController extends GetxController {
         "floor_id": floorId,
         "currency_id": currencyId,
         "unit_number": unitNumber,
+        "name": name,
         "sq_meters": squareMeters,
         "amount": amount,
         "created_by": createdBy,
@@ -418,7 +420,7 @@ class UnitController extends GetxController {
       final response = await AppConfig()
           .supaBaseClient
           .from('units')
-          .select()
+          .select('*, floors(*)')
           .eq('property_id', propertyId)
           .order('created_at', ascending: false);
       final data = response as List<dynamic>;

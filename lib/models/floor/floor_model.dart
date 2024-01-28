@@ -11,8 +11,8 @@ FloorModel floorModelFromJson(String str) => FloorModel.fromJson(json.decode(str
 String floorModelToJson(FloorModel data) => json.encode(data.toJson());
 
 class FloorModel extends SmartModel{
-  int id;
-  String name;
+  int? id;
+  String? name;
   // String description;
   // int propertyId;
 
@@ -38,10 +38,10 @@ class FloorModel extends SmartModel{
   };
 
   @override
-  int getId() { return id;
+  int getId() { return id!;
   }
 
   @override
-  String getName() { return name;
+  String getName() { return name!;
   }
 }

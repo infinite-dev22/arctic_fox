@@ -48,7 +48,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
     return Obx(() {
       return Scaffold(
         // extendBody: true,
-        backgroundColor: AppTheme.appBgColor,
+        backgroundColor: AppTheme.appWidgetColor,
         body: screens[bottomNavBarController.currentIndex.value],
         bottomNavigationBar: ClipRRect(
           borderRadius: BorderRadius.only(topLeft: Radius.circular(20.sp), topRight: Radius.circular(20.sp)),

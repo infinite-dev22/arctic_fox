@@ -94,6 +94,7 @@ class TenantController extends GetxController with StateMixin {
   var selectedPropertyId = 0.obs;
   var isSpecificTenantProfileContactsLoading = false.obs;
   var isAddTenantLoading = false.obs;
+  var totalScheduleBalance = 0.obs;
 
 
 
@@ -164,6 +165,11 @@ class TenantController extends GetxController with StateMixin {
 // fetchAllPaymentSchedules();
     // listenToPropertyPaymentScheduleChanges();
 
+  }
+
+  setTotalScheduleBalance(int totalBalance){
+    totalScheduleBalance.value = totalBalance;
+    print('total schedule balance == $totalScheduleBalance');
   }
 
   setNewGender(String gender){
@@ -486,8 +492,23 @@ setSpecificPaymentBalance(int balance){
 
 
       print('Unit Tenant schedules IS ${response}');
-      print('Unit Tenant schedules Amountt IS ${data[0]['amount']}');
+      print('Unit Tenant schedules Amount IS ${data[0]['amount']}');
       print('Unit Tenant schedules Balance IS ${data[0]['balance']}');
+
+      print('specific schedule == ${data[0]}');
+      print('specific balance == ${data[0]['balance']}');
+      // double sum = data[0]['discount'].fold(0, (previous, current) => previous + (current ?? 0));
+
+      int calculatedSum = 0;
+      for (var schedule in data) {
+        // Assuming the column contains integer values
+        calculatedSum += schedule['balance'] as int;
+      }
+
+      print('new calculated Sum == $calculatedSum');
+      print('new calculated Sum == $calculatedSum');
+      setTotalScheduleBalance(calculatedSum);
+      print('new calculated var balance == $totalScheduleBalance');
 
       setSpecificPaymentBalance(data[0]['balance']);
       setSpecificPaymentAmount(data[0]['amount']);
@@ -548,23 +569,101 @@ setSpecificPaymentBalance(int balance){
 
     print('MY UNIQUE Controller List is $uniqueNumbersList');
 
+    int initialPaid = paid;
 
     try {
 
-      // Iterate over the list of IDs and update each row
-      for (final id in uniqueNumbersList) {
-        await AppConfig().supaBaseClient.from('payment_schedule').update(
-            {
-              "paid" : paid,
-              "balance" : balance,
-              "date_posted": DateTime.now().toIso8601String(),
-            }
-        ).eq('id', id).execute().then((value) async{
 
-          await addTenantPayment(tenantId, unitId, date1, date2, amount, paid, balance, createdBy, updatedBy);
+      for (int id = 0; id < uniqueNumbersList.length; id++) {
+        final response = await AppConfig()
+            .supaBaseClient
+            .from('payment_schedule')
+            .select()
+            .eq('id', id)
+            .execute();
 
-        });
+        var myBalance = response.data[0]['balance'];
+
+        if (initialPaid >= myBalance) {
+          // If the remaining amount is equal to or greater than the item's price,
+          // transfer the item's price to the current item
+          initialPaid -= int.parse(myBalance);
+          await AppConfig().supaBaseClient.from('payment_schedule').update(
+              {
+                "paid" : myBalance,
+                "balance" : 0,
+                "date_posted": DateTime.now().toIso8601String(),
+              }
+          ).eq('id', id).execute();
+          print('Transferred $initialPaid');
+        } else {
+          // If the remaining amount is less than the item's price,
+          // transfer the remaining amount and break the loop
+          myBalance -= initialPaid;
+          await AppConfig().supaBaseClient.from('payment_schedule').update(
+              {
+                "paid" : initialPaid,
+                "balance" : myBalance - initialPaid,
+                "date_posted": DateTime.now().toIso8601String(),
+              }
+          ).eq('id', id).execute();
+          print('Transferred $myBalance');
+          break;
+        }
       }
+
+
+      // // Iterate over the list of IDs and update each row
+      // for (final id in uniqueNumbersList) {
+      //
+      //   var response;
+      //   await AppConfig().supaBaseClient.from('payment_schedule').select().eq('id', id).single().then((value) => response = value)
+      //   .then((value) async{
+      //     var myResponse = response['balance'];
+      //     print('my Response  $myResponse');
+      //     print('my Response  type is ${myResponse.runtimeType}');
+      //
+      //     await AppConfig().supaBaseClient.from('payment_schedule').update(
+      //         {
+      //           "paid" : paid,
+      //           "balance" : myResponse - paid,
+      //           "date_posted": DateTime.now().toIso8601String(),
+      //         }
+      //     ).eq('id', id).execute().then((value) async{
+      //
+      //       await addTenantPayment(tenantId, unitId, date1, date2, amount, paid, myResponse - paid, createdBy, updatedBy);
+      //
+      //     });
+      //
+      //   });
+      //   print('Functions response == is $response');
+      //
+      //
+      //   // final response = await AppConfig()
+      //   //     .supaBaseClient
+      //   //     .from('payment_schedule')
+      //   //     .select()
+      //   //     .eq('id', id)
+      //   //     .single();
+      //   //
+      //   // var myResponse = response['balance'];
+      //   // print('my Response  $myResponse');
+      //   // print('my Response  type is ${myResponse.runtimeType}');
+      //   //
+      //   // await AppConfig().supaBaseClient.from('payment_schedule').update(
+      //   //     {
+      //   //       "paid" : paid,
+      //   //       "balance" : response['balance'] - paid  ,
+      //   //       "date_posted": DateTime.now().toIso8601String(),
+      //   //     }
+      //   // ).eq('id', id).execute().then((value) async{
+      //   //   var exactBalance = paid - int.parse(response['balance']);
+      //   //
+      //   //   await addTenantPayment(tenantId, unitId, date1, date2, amount, paid, exactBalance, createdBy, updatedBy);
+      //   //
+      //   // });
+      //
+      // }
 
 
 

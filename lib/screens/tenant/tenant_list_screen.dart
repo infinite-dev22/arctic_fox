@@ -64,10 +64,18 @@ class _TenantListScreenState extends State<TenantListScreen> {
 
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController surnameNameController = TextEditingController();
+  final TextEditingController middleNameController = TextEditingController();
+  final TextEditingController idNumberController = TextEditingController();
+  final TextEditingController tinNumberController = TextEditingController();
+  final TextEditingController addressController = TextEditingController();
   final TextEditingController otherNameController = TextEditingController();
   final TextEditingController phoneNoController = TextEditingController();
 
   final TextEditingController companyNameController = TextEditingController();
+  final TextEditingController companyBranchController = TextEditingController();
+  final TextEditingController companyEmailController = TextEditingController();
+  final TextEditingController companyTinController = TextEditingController();
+  final TextEditingController companyAddressController = TextEditingController();
   final TextEditingController companyDescriptionController = TextEditingController();
 
   final TextEditingController individualFirstNameController =
@@ -1010,6 +1018,17 @@ class _TenantListScreenState extends State<TenantListScreen> {
                                                   SizedBox(height: 1.h,),
 
                                                   AuthTextField(
+                                                    controller: middleNameController,
+                                                    hintText: 'Middle Name',
+                                                    obscureText: false,
+                                                    keyBoardType: TextInputType.text,
+                                                    // validator: iFirstNameValidator,
+                                                  ),
+
+
+                                                  SizedBox(height: 1.h,),
+
+                                                  AuthTextField(
                                                     controller: individualEmailNameController,
                                                     hintText: 'Email',
                                                     obscureText: false,
@@ -1043,6 +1062,26 @@ class _TenantListScreenState extends State<TenantListScreen> {
 
                                                   SizedBox(height: 1.h,),
 
+                                                  CustomGenericDropdown(
+                                                    hintText: 'Branch',
+                                                    menuItems: [
+                                                      'Kampala'
+                                                    ],
+                                                  ),
+
+                                                  SizedBox(height: 1.h,),
+
+                                                  AuthTextField(
+                                                    controller: idNumberController,
+                                                    hintText: 'ID Number',
+                                                    obscureText: false,
+                                                    keyBoardType: TextInputType.number,
+                                                    // validator: iFirstNameValidator,
+                                                  ),
+
+
+                                                  SizedBox(height: 1.h,),
+
                                                   AuthTextField(
                                                     controller: individualNinController,
                                                     hintText: 'NIN',
@@ -1050,6 +1089,16 @@ class _TenantListScreenState extends State<TenantListScreen> {
                                                     keyBoardType: TextInputType
                                                         .text,
                                                     // validator: iNinValidator,
+                                                  ),
+
+                                                  SizedBox(height: 1.h,),
+
+                                                  AuthTextField(
+                                                    controller: tinNumberController,
+                                                    hintText: 'Tin Number',
+                                                    obscureText: false,
+                                                    keyBoardType: TextInputType.number,
+                                                    // validator: iFirstNameValidator,
                                                   ),
 
                                                   SizedBox(height: 1.h,),
@@ -1072,9 +1121,19 @@ class _TenantListScreenState extends State<TenantListScreen> {
 
                                                   SizedBox(height: 1.h,),
 
+                                                  AuthTextField(
+                                                    controller: addressController,
+                                                    hintText: 'Address',
+                                                    obscureText: false,
+                                                    keyBoardType: TextInputType.streetAddress,
+                                                    // validator: iFirstNameValidator,
+                                                  ),
+
+                                                  SizedBox(height: 1.h,),
+
                                                   DescriptionTextField(
                                                     controller: individualDescriptionController,
-                                                    hintText: 'Description',
+                                                    hintText: 'Other Info',
                                                     obscureText: false,
                                                   ),
 
@@ -1192,14 +1251,54 @@ class _TenantListScreenState extends State<TenantListScreen> {
                                                     obscureText: false,
                                                     keyBoardType: TextInputType
                                                         .text,
-                                                    // validator: companyNameValidator,
                                                   ),
+
+                                                  SizedBox(height: 1.h),
+
+                                                  AuthTextField(
+                                                    controller: companyBranchController,
+                                                    hintText: 'Branch',
+                                                    obscureText: false,
+                                                    keyBoardType: TextInputType
+                                                        .text,
+                                                  ),
+
+                                                  SizedBox(height: 1.h),
+
+                                                  AuthTextField(
+                                                    controller: companyEmailController,
+                                                    hintText: 'Email',
+                                                    obscureText: false,
+                                                    keyBoardType: TextInputType
+                                                        .emailAddress,
+                                                  ),
+
+                                                  SizedBox(height: 1.h),
+
+                                                  AuthTextField(
+                                                    controller: companyTinController,
+                                                    hintText: 'Tin Number',
+                                                    obscureText: false,
+                                                    keyBoardType: TextInputType
+                                                        .number,
+                                                  ),
+
+                                                  SizedBox(height: 1.h),
+
+                                                  AuthTextField(
+                                                    controller: companyAddressController,
+                                                    hintText: 'Address',
+                                                    obscureText: false,
+                                                    keyBoardType: TextInputType
+                                                        .streetAddress,
+                                                  ),
+
 
                                                   SizedBox(height: 1.h,),
 
                                                   DescriptionTextField(
                                                     controller: companyDescriptionController,
-                                                    hintText: 'Description',
+                                                    hintText: 'Other Info',
                                                     obscureText: false,
                                                   ),
 

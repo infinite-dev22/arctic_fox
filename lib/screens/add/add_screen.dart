@@ -1,4 +1,5 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:date_picker_plus/date_picker_plus.dart';
 import 'package:fl_country_code_picker/fl_country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
@@ -6,6 +7,7 @@ import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:owesome_validator/owesome_validator.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/controllers/tenants/tenant_controller.dart';
@@ -43,8 +45,12 @@ class _AddScreenState extends State<AddScreen> {
 
   final _key = GlobalKey<ExpandableFabState>();
 
+  final Rx<DateTime> userDateOfBirth = Rx<DateTime>(DateTime.now());
+
   final TextEditingController firstNameEditingController =
   TextEditingController();
+  final TextEditingController middleNameController = TextEditingController();
+  final TextEditingController userDateOfBirthController = TextEditingController();
   final TextEditingController lastNameEditingController =
   TextEditingController();
   final TextEditingController emailEditingController = TextEditingController();
@@ -54,10 +60,42 @@ class _AddScreenState extends State<AddScreen> {
   TextEditingController();
   TextEditingController mobileCont = TextEditingController();
 
+  final TextEditingController codeController = TextEditingController();
+  final TextEditingController idNumberController = TextEditingController();
+  final TextEditingController nssfNumberController = TextEditingController();
+  final TextEditingController tinNumberController = TextEditingController();
+  final TextEditingController permanentAddressController = TextEditingController();
+  final TextEditingController presentAddressController = TextEditingController();
+  final TextEditingController officeNumberController = TextEditingController();
+  final TextEditingController userNameController = TextEditingController();
+
   final countryPicker = const FlCountryCodePicker();
   late CountryCode countryCode;
 
   final RegExp _numberRegex = RegExp(r'\d');
+
+  Future<void> _selectDateOfBirth(BuildContext context) async {
+    // final DateTime? picked = await showDatePicker(
+    //   context: context,
+    //   initialDate: myDateOfBirth.value,
+    //   firstDate: DateTime(1900),
+    //   lastDate: DateTime.now(),
+    // );
+
+    final DateTime? picked = await showDatePickerDialog(
+      context: context,
+      initialDate: userDateOfBirth.value,
+      minDate: DateTime(1900),
+      maxDate: DateTime.now(),
+    );
+
+    if (picked != null) {
+      userDateOfBirth(picked);
+      userDateOfBirthController.text =
+      '${DateFormat('MM/dd/yyyy').format(userDateOfBirth.value)}';
+    }
+  }
+
 
   void showAddUserBottomSheet(BuildContext context) async {
     final result = await showSlidingBottomSheet(context, builder: (context) {
@@ -305,6 +343,143 @@ class _AddScreenState extends State<AddScreen> {
                                     ),
                                   ],
                                 ),
+
+                                SizedBox(height: 1.h,),
+                                AuthTextField(
+                                  controller: middleNameController,
+                                  hintText: 'Middle Name',
+                                  obscureText: false,
+                                ),
+
+                                SizedBox(height: 1.h,),
+                                AuthTextField(
+                                  controller: userDateOfBirthController,
+                                  hintText: 'D.O.B',
+                                  obscureText: false,
+                                  onTap: () {
+                                    _selectDateOfBirth(
+                                        context);
+                                  },
+                                ),
+                                SizedBox(height: 1.h,),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    SizedBox(
+                                      width: 42.5.w,
+                                      child: CustomGenericDropdown<
+                                          String>(
+                                        hintText: 'Gender',
+                                        menuItems: [
+                                          'Male',
+                                          'Female'
+                                        ],
+                                        onChanged: (value) {
+
+                                        },
+
+                                      ),
+                                    ),
+
+                                    SizedBox(
+                                      width: 42.5.w,
+                                      child: CustomGenericDropdown<
+                                          String>(
+                                        hintText: 'Marital Status',
+                                        menuItems: [
+                                          'Single',
+                                          'Married'
+                                        ],
+                                        onChanged: (value) {
+
+                                        },
+
+                                      ),
+                                    ),
+
+
+                                  ],
+                                ),
+                                SizedBox(height: 1.h,),
+                                CustomGenericDropdown(
+                                  hintText: 'Branch',
+                                  menuItems: [
+                                    'Kampala'
+                                  ],
+                                ),
+
+                                SizedBox(height: 1.h,),
+                                AuthTextField(
+                                  controller: codeController,
+                                  hintText: 'Code',
+                                  obscureText: false,
+                                ),
+
+                                SizedBox(height: 1.h,),
+                                AuthTextField(
+                                  controller: idNumberController,
+                                  hintText: 'ID Number',
+                                  obscureText: false,
+                                  keyBoardType: TextInputType.number,
+                                ),
+
+                                SizedBox(height: 1.h,),
+                                AuthTextField(
+                                  controller: nssfNumberController,
+                                  hintText: 'NSSF Number',
+                                  obscureText: false,
+                                  keyBoardType: TextInputType.number,
+                                ),
+
+                                SizedBox(height: 1.h,),
+                                AuthTextField(
+                                  controller: tinNumberController,
+                                  hintText: 'Tin Number',
+                                  obscureText: false,
+                                  keyBoardType: TextInputType.number,
+                                ),
+
+                                SizedBox(height: 1.h,),
+
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    SizedBox(
+                                      width: 42.5.w,
+                                      child: AuthTextField(
+                                        controller: permanentAddressController,
+                                        hintText: 'Permanent Address',
+                                        obscureText: false,
+                                      ),
+                                    ),
+
+                                    SizedBox(
+                                      width: 42.5.w,
+                                      child: AuthTextField(
+                                        controller: presentAddressController,
+                                        hintText: 'Present Address',
+                                        obscureText: false,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+
+                                SizedBox(height: 1.h,),
+                                AuthTextField(
+                                  controller: officeNumberController,
+                                  hintText: 'Office Number',
+                                  obscureText: false,
+                                  keyBoardType: TextInputType.number,
+                                ),
+
+                                SizedBox(height: 1.h,),
+                                AuthTextField(
+                                  controller: userNameController,
+                                  hintText: 'Username',
+                                  obscureText: false,
+                                ),
+
+
                                 SizedBox(
                                   height: 1.h,
                                 ),
@@ -443,6 +618,7 @@ class _AddScreenState extends State<AddScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
     userController.listenToAllUsersInSpecificOrganizationChanges();
     countryCode =
     const CountryCode(name: 'Uganda', code: 'UG', dialCode: '+256');

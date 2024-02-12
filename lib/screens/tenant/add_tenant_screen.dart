@@ -63,6 +63,7 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
   TextEditingController();
   final TextEditingController individualEmailNameController =
   TextEditingController();
+  final TextEditingController middleNameController = TextEditingController();
   final TextEditingController individualPhoneNameController =
   TextEditingController();
   final TextEditingController individualDateOfBirthController =
@@ -410,6 +411,16 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                           SizedBox(height: 1.h,),
 
                           AuthTextField(
+                            controller: middleNameController,
+                            hintText: 'Middle Name',
+                            obscureText: false,
+                            keyBoardType: TextInputType.text,
+                            // validator: iFirstNameValidator,
+                          ),
+
+                          SizedBox(height: 1.h,),
+
+                          AuthTextField(
                             controller: individualEmailNameController,
                             hintText: 'Email',
                             obscureText: false,
@@ -436,6 +447,13 @@ class _AddTenantScreenState extends State<AddTenantScreen> {
                             onTap: () {
                               _selectDateOfBirth(context);
                             },
+                          ),
+
+                          SizedBox(height: 1.h,),
+
+                          CustomGenericDropdown(
+                              hintText: 'Branch',
+                              menuItems: [],
                           ),
 
                           SizedBox(height: 1.h,),

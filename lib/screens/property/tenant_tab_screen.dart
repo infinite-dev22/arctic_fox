@@ -1265,82 +1265,84 @@ class _TenantTabScreenState extends State<TenantTabScreen> {
 
                                 // DateAccordion(dateController: date1Controller),
 
-                                Center(
-                                  child: Bounceable(
-                                    onTap: () {
-                                      FullPicker(
-                                        prefixName: 'add tenant',
-                                        context: context,
-                                        image: true,
-                                        imageCamera: kDebugMode,
-                                        imageCropper: true,
-                                        onError: (int value) {
-                                          print(
-                                              " ----  onError ----=$value");
-                                        },
-                                        onSelected: (value) async {
-                                          print(
-                                              " ----  onSelected ----");
+                                // Center(
+                                //   child: Bounceable(
+                                //     onTap: () {
+                                //       FullPicker(
+                                //         prefixName: 'add tenant',
+                                //         context: context,
+                                //         image: true,
+                                //         imageCamera: kDebugMode,
+                                //         imageCropper: true,
+                                //         onError: (int value) {
+                                //           print(
+                                //               " ----  onError ----=$value");
+                                //         },
+                                //         onSelected: (value) async {
+                                //           print(
+                                //               " ----  onSelected ----");
+                                //
+                                //           setState(() {
+                                //             tenantPic =
+                                //                 value.file
+                                //                     .first;
+                                //             tenantImagePath =
+                                //                 value.file
+                                //                     .first!
+                                //                     .path;
+                                //             tenantImageExtension =
+                                //                 value.file
+                                //                     .first!
+                                //                     .path
+                                //                     .split('.')
+                                //                     .last;
+                                //             tenantFileName =
+                                //                 value.file
+                                //                     .first!
+                                //                     .path
+                                //                     .split('/')
+                                //                     .last;
+                                //           });
+                                //           tenantBytes =
+                                //           await tenantPic!
+                                //               .readAsBytes();
+                                //           print(
+                                //               'MY PIC == $tenantPic');
+                                //           print(
+                                //               'MY path == $tenantImagePath');
+                                //           print(
+                                //               'MY bytes == $tenantBytes');
+                                //           print(
+                                //               'MY extension == $tenantImageExtension');
+                                //           print(
+                                //               'MY FILE NAME == $tenantFileName');
+                                //         },
+                                //       );
+                                //     },
+                                //     child: Container(
+                                //       width: 50.w,
+                                //       height: 20.h,
+                                //       decoration: BoxDecoration(
+                                //           color: AppTheme
+                                //               .appWidgetColor,
+                                //           borderRadius: BorderRadius
+                                //               .circular(15.sp),
+                                //           image: DecorationImage(
+                                //               image: FileImage(
+                                //                   tenantPic ??
+                                //                       File('')),
+                                //               fit: BoxFit.cover)
+                                //       ),
+                                //       child: tenantPic == null
+                                //           ? Center(
+                                //         child: Text(
+                                //             'Upload profile pic'),)
+                                //           : null,
+                                //     ),
+                                //   ),
+                                // )
 
-                                          setState(() {
-                                            tenantPic =
-                                                value.file
-                                                    .first;
-                                            tenantImagePath =
-                                                value.file
-                                                    .first!
-                                                    .path;
-                                            tenantImageExtension =
-                                                value.file
-                                                    .first!
-                                                    .path
-                                                    .split('.')
-                                                    .last;
-                                            tenantFileName =
-                                                value.file
-                                                    .first!
-                                                    .path
-                                                    .split('/')
-                                                    .last;
-                                          });
-                                          tenantBytes =
-                                          await tenantPic!
-                                              .readAsBytes();
-                                          print(
-                                              'MY PIC == $tenantPic');
-                                          print(
-                                              'MY path == $tenantImagePath');
-                                          print(
-                                              'MY bytes == $tenantBytes');
-                                          print(
-                                              'MY extension == $tenantImageExtension');
-                                          print(
-                                              'MY FILE NAME == $tenantFileName');
-                                        },
-                                      );
-                                    },
-                                    child: Container(
-                                      width: 50.w,
-                                      height: 20.h,
-                                      decoration: BoxDecoration(
-                                          color: AppTheme
-                                              .appWidgetColor,
-                                          borderRadius: BorderRadius
-                                              .circular(15.sp),
-                                          image: DecorationImage(
-                                              image: FileImage(
-                                                  tenantPic ??
-                                                      File('')),
-                                              fit: BoxFit.cover)
-                                      ),
-                                      child: tenantPic == null
-                                          ? Center(
-                                        child: Text(
-                                            'Upload profile pic'),)
-                                          : null,
-                                    ),
-                                  ),
-                                )
+
 
                                 // Bounceable(
                                 //   onTap: () {

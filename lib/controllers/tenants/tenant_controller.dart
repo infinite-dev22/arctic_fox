@@ -573,44 +573,42 @@ setSpecificPaymentBalance(int balance){
 
     try {
 
-
-      for (int id = 0; id < uniqueNumbersList.length; id++) {
+      for (final pid in uniqueNumbersList) {
         final response = await AppConfig()
             .supaBaseClient
             .from('payment_schedule')
             .select()
-            .eq('id', id)
+            .eq('id', pid)
             .execute();
 
         var myBalance = response.data[0]['balance'];
+        var myAmount = response.data[0]['amount'];
 
         if (initialPaid >= myBalance) {
-          // If the remaining amount is equal to or greater than the item's price,
-          // transfer the item's price to the current item
-          initialPaid -= int.parse(myBalance);
+          initialPaid -= int.parse(myBalance.toString());
           await AppConfig().supaBaseClient.from('payment_schedule').update(
               {
                 "paid" : myBalance,
                 "balance" : 0,
                 "date_posted": DateTime.now().toIso8601String(),
               }
-          ).eq('id', id).execute();
+          ).eq('id', pid).execute();
           print('Transferred $initialPaid');
         } else {
-          // If the remaining amount is less than the item's price,
-          // transfer the remaining amount and break the loop
+
           myBalance -= initialPaid;
           await AppConfig().supaBaseClient.from('payment_schedule').update(
               {
-                "paid" : initialPaid,
-                "balance" : myBalance - initialPaid,
+                "paid" : myBalance == 0 ? myAmount : initialPaid,
+                "balance" : myBalance,
                 "date_posted": DateTime.now().toIso8601String(),
               }
-          ).eq('id', id).execute();
+          ).eq('id', pid).execute();
           print('Transferred $myBalance');
           break;
         }
       }
+
 
 
       // // Iterate over the list of IDs and update each row

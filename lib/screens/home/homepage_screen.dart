@@ -62,6 +62,7 @@ class _HomePageState extends State<HomePage> {
   late SingleValueDropDownController _propertyModelCont;
 
   final TextEditingController floorController = TextEditingController();
+  final TextEditingController floorCodeController = TextEditingController();
   final TextEditingController propertyDescriptionController = TextEditingController();
   String? floorName;
 
@@ -100,12 +101,20 @@ class _HomePageState extends State<HomePage> {
   final TextEditingController phoneNoController = TextEditingController();
 
   final TextEditingController companyNameController = TextEditingController();
+  final TextEditingController companyBranchController = TextEditingController();
+  final TextEditingController companyEmailController = TextEditingController();
+  final TextEditingController companyTinController = TextEditingController();
+  final TextEditingController companyAddressController = TextEditingController();
   final TextEditingController companyDescriptionController = TextEditingController();
 
   final TextEditingController individualFirstNameController =
   TextEditingController();
   final TextEditingController individualLastNameController =
   TextEditingController();
+  final TextEditingController middleNameController = TextEditingController();
+  final TextEditingController idNumberController = TextEditingController();
+  final TextEditingController tinNumberController = TextEditingController();
+  final TextEditingController addressController = TextEditingController();
   final TextEditingController individualEmailNameController =
   TextEditingController();
   final TextEditingController individualPhoneNameController =
@@ -455,6 +464,18 @@ class _HomePageState extends State<HomePage> {
                                     onChanged: (value) {
                                       floorName = floorController.text.trim();
                                       print(floorName.toString());
+                                    },
+                                  ),
+
+                                  SizedBox(height: 1.h,),
+
+                                  AuthTextField(
+                                    controller: floorCodeController,
+                                    hintText: 'Code.',
+                                    obscureText: false,
+                                    onChanged: (value) {
+                                      // floorName = floorController.text.trim();
+                                      print(floorCodeController.text.toString());
                                     },
                                   ),
 
@@ -1619,6 +1640,16 @@ class _HomePageState extends State<HomePage> {
                                                   SizedBox(height: 1.h,),
 
                                                   AuthTextField(
+                                                    controller: middleNameController,
+                                                    hintText: 'Middle Name',
+                                                    obscureText: false,
+                                                    keyBoardType: TextInputType.text,
+                                                    // validator: iFirstNameValidator,
+                                                  ),
+
+                                                  SizedBox(height: 1.h,),
+
+                                                  AuthTextField(
                                                     controller: individualEmailNameController,
                                                     hintText: 'Email',
                                                     obscureText: false,
@@ -1652,6 +1683,24 @@ class _HomePageState extends State<HomePage> {
 
                                                   SizedBox(height: 1.h,),
 
+                                                  CustomGenericDropdown(
+                                                    hintText: 'Branch',
+                                                    menuItems: [],
+                                                  ),
+
+                                                  SizedBox(height: 1.h,),
+
+                                                  AuthTextField(
+                                                    controller: idNumberController,
+                                                    hintText: 'ID Number',
+                                                    obscureText: false,
+                                                    keyBoardType: TextInputType.number,
+                                                    // validator: iFirstNameValidator,
+                                                  ),
+
+
+                                                  SizedBox(height: 1.h,),
+
                                                   AuthTextField(
                                                     controller: individualNinController,
                                                     hintText: 'NIN',
@@ -1659,6 +1708,16 @@ class _HomePageState extends State<HomePage> {
                                                     keyBoardType: TextInputType
                                                         .text,
                                                     // validator: iNinValidator,
+                                                  ),
+
+                                                  SizedBox(height: 1.h,),
+
+                                                  AuthTextField(
+                                                    controller: tinNumberController,
+                                                    hintText: 'Tin Number',
+                                                    obscureText: false,
+                                                    keyBoardType: TextInputType.number,
+                                                    // validator: iFirstNameValidator,
                                                   ),
 
                                                   SizedBox(height: 1.h,),
@@ -1678,6 +1737,16 @@ class _HomePageState extends State<HomePage> {
 
                                                     );
                                                   }),
+
+                                                  SizedBox(height: 1.h,),
+
+                                                  AuthTextField(
+                                                    controller: addressController,
+                                                    hintText: 'Address',
+                                                    obscureText: false,
+                                                    keyBoardType: TextInputType.streetAddress,
+                                                    // validator: iFirstNameValidator,
+                                                  ),
 
                                                   SizedBox(height: 1.h,),
 
@@ -1803,6 +1872,48 @@ class _HomePageState extends State<HomePage> {
                                                         .text,
                                                     // validator: companyNameValidator,
                                                   ),
+
+                                                  SizedBox(height: 1.h),
+
+                                                  AuthTextField(
+                                                    controller: companyBranchController,
+                                                    hintText: 'Branch',
+                                                    obscureText: false,
+                                                    keyBoardType: TextInputType
+                                                        .text,
+                                                  ),
+
+                                                  SizedBox(height: 1.h),
+
+                                                  AuthTextField(
+                                                    controller: companyEmailController,
+                                                    hintText: 'Email',
+                                                    obscureText: false,
+                                                    keyBoardType: TextInputType
+                                                        .emailAddress,
+                                                  ),
+
+                                                  SizedBox(height: 1.h),
+
+                                                  AuthTextField(
+                                                    controller: companyTinController,
+                                                    hintText: 'Tin Number',
+                                                    obscureText: false,
+                                                    keyBoardType: TextInputType
+                                                        .number,
+                                                  ),
+
+                                                  SizedBox(height: 1.h),
+
+                                                  AuthTextField(
+                                                    controller: companyAddressController,
+                                                    hintText: 'Address',
+                                                    obscureText: false,
+                                                    keyBoardType: TextInputType
+                                                        .streetAddress,
+                                                  ),
+
+
 
                                                   SizedBox(height: 1.h,),
 

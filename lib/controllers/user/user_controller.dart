@@ -481,15 +481,7 @@ isUserListLoading(true);
           "phone" : phone,
         }
       ]);
-      // final AuthResponse response = await AppConfig().supaBaseClient.auth.signUp(password: password, email: email,);
-      // if (response.error != null) {
-      //   throw response.error;
-      // }
-      //
-      // userProfileId.value = response.data?.first['id'] ?? -1;
-      // print(userProfileId.value.toString());
 
-      // Get.off(() => InitialScreen());
 
     } catch (error) {
       print('Error inserting into user Profile: $error');

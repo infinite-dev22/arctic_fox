@@ -334,7 +334,7 @@ class _CompleteSignUpScreenState extends State<CompleteSignUpScreen> {
                             }  else if (!_numberRegex.hasMatch(confirmPasswordEditingController.text.toString())) {
                               Fluttertoast.showToast(
                                   msg: 'confirm password must have a number', gravity: ToastGravity.TOP);
-                            }else {
+                            } else {
                               print('EVERYTHING IS OKAY');
                               if (userController.isPhoneSelected.value ==
                                   true) {

@@ -783,7 +783,8 @@ class PropertyDetailsScreen extends StatefulWidget {
   final TenantController tenantController;
   final UnitController unitController;
   final PropertyModel propertyModel;
-  const PropertyDetailsScreen({super.key, required this.unitController, required this.tenantController, required this.propertyModel});
+  final int id;
+  const PropertyDetailsScreen({super.key, required this.unitController, required this.tenantController, required this.propertyModel, required this.id});
 
   @override
   State<PropertyDetailsScreen> createState() => _PropertyDetailsScreenState();
@@ -842,7 +843,7 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> with Tick
                     child: TabBarView(
                       // controller: propertyTabCont,
                       children: [
-                        PropertyDetailsTabScreen(propertyDetailsOptionsController: propertyDetailsOptionsController, propertyModel: widget.propertyModel,),
+                        PropertyDetailsTabScreen(propertyDetailsOptionsController: propertyDetailsOptionsController,  id: widget.id,),
                         // FloorTabScreen(propertyDetailsOptionsController: propertyDetailsOptionsController,),
                         RoomTabScreen(
                             unitController: widget.unitController,

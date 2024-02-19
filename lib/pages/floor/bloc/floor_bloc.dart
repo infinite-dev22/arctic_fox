@@ -1,0 +1,75 @@
+import 'dart:async';
+
+import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
+import 'package:smart_rent/data_source/models/floor/floor_model.dart';
+import 'package:smart_rent/data_source/repositories/implemantation/floor_repo_impl.dart';
+import 'package:smart_rent/utils/app_prefs.dart';
+
+part 'floor_event.dart';
+part 'floor_state.dart';
+
+class FloorBloc extends Bloc<FloorEvent, FloorState> {
+  FloorBloc() : super(FloorState()) {
+    on<LoadAllFloorsEvent>(_mapFetchFloorsToState);
+  }
+
+  _mapFetchFloorsToState(LoadAllFloorsEvent event, Emitter<FloorState> emit) async{
+    emit(state.copyWith(status: FloorStatus.loading));
+    await FloorRepoImpl().getALlFloors(userStorage.read('accessToken').toString(), event.id).then((floors) {
+      if(floors.isNotEmpty){
+        emit(state.copyWith(status: FloorStatus.success, floors: floors));
+      } else {
+        emit(state.copyWith(status: FloorStatus.empty));
+      }
+    }).onError((error, stackTrace) {
+      emit(state.copyWith(status: FloorStatus.error));
+      if (kDebugMode) {
+        print("Error: $error");
+        print("Stacktrace: $stackTrace");
+      }
+    });
+  }
+
+  // _mapViewSingleFloorDetailsEventToState(LoadSinglePropertyEvent event, Emitter<PropertyState> emit) async {
+  //   emit(state.copyWith(status: PropertyStatus.loadingDetails,));
+  //   await PropertyRepoImpl().getSingleProperty(event.id, userStorage.read('accessToken').toString()).then((property) {
+  //     if(property != null) {
+  //       emit(state.copyWith(status: PropertyStatus.successDetails, property: property));
+  //     } else {
+  //       emit(state.copyWith(status: PropertyStatus.emptyDetails, property: null));
+  //     }
+  //   }).onError((error, stackTrace) {
+  //     emit(state.copyWith(status: PropertyStatus.errorDetails, isPropertyLoading: false));
+  //   });
+  //
+  // }
+
+  @override
+  void onEvent(FloorEvent event) {
+    print(event);
+    super.onEvent(event);
+  }
+
+  @override
+  void onTransition(Transition<FloorEvent, FloorState> transition) {
+    print(transition);
+    super.onTransition(transition);
+  }
+
+  @override
+  void onChange(Change<FloorState> change) {
+    print(change);
+    super.onChange(change);
+  }
+
+  @override
+  void onError(Object error, StackTrace stackTrace) {
+    print(error);
+    print(stackTrace);
+    super.onError(error, stackTrace);
+  }
+
+}

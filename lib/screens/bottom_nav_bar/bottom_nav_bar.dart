@@ -4,10 +4,12 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/controllers/bottom_nav_bar/bottom_nav_controller.dart';
 import 'package:smart_rent/controllers/tenants/tenant_controller.dart';
 import 'package:smart_rent/controllers/user/user_controller.dart';
-import 'package:smart_rent/screens/add/add_screen.dart';
+import 'package:smart_rent/pages/employee/employee_list_screen.dart';
+import 'package:smart_rent/pages/home/home_screen.dart';
+
 import 'package:smart_rent/screens/chat/chat_screen.dart';
 import 'package:smart_rent/screens/find/find_screen.dart';
-import 'package:smart_rent/screens/home/homepage_screen.dart';
+
 import 'package:smart_rent/screens/profile/profile_screen.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 
@@ -38,9 +40,11 @@ class _BottomNavBarState extends State<BottomNavBar> {
     final BottomNavBarController bottomNavBarController = Get.put(
         BottomNavBarController());
     final screens = [
-      HomePage(userController: userController, tenantController:  tenantController,),
+      // HomePage(userController: userController, tenantController:  tenantController,),
+      HomeScreen(),
       FindScreen(),
-      AddScreen(),
+      // AddScreen(),
+      EmployeeListScreen(),
       ChatScreen(),
       ProfileScreen(),
 

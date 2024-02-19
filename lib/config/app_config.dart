@@ -6,5 +6,7 @@ class AppConfig {
 
   final supaBaseClient = Supabase.instance.client;
 
+  final baseUrl = 'https://smartrent.smartcase.co.ug/';
+
 
 }

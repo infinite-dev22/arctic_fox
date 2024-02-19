@@ -201,11 +201,11 @@ class _PropertyListScreenState extends State<PropertyListScreen> {
 
                       return Bounceable(
                           onTap: () {
-                            Get.to(() =>
-                                PropertyDetailsScreen(
-                                  propertyModel: property,
-                                  unitController: widget.unitController,
-                                  tenantController: widget.tenantController,));
+                            // Get.to(() =>
+                            //     PropertyDetailsScreen(
+                            //       propertyModel: property,
+                            //       unitController: widget.unitController,
+                            //       tenantController: widget.tenantController,));
                           },
                           child: SlideInUp(child: PropertyCardWidget(
                             index: index,

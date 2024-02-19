@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/config/app_strings.dart';
-import 'package:smart_rent/screens/auth/login_screen.dart';
+import 'package:smart_rent/pages/login/login_screen.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 import 'package:smart_rent/widgets/app_button.dart';
 import 'package:smart_rent/widgets/top_intro_stack.dart';
@@ -43,6 +43,7 @@ class _InitialScreenState extends State<InitialScreen> {
                     title: 'Get Started',
                     color: AppTheme.primaryColor,
                     function: (){
+                      // Get.to(() => LoginScreen(), transition: Transition.downToUp);
                       Get.to(() => LoginScreen(), transition: Transition.downToUp);
                     }),
                 

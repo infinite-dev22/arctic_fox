@@ -1,21 +1,24 @@
 // To parse this JSON data, do
 //
-//     final tenantListModel = tenantListModelFromJson(jsonString);
+//     final tenanListModel = tenanListModelFromJson(jsonString);
 
 import 'dart:convert';
 
-TenantListModel tenantListModelFromJson(String str) => TenantListModel.fromJson(json.decode(str));
+import 'package:smart_rent/data_source/models/tenant/tenant_details_model.dart';
+import 'package:smart_rent/data_source/models/tenant/tenant_type_model.dart';
 
-String tenantListModelToJson(TenantListModel data) => json.encode(data.toJson());
+TenanListModel tenanListModelFromJson(String str) => TenanListModel.fromJson(json.decode(str));
 
-class TenantListModel {
+String tenanListModelToJson(TenanListModel data) => json.encode(data.toJson());
+
+class TenanListModel {
   List<TenantModel>? clients;
 
-  TenantListModel({
+  TenanListModel({
     this.clients,
   });
 
-  factory TenantListModel.fromJson(Map<String, dynamic> json) => TenantListModel(
+  factory TenanListModel.fromJson(Map<String, dynamic> json) => TenanListModel(
     clients: json["clients"] == null ? [] : List<TenantModel>.from(json["clients"]!.map((x) => TenantModel.fromJson(x))),
   );
 
@@ -32,7 +35,8 @@ class TenantModel {
   dynamic updatedBy;
   DateTime? createdAt;
   DateTime? updatedAt;
-  TenantType? clientType;
+  TenantTypeModel? clientType;
+  List<TenantProfile>? clientProfiles;
 
   TenantModel({
     this.id,
@@ -43,6 +47,7 @@ class TenantModel {
     this.createdAt,
     this.updatedAt,
     this.clientType,
+    this.clientProfiles,
   });
 
   factory TenantModel.fromJson(Map<String, dynamic> json) => TenantModel(
@@ -53,7 +58,8 @@ class TenantModel {
     updatedBy: json["updated_by"],
     createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
     updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
-    clientType: json["client_type"] == null ? null : TenantType.fromJson(json["client_type"]),
+    clientType: json["client_type"] == null ? null : TenantTypeModel.fromJson(json["client_type"]),
+    clientProfiles: json["client_profiles"] == null ? [] : List<TenantProfile>.from(json["client_profiles"]!.map((x) => TenantProfile.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -65,49 +71,52 @@ class TenantModel {
     "created_at": createdAt?.toIso8601String(),
     "updated_at": updatedAt?.toIso8601String(),
     "client_type": clientType?.toJson(),
+    "client_profiles": clientProfiles == null ? [] : List<dynamic>.from(clientProfiles!.map((x) => x.toJson())),
   };
 }
 
-class TenantType {
-  int? id;
-  String? name;
-  String? code;
-  String? description;
-  int? createdBy;
-  dynamic updatedBy;
-  DateTime? createdAt;
-  DateTime? updatedAt;
 
-  TenantType({
-    this.id,
-    this.name,
-    this.code,
-    this.description,
-    this.createdBy,
-    this.updatedBy,
-    this.createdAt,
-    this.updatedAt,
-  });
 
-  factory TenantType.fromJson(Map<String, dynamic> json) => TenantType(
-    id: json["id"],
-    name: json["name"],
-    code: json["code"],
-    description: json["description"],
-    createdBy: json["created_by"],
-    updatedBy: json["updated_by"],
-    createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
-    updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
-  );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-    "code": code,
-    "description": description,
-    "created_by": createdBy,
-    "updated_by": updatedBy,
-    "created_at": createdAt?.toIso8601String(),
-    "updated_at": updatedAt?.toIso8601String(),
-  };
-}
+// class TenantType extends {
+//   int? id;
+//   String? name;
+//   String? code;
+//   String? description;
+//   int? createdBy;
+//   dynamic updatedBy;
+//   DateTime? createdAt;
+//   DateTime? updatedAt;
+//
+//   TenantType({
+//     this.id,
+//     this.name,
+//     this.code,
+//     this.description,
+//     this.createdBy,
+//     this.updatedBy,
+//     this.createdAt,
+//     this.updatedAt,
+//   });
+//
+//   factory TenantType.fromJson(Map<String, dynamic> json) => TenantType(
+//     id: json["id"],
+//     name: json["name"],
+//     code: json["code"],
+//     description: json["description"],
+//     createdBy: json["created_by"],
+//     updatedBy: json["updated_by"],
+//     createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
+//     updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
+//   );
+//
+//   Map<String, dynamic> toJson() => {
+//     "id": id,
+//     "name": name,
+//     "code": code,
+//     "description": description,
+//     "created_by": createdBy,
+//     "updated_by": updatedBy,
+//     "created_at": createdAt?.toIso8601String(),
+//     "updated_at": updatedAt?.toIso8601String(),
+//   };
+// }

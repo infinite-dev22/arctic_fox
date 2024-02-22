@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:smart_rent/models/general/smart_model.dart';
+
 FloorListModel floorListModelFromJson(String str) => FloorListModel.fromJson(json.decode(str));
 
 String floorListModelToJson(FloorListModel data) => json.encode(data.toJson());
@@ -24,7 +26,7 @@ class FloorListModel {
   };
 }
 
-class FloorModel {
+class FloorModel extends SmartModel{
   int? id;
   String? code;
   String? name;
@@ -70,4 +72,12 @@ class FloorModel {
     "created_at": createdAt?.toIso8601String(),
     "updated_at": updatedAt?.toIso8601String(),
   };
+
+  @override
+  int getId() { return id!;
+  }
+
+  @override
+  String getName() { return name!;
+  }
 }

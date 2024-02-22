@@ -5,6 +5,7 @@
 import 'dart:convert';
 
 import 'package:smart_rent/data_source/models/tenant/tenant_model.dart';
+import 'package:smart_rent/data_source/models/tenant/tenant_type_model.dart';
 
 TenantDetailsModel tenantDetailsModelFromJson(String str) => TenantDetailsModel.fromJson(json.decode(str));
 
@@ -18,8 +19,8 @@ class TenantDetailsModel {
   dynamic updatedBy;
   DateTime? createdAt;
   DateTime? updatedAt;
-  TenantType? tenantType;
-  List<ClientProfile>? clientProfiles;
+  TenantTypeModel? tenantType;
+  List<TenantProfile>? tenantProfiles;
 
   TenantDetailsModel({
     this.id,
@@ -30,7 +31,7 @@ class TenantDetailsModel {
     this.createdAt,
     this.updatedAt,
     this.tenantType,
-    this.clientProfiles,
+    this.tenantProfiles,
   });
 
   factory TenantDetailsModel.fromJson(Map<String, dynamic> json) => TenantDetailsModel(
@@ -41,8 +42,8 @@ class TenantDetailsModel {
     updatedBy: json["updated_by"],
     createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
     updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
-    tenantType: json["client_type"] == null ? null : TenantType.fromJson(json["client_type"]),
-    clientProfiles: json["client_profiles"] == null ? [] : List<ClientProfile>.from(json["client_profiles"]!.map((x) => ClientProfile.fromJson(x))),
+    tenantType: json["client_type"] == null ? null : TenantTypeModel.fromJson(json["client_type"]),
+    tenantProfiles: json["client_profiles"] == null ? [] : List<TenantProfile>.from(json["client_profiles"]!.map((x) => TenantProfile.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -54,11 +55,11 @@ class TenantDetailsModel {
     "created_at": createdAt?.toIso8601String(),
     "updated_at": updatedAt?.toIso8601String(),
     "client_type": tenantType?.toJson(),
-    "client_profiles": clientProfiles == null ? [] : List<dynamic>.from(clientProfiles!.map((x) => x.toJson())),
+    "client_profiles": tenantProfiles == null ? [] : List<dynamic>.from(tenantProfiles!.map((x) => x.toJson())),
   };
 }
 
-class ClientProfile {
+class TenantProfile {
   int? id;
   String? firstName;
   dynamic middleName;
@@ -81,7 +82,7 @@ class ClientProfile {
   DateTime? updatedAt;
   List<ClientProfileContact>? clientProfileContacts;
 
-  ClientProfile({
+  TenantProfile({
     this.id,
     this.firstName,
     this.middleName,
@@ -105,7 +106,7 @@ class ClientProfile {
     this.clientProfileContacts,
   });
 
-  factory ClientProfile.fromJson(Map<String, dynamic> json) => ClientProfile(
+  factory TenantProfile.fromJson(Map<String, dynamic> json) => TenantProfile(
     id: json["id"],
     firstName: json["first_name"],
     middleName: json["middle_name"],
@@ -202,46 +203,3 @@ class ClientProfileContact {
   };
 }
 
-// class ClientType {
-//   int? id;
-//   String? name;
-//   String? code;
-//   String? description;
-//   int? createdBy;
-//   dynamic updatedBy;
-//   DateTime? createdAt;
-//   DateTime? updatedAt;
-//
-//   ClientType({
-//     this.id,
-//     this.name,
-//     this.code,
-//     this.description,
-//     this.createdBy,
-//     this.updatedBy,
-//     this.createdAt,
-//     this.updatedAt,
-//   });
-//
-//   factory ClientType.fromJson(Map<String, dynamic> json) => ClientType(
-//     id: json["id"],
-//     name: json["name"],
-//     code: json["code"],
-//     description: json["description"],
-//     createdBy: json["created_by"],
-//     updatedBy: json["updated_by"],
-//     createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
-//     updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
-//   );
-//
-//   Map<String, dynamic> toJson() => {
-//     "id": id,
-//     "name": name,
-//     "code": code,
-//     "description": description,
-//     "created_by": createdBy,
-//     "updated_by": updatedBy,
-//     "created_at": createdAt?.toIso8601String(),
-//     "updated_at": updatedAt?.toIso8601String(),
-//   };
-// }

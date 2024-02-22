@@ -11,6 +11,7 @@ import 'package:smart_rent/screens/chat/chat_screen.dart';
 import 'package:smart_rent/screens/find/find_screen.dart';
 
 import 'package:smart_rent/screens/profile/profile_screen.dart';
+import 'package:smart_rent/screens/test/country_state_list_screen.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 
 
@@ -42,6 +43,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
     final screens = [
       // HomePage(userController: userController, tenantController:  tenantController,),
       HomeScreen(),
+      // CountryCityListScreen(),
       FindScreen(),
       // AddScreen(),
       EmployeeListScreen(),

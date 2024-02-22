@@ -19,3 +19,10 @@ class LoadSingleTenantEvent extends TenantEvent {
   List<Object?> get props => [id];
 
 }
+
+class LoadTenantTypes extends TenantEvent {
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+
+}

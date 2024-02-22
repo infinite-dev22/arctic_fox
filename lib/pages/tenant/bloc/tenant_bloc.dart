@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:smart_rent/data_source/models/tenant/tenant_details_model.dart';
 import 'package:smart_rent/data_source/models/tenant/tenant_model.dart';
+import 'package:smart_rent/data_source/models/tenant/tenant_type_model.dart';
 import 'package:smart_rent/data_source/repositories/implemantation/tenant_repo_impl.dart';
 import 'package:smart_rent/utils/app_prefs.dart';
 
@@ -16,6 +17,7 @@ class TenantBloc extends Bloc<TenantEvent, TenantState> {
   TenantBloc() : super(TenantInitial()) {
     on<LoadAllTenantsEvent>(_mapFetchTenantsToState);
     on<LoadSingleTenantEvent>(_mapViewSingleTenantDetailsEventToState);
+    on<LoadTenantTypes>(_mapFetchTenantTypesToState);
   }
 
   _mapFetchTenantsToState(LoadAllTenantsEvent event, Emitter<TenantState> emit) async{
@@ -47,6 +49,23 @@ class TenantBloc extends Bloc<TenantEvent, TenantState> {
       emit(state.copyWith(status: TenantStatus.errorDetails, isLoading: false));
     });
 
+  }
+
+  _mapFetchTenantTypesToState(LoadTenantTypes event, Emitter<TenantState> emit) async{
+    emit(state.copyWith(status: TenantStatus.loadingTT));
+    await TenantRepoImpl().getALlTenantTypes(userStorage.read('accessToken').toString()).then((types) {
+      if(types.isNotEmpty){
+        emit(state.copyWith(status: TenantStatus.successTT, tenantTypes: types));
+      } else {
+        emit(state.copyWith(status: TenantStatus.emptyTT));
+      }
+    }).onError((error, stackTrace) {
+      emit(state.copyWith(status: TenantStatus.errorTT));
+      if (kDebugMode) {
+        print("Error: $error");
+        print("Stacktrace: $stackTrace");
+      }
+    });
   }
 
   @override

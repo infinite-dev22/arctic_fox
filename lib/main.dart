@@ -8,7 +8,9 @@ import 'package:smart_rent/pages/user/bloc/user_bloc.dart';
 import 'package:smart_rent/pages/user/layout/user_screen_layout.dart';
 import 'package:smart_rent/pages/user/user_list_screen.dart';
 import 'package:smart_rent/screens/auth/initial_screen.dart';
+import 'package:smart_rent/screens/test/bloc/country_city_bloc.dart';
 import 'package:smart_rent/screens/bottom_nav_bar/bottom_nav_bar.dart';
+import 'package:smart_rent/screens/test/country_state_list_screen.dart';
 import 'package:smart_rent/utils/app_prefs.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -18,7 +20,7 @@ void main() async {
     url: 'https://nsmowxdnkhgxyleexifv.supabase.co',
     // anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5zbW93eGRua2hneHlsZWV4aWZ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTk4ODQ5NDYsImV4cCI6MjAxNTQ2MDk0Nn0.aNrLzAm74sF0aH04qUGyodAqRMDLs-MsLlCGRbKsd-w',
     anonKey:
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5zbW93eGRua2hneHlsZWV4aWZ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTk4ODQ5NDYsImV4cCI6MjAxNTQ2MDk0Nn0.aNrLzAm74sF0aH04qUGyodAqRMDLs-MsLlCGRbKsd-w',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5zbW93eGRua2hneHlsZWV4aWZ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTk4ODQ5NDYsImV4cCI6MjAxNTQ2MDk0Nn0.aNrLzAm74sF0aH04qUGyodAqRMDLs-MsLlCGRbKsd-w',
   );
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
@@ -62,6 +64,8 @@ class _MyAppState extends State<MyApp> {
           ),
           // home: HomePage(),
           home: userStorage.read('isLoggedIn') ? BottomNavBar() : InitialScreen(),
+          // home: CountryCityListScreen(),
+
           // home: const LoginScreen(),
 
           // home: UserListScreen(),

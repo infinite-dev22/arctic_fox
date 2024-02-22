@@ -59,23 +59,23 @@ class TenantDetailsTab extends StatelessWidget {
                   .toString(),) : Container(),
 
             tenantModel.tenantTypeId == 2 ?
-                Column(
-                  children: [
-                              Text('Contact Details', style: AppTheme.blueAppTitle3,),
+            Column(
+              children: [
+                Text('Contact Details', style: AppTheme.blueAppTitle3,),
 
-                              // DetailsRowWidget(title: 'Email',
-                              //   trailing: tenantController.specificTenantProfileContactList.first.email.toString(),),
-                              // DetailsRowWidget(title: 'DOB',
-                              //     trailing: DateFormat('EEE - MMM d - yyy').format(DateTime.parse(
-                              //         tenantModel.tenantProfiles!.first.dateOfBirth!))),
-                              // DetailsRowWidget(title: 'NIN',
-                              //   trailing: tenantModel.tenantProfiles!.first.nin.toString(),),
-                              // DetailsRowWidget(title: 'Gender',
-                              //   trailing: tenantModel.tenantProfiles!.first.gender.toString(),),
-                              // DetailsRowWidget(title: 'Contact',
-                              //   trailing: tenantModel.tenantProfiles!.first.contact.toString(),),
-                  ],
-                ) : Container(),
+                // DetailsRowWidget(title: 'Email',
+                //   trailing: tenantController.specificTenantProfileContactList.first.email.toString(),),
+                // DetailsRowWidget(title: 'DOB',
+                //     trailing: DateFormat('EEE - MMM d - yyy').format(DateTime.parse(
+                //         tenantModel.tenantProfiles!.first.dateOfBirth!))),
+                // DetailsRowWidget(title: 'NIN',
+                //   trailing: tenantModel.tenantProfiles!.first.nin.toString(),),
+                // DetailsRowWidget(title: 'Gender',
+                //   trailing: tenantModel.tenantProfiles!.first.gender.toString(),),
+                // DetailsRowWidget(title: 'Contact',
+                //   trailing: tenantModel.tenantProfiles!.first.contact.toString(),),
+              ],
+            ) : Container(),
 
             // tenantModel.tenantTypeId == 1 ? Container() :
             // Obx(() {

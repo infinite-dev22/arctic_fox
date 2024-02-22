@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:smart_rent/models/general/smart_model.dart';
+
 PropertyModel propertyModelFromJson(String str) => PropertyModel.fromJson(json.decode(str));
 
 String propertyModelToJson(PropertyModel data) => json.encode(data.toJson());
@@ -24,7 +26,7 @@ class PropertyModel {
   };
 }
 
-class Property {
+class Property extends SmartPropertyModel{
   int? id;
   String? name;
   String? number;
@@ -86,6 +88,46 @@ class Property {
     "updated_at": updatedAt?.toIso8601String(),
     "property_type": propertyType?.toJson(),
   };
+
+  @override
+  int getCategoryTypeId() { return propertyCategoryId!;
+  }
+
+  @override
+  String getDescription() { return description!;
+  }
+
+  @override
+  int getId() { return id!;
+  }
+
+  @override
+  String getImageDocUrl() { return '';
+  }
+
+  @override
+  String getLocation() { return location!;
+  }
+
+  @override
+  int getMainImage() { return 0;
+  }
+
+  @override
+  String getName() { return name!;
+  }
+
+  @override
+  int getOrganisationId() { return 0;
+  }
+
+  @override
+  int getPropertyTypeId() { return propertyTypeId!;
+  }
+
+  @override
+  String getSquareMeters() { return squareMeters!;
+  }
 }
 
 class PropertyType {

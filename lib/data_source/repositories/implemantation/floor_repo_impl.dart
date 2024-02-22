@@ -35,4 +35,43 @@ class FloorRepoImpl implements FloorRepo {
 
   }
 
+
+
+@override
+  Future<dynamic> addFloor(String token, int propertyId, String floorName, String code,
+      String? description) async {
+    var client = RetryClient(http.Client());
+    try {
+      var headers = {
+        HttpHeaders.contentTypeHeader: 'application/json',
+        HttpHeaders.acceptHeader: 'application/json',
+        HttpHeaders.authorizationHeader: 'Bearer $token'
+      };
+
+      var url = Uri.parse('${AppConfig().baseUrl}api/rent/floors/store');
+
+      var response = await client.post(
+        url,
+        headers: headers,
+        body: jsonEncode({
+          'name': floorName,
+          'code': code,
+          'description': description,
+          'property_id': propertyId,
+        }),
+      );
+
+      if (kDebugMode) {
+        print("Add floor RESPONSE: $response");
+      }
+      var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
+      print('floor response body $responseBody');
+      return jsonDecode(utf8.decode(response.bodyBytes)) as Map;
+    } catch (e) {
+      print(e);
+    } finally {
+      client.close();
+    }
+  }
+
 }

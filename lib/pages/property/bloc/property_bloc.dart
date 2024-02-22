@@ -4,6 +4,8 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:smart_rent/data_source/dtos/implemantation/property_dto_impl.dart';
+import 'package:smart_rent/data_source/models/property/add_response_model.dart';
 import 'package:smart_rent/data_source/models/property/property_response_model.dart';
 import 'package:smart_rent/data_source/repositories/implemantation/property_repo_impl.dart';
 import 'package:smart_rent/utils/app_prefs.dart';
@@ -15,6 +17,7 @@ class PropertyBloc extends Bloc<PropertyEvent, PropertyState> {
   PropertyBloc() : super(PropertyState()) {
     on<LoadPropertiesEvent>(_mapFetchPropertiesToState);
     on<LoadSinglePropertyEvent>(_mapViewSinglePropertyDetailsEventToState);
+    on<AddPropertyEvent>(_mapAddPropertyEventToState);
   }
 
 
@@ -49,6 +52,22 @@ class PropertyBloc extends Bloc<PropertyEvent, PropertyState> {
 
   }
 
+  _mapAddPropertyEventToState(
+      AddPropertyEvent event, Emitter<PropertyState> emit) async {
+    emit(state.copyWith(status: PropertyStatus.loadingAdd, isPropertyLoading: true));
+    await PropertyDtoImpl.addProperty(userStorage.read('accessToken').toString(), event.name, event.location, event.sqm,
+        event.description, event.propertyTypeId, event.propertyCategoryId).then((response) {
+      print('success ${response.propertyCreatedViaApi}');
+
+      if (response != null) {
+        emit(state.copyWith(status: PropertyStatus.successAdd, isPropertyLoading: false, addPropertyResponseModel: response));
+      } else {
+        emit(state.copyWith(status: PropertyStatus.accessDeniedAdd, isPropertyLoading: false,));
+      }
+    }).onError((error, stackTrace) {
+      emit(state.copyWith(status: PropertyStatus.errorDetails, isPropertyLoading: false, message: error.toString()));
+    });
+  }
   @override
   void onEvent(PropertyEvent event) {
     print(event);

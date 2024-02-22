@@ -5,6 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:smart_rent/data_source/models/unit/unit_model.dart';
+import 'package:smart_rent/data_source/models/unit/unit_type_model.dart';
 import 'package:smart_rent/data_source/repositories/implemantation/unit_repo_impl.dart';
 import 'package:smart_rent/utils/app_prefs.dart';
 
@@ -14,6 +15,7 @@ part 'unit_state.dart';
 class UnitBloc extends Bloc<UnitEvent, UnitState> {
   UnitBloc() : super(UnitState()) {
     on<LoadAllUnitsEvent>(_mapFetchUnitsToState);
+    on<LoadUnitTypesEvent>(_mapFetchUnitTypesToState);
   }
 
   _mapFetchUnitsToState(LoadAllUnitsEvent event, Emitter<UnitState> emit) async{
@@ -32,6 +34,24 @@ class UnitBloc extends Bloc<UnitEvent, UnitState> {
       }
     });
   }
+
+  _mapFetchUnitTypesToState(LoadUnitTypesEvent event, Emitter<UnitState> emit) async{
+    emit(state.copyWith(status: UnitStatus.loadingUT));
+    await UnitRepoImpl().getUnitTypes(userStorage.read('accessToken').toString()).then((types) {
+      if(types.isNotEmpty){
+        emit(state.copyWith(status: UnitStatus.successUT, unitTypes: types));
+      } else {
+        emit(state.copyWith(status: UnitStatus.emptyUT));
+      }
+    }).onError((error, stackTrace) {
+      emit(state.copyWith(status: UnitStatus.errorUT));
+      if (kDebugMode) {
+        print("Error: $error");
+        print("Stacktrace: $stackTrace");
+      }
+    });
+  }
+
 
   // _mapViewSingleFloorDetailsEventToState(LoadSinglePropertyEvent event, Emitter<PropertyState> emit) async {
   //   emit(state.copyWith(status: PropertyStatus.loadingDetails,));

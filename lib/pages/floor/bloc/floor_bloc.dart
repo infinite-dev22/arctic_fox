@@ -4,6 +4,8 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:smart_rent/data_source/dtos/implemantation/floor_dto_impl.dart';
+import 'package:smart_rent/data_source/models/floor/add_floor_response_model.dart';
 import 'package:smart_rent/data_source/models/floor/floor_model.dart';
 import 'package:smart_rent/data_source/repositories/implemantation/floor_repo_impl.dart';
 import 'package:smart_rent/utils/app_prefs.dart';
@@ -14,6 +16,7 @@ part 'floor_state.dart';
 class FloorBloc extends Bloc<FloorEvent, FloorState> {
   FloorBloc() : super(FloorState()) {
     on<LoadAllFloorsEvent>(_mapFetchFloorsToState);
+    on<AddFloorEvent>(_mapAddFloorEventToState);
   }
 
   _mapFetchFloorsToState(LoadAllFloorsEvent event, Emitter<FloorState> emit) async{
@@ -30,6 +33,24 @@ class FloorBloc extends Bloc<FloorEvent, FloorState> {
         print("Error: $error");
         print("Stacktrace: $stackTrace");
       }
+    });
+  }
+
+
+  _mapAddFloorEventToState(
+      AddFloorEvent event, Emitter<FloorState> emit) async {
+    emit(state.copyWith(status: FloorStatus.loadingAdd, isFloorLoading: true));
+    await FloorDtoImpl.addFloor(userStorage.read('accessToken').toString(), event.propertyId,
+        event.floorName, event.code, event.description) .then((response) {
+      print('success ${response.floorCreatedViaApi}');
+
+      if (response != null) {
+        emit(state.copyWith(status: FloorStatus.successAdd, isFloorLoading: false, floorResponseModel: response));
+      } else {
+        emit(state.copyWith(status: FloorStatus.accessDeniedAdd, isFloorLoading: false,));
+      }
+    }).onError((error, stackTrace) {
+      emit(state.copyWith(status: FloorStatus.errorAdd, isFloorLoading: false, message: error.toString()));
     });
   }
 

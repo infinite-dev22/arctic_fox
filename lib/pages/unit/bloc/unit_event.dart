@@ -14,3 +14,10 @@ class LoadAllUnitsEvent extends UnitEvent {
   List<Object?> get props => [id];
 
 }
+
+class LoadUnitTypesEvent extends UnitEvent {
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+
+}

@@ -8,6 +8,7 @@ import 'package:smart_rent/config/app_config.dart';
 import 'package:smart_rent/data_source/models/employee/employee_list_response_model.dart';
 import 'package:smart_rent/data_source/models/tenant/tenant_details_model.dart';
 import 'package:smart_rent/data_source/models/tenant/tenant_model.dart';
+import 'package:smart_rent/data_source/models/tenant/tenant_type_model.dart';
 import 'package:smart_rent/data_source/models/user_response/user_response.dart';
 import 'package:smart_rent/data_source/repositories/interfaces/employee_repo.dart';
 import 'package:smart_rent/data_source/repositories/interfaces/login_repo.dart';
@@ -74,5 +75,29 @@ class TenantRepoImpl implements TenantRepo {
     }
   }
 
+  @override
+  Future<List<TenantTypeModel>> getALlTenantTypes(String token) async {
+    var client = RetryClient(http.Client());
+    try {
+      var headers = {
+        HttpHeaders.contentTypeHeader: 'application/json',
+        HttpHeaders.acceptHeader: 'application/json',
+        HttpHeaders.authorizationHeader: 'Bearer $token'
+      };
+
+      var url = Uri.parse('${AppConfig().baseUrl}api/crm/clienttypes');
+
+
+      var response = await client.get(url, headers: headers);
+      List tenantTypes = jsonDecode(response.body);
+      if (kDebugMode) {
+        print("tenant types RESPONSE: $response");
+      }
+      return tenantTypes.map((type) => TenantTypeModel.fromJson(type)).toList();
+    } finally {
+      client.close();
+    }
+
+  }
 
 }

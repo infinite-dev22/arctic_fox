@@ -9,23 +9,30 @@ import 'package:smart_rent/pages/employee/layout/employee_list_screen_layout.dar
 import 'package:smart_rent/pages/property/bloc/property_bloc.dart';
 import 'package:smart_rent/pages/property/layout/property_details_page_layout.dart';
 import 'package:smart_rent/pages/property/layout/property_list_screen_layout.dart';
+import 'package:smart_rent/pages/unit/bloc/unit_bloc.dart';
 
 class PropertyDetailsPage extends StatelessWidget {
   final int id;
+
   const PropertyDetailsPage({super.key, required this.id});
 
   @override
   Widget build(BuildContext context) {
-    final UnitController unitController =  Get.put(UnitController());
-    final TenantController tenantController =  Get.put(TenantController());
-    final PropertyModel propertyModel =  PropertyModel();
+    final UnitController unitController = Get.put(UnitController());
+    final TenantController tenantController = Get.put(TenantController());
+    final PropertyModel propertyModel = PropertyModel();
 
-    return BlocProvider<PropertyBloc>(
-      create: (_) => PropertyBloc(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<PropertyBloc>(
+          create: (_) => PropertyBloc(),),
+        BlocProvider<UnitBloc>(
+          create: (_) => UnitBloc(),),
+      ],
       child: PropertyDetailsPageLayout(
-          unitController: unitController,
-          tenantController: tenantController,
-          propertyModel: propertyModel, id: id,
+        unitController: unitController,
+        tenantController: tenantController,
+        propertyModel: propertyModel, id: id,
       ),
     );
   }

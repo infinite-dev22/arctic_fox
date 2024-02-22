@@ -211,7 +211,7 @@ class _PropertyListScreenLayoutState extends State<PropertyListScreenLayout> {
                   }
                   if (state.status == PropertyStatus.empty) {
                     return const Center(
-                      child: Text('No Employees'),
+                      child: Text('No Properties'),
                     );
                   }
                   if (state.status == PropertyStatus.error) {

@@ -35,7 +35,7 @@ class _LoginScreenLayoutState extends State<LoginScreenLayout> {
       listener: (context, state) {
         print(context.read<LoginBloc>().state.status);
         if (state.status == LoginStatus.success) {
-          Fluttertoast.showToast(msg: 'SUCCESS', backgroundColor: Colors.green);
+          Fluttertoast.showToast(msg: 'Logged In Successfully', backgroundColor: Colors.green, gravity: ToastGravity.TOP);
           Get.off(() => HomeScreen());
         }
         if (state.status == LoginStatus.accessDenied) {

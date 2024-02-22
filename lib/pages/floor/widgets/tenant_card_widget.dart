@@ -115,7 +115,7 @@ class TenantCardWidget extends StatelessWidget {
               ],
             ),
 
-            Text(tenantModel.number.toString(), style: AppTheme.darkBlueTitle,),
+            Text(tenantModel.clientTypeId == 1 ? '${tenantModel.clientProfiles!.first.firstName} ${tenantModel.clientProfiles!.first.lastName}' : '${tenantModel.clientProfiles!.first.companyName}', style: AppTheme.darkBlueTitle,),
             Text('View More Info', style: AppTheme.darkBlueText1,),
 
           ],

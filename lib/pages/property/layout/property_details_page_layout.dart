@@ -825,7 +825,7 @@ class _PropertyDetailsPageLayoutState extends State<PropertyDetailsPageLayout> w
     // TabController propertyTabCont = TabController(length: 4, vsync: this);
 
     return DefaultTabController(
-      length: 5,
+      length: 6,
       child: Scaffold(
         appBar: AppImageHeader(
           isTitleCentred: true,
@@ -848,6 +848,7 @@ class _PropertyDetailsPageLayoutState extends State<PropertyDetailsPageLayout> w
                       // controller: propertyTabCont,
                       children: [
                         PropertyDetailsTabScreen(propertyDetailsOptionsController: propertyDetailsOptionsController,  id: widget.id,),
+                        Container(),
                         FloorTabListScreen(id: widget.id,),
                         UnitTabScreen(id: widget.id),
                         TenantUnitTabScreen(id: widget.id),
@@ -857,6 +858,7 @@ class _PropertyDetailsPageLayoutState extends State<PropertyDetailsPageLayout> w
                             propertyModel: widget.propertyModel
 
                         ),
+
                       ],
                     ),
                   ),
@@ -1036,10 +1038,12 @@ class _PropertyDetailsPageLayoutState extends State<PropertyDetailsPageLayout> w
                       labelPadding: EdgeInsets.only(right: 0),
                       tabs: [
                         Tab(icon: Icon(Icons.meeting_room_rounded), child: Text('Details', style: AppTheme.subTextBold2,)),
+                        Tab(icon: Icon(Icons.book), child: Text('Documents', style: AppTheme.subTextBold2,)),
                         Tab(icon: Icon(Icons.piano), child: Text('Floors', style: AppTheme.subTextBold2,)),
                         Tab(icon: Icon(Icons.bed), child: Text('Units', style: AppTheme.subTextBold2,)),
                         Tab(icon: Icon(Icons.person), child: Text('Tenants', style: AppTheme.subTextBold2,)),
                         Tab(icon: Icon(Icons.payment), child: Text('Payments', style: AppTheme.subTextBold2,)),
+
                       ],
                     ),
                   ),

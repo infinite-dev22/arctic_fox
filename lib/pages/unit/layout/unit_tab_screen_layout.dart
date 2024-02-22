@@ -1,6 +1,4 @@
 import 'dart:io';
-
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,22 +9,20 @@ import 'package:pattern_formatter/pattern_formatter.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/controllers/property_options/property_details_options_controller.dart';
 import 'package:smart_rent/controllers/units/unit_controller.dart';
+import 'package:smart_rent/data_source/models/floor/floor_model.dart';
+import 'package:smart_rent/data_source/models/unit/unit_type_model.dart';
 import 'package:smart_rent/models/currency/currency_model.dart';
-import 'package:smart_rent/models/floor/floor_model.dart';
 import 'package:smart_rent/models/payment_schedule/payment_schedule_model.dart';
-import 'package:smart_rent/models/property/property_model.dart';
-import 'package:smart_rent/models/unit/unit_type_model.dart';
+import 'package:smart_rent/pages/floor/bloc/floor_bloc.dart';
 import 'package:smart_rent/pages/unit/bloc/unit_bloc.dart';
 import 'package:smart_rent/pages/unit/widgets/unit_card_widget.dart';
 import 'package:smart_rent/styles/app_theme.dart';
-import 'package:smart_rent/utils/app_prefs.dart';
-import 'package:smart_rent/utils/extra.dart';
-import 'package:smart_rent/widgets/app_button.dart';
+
 import 'package:smart_rent/widgets/app_drop_downs.dart';
 import 'package:smart_rent/widgets/app_loader.dart';
 import 'package:smart_rent/widgets/app_max_textfield.dart';
 import 'package:smart_rent/widgets/app_textfield.dart';
-import 'package:smart_rent/widgets/room_option_widget.dart';
+
 import 'package:wtf_sliding_sheet/wtf_sliding_sheet.dart';
 
 class UnitTabScreenLayout extends StatefulWidget {
@@ -164,7 +160,13 @@ class _UnitTabScreenLayoutState extends State<UnitTabScreenLayout> {
               );
             },
             builder: (context, state) {
-              return Material(
+              return MultiBlocProvider(
+  providers: [
+    BlocProvider<UnitBloc>(create: (context) => UnitBloc(),),
+    BlocProvider<FloorBloc>(create: (context) => FloorBloc(),),
+
+  ],
+  child: Material(
                 color: AppTheme.whiteColor,
                 child: Column(
                   children: [
@@ -185,33 +187,42 @@ class _UnitTabScreenLayoutState extends State<UnitTabScreenLayout> {
 
                                 SizedBox(
                                   width: 42.5.w,
-                                  child: Obx(() {
-                                    return CustomApiGenericDropdown<
-                                        UnitTypeModel>(
-                                      hintText: 'Unit Type',
-                                      menuItems: widget.unitController
-                                          .unitTypeList.value,
-                                      onChanged: (value) {
-                                        widget.unitController.setUnitTypeId(
-                                            value!.id);
-                                      },
-                                    );
-                                  }),
+                                  child: BlocBuilder<UnitBloc, UnitState>(
+                                    builder: (context, state) {
+                                      if(state.status ==  UnitStatus.initial){
+                                        context.read<UnitBloc>().add(LoadUnitTypesEvent());
+                                      }
+                                      return CustomApiGenericDropdown<UnitTypeModel>(
+                                        hintText: 'Unit Type',
+                                        menuItems: state.unitTypes == null ? [] : state.unitTypes!,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            selectedUnitTypeId = value!.id!;
+                                          });
+                                        },
+                                      );
+                                    },
+                                  ),
                                 ),
 
                                 SizedBox(
                                   width: 42.5.w,
-                                  child: Obx(() {
-                                    return CustomApiGenericDropdown<FloorModel>(
-                                      hintText: 'Level',
-                                      menuItems: widget.unitController.floorList
-                                          .value,
-                                      onChanged: (value) {
-                                        widget.unitController.setFloorId(
-                                            value!.id!);
-                                      },
-                                    );
-                                  }),
+                                  child: BlocBuilder<FloorBloc, FloorState>(
+                                    builder: (context, state) {
+                                      if(state.status ==  FloorStatus.initial){
+                                        context.read<FloorBloc>().add(LoadAllFloorsEvent(widget.id!));
+                                      }
+                                      return CustomApiGenericDropdown<FloorModel>(
+                                        hintText: 'Floor',
+                                        menuItems: state.floors == null ? [] : state.floors!,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            selectedFloorId = value!.id!;
+                                          });
+                                        },
+                                      );
+                                    },
+                                  ),
                                 ),
 
                               ],
@@ -304,7 +315,7 @@ class _UnitTabScreenLayoutState extends State<UnitTabScreenLayout> {
                             Obx(() {
                               return CustomPeriodApiGenericDropdown<
                                   PaymentScheduleModel>(
-                                hintText: 'Per Month',
+                                hintText: 'Per Duration',
                                 menuItems: widget.unitController.paymentList
                                     .value,
                                 onChanged: (value) {
@@ -492,7 +503,8 @@ class _UnitTabScreenLayoutState extends State<UnitTabScreenLayout> {
                     ),
                   ],
                 ),
-              );
+              ),
+);
             },
           );
         }
@@ -501,6 +513,10 @@ class _UnitTabScreenLayoutState extends State<UnitTabScreenLayout> {
     print(result); // This is the result.
   }
 
+  int? selectedUnitTypeId;
+  int? selectedFloorId;
+  int? selectedDurationId;
+  int? selectedCurrency;
 
   @override
   void initState() {
@@ -537,7 +553,14 @@ class _UnitTabScreenLayoutState extends State<UnitTabScreenLayout> {
 
         return true;
       },
-      child: Container(
+      child: MultiBlocProvider(
+  providers: [
+    BlocProvider<UnitBloc>(
+  create: (context) => UnitBloc(),
+),
+
+  ],
+  child: Container(
         child: Padding(
           padding: EdgeInsets.only(top: 5.h),
           child: Column(
@@ -828,7 +851,6 @@ class _UnitTabScreenLayoutState extends State<UnitTabScreenLayout> {
 
               BlocBuilder<UnitBloc, UnitState>(
                 builder: (context, state) {
-
                   if (state.status == UnitStatus.initial) {
                     context.read<UnitBloc>().add(LoadAllUnitsEvent(widget.id));
                   }
@@ -836,7 +858,8 @@ class _UnitTabScreenLayoutState extends State<UnitTabScreenLayout> {
                     return const Center(
                       child: CircularProgressIndicator(),
                     );
-                  } if (state.status == UnitStatus.success) {
+                  }
+                  if (state.status == UnitStatus.success) {
                     return Expanded(
                       child: ListView.builder(
                           physics: NeverScrollableScrollPhysics(),
@@ -864,14 +887,13 @@ class _UnitTabScreenLayoutState extends State<UnitTabScreenLayout> {
                     );
                   }
                   return Container();
-
-
                 },
               ),
             ],
           ),
         ),
       ),
+),
     );
   }
 }

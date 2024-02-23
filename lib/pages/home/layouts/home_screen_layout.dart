@@ -16,6 +16,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/controllers/complaints/complaints_controller.dart';
+import 'package:smart_rent/data_source/models/nation/nation_model.dart';
 import 'package:smart_rent/data_source/models/property/general.dart';
 import 'package:smart_rent/data_source/models/property/property_category_model.dart';
 import 'package:smart_rent/data_source/models/property/property_response_model.dart';
@@ -27,6 +28,7 @@ import 'package:smart_rent/models/general/smart_model.dart';
 import 'package:smart_rent/models/salutation/salutation_model.dart';
 import 'package:smart_rent/pages/floor/bloc/floor_bloc.dart';
 import 'package:smart_rent/pages/home/bloc/home_bloc.dart';
+import 'package:smart_rent/pages/nation/bloc/nation_bloc.dart';
 import 'package:smart_rent/pages/property/bloc/property_bloc.dart';
 import 'package:smart_rent/pages/property/property_list_screen.dart';
 import 'package:smart_rent/pages/property_categories/bloc/property_category_bloc.dart';
@@ -1371,7 +1373,8 @@ class _HomeScreenLayoutState extends State<HomeScreenLayout> {
               },
               child: MultiBlocProvider(
                 providers: [
-              BlocProvider<TenantBloc>(create: (context) => TenantBloc(),)
+              BlocProvider<TenantBloc>(create: (context) => TenantBloc(),),
+              BlocProvider<NationBloc>(create: (context) => NationBloc(),),
                 ],
                 child: Material(
                   color: AppTheme.whiteColor,
@@ -1413,11 +1416,17 @@ class _HomeScreenLayoutState extends State<HomeScreenLayout> {
                                   height: 1.h,
                                 ),
 
-                                CustomApiNationalityDropdown(
-                                  hintText: 'Country',
-                                  menuItems: <SmartNationalityModel>[],
-                                  onChanged: (value) {},
-                                ),
+                                BlocBuilder<NationBloc, NationState>(
+                                  builder: (context, state) {
+                                    if(state.status == NationStatus.initial){
+                                      context.read<NationBloc>().add(LoadNationsEvent());
+                                    }
+                                    return CustomApiGenericDropdown<NationModel>(
+                                      hintText: 'Country',
+                                      menuItems: state.nations == null ? [] : state.nations!,
+                                      onChanged: (value) {},
+                                    );
+                                  },),
 
                                 SlideInUp(
                                   child: Container(

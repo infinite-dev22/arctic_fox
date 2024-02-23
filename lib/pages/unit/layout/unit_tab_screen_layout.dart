@@ -9,11 +9,14 @@ import 'package:pattern_formatter/pattern_formatter.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/controllers/property_options/property_details_options_controller.dart';
 import 'package:smart_rent/controllers/units/unit_controller.dart';
+import 'package:smart_rent/data_source/models/currency/currency_model.dart';
 import 'package:smart_rent/data_source/models/floor/floor_model.dart';
+import 'package:smart_rent/data_source/models/period/period_model.dart';
 import 'package:smart_rent/data_source/models/unit/unit_type_model.dart';
-import 'package:smart_rent/models/currency/currency_model.dart';
 import 'package:smart_rent/models/payment_schedule/payment_schedule_model.dart';
+import 'package:smart_rent/pages/currency/bloc/currency_bloc.dart';
 import 'package:smart_rent/pages/floor/bloc/floor_bloc.dart';
+import 'package:smart_rent/pages/period/bloc/period_bloc.dart';
 import 'package:smart_rent/pages/unit/bloc/unit_bloc.dart';
 import 'package:smart_rent/pages/unit/widgets/unit_card_widget.dart';
 import 'package:smart_rent/styles/app_theme.dart';
@@ -164,6 +167,8 @@ class _UnitTabScreenLayoutState extends State<UnitTabScreenLayout> {
   providers: [
     BlocProvider<UnitBloc>(create: (context) => UnitBloc(),),
     BlocProvider<FloorBloc>(create: (context) => FloorBloc(),),
+    BlocProvider<CurrencyBloc>(create: (context) => CurrencyBloc(),),
+    BlocProvider<PeriodBloc>(create: (context) => PeriodBloc(),),
 
   ],
   child: Material(
@@ -312,18 +317,19 @@ class _UnitTabScreenLayoutState extends State<UnitTabScreenLayout> {
 
                             SizedBox(height: 1.h,),
 
-                            Obx(() {
-                              return CustomPeriodApiGenericDropdown<
-                                  PaymentScheduleModel>(
+                             BlocBuilder<PeriodBloc, PeriodState>(
+                               builder: (context, state) {
+                                 if(state.status == PeriodStatus.initial){
+                                   context.read<PeriodBloc>().add(LoadAllPeriodsEvent());
+                                 }
+                                 return CustomApiGenericDropdown<
+                                  PeriodModel>(
                                 hintText: 'Per Duration',
-                                menuItems: widget.unitController.paymentList
-                                    .value,
+                                menuItems: state.periods == null ? [] : state.periods!,
                                 onChanged: (value) {
-                                  widget.unitController.setPaymentScheduleId(
-                                      value!.id!);
+
                                 },
-                              );
-                            }),
+                              );},),
 
                             SizedBox(height: 1.h,),
 
@@ -360,19 +366,22 @@ class _UnitTabScreenLayoutState extends State<UnitTabScreenLayout> {
                             //   ],
                             // ),
 
-                            Obx(() {
-                              return CustomApiCurrencyDropdown<
-                                  CurrencyModel>(
+                             BlocBuilder<CurrencyBloc, CurrencyState>(
+                               builder: (context, state) {
+                                 if(state.status == CurrencyStatus.initial){
+                                   context.read<CurrencyBloc>().add(LoadAllCurrenciesEvent());
+                                 }
+                                 return CustomApiGenericDropdown<CurrencyModel>(
                                 hintText: 'Currency',
-                                menuItems: widget.unitController.currencyList
-                                    .value,
+                                menuItems: state.currencies == null ? [] : state.currencies!,
                                 onChanged: (value) {
-                                  widget.unitController.setCurrencyId(
-                                      value!.id);
+
                                 },
 
                               );
-                            }),
+  },
+),
+                            SizedBox(height: 1.h,),
 
                             AuthTextField(
                               controller: amountController,

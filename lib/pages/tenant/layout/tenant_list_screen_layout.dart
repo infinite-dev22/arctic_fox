@@ -17,11 +17,13 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/controllers/tenants/tenant_controller.dart';
+import 'package:smart_rent/data_source/models/nation/nation_model.dart';
 import 'package:smart_rent/data_source/models/tenant/tenant_type_model.dart';
 import 'package:smart_rent/models/general/smart_model.dart';
 
 import 'package:smart_rent/models/salutation/salutation_model.dart';
 import 'package:smart_rent/pages/floor/widgets/tenant_card_widget.dart';
+import 'package:smart_rent/pages/nation/bloc/nation_bloc.dart';
 import 'package:smart_rent/pages/tenant/bloc/tenant_bloc.dart';
 import 'package:smart_rent/pages/tenant/tenant_details_page.dart';
 
@@ -756,7 +758,8 @@ class _TenantListScreenLayoutState extends State<TenantListScreenLayout> {
                   },
                   child: MultiBlocProvider(
                     providers: [
-                      BlocProvider<TenantBloc>(create: (context) => TenantBloc(),)
+                      BlocProvider<TenantBloc>(create: (context) => TenantBloc(),),
+                      BlocProvider<NationBloc>(create: (context) => NationBloc(),)
                     ],
                     child: Material(
                       color: AppTheme.whiteColor,
@@ -798,11 +801,17 @@ class _TenantListScreenLayoutState extends State<TenantListScreenLayout> {
                                       height: 1.h,
                                     ),
 
-                                    CustomApiNationalityDropdown(
+                                    BlocBuilder<NationBloc, NationState>(
+                                      builder: (context, state) {
+                                        if(state.status == NationStatus.initial){
+                                          context.read<NationBloc>().add(LoadNationsEvent());
+                                        }
+                                      return CustomApiGenericDropdown<NationModel>(
                                       hintText: 'Country',
-                                      menuItems: <SmartNationalityModel>[],
+                                      menuItems: state.nations == null ? [] : state.nations!,
                                       onChanged: (value) {},
-                                    ),
+                                    );
+                                        },),
 
                                     SlideInUp(
                                       child: Container(

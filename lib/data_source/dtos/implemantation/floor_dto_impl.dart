@@ -8,14 +8,13 @@ import 'package:smart_rent/data_source/repositories/interfaces/login_repo.dart';
 
 class FloorDtoImpl {
   static Future<AddFloorResponseModel> addFloor(
-  String token, int propertyId, String floorName, String code,
-  String? description, {
+  String token, int propertyId, String floorName, String? description, {
         Function()? onSuccess,
         Function()? onError,
       }) async {
     FloorRepo floorRepo = FloorRepoImpl();
     var result = await floorRepo
-        .addFloor(token, propertyId, floorName, code, description)
+        .addFloor(token, propertyId, floorName,  description)
         .then((loginResponse) => AddFloorResponseModel.fromJson(loginResponse));
 
     return result;

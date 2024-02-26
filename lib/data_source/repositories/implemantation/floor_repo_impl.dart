@@ -38,7 +38,7 @@ class FloorRepoImpl implements FloorRepo {
 
 
 @override
-  Future<dynamic> addFloor(String token, int propertyId, String floorName, String code,
+  Future<dynamic> addFloor(String token, int propertyId, String floorName,
       String? description) async {
     var client = RetryClient(http.Client());
     try {
@@ -55,7 +55,7 @@ class FloorRepoImpl implements FloorRepo {
         headers: headers,
         body: jsonEncode({
           'name': floorName,
-          'code': code,
+          // 'code': code,
           'description': description,
           'property_id': propertyId,
         }),

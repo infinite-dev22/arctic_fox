@@ -245,6 +245,9 @@ class _UnitTabScreenLayoutState extends State<UnitTabScreenLayout> {
                                     hintText: 'Unit Name',
                                     obscureText: false,
                                     keyBoardType: TextInputType.name,
+                                    inputFormatters: [
+                                      LengthLimitingTextInputFormatter(16)
+                                    ],
                                   ),
                                   width: 42.5.w,
                                 ),
@@ -252,7 +255,7 @@ class _UnitTabScreenLayoutState extends State<UnitTabScreenLayout> {
                                 SizedBox(
                                   child: AuthTextField(
                                     controller: roomNumberController,
-                                    hintText: 'Unit Number',
+                                    hintText: 'Unit Name/Number',
                                     obscureText: false,
                                     keyBoardType: TextInputType.number,
                                   ),
@@ -324,7 +327,7 @@ class _UnitTabScreenLayoutState extends State<UnitTabScreenLayout> {
                                  }
                                  return CustomApiGenericDropdown<
                                   PeriodModel>(
-                                hintText: 'Per Duration',
+                                hintText: 'Period',
                                 menuItems: state.periods == null ? [] : state.periods!,
                                 onChanged: (value) {
 
@@ -376,11 +379,8 @@ class _UnitTabScreenLayoutState extends State<UnitTabScreenLayout> {
                                 menuItems: state.currencies == null ? [] : state.currencies!,
                                 onChanged: (value) {
 
-                                },
+                                },);},),
 
-                              );
-  },
-),
                             SizedBox(height: 1.h,),
 
                             AuthTextField(

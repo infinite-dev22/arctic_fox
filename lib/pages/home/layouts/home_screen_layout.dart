@@ -505,7 +505,7 @@ class _HomeScreenLayoutState extends State<HomeScreenLayout> {
                                       ),
                                       AuthTextField(
                                         controller: floorController,
-                                        hintText: 'Floor No.',
+                                        hintText: 'Floor Name.',
                                         obscureText: false,
                                         onChanged: (value) {
                                           floorName =
@@ -513,19 +513,7 @@ class _HomeScreenLayoutState extends State<HomeScreenLayout> {
                                           print(floorName.toString());
                                         },
                                       ),
-                                      SizedBox(
-                                        height: 1.h,
-                                      ),
-                                      AuthTextField(
-                                        controller: floorCodeController,
-                                        hintText: 'Code.',
-                                        obscureText: false,
-                                        onChanged: (value) {
-                                          // floorName = floorController.text.trim();
-                                          print(floorCodeController.text
-                                              .toString());
-                                        },
-                                      ),
+
                                       SizedBox(
                                         height: 1.h,
                                       ),
@@ -593,7 +581,6 @@ class _HomeScreenLayoutState extends State<HomeScreenLayout> {
                                                 userStorage.read('accessToken').toString(),
                                                   selectedPropertyId!,
                                                   floorController.text.trim().toString(),
-                                                  floorCodeController.text.trim().toString(),
                                                   descriptionController.text.trim().toString(),
                                               ));
                                             }

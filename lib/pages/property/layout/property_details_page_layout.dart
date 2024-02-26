@@ -596,6 +596,7 @@ import 'package:smart_rent/controllers/tenants/tenant_controller.dart';
 import 'package:smart_rent/controllers/units/unit_controller.dart';
 import 'package:smart_rent/models/property/property_model.dart';
 import 'package:smart_rent/pages/floor/floor_tab_screen.dart';
+import 'package:smart_rent/pages/payment/payment_tab_screen.dart';
 import 'package:smart_rent/pages/property/layout/property_details_tab.dart';
 import 'package:smart_rent/pages/tenant_unit/tenant_unit_tab_screen.dart';
 import 'package:smart_rent/pages/unit/unit_tab_screen.dart';
@@ -852,12 +853,13 @@ class _PropertyDetailsPageLayoutState extends State<PropertyDetailsPageLayout> w
                         FloorTabListScreen(id: widget.id,),
                         UnitTabScreen(id: widget.id),
                         TenantUnitTabScreen(id: widget.id),
-                        PaymentTabScreen(
-                            propertyDetailsOptionsController: propertyDetailsOptionsController,
-                            unitController: widget.unitController,
-                            propertyModel: widget.propertyModel
-
-                        ),
+                        PaymentScreen(id: widget.id)
+                        // PaymentTabScreen(
+                        //     propertyDetailsOptionsController: propertyDetailsOptionsController,
+                        //     unitController: widget.unitController,
+                        //     propertyModel: widget.propertyModel
+                        //
+                        // ),
 
                       ],
                     ),

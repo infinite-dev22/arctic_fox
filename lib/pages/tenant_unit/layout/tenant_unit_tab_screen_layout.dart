@@ -22,11 +22,13 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/config/app_config.dart';
 import 'package:smart_rent/controllers/property_options/property_details_options_controller.dart';
 import 'package:smart_rent/controllers/tenants/tenant_controller.dart';
+import 'package:smart_rent/data_source/models/currency/currency_model.dart';
 import 'package:smart_rent/models/payment_schedule/payment_schedule_model.dart';
 import 'package:smart_rent/models/property/property_model.dart';
 import 'package:smart_rent/models/schedule/tenant_unit_schedule.dart';
 import 'package:smart_rent/models/tenant/tenant_model.dart';
 import 'package:smart_rent/models/unit/unit_model.dart';
+import 'package:smart_rent/pages/currency/bloc/currency_bloc.dart';
 import 'package:smart_rent/pages/tenant_unit/bloc/tenant_unit_bloc.dart';
 import 'package:smart_rent/screens/tenant/tenant_details_screen.dart';
 import 'package:smart_rent/styles/app_theme.dart';
@@ -620,7 +622,14 @@ class _TenantUnitTabLayoutScreenState extends State<TenantUnitTabLayoutScreen> {
         builder: (context, state) {
           return StatefulBuilder(
               builder: (BuildContext context, StateSetter setState) {
-                return Material(
+                return MultiBlocProvider(
+                  providers: [
+                    BlocProvider<CurrencyBloc>(
+                      create: (context) => CurrencyBloc(),
+                    ),
+
+                  ],
+                  child: Material(
                   color: AppTheme.whiteColor,
                   child: Column(
                     children: [
@@ -694,7 +703,7 @@ class _TenantUnitTabLayoutScreenState extends State<TenantUnitTabLayoutScreen> {
 
                                 Obx(() {
                                   return SearchableUnitDropDown<UnitModel>(
-                                    hintText: 'Unit',
+                                    hintText: 'Unit Name / Number',
                                     menuItems: tenantController.specificUnitList
                                         .value,
                                     controller: _unitCont,
@@ -733,7 +742,7 @@ class _TenantUnitTabLayoutScreenState extends State<TenantUnitTabLayoutScreen> {
                                       child: Obx(() {
                                         return CustomPeriodApiGenericDropdown<
                                             PaymentScheduleModel>(
-                                          hintText: 'Per Month',
+                                          hintText: 'Period',
                                           menuItems:
                                           tenantController.paymentList.value,
                                           onChanged: (value) {
@@ -965,7 +974,7 @@ class _TenantUnitTabLayoutScreenState extends State<TenantUnitTabLayoutScreen> {
                                               .value ==
                                               4
                                               ? 'Enter No. Of Years'
-                                              : 'Specific Period',
+                                              : 'Duration',
                                           obscureText: false,
                                           keyBoardType: TextInputType.number,
                                           onChanged: (value) {
@@ -1180,24 +1189,44 @@ class _TenantUnitTabLayoutScreenState extends State<TenantUnitTabLayoutScreen> {
                                   height: 1.h,
                                 ),
 
+                                AuthTextField(
+                                  controller: amountController,
+                                  hintText: 'Unit Amount',
+                                  obscureText: false,
+                                  keyBoardType: TextInputType.number,
+                                  enabled: false,
+                                  inputFormatters: [
+                                    ThousandsFormatter(),
+                                  ],
+                                ),
+
+                                SizedBox(
+                                  height: 1.h,
+                                ),
+
+                                Text('Agreed Amount', style: AppTheme.blueSubText,),
+
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment
                                       .spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    SizedBox(
-                                      child: AuthTextField(
-                                        controller: amountController,
-                                        hintText: 'Amount',
-                                        obscureText: false,
-                                        keyBoardType: TextInputType.number,
-                                        enabled: false,
-                                        inputFormatters: [
-                                          ThousandsFormatter(),
-                                        ],
-                                      ),
-                                      width: 42.5.w,
-                                    ),
+
+                                    BlocBuilder<CurrencyBloc, CurrencyState>(
+                                      builder: (context, state) {
+                                        if(state.status == CurrencyStatus.initial){
+                                          context.read<CurrencyBloc>().add(LoadAllCurrenciesEvent());
+                                        }
+                                        return SizedBox(
+                                          width: 42.5.w,
+                                          child: CustomApiGenericDropdown<CurrencyModel>(
+                                            hintText: 'Currency',
+                                            menuItems: state.currencies == null ? [] : state.currencies!,
+                                            onChanged: (value) {
+
+                                            },),
+                                        );},),
+
                                     SizedBox(
                                       child: AuthTextField(
                                         controller: discountController,
@@ -1206,6 +1235,7 @@ class _TenantUnitTabLayoutScreenState extends State<TenantUnitTabLayoutScreen> {
                                         keyBoardType: TextInputType.number,
                                         inputFormatters: [
                                           ThousandsFormatter(),
+                                          LengthLimitingTextInputFormatter(17)
                                         ],
                                       ),
                                       width: 42.5.w,
@@ -1378,7 +1408,8 @@ class _TenantUnitTabLayoutScreenState extends State<TenantUnitTabLayoutScreen> {
                       ),
                     ],
                   ),
-                );
+                ),
+);
               });
         },
       );
@@ -1582,6 +1613,7 @@ class _TenantUnitTabLayoutScreenState extends State<TenantUnitTabLayoutScreen> {
         child: CircularProgressIndicator(),
       );
     } if(state.status ==  TenantUnitStatus.success){
+      return Text('');
       // return Expanded(
       //     child: ListView.builder(
       //       shrinkWrap: true,
@@ -1590,46 +1622,47 @@ class _TenantUnitTabLayoutScreenState extends State<TenantUnitTabLayoutScreen> {
       //         var tenantUnit = state.tenantUnits![index];
       //           return Text(tenantUnit.amount.toString());
       // }));
-      return Expanded(
-        child: ListView.builder(
-          shrinkWrap: true,
-            itemCount: state.tenantUnits!.length,
-            itemBuilder: (context, index) {
-              var tenantUnit = state.tenantUnits![index];
-            return  Padding(
-                      padding: EdgeInsets.only(bottom: 1.h),
-                      child: Bounceable(
-                        onTap: (){
-                          // Get.to(() => TenantDetailsScreen(
-                          //   tenantController: tenantController,
-                          //   tenantId: entry.tenantId!,
-                          //   tenantModel: entry.tenantModel!,
-                          // ));
-                        },
-                        child: Card(
-                          child: ListTile(
-                            leading: ClipRRect(
-                                borderRadius: BorderRadius.circular(10.sp),
-                                child: CachedNetworkImage(
-                                  width: 20.w,
-                                  imageUrl: 'https://img.freepik.com/free-photo/real-estate-broker-agent-presenting-consult-customer-decision-making-sign-insurance-form-agreement_1150-15023.jpg?w=996&t=st=1708346770~exp=1708347370~hmac=d7c8476699ac83e0dbb2375a511e548c2d78c4e1b2d69da7cc5ce31d4c915c90',
-                                  fit: BoxFit.cover,
-                                )
-                            ),
-                            title: Text(tenantUnit.number!.toString(),
-                              style: AppTheme.appTitle3,
-                            ),
-                            subtitle: Text(
-                              '${tenantUnit.description}',
-                              style: AppTheme.subText,
-                            ),
-                          ),
-                        ),
-                      ),
-                    );
 
-            }),
-      );
+      // return Expanded(
+      //   child: ListView.builder(
+      //     shrinkWrap: true,
+      //       itemCount: state.tenantUnits!.length,
+      //       itemBuilder: (context, index) {
+      //         var tenantUnit = state.tenantUnits![index];
+      //       return  Padding(
+      //                 padding: EdgeInsets.only(bottom: 1.h),
+      //                 child: Bounceable(
+      //                   onTap: (){
+      //                     // Get.to(() => TenantDetailsScreen(
+      //                     //   tenantController: tenantController,
+      //                     //   tenantId: entry.tenantId!,
+      //                     //   tenantModel: entry.tenantModel!,
+      //                     // ));
+      //                   },
+      //                   child: Card(
+      //                     child: ListTile(
+      //                       leading: ClipRRect(
+      //                           borderRadius: BorderRadius.circular(10.sp),
+      //                           child: CachedNetworkImage(
+      //                             width: 20.w,
+      //                             imageUrl: 'https://img.freepik.com/free-photo/real-estate-broker-agent-presenting-consult-customer-decision-making-sign-insurance-form-agreement_1150-15023.jpg?w=996&t=st=1708346770~exp=1708347370~hmac=d7c8476699ac83e0dbb2375a511e548c2d78c4e1b2d69da7cc5ce31d4c915c90',
+      //                             fit: BoxFit.cover,
+      //                           )
+      //                       ),
+      //                       title: Text(tenantUnit.number!.toString(),
+      //                         style: AppTheme.appTitle3,
+      //                       ),
+      //                       subtitle: Text(
+      //                         '${tenantUnit.description}',
+      //                         style: AppTheme.subText,
+      //                       ),
+      //                     ),
+      //                   ),
+      //                 ),
+      //               );
+      //
+      //       }),
+      // );
     }
     if (state.status == TenantUnitStatus.empty) {
       return const Center(

@@ -41,7 +41,7 @@ class FloorBloc extends Bloc<FloorEvent, FloorState> {
       AddFloorEvent event, Emitter<FloorState> emit) async {
     emit(state.copyWith(status: FloorStatus.loadingAdd, isFloorLoading: true));
     await FloorDtoImpl.addFloor(userStorage.read('accessToken').toString(), event.propertyId,
-        event.floorName, event.code, event.description) .then((response) {
+        event.floorName, event.description) .then((response) {
       print('success ${response.floorCreatedViaApi}');
 
       if (response != null) {

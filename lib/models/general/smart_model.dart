@@ -143,10 +143,8 @@ abstract class SmartPropertyModel {
   String getSquareMeters();
   int getMainImage();
   String getImageDocUrl();
-  // int getUnitCount();
-  // int getAvailableUnits();
-  // int getOccupancy();
-
+  String getNumber();
+  String getPropertyCategoryName();
 
 }
 

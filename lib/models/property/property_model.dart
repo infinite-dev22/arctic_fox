@@ -118,6 +118,18 @@ class PropertyModel extends SmartPropertyModel {
   @override
   String getImageDocUrl() { return documents!.fileUrl.toString();
   }
+
+  @override
+  String getNumber() {
+    // TODO: implement getNumber
+    throw UnimplementedError();
+  }
+
+  @override
+  String getPropertyCategoryName() {
+    // TODO: implement getPropertyCategoryName
+    throw UnimplementedError();
+  }
 }
 
 

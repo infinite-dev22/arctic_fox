@@ -156,6 +156,7 @@ class _FloorTabScreenLayoutState extends State<FloorTabScreenLayout> {
 
   _showAddFloorDialog(BuildContext context){
     showDialog(
+      barrierDismissible: false,
         context: context,
         builder: (BuildContext c) {
           return MultiBlocProvider(
@@ -262,9 +263,11 @@ class _FloorTabScreenLayoutState extends State<FloorTabScreenLayout> {
                       SizedBox(
                         width: 50.w,
                         child: BlocListener<FloorBloc, FloorState>(
-                          listener: (context, state) {
+                          listener: (context, state) async{
                             print(context.read<FloorBloc>().state.status);
                             if (state.status == FloorStatus.successAdd) {
+
+                               context.read<FloorBloc>().add(LoadAllFloorsEvent(widget.id));
                               Fluttertoast.showToast(msg: 'Floor Added Successfully', backgroundColor: Colors.green, gravity: ToastGravity.TOP);
                               Navigator.pop(context);
                             }
@@ -284,13 +287,7 @@ class _FloorTabScreenLayoutState extends State<FloorTabScreenLayout> {
                                 color: AppTheme.primaryColor,
                                 function: () async {
 
-                                  if (selectedPropertyId == null) {
-                                    Fluttertoast.showToast(
-                                        msg:
-                                        'select property',
-                                        gravity:
-                                        ToastGravity.TOP);
-                                  } else if (floorController
+                                   if (floorController
                                       .text.isEmpty) {
                                     Fluttertoast.showToast(
                                         msg:
@@ -318,7 +315,21 @@ class _FloorTabScreenLayoutState extends State<FloorTabScreenLayout> {
                             },
                           ),
                         ),
+                      ),
+
+                      SizedBox(height: 1.h,),
+                      SizedBox(
+                        width: 50.w,
+                        child: AppButton(
+                            title: 'Cancel',
+                            color: Colors.black,
+                            function: (){
+                              floorController.clear();
+                              floorDescriptionController.clear();
+                              Get.back();
+                            }),
                       )
+
                     ],
                   ),
                 ),

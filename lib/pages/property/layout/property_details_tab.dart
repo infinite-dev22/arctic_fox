@@ -2,12 +2,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/controllers/property_options/property_details_options_controller.dart';
 import 'package:smart_rent/models/property/property_model.dart';
 import 'package:smart_rent/pages/property/bloc/property_bloc.dart';
+import 'package:smart_rent/pages/property/widgets/property_icon_details_widget.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 import 'package:smart_rent/widgets/app_button.dart';
 import 'package:smart_rent/widgets/app_textfield.dart';
@@ -98,28 +100,44 @@ class PropertyDetailsTabScreen extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        PropertyDetailsWidget(
-                          detail: state.property!.location.toString(),
-                          icon: 'assets/general/location.png',
+                        PropertyIconDetailsWidget(
+                          icon: FontAwesomeIcons.hashtag,
+                            detail: state.property!.number.toString(),
                         ),
-                        PropertyDetailsWidget(
-                          detail: ' units',
-                          icon: 'assets/property/bed.png',
+                        PropertyIconDetailsWidget(
+                          icon: FontAwesomeIcons.house,
+                          detail: state.property!.propertyType!.name.toString(),
                         ),
                       ],
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        PropertyDetailsWidget(
-                          detail: '',
+                        PropertyIconDetailsWidget(
+                          icon: FontAwesomeIcons.locationDot,
+                          detail: state.property!.location.toString(),
                         ),
-                        PropertyDetailsWidget(
+                        PropertyIconDetailsWidget(
+                          icon: FontAwesomeIcons.expand,
                           detail: state.property!.squareMeters.toString(),
-                          icon: 'assets/property/size.png',
                         ),
                       ],
                     ),
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        PropertyIconDetailsWidget(
+                          icon: FontAwesomeIcons.layerGroup,
+                          detail: state.property!.propertyCategoryModel!.name.toString(),
+                        ),
+                        PropertyIconDetailsWidget(
+                          icon: FontAwesomeIcons.calendar,
+                          detail: state.property!.createdAt.toString(),
+                        ),
+                      ],
+                    ),
+
                   ],
                 )
               ],

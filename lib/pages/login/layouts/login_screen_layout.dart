@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/controllers/user/user_controller.dart';
+import 'package:smart_rent/pages/forgot_password/forgot_password_page.dart';
 import 'package:smart_rent/pages/home/home_screen.dart';
 import 'package:smart_rent/pages/login/bloc/login_bloc.dart';
 import 'package:smart_rent/screens/auth/create_organisation_screen.dart';
@@ -131,7 +132,7 @@ class _LoginScreenLayoutState extends State<LoginScreenLayout> {
                       Center(
                           child: Bounceable(
                         onTap: () {
-                          Get.to(() => ForgotPasswordScreen());
+                          Get.to(() => ForgotPasswordPage());
                           usernameController.clear();
                           passwordController.clear();
                         },

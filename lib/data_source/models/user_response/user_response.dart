@@ -4,9 +4,11 @@
 
 import 'dart:convert';
 
-UserResponseModel userResponseModelFromJson(String str) => UserResponseModel.fromJson(json.decode(str));
+UserResponseModel userResponseModelFromJson(String str) =>
+    UserResponseModel.fromJson(json.decode(str));
 
-String userResponseModelToJson(UserResponseModel data) => json.encode(data.toJson());
+String userResponseModelToJson(UserResponseModel data) =>
+    json.encode(data.toJson());
 
 class UserResponseModel {
   int? page;
@@ -25,23 +27,30 @@ class UserResponseModel {
     this.support,
   });
 
-  factory UserResponseModel.fromJson(Map<String, dynamic> json) => UserResponseModel(
-    page: json["page"],
-    perPage: json["per_page"],
-    total: json["total"],
-    totalPages: json["total_pages"],
-    data: json["data"] == null ? [] : List<UserResponse>.from(json["data"]!.map((x) => UserResponse.fromJson(x))),
-    support: json["support"] == null ? null : Support.fromJson(json["support"]),
-  );
+  factory UserResponseModel.fromJson(Map<String, dynamic> json) =>
+      UserResponseModel(
+        page: json["page"],
+        perPage: json["per_page"],
+        total: json["total"],
+        totalPages: json["total_pages"],
+        data: json["data"] == null
+            ? []
+            : List<UserResponse>.from(
+                json["data"]!.map((x) => UserResponse.fromJson(x))),
+        support:
+            json["support"] == null ? null : Support.fromJson(json["support"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "page": page,
-    "per_page": perPage,
-    "total": total,
-    "total_pages": totalPages,
-    "data": data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
-    "support": support?.toJson(),
-  };
+        "page": page,
+        "per_page": perPage,
+        "total": total,
+        "total_pages": totalPages,
+        "data": data == null
+            ? []
+            : List<dynamic>.from(data!.map((x) => x.toJson())),
+        "support": support?.toJson(),
+      };
 }
 
 class UserResponse {
@@ -60,20 +69,20 @@ class UserResponse {
   });
 
   factory UserResponse.fromJson(Map<String, dynamic> json) => UserResponse(
-    id: json["id"],
-    email: json["email"],
-    firstName: json["first_name"],
-    lastName: json["last_name"],
-    avatar: json["avatar"],
-  );
+        id: json["id"],
+        email: json["email"],
+        firstName: json["first_name"],
+        lastName: json["last_name"],
+        avatar: json["avatar"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "email": email,
-    "first_name": firstName,
-    "last_name": lastName,
-    "avatar": avatar,
-  };
+        "id": id,
+        "email": email,
+        "first_name": firstName,
+        "last_name": lastName,
+        "avatar": avatar,
+      };
 }
 
 class Support {
@@ -86,12 +95,12 @@ class Support {
   });
 
   factory Support.fromJson(Map<String, dynamic> json) => Support(
-    url: json["url"],
-    text: json["text"],
-  );
+        url: json["url"],
+        text: json["text"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "url": url,
-    "text": text,
-  };
+        "url": url,
+        "text": text,
+      };
 }

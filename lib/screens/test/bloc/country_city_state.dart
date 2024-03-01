@@ -1,7 +1,16 @@
 part of 'country_city_bloc.dart';
 
-enum CountryCityStatus { initial, success, loading, accessDenied, error, empty,
-  loadingDetails, successDetails, errorDetails, emptyDetails
+enum CountryCityStatus {
+  initial,
+  success,
+  loading,
+  accessDenied,
+  error,
+  empty,
+  loadingDetails,
+  successDetails,
+  errorDetails,
+  emptyDetails
 }
 
 @immutable
@@ -11,25 +20,23 @@ class CountryCityState extends Equatable {
   final List<String>? cities;
   final CountryCityStatus status;
 
-  const CountryCityState({
-    this.countries,
-    this.selectedCountry,
-    this.cities,
-    this.status =  CountryCityStatus.initial
-});
+  const CountryCityState(
+      {this.countries,
+      this.selectedCountry,
+      this.cities,
+      this.status = CountryCityStatus.initial});
 
   CountryCityState copyWith({
     List<String>? countries,
-     String? selectedCountry,
+    String? selectedCountry,
     List<String>? cities,
     CountryCityStatus? status,
-}) {
+  }) {
     return CountryCityState(
-      countries: countries ?? this.countries,
-      selectedCountry: selectedCountry ?? this.selectedCountry,
-      cities: cities ?? this.cities,
-      status: status ?? this.status
-    );
+        countries: countries ?? this.countries,
+        selectedCountry: selectedCountry ?? this.selectedCountry,
+        cities: cities ?? this.cities,
+        status: status ?? this.status);
   }
 
   @override

@@ -9,7 +9,6 @@ import 'package:smart_rent/pages/forgot_password/forgot_password_page.dart';
 import 'package:smart_rent/pages/home/home_screen.dart';
 import 'package:smart_rent/pages/login/bloc/login_bloc.dart';
 import 'package:smart_rent/screens/auth/create_organisation_screen.dart';
-import 'package:smart_rent/screens/auth/forgot_password_screen.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 import 'package:smart_rent/widgets/app_button.dart';
 import 'package:smart_rent/widgets/app_password_textfield.dart';
@@ -36,16 +35,19 @@ class _LoginScreenLayoutState extends State<LoginScreenLayout> {
       listener: (context, state) {
         print(context.read<LoginBloc>().state.status);
         if (state.status == LoginStatus.success) {
-          Fluttertoast.showToast(msg: 'Logged In Successfully', backgroundColor: Colors.green, gravity: ToastGravity.TOP);
+          Fluttertoast.showToast(
+              msg: 'Logged In Successfully',
+              backgroundColor: Colors.green,
+              gravity: ToastGravity.TOP);
           Get.off(() => HomeScreen());
         }
         if (state.status == LoginStatus.accessDenied) {
           Fluttertoast.showToast(
-              msg: state.message.toString(),gravity: ToastGravity.TOP);
+              msg: state.message.toString(), gravity: ToastGravity.TOP);
         }
       },
       child: Scaffold(
-        backgroundColor: AppTheme.whiteColor,
+        backgroundColor: AppTheme.appBgColor,
         body: SafeArea(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 1.h),
@@ -85,7 +87,7 @@ class _LoginScreenLayoutState extends State<LoginScreenLayout> {
                         controller: passwordController,
                         hintText: 'password',
                         // fillColor: AppTheme.textBoxColor,
-                        fillColor: AppTheme.appWidgetColor,
+                        fillColor: AppTheme.itemBgColor,
                       ),
 
                       SizedBox(

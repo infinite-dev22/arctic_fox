@@ -4,9 +4,11 @@
 
 import 'dart:convert';
 
-LogOutResponseModel logOutResponseModelFromJson(String str) => LogOutResponseModel.fromJson(json.decode(str));
+LogOutResponseModel logOutResponseModelFromJson(String str) =>
+    LogOutResponseModel.fromJson(json.decode(str));
 
-String logOutResponseModelToJson(LogOutResponseModel data) => json.encode(data.toJson());
+String logOutResponseModelToJson(LogOutResponseModel data) =>
+    json.encode(data.toJson());
 
 class LogOutResponseModel {
   bool? success;
@@ -17,13 +19,14 @@ class LogOutResponseModel {
     this.message,
   });
 
-  factory LogOutResponseModel.fromJson(Map<String, dynamic> json) => LogOutResponseModel(
-    success: json["success"],
-    message: json["message"],
-  );
+  factory LogOutResponseModel.fromJson(Map<String, dynamic> json) =>
+      LogOutResponseModel(
+        success: json["success"],
+        message: json["message"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "success": success,
-    "message": message,
-  };
+        "success": success,
+        "message": message,
+      };
 }

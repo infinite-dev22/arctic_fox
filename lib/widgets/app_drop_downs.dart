@@ -1,10 +1,8 @@
-
 import 'package:amount_formatter/amount_formatter.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/models/general/smart_model.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 import 'package:smart_rent/utils/extra.dart';
@@ -47,14 +45,14 @@ class CustomDropdownFilter extends StatelessWidget {
         ),
         items: menuItems
             .map((item) => DropdownMenuItem<String>(
-          value: item,
-          child: Text(
-            item,
-            style: const TextStyle(
-              fontSize: 14,
-            ),
-          ),
-        ))
+                  value: item,
+                  child: Text(
+                    item,
+                    style: const TextStyle(
+                      fontSize: 14,
+                    ),
+                  ),
+                ))
             .toList(),
         onChanged: onChanged,
         dropdownStyleData: DropdownStyleData(
@@ -103,14 +101,14 @@ class CustomDropdownAction extends StatelessWidget {
         ),
         items: menuItems
             .map((item) => DropdownMenuItem<String>(
-          value: item,
-          child: Text(
-            item,
-            style: const TextStyle(
-              fontSize: 14,
-            ),
-          ),
-        ))
+                  value: item,
+                  child: Text(
+                    item,
+                    style: const TextStyle(
+                      fontSize: 14,
+                    ),
+                  ),
+                ))
             .toList(),
         onChanged: onChanged,
         dropdownStyleData: DropdownStyleData(
@@ -129,11 +127,11 @@ class CustomDropdownAction extends StatelessWidget {
 class SearchableDropDown<T> extends StatelessWidget {
   const SearchableDropDown(
       {super.key,
-        required this.hintText,
-        required this.menuItems,
-        this.onChanged,
-        this.defaultValue,
-        required this.controller});
+      required this.hintText,
+      required this.menuItems,
+      this.onChanged,
+      this.defaultValue,
+      required this.controller});
 
   final String hintText;
   final List<T> menuItems;
@@ -174,8 +172,8 @@ class SearchableDropDown<T> extends StatelessWidget {
         dropDownItemCount: 6,
         autovalidateMode: AutovalidateMode.always,
         dropDownList: menuItems
-            .map(
-                (item) => DropDownValueModel(value: item, name: item.toString()))
+            .map((item) =>
+                DropDownValueModel(value: item, name: item.toString()))
             .toList(),
         onChanged: onChanged,
       ),
@@ -183,16 +181,15 @@ class SearchableDropDown<T> extends StatelessWidget {
   }
 }
 
-
-
-class SearchableTenantDropDown<T extends SmartTenantModel> extends StatelessWidget {
+class SearchableTenantDropDown<T extends SmartTenantModel>
+    extends StatelessWidget {
   const SearchableTenantDropDown(
       {super.key,
-        required this.hintText,
-        required this.menuItems,
-        this.onChanged,
-        this.defaultValue,
-        required this.controller});
+      required this.hintText,
+      required this.menuItems,
+      this.onChanged,
+      this.defaultValue,
+      required this.controller});
 
   final String hintText;
   final List<T> menuItems;
@@ -216,7 +213,7 @@ class SearchableTenantDropDown<T extends SmartTenantModel> extends StatelessWidg
         textFieldDecoration: InputDecoration(
           filled: true,
           // fillColor: AppTheme.textBoxColor,
-          fillColor: AppTheme.appWidgetColor,
+          fillColor: AppTheme.itemBgColor,
           hintText: 'Select $hintText',
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
@@ -243,16 +240,15 @@ class SearchableTenantDropDown<T extends SmartTenantModel> extends StatelessWidg
   }
 }
 
-
-
-class SearchableTenantUnitScheduleDropDown<T extends SmartTenantUnitScheduleModel> extends StatelessWidget {
+class SearchableTenantUnitScheduleDropDown<
+    T extends SmartTenantUnitScheduleModel> extends StatelessWidget {
   const SearchableTenantUnitScheduleDropDown(
       {super.key,
-        required this.hintText,
-        required this.menuItems,
-        this.onChanged,
-        this.defaultValue,
-        required this.controller});
+      required this.hintText,
+      required this.menuItems,
+      this.onChanged,
+      this.defaultValue,
+      required this.controller});
 
   final String hintText;
   final List<T> menuItems;
@@ -295,25 +291,25 @@ class SearchableTenantUnitScheduleDropDown<T extends SmartTenantUnitScheduleMode
         dropDownItemCount: 6,
         autovalidateMode: AutovalidateMode.always,
         dropDownList: menuItems
-            .map(
-                (item) => DropDownValueModel(value: item, name: 'R${item.getUnitNumber()} | ${DateFormat('dd/MM/yyyy').format(item.getFromDate())}-${DateFormat('dd/MM/yyyy').format(item.getToDate())} | ${amountFormatter.format(item.getBalance().toString())}'))
+            .map((item) => DropDownValueModel(
+                value: item,
+                name:
+                    'R${item.getUnitNumber()} | ${DateFormat('dd/MM/yyyy').format(item.getFromDate())}-${DateFormat('dd/MM/yyyy').format(item.getToDate())} | ${amountFormatter.format(item.getBalance().toString())}'))
             .toList(),
         onChanged: onChanged,
       ),
     );
   }
 }
-
-
 
 class SearchableUnitDropDown<T extends SmartUnitModel> extends StatelessWidget {
   const SearchableUnitDropDown(
       {super.key,
-        required this.hintText,
-        required this.menuItems,
-        this.onChanged,
-        this.defaultValue,
-        required this.controller});
+      required this.hintText,
+      required this.menuItems,
+      this.onChanged,
+      this.defaultValue,
+      required this.controller});
 
   final String hintText;
   final List<T> menuItems;
@@ -337,7 +333,7 @@ class SearchableUnitDropDown<T extends SmartUnitModel> extends StatelessWidget {
         textFieldDecoration: InputDecoration(
           filled: true,
           // fillColor: AppTheme.textBoxColor,
-          fillColor: AppTheme.appWidgetColor,
+          fillColor: AppTheme.itemBgColor,
           hintText: 'Select $hintText',
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
@@ -355,8 +351,8 @@ class SearchableUnitDropDown<T extends SmartUnitModel> extends StatelessWidget {
         dropDownItemCount: 6,
         autovalidateMode: AutovalidateMode.always,
         dropDownList: menuItems
-            .map(
-                (item) => DropDownValueModel(value: item, name: item.getUnitNumber()))
+            .map((item) =>
+                DropDownValueModel(value: item, name: '${item.getUnitName()}          @${amountFormatter.format(item.getAmount().toString())}/='))
             .toList(),
         onChanged: onChanged,
       ),
@@ -364,15 +360,15 @@ class SearchableUnitDropDown<T extends SmartUnitModel> extends StatelessWidget {
   }
 }
 
-
-class SearchableSpecificTenantUnitDropDown<T extends SmartSpecificTenantUnitModel> extends StatelessWidget {
+class SearchableSpecificTenantUnitDropDown<
+    T extends SmartSpecificTenantUnitModel> extends StatelessWidget {
   const SearchableSpecificTenantUnitDropDown(
       {super.key,
-        required this.hintText,
-        required this.menuItems,
-        this.onChanged,
-        this.defaultValue,
-        required this.controller});
+      required this.hintText,
+      required this.menuItems,
+      this.onChanged,
+      this.defaultValue,
+      required this.controller});
 
   final String hintText;
   final List<T> menuItems;
@@ -396,7 +392,7 @@ class SearchableSpecificTenantUnitDropDown<T extends SmartSpecificTenantUnitMode
         textFieldDecoration: InputDecoration(
           filled: true,
           // fillColor: AppTheme.textBoxColor,
-          fillColor: AppTheme.appWidgetColor,
+          fillColor: AppTheme.itemBgColor,
           hintText: 'Select $hintText',
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
@@ -414,23 +410,22 @@ class SearchableSpecificTenantUnitDropDown<T extends SmartSpecificTenantUnitMode
         dropDownItemCount: 6,
         autovalidateMode: AutovalidateMode.always,
         dropDownList: menuItems
-            .map(
-                (item) => DropDownValueModel(value: item, name: item.getUnitNumber()))
+            .map((item) =>
+                DropDownValueModel(value: item, name: item.getUnitNumber()))
             .toList(),
         onChanged: onChanged,
       ),
     );
   }
 }
-
 
 class CustomGenericDropdown<T> extends StatelessWidget {
   const CustomGenericDropdown(
       {super.key,
-        required this.hintText,
-        required this.menuItems,
-        this.onChanged,
-        this.defaultValue});
+      required this.hintText,
+      required this.menuItems,
+      this.onChanged,
+      this.defaultValue});
 
   final String hintText;
   final List<T> menuItems;
@@ -450,10 +445,10 @@ class CustomGenericDropdown<T> extends StatelessWidget {
           child: DropdownButtonFormField2<T>(
             isExpanded: true,
             decoration: InputDecoration(
-              contentPadding:  EdgeInsets.symmetric(vertical: 16),
+              contentPadding: EdgeInsets.symmetric(vertical: 16),
               filled: true,
               // fillColor: AppTheme.textBoxColor,
-              fillColor: AppTheme.appWidgetColor,
+              fillColor: AppTheme.itemBgColor,
               border: OutlineInputBorder(
                 borderSide: BorderSide.none,
                 borderRadius: BorderRadius.circular(10),
@@ -462,18 +457,18 @@ class CustomGenericDropdown<T> extends StatelessWidget {
             hint: Text(
               hintText,
               style:
-              const TextStyle(color: AppTheme.inActiveColor, fontSize: 15),
+                  const TextStyle(color: AppTheme.inActiveColor, fontSize: 15),
             ),
             items: menuItems
                 .map((item) => DropdownMenuItem<T>(
-              value: item,
-              child: Text(
-                item.toString(),
-                style: const TextStyle(
-                  fontSize: 14,
-                ),
-              ),
-            ))
+                      value: item,
+                      child: Text(
+                        item.toString(),
+                        style: const TextStyle(
+                          fontSize: 14,
+                        ),
+                      ),
+                    ))
                 .toList(),
             validator: (value) {
               if (value == null) {
@@ -507,19 +502,17 @@ class CustomGenericDropdown<T> extends StatelessWidget {
     );
   }
 }
-
 
 class CustomApiGenericDropdown<T extends SmartModel> extends StatelessWidget {
-  const CustomApiGenericDropdown(
-      {super.key,
-        required this.hintText,
-        required this.menuItems,
-        this.onChanged,
-        this.height,
-        this.defaultValue,
-        this.validator,
-
-      });
+  const CustomApiGenericDropdown({
+    super.key,
+    required this.hintText,
+    required this.menuItems,
+    this.onChanged,
+    this.height,
+    this.defaultValue,
+    this.validator,
+  });
 
   final String hintText;
   final List<T> menuItems;
@@ -542,10 +535,10 @@ class CustomApiGenericDropdown<T extends SmartModel> extends StatelessWidget {
             value: defaultValue,
             isExpanded: true,
             decoration: InputDecoration(
-              contentPadding:  EdgeInsets.symmetric(vertical: 16),
+              contentPadding: EdgeInsets.symmetric(vertical: 16),
               filled: true,
               // fillColor: AppTheme.textBoxColor,
-              fillColor: AppTheme.appWidgetColor,
+              fillColor: AppTheme.itemBgColor,
               border: OutlineInputBorder(
                 borderSide: BorderSide.none,
                 borderRadius: BorderRadius.circular(10),
@@ -554,18 +547,18 @@ class CustomApiGenericDropdown<T extends SmartModel> extends StatelessWidget {
             hint: Text(
               hintText,
               style:
-              const TextStyle(color: AppTheme.inActiveColor, fontSize: 15),
+                  const TextStyle(color: AppTheme.inActiveColor, fontSize: 15),
             ),
             items: menuItems
                 .map((item) => DropdownMenuItem<T>(
-              value: item,
-              child: Text(
-                item.getName(),
-                style: const TextStyle(
-                  fontSize: 14,
-                ),
-              ),
-            ))
+                      value: item,
+                      child: Text(
+                        item.getName(),
+                        style: const TextStyle(
+                          fontSize: 14,
+                        ),
+                      ),
+                    ))
                 .toList(),
             validator: (value) {
               if (value == null) {
@@ -600,18 +593,17 @@ class CustomApiGenericDropdown<T extends SmartModel> extends StatelessWidget {
   }
 }
 
-
-class CustomPeriodApiGenericDropdown<T extends SmartPeriodModel> extends StatelessWidget {
-  const CustomPeriodApiGenericDropdown(
-      {super.key,
-        required this.hintText,
-        required this.menuItems,
-        this.onChanged,
-        this.height,
-        this.defaultValue,
-        this.validator,
-
-      });
+class CustomPeriodApiGenericDropdown<T extends SmartModel>
+    extends StatelessWidget {
+  const CustomPeriodApiGenericDropdown({
+    super.key,
+    required this.hintText,
+    required this.menuItems,
+    this.onChanged,
+    this.height,
+    this.defaultValue,
+    this.validator,
+  });
 
   final String hintText;
   final List<T> menuItems;
@@ -634,10 +626,10 @@ class CustomPeriodApiGenericDropdown<T extends SmartPeriodModel> extends Statele
             value: defaultValue,
             isExpanded: true,
             decoration: InputDecoration(
-              contentPadding:  EdgeInsets.symmetric(vertical: 16),
+              contentPadding: EdgeInsets.symmetric(vertical: 16),
               filled: true,
               // fillColor: AppTheme.textBoxColor,
-              fillColor: AppTheme.appWidgetColor,
+              fillColor: AppTheme.itemBgColor,
               border: OutlineInputBorder(
                 borderSide: BorderSide.none,
                 borderRadius: BorderRadius.circular(10),
@@ -646,18 +638,18 @@ class CustomPeriodApiGenericDropdown<T extends SmartPeriodModel> extends Statele
             hint: Text(
               hintText,
               style:
-              const TextStyle(color: AppTheme.inActiveColor, fontSize: 15),
+                  const TextStyle(color: AppTheme.inActiveColor, fontSize: 15),
             ),
             items: menuItems
                 .map((item) => DropdownMenuItem<T>(
-              value: item,
-              child: Text(
-                item.getName(),
-                style: const TextStyle(
-                  fontSize: 14,
-                ),
-              ),
-            ))
+                      value: item,
+                      child: Text(
+                        item.getName(),
+                        style: const TextStyle(
+                          fontSize: 14,
+                        ),
+                      ),
+                    ))
                 .toList(),
             validator: (value) {
               if (value == null) {
@@ -692,17 +684,17 @@ class CustomPeriodApiGenericDropdown<T extends SmartPeriodModel> extends Statele
   }
 }
 
-class CustomUpdateApiGenericDropdown<T extends SmartModel> extends StatelessWidget {
-  const CustomUpdateApiGenericDropdown(
-      {super.key,
-        required this.hintText,
-        required this.menuItems,
-        this.onChanged,
-        this.height,
-        this.defaultValue,
-        this.validator,
-
-      });
+class CustomUpdateApiGenericDropdown<T extends SmartModel>
+    extends StatelessWidget {
+  const CustomUpdateApiGenericDropdown({
+    super.key,
+    required this.hintText,
+    required this.menuItems,
+    this.onChanged,
+    this.height,
+    this.defaultValue,
+    this.validator,
+  });
 
   final String hintText;
   final List<T> menuItems;
@@ -725,7 +717,7 @@ class CustomUpdateApiGenericDropdown<T extends SmartModel> extends StatelessWidg
             value: defaultValue,
             isExpanded: true,
             decoration: InputDecoration(
-              contentPadding:  EdgeInsets.symmetric(vertical: 16),
+              contentPadding: EdgeInsets.symmetric(vertical: 16),
               filled: true,
               // fillColor: AppTheme.textBoxColor,
               fillColor: AppTheme.appWidgetColor,
@@ -737,18 +729,18 @@ class CustomUpdateApiGenericDropdown<T extends SmartModel> extends StatelessWidg
             hint: Text(
               hintText,
               style:
-              const TextStyle(color: AppTheme.inActiveColor, fontSize: 15),
+                  const TextStyle(color: AppTheme.inActiveColor, fontSize: 15),
             ),
             items: menuItems
                 .map((item) => DropdownMenuItem<T>(
-              value: item,
-              child: Text(
-                item.getName(),
-                style: const TextStyle(
-                  fontSize: 14,
-                ),
-              ),
-            ))
+                      value: item,
+                      child: Text(
+                        item.getName(),
+                        style: const TextStyle(
+                          fontSize: 14,
+                        ),
+                      ),
+                    ))
                 .toList(),
 
             // validator: (value) {
@@ -785,18 +777,17 @@ class CustomUpdateApiGenericDropdown<T extends SmartModel> extends StatelessWidg
   }
 }
 
-
-class CustomApiGenericTenantModelDropdown<T extends SmartTenantModel> extends StatelessWidget {
-  const CustomApiGenericTenantModelDropdown(
-      {super.key,
-        required this.hintText,
-        required this.menuItems,
-        this.onChanged,
-        this.height,
-        this.defaultValue,
-        this.validator,
-
-      });
+class CustomApiGenericTenantModelDropdown<T extends SmartTenantModel>
+    extends StatelessWidget {
+  const CustomApiGenericTenantModelDropdown({
+    super.key,
+    required this.hintText,
+    required this.menuItems,
+    this.onChanged,
+    this.height,
+    this.defaultValue,
+    this.validator,
+  });
 
   final String hintText;
   final List<T> menuItems;
@@ -818,7 +809,7 @@ class CustomApiGenericTenantModelDropdown<T extends SmartTenantModel> extends St
           child: DropdownButtonFormField2<T>(
             isExpanded: true,
             decoration: InputDecoration(
-              contentPadding:  EdgeInsets.symmetric(vertical: 16),
+              contentPadding: EdgeInsets.symmetric(vertical: 16),
               filled: true,
               fillColor: AppTheme.textBoxColor,
               border: OutlineInputBorder(
@@ -829,18 +820,18 @@ class CustomApiGenericTenantModelDropdown<T extends SmartTenantModel> extends St
             hint: Text(
               hintText,
               style:
-              const TextStyle(color: AppTheme.inActiveColor, fontSize: 15),
+                  const TextStyle(color: AppTheme.inActiveColor, fontSize: 15),
             ),
             items: menuItems
                 .map((item) => DropdownMenuItem<T>(
-              value: item,
-              child: Text(
-                item.getName(),
-                style: const TextStyle(
-                  fontSize: 14,
-                ),
-              ),
-            ))
+                      value: item,
+                      child: Text(
+                        item.getName(),
+                        style: const TextStyle(
+                          fontSize: 14,
+                        ),
+                      ),
+                    ))
                 .toList(),
             validator: (value) {
               if (value == null) {
@@ -875,13 +866,14 @@ class CustomApiGenericTenantModelDropdown<T extends SmartTenantModel> extends St
   }
 }
 
-class CustomApiTenantTypeDropdown<T extends SmartTenantTypeModel> extends StatelessWidget {
+class CustomApiTenantTypeDropdown<T extends SmartTenantTypeModel>
+    extends StatelessWidget {
   const CustomApiTenantTypeDropdown(
       {super.key,
-        required this.hintText,
-        required this.menuItems,
-        this.onChanged,
-        this.defaultValue});
+      required this.hintText,
+      required this.menuItems,
+      this.onChanged,
+      this.defaultValue});
 
   final String hintText;
   final List<T> menuItems;
@@ -913,18 +905,18 @@ class CustomApiTenantTypeDropdown<T extends SmartTenantTypeModel> extends Statel
             hint: Text(
               hintText,
               style:
-              const TextStyle(color: AppTheme.inActiveColor, fontSize: 15),
+                  const TextStyle(color: AppTheme.inActiveColor, fontSize: 15),
             ),
             items: menuItems
                 .map((item) => DropdownMenuItem<T>(
-              value: item,
-              child: Text(
-                item.getName(),
-                style: const TextStyle(
-                  fontSize: 14,
-                ),
-              ),
-            ))
+                      value: item,
+                      child: Text(
+                        item.getName(),
+                        style: const TextStyle(
+                          fontSize: 14,
+                        ),
+                      ),
+                    ))
                 .toList(),
             validator: (value) {
               if (value == null) {
@@ -959,14 +951,13 @@ class CustomApiTenantTypeDropdown<T extends SmartTenantTypeModel> extends Statel
   }
 }
 
-
 class CustomApiUnitDropdown<T extends SmartUnitModel> extends StatelessWidget {
   const CustomApiUnitDropdown(
       {super.key,
-        required this.hintText,
-        required this.menuItems,
-        this.onChanged,
-        this.defaultValue});
+      required this.hintText,
+      required this.menuItems,
+      this.onChanged,
+      this.defaultValue});
 
   final String hintText;
   final List<T> menuItems;
@@ -999,18 +990,18 @@ class CustomApiUnitDropdown<T extends SmartUnitModel> extends StatelessWidget {
             hint: Text(
               hintText,
               style:
-              const TextStyle(color: AppTheme.inActiveColor, fontSize: 15),
+                  const TextStyle(color: AppTheme.inActiveColor, fontSize: 15),
             ),
             items: menuItems
                 .map((item) => DropdownMenuItem<T>(
-              value: item,
-              child: Text(
-                item.getUnitNumber().toString(),
-                style: const TextStyle(
-                  fontSize: 14,
-                ),
-              ),
-            ))
+                      value: item,
+                      child: Text(
+                        item.getUnitNumber().toString(),
+                        style: const TextStyle(
+                          fontSize: 14,
+                        ),
+                      ),
+                    ))
                 .toList(),
             validator: (value) {
               if (value == null) {
@@ -1045,14 +1036,14 @@ class CustomApiUnitDropdown<T extends SmartUnitModel> extends StatelessWidget {
   }
 }
 
-
-class CustomApiCurrencyDropdown<T extends SmartCurrencyModel> extends StatelessWidget {
+class CustomApiCurrencyDropdown<T extends SmartCurrencyModel>
+    extends StatelessWidget {
   const CustomApiCurrencyDropdown(
       {super.key,
-        required this.hintText,
-        required this.menuItems,
-        this.onChanged,
-        this.defaultValue});
+      required this.hintText,
+      required this.menuItems,
+      this.onChanged,
+      this.defaultValue});
 
   final String hintText;
   final List<T> menuItems;
@@ -1084,18 +1075,18 @@ class CustomApiCurrencyDropdown<T extends SmartCurrencyModel> extends StatelessW
             hint: Text(
               hintText,
               style:
-              const TextStyle(color: AppTheme.inActiveColor, fontSize: 15),
+                  const TextStyle(color: AppTheme.inActiveColor, fontSize: 15),
             ),
             items: menuItems
                 .map((item) => DropdownMenuItem<T>(
-              value: item,
-              child: Text(
-                item.getCurrency(),
-                style: const TextStyle(
-                  fontSize: 14,
-                ),
-              ),
-            ))
+                      value: item,
+                      child: Text(
+                        item.getCurrency(),
+                        style: const TextStyle(
+                          fontSize: 14,
+                        ),
+                      ),
+                    ))
                 .toList(),
             validator: (value) {
               if (value == null) {
@@ -1130,14 +1121,14 @@ class CustomApiCurrencyDropdown<T extends SmartCurrencyModel> extends StatelessW
   }
 }
 
-
-class CustomApiNationalityDropdown<T extends SmartNationalityModel> extends StatelessWidget {
+class CustomApiNationalityDropdown<T extends SmartNationalityModel>
+    extends StatelessWidget {
   const CustomApiNationalityDropdown(
       {super.key,
-        required this.hintText,
-        required this.menuItems,
-        this.onChanged,
-        this.defaultValue});
+      required this.hintText,
+      required this.menuItems,
+      this.onChanged,
+      this.defaultValue});
 
   final String hintText;
   final List<T> menuItems;
@@ -1169,18 +1160,18 @@ class CustomApiNationalityDropdown<T extends SmartNationalityModel> extends Stat
             hint: Text(
               hintText,
               style:
-              const TextStyle(color: AppTheme.inActiveColor, fontSize: 15),
+                  const TextStyle(color: AppTheme.inActiveColor, fontSize: 15),
             ),
             items: menuItems
                 .map((item) => DropdownMenuItem<T>(
-              value: item,
-              child: Text(
-                item.getCountry(),
-                style: const TextStyle(
-                  fontSize: 14,
-                ),
-              ),
-            ))
+                      value: item,
+                      child: Text(
+                        item.getCountry(),
+                        style: const TextStyle(
+                          fontSize: 14,
+                        ),
+                      ),
+                    ))
                 .toList(),
             validator: (value) {
               if (value == null) {
@@ -1215,13 +1206,14 @@ class CustomApiNationalityDropdown<T extends SmartNationalityModel> extends Stat
   }
 }
 
-class CustomUpdateApiNationalityDropdown<T extends SmartNationalityModel> extends StatelessWidget {
+class CustomUpdateApiNationalityDropdown<T extends SmartNationalityModel>
+    extends StatelessWidget {
   const CustomUpdateApiNationalityDropdown(
       {super.key,
-        required this.hintText,
-        required this.menuItems,
-        this.onChanged,
-        this.defaultValue});
+      required this.hintText,
+      required this.menuItems,
+      this.onChanged,
+      this.defaultValue});
 
   final String hintText;
   final List<T> menuItems;
@@ -1253,18 +1245,18 @@ class CustomUpdateApiNationalityDropdown<T extends SmartNationalityModel> extend
             hint: Text(
               hintText,
               style:
-              const TextStyle(color: AppTheme.inActiveColor, fontSize: 15),
+                  const TextStyle(color: AppTheme.inActiveColor, fontSize: 15),
             ),
             items: menuItems
                 .map((item) => DropdownMenuItem<T>(
-              value: item,
-              child: Text(
-                item.getCountry(),
-                style: const TextStyle(
-                  fontSize: 14,
-                ),
-              ),
-            ))
+                      value: item,
+                      child: Text(
+                        item.getCountry(),
+                        style: const TextStyle(
+                          fontSize: 14,
+                        ),
+                      ),
+                    ))
                 .toList(),
 
             // validator: (value) {
@@ -1300,7 +1292,6 @@ class CustomUpdateApiNationalityDropdown<T extends SmartNationalityModel> extend
     );
   }
 }
-
 
 class GenderDropdown extends StatelessWidget {
   const GenderDropdown({
@@ -1388,18 +1379,17 @@ class GenderDropdown extends StatelessWidget {
   }
 }
 
-
-class CustomApiUserRoleDropdown<T extends SmartUserRoleModel> extends StatelessWidget {
-  const CustomApiUserRoleDropdown(
-      {super.key,
-        required this.hintText,
-        required this.menuItems,
-        this.onChanged,
-        this.height,
-        this.defaultValue,
-        this.validator,
-
-      });
+class CustomApiUserRoleDropdown<T extends SmartUserRoleModel>
+    extends StatelessWidget {
+  const CustomApiUserRoleDropdown({
+    super.key,
+    required this.hintText,
+    required this.menuItems,
+    this.onChanged,
+    this.height,
+    this.defaultValue,
+    this.validator,
+  });
 
   final String hintText;
   final List<T> menuItems;
@@ -1422,7 +1412,7 @@ class CustomApiUserRoleDropdown<T extends SmartUserRoleModel> extends StatelessW
             value: defaultValue,
             isExpanded: true,
             decoration: InputDecoration(
-              contentPadding:  EdgeInsets.symmetric(vertical: 16),
+              contentPadding: EdgeInsets.symmetric(vertical: 16),
               filled: true,
               // fillColor: AppTheme.textBoxColor,
               fillColor: AppTheme.appWidgetColor,
@@ -1434,18 +1424,18 @@ class CustomApiUserRoleDropdown<T extends SmartUserRoleModel> extends StatelessW
             hint: Text(
               hintText,
               style:
-              const TextStyle(color: AppTheme.inActiveColor, fontSize: 15),
+                  const TextStyle(color: AppTheme.inActiveColor, fontSize: 15),
             ),
             items: menuItems
                 .map((item) => DropdownMenuItem<T>(
-              value: item,
-              child: Text(
-                item.getName(),
-                style: const TextStyle(
-                  fontSize: 14,
-                ),
-              ),
-            ))
+                      value: item,
+                      child: Text(
+                        item.getName(),
+                        style: const TextStyle(
+                          fontSize: 14,
+                        ),
+                      ),
+                    ))
                 .toList(),
             validator: (value) {
               if (value == null) {
@@ -1480,14 +1470,15 @@ class CustomApiUserRoleDropdown<T extends SmartUserRoleModel> extends StatelessW
   }
 }
 
-class SearchablePropertyModelListDropDown<T extends SmartPropertyModel> extends StatelessWidget {
+class SearchablePropertyModelListDropDown<T extends SmartPropertyModel>
+    extends StatelessWidget {
   const SearchablePropertyModelListDropDown(
       {super.key,
-        required this.hintText,
-        required this.menuItems,
-        this.onChanged,
-        this.defaultValue,
-        required this.controller});
+      required this.hintText,
+      required this.menuItems,
+      this.onChanged,
+      this.defaultValue,
+      required this.controller});
 
   final String hintText;
   final List<T> menuItems;

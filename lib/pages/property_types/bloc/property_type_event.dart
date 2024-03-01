@@ -8,5 +8,4 @@ class LoadAllPropertyTypesEvent extends PropertyTypeEvent {
   @override
   // TODO: implement props
   List<Object?> get props => [];
-
 }

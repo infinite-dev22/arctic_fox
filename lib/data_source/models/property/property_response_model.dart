@@ -2,8 +2,6 @@
 //
 //     final propertyModel = propertyModelFromJson(jsonString);
 
-
-
 // To parse this JSON data, do
 //
 //     final propertyModel = propertyModelFromJson(jsonString);
@@ -14,7 +12,8 @@ import 'package:smart_rent/data_source/models/property/property_category_model.d
 import 'package:smart_rent/data_source/models/property/property_types_model.dart';
 import 'package:smart_rent/models/general/smart_model.dart';
 
-PropertyModel propertyModelFromJson(String str) => PropertyModel.fromJson(json.decode(str));
+PropertyModel propertyModelFromJson(String str) =>
+    PropertyModel.fromJson(json.decode(str));
 
 String propertyModelToJson(PropertyModel data) => json.encode(data.toJson());
 
@@ -26,15 +25,20 @@ class PropertyModel {
   });
 
   factory PropertyModel.fromJson(Map<String, dynamic> json) => PropertyModel(
-    properties: json["properties"] == null ? [] : List<Property>.from(json["properties"]!.map((x) => Property.fromJson(x))),
-  );
+        properties: json["properties"] == null
+            ? []
+            : List<Property>.from(
+                json["properties"]!.map((x) => Property.fromJson(x))),
+      );
 
   Map<String, dynamic> toJson() => {
-    "properties": properties == null ? [] : List<dynamic>.from(properties!.map((x) => x.toJson())),
-  };
+        "properties": properties == null
+            ? []
+            : List<dynamic>.from(properties!.map((x) => x.toJson())),
+      };
 }
 
-class Property extends SmartPropertyModel{
+class Property extends SmartPropertyModel {
   int? id;
   String? name;
   String? number;
@@ -68,81 +72,100 @@ class Property extends SmartPropertyModel{
   });
 
   factory Property.fromJson(Map<String, dynamic> json) => Property(
-    id: json["id"],
-    name: json["name"],
-    number: json["number"],
-    location: json["location"],
-    squareMeters: json["square_meters"],
-    description: json["description"],
-    propertyTypeId: json["property_type_id"],
-    propertyCategoryId: json["property_category_id"],
-    createdBy: json["created_by"],
-    updatedBy: json["updated_by"],
-    createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
-    updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
-    propertyType: json["property_type"] == null ? null : PropertyTypeModel.fromJson(json["property_type"]),
-    propertyCategoryModel: json["category"] == null ? null : PropertyCategoryModel.fromJson(json["category"]),
-  );
+        id: json["id"],
+        name: json["name"],
+        number: json["number"],
+        location: json["location"],
+        squareMeters: json["square_meters"],
+        description: json["description"],
+        propertyTypeId: json["property_type_id"],
+        propertyCategoryId: json["property_category_id"],
+        createdBy: json["created_by"],
+        updatedBy: json["updated_by"],
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
+        propertyType: json["property_type"] == null
+            ? null
+            : PropertyTypeModel.fromJson(json["property_type"]),
+        propertyCategoryModel: json["category"] == null
+            ? null
+            : PropertyCategoryModel.fromJson(json["category"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-    "number": number,
-    "location": location,
-    "square_meters": squareMeters,
-    "description": description,
-    "property_type_id": propertyTypeId,
-    "property_category_id": propertyCategoryId,
-    "created_by": createdBy,
-    "updated_by": updatedBy,
-    "created_at": createdAt?.toIso8601String(),
-    "updated_at": updatedAt?.toIso8601String(),
-    "property_type": propertyType?.toJson(),
-    "category": propertyCategoryModel?.toJson(),
-  };
+        "id": id,
+        "name": name,
+        "number": number,
+        "location": location,
+        "square_meters": squareMeters,
+        "description": description,
+        "property_type_id": propertyTypeId,
+        "property_category_id": propertyCategoryId,
+        "created_by": createdBy,
+        "updated_by": updatedBy,
+        "created_at": createdAt?.toIso8601String(),
+        "updated_at": updatedAt?.toIso8601String(),
+        "property_type": propertyType?.toJson(),
+        "category": propertyCategoryModel?.toJson(),
+      };
 
   @override
-  int getCategoryTypeId() { return propertyCategoryId!;
+  int getCategoryTypeId() {
+    return propertyCategoryId!;
   }
 
   @override
-  String getDescription() { return description!;
+  String getDescription() {
+    return description!;
   }
 
   @override
-  int getId() { return id!;
+  int getId() {
+    return id!;
   }
 
   @override
-  String getImageDocUrl() { return '';
+  String getImageDocUrl() {
+    return '';
   }
 
   @override
-  String getLocation() { return location!;
+  String getLocation() {
+    return location!;
   }
 
   @override
-  int getMainImage() { return 0;
+  int getMainImage() {
+    return 0;
   }
 
   @override
-  String getName() { return name!;
+  String getName() {
+    return name!;
   }
 
   @override
-  String getNumber() { return number!;
+  String getNumber() {
+    return number!;
   }
 
   @override
-  int getOrganisationId() { return 0;
+  int getOrganisationId() {
+    return 0;
   }
 
   @override
-  int getPropertyTypeId() { return propertyTypeId!;
+  int getPropertyTypeId() {
+    return propertyTypeId!;
   }
 
   @override
-  String getSquareMeters() { return squareMeters!;
+  String getSquareMeters() {
+    return squareMeters!;
   }
 
   @override
@@ -150,12 +173,6 @@ class Property extends SmartPropertyModel{
     return propertyCategoryModel!.name!;
   }
 }
-
-
-
-
-
-
 
 //
 // import 'dart:convert';

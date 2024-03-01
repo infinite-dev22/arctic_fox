@@ -5,7 +5,6 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/controllers/tenants/tenant_controller.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 
-
 class AppTextField extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
@@ -24,25 +23,24 @@ class AppTextField extends StatelessWidget {
   final int? minLines;
   final void Function(String)? onChanged;
 
-  const AppTextField({
-    super.key,
-    required this.controller,
-    required this.hintText,
-    required this.obscureText,
-    this.isEmail = false,
-    this.borderSide = BorderSide.none,
-    this.fillColor = AppTheme.fillColor,
-    this.style,
-    this.enabled = true,
-    this.title,
-    this.validator,
-    this.keyBoardType,
-    this.onTap,
-    this.maxLines,
-    this.maxLength,
-    this.minLines,
-    this.onChanged
-  });
+  const AppTextField(
+      {super.key,
+      required this.controller,
+      required this.hintText,
+      required this.obscureText,
+      this.isEmail = false,
+      this.borderSide = BorderSide.none,
+      this.fillColor = AppTheme.fillColor,
+      this.style,
+      this.enabled = true,
+      this.title,
+      this.validator,
+      this.keyBoardType,
+      this.onTap,
+      this.maxLines,
+      this.maxLength,
+      this.minLines,
+      this.onChanged});
 
   @override
   Widget build(BuildContext context) {
@@ -50,8 +48,17 @@ class AppTextField extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        title == null ? Container() : Text(title ?? '', style: AppTheme.appFieldTitle,),
-        title == null ? Container() : SizedBox(height: 1.h,),
+        title == null
+            ? Container()
+            : Text(
+                title ?? '',
+                style: AppTheme.appFieldTitle,
+              ),
+        title == null
+            ? Container()
+            : SizedBox(
+                height: 1.h,
+              ),
         SizedBox(
           height: 50,
           child: TextFormField(
@@ -69,20 +76,20 @@ class AppTextField extends StatelessWidget {
             decoration: InputDecoration(
               focusedBorder: (borderSide != BorderSide.none)
                   ? OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15.sp),
-                borderSide: const BorderSide(
-                  color: Colors.grey,
-                  width: 2.0,
-                ),
-              )
+                      borderRadius: BorderRadius.circular(15.sp),
+                      borderSide: const BorderSide(
+                        color: Colors.grey,
+                        width: 2.0,
+                      ),
+                    )
                   : null,
               enabledBorder: (borderSide != BorderSide.none)
                   ? OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15.sp),
-                borderSide: const BorderSide(
-                  color: Colors.grey,
-                ),
-              )
+                      borderRadius: BorderRadius.circular(15.sp),
+                      borderSide: const BorderSide(
+                        color: Colors.grey,
+                      ),
+                    )
                   : null,
               border: OutlineInputBorder(
                 borderSide: borderSide,
@@ -96,7 +103,6 @@ class AppTextField extends StatelessWidget {
                 color: Colors.grey,
                 fontSize: 16.sp,
               ),
-
             ),
             keyboardType: keyBoardType ?? TextInputType.emailAddress,
             onChanged: onChanged,
@@ -110,8 +116,6 @@ class AppTextField extends StatelessWidget {
     );
   }
 }
-
-
 
 class AuthTextField extends StatelessWidget {
   final TextEditingController? controller;
@@ -138,7 +142,9 @@ class AuthTextField extends StatelessWidget {
     this.style,
     this.enabled = true,
     this.onChanged,
-    this.onTap, this.keyBoardType, this.inputFormatters,
+    this.onTap,
+    this.keyBoardType,
+    this.inputFormatters,
   });
 
   @override
@@ -146,12 +152,13 @@ class AuthTextField extends StatelessWidget {
     return SizedBox(
       height: 50,
       child: TextFormField(
-        inputFormatters: inputFormatters ?? [
-          LengthLimitingTextInputFormatter(35),
-        ],
+        inputFormatters: inputFormatters ??
+            [
+              LengthLimitingTextInputFormatter(35),
+            ],
         cursorColor: AppTheme.gray45,
         validator: (val) =>
-        val!.isEmpty ? 'Required field, Please fill in.' : null,
+            val!.isEmpty ? 'Required field, Please fill in.' : null,
         controller: controller,
         onChanged: onChanged,
         obscureText: obscureText,
@@ -160,27 +167,27 @@ class AuthTextField extends StatelessWidget {
         decoration: InputDecoration(
           focusedBorder: (borderSide != BorderSide.none)
               ? OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: const BorderSide(
-              color: AppTheme.gray45,
-              width: 2.0,
-            ),
-          )
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: const BorderSide(
+                    color: AppTheme.gray45,
+                    width: 2.0,
+                  ),
+                )
               : null,
           enabledBorder: (borderSide != BorderSide.none)
               ? OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: const BorderSide(
-              color: AppTheme.gray45,
-            ),
-          )
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: const BorderSide(
+                    color: AppTheme.gray45,
+                  ),
+                )
               : null,
           border: OutlineInputBorder(
             borderSide: borderSide,
             borderRadius: BorderRadius.circular(10),
           ),
           // fillColor: fillColor,
-          fillColor: AppTheme.appWidgetColor,
+          fillColor: AppTheme.itemBgColor,
           filled: true,
           hintText: hintText,
           hintStyle: const TextStyle(
@@ -190,13 +197,10 @@ class AuthTextField extends StatelessWidget {
         ),
         keyboardType: keyBoardType ?? TextInputType.emailAddress,
         onTap: onTap,
-
       ),
     );
   }
 }
-
-
 
 class DescriptionTextField extends StatelessWidget {
   final TextEditingController? controller;
@@ -223,7 +227,9 @@ class DescriptionTextField extends StatelessWidget {
     this.style,
     this.enabled = true,
     this.onChanged,
-    this.onTap, this.keyBoardType, this.inputFormatters,
+    this.onTap,
+    this.keyBoardType,
+    this.inputFormatters,
   });
 
   @override
@@ -231,11 +237,11 @@ class DescriptionTextField extends StatelessWidget {
     return SizedBox(
       height: 50,
       child: TextFormField(
-        inputFormatters: inputFormatters ?? [
-          LengthLimitingTextInputFormatter(35),
-        ],
+        inputFormatters: inputFormatters ??
+            [
+              LengthLimitingTextInputFormatter(35),
+            ],
         cursorColor: AppTheme.gray45,
-
         controller: controller,
         onChanged: onChanged,
         obscureText: obscureText,
@@ -244,27 +250,27 @@ class DescriptionTextField extends StatelessWidget {
         decoration: InputDecoration(
           focusedBorder: (borderSide != BorderSide.none)
               ? OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: const BorderSide(
-              color: AppTheme.gray45,
-              width: 2.0,
-            ),
-          )
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: const BorderSide(
+                    color: AppTheme.gray45,
+                    width: 2.0,
+                  ),
+                )
               : null,
           enabledBorder: (borderSide != BorderSide.none)
               ? OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: const BorderSide(
-              color: AppTheme.gray45,
-            ),
-          )
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: const BorderSide(
+                    color: AppTheme.gray45,
+                  ),
+                )
               : null,
           border: OutlineInputBorder(
             borderSide: borderSide,
             borderRadius: BorderRadius.circular(10),
           ),
           // fillColor: fillColor,
-          fillColor: AppTheme.appWidgetColor,
+          fillColor: AppTheme.itemBgColor,
           filled: true,
           hintText: hintText,
           hintStyle: const TextStyle(
@@ -274,12 +280,10 @@ class DescriptionTextField extends StatelessWidget {
         ),
         keyboardType: keyBoardType ?? TextInputType.emailAddress,
         onTap: onTap,
-
       ),
     );
   }
 }
-
 
 class AmountTextField extends StatelessWidget {
   final TextEditingController? controller;
@@ -307,8 +311,10 @@ class AmountTextField extends StatelessWidget {
     this.style,
     this.enabled = true,
     this.onChanged,
-    this.onTap, this.keyBoardType,
-    this.suffix, this.inputFormatters,
+    this.onTap,
+    this.keyBoardType,
+    this.suffix,
+    this.inputFormatters,
   });
 
   @override
@@ -316,12 +322,13 @@ class AmountTextField extends StatelessWidget {
     return SizedBox(
       height: 50,
       child: TextFormField(
-        inputFormatters: inputFormatters ?? [
-          LengthLimitingTextInputFormatter(35),
-        ],
+        inputFormatters: inputFormatters ??
+            [
+              LengthLimitingTextInputFormatter(35),
+            ],
         cursorColor: AppTheme.gray45,
         validator: (val) =>
-        val!.isEmpty ? 'Required field, Please fill in.' : null,
+            val!.isEmpty ? 'Required field, Please fill in.' : null,
         controller: controller,
         onChanged: onChanged,
         obscureText: obscureText,
@@ -330,27 +337,27 @@ class AmountTextField extends StatelessWidget {
         decoration: InputDecoration(
           focusedBorder: (borderSide != BorderSide.none)
               ? OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: const BorderSide(
-              color: AppTheme.gray45,
-              width: 2.0,
-            ),
-          )
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: const BorderSide(
+                    color: AppTheme.gray45,
+                    width: 2.0,
+                  ),
+                )
               : null,
           enabledBorder: (borderSide != BorderSide.none)
               ? OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: const BorderSide(
-              color: AppTheme.gray45,
-            ),
-          )
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: const BorderSide(
+                    color: AppTheme.gray45,
+                  ),
+                )
               : null,
           border: OutlineInputBorder(
             borderSide: borderSide,
             borderRadius: BorderRadius.circular(10),
           ),
           // fillColor: fillColor,
-          fillColor: AppTheme.appWidgetColor,
+          fillColor: AppTheme.itemBgColor,
           filled: true,
           hintText: hintText,
           hintStyle: const TextStyle(
@@ -359,9 +366,9 @@ class AmountTextField extends StatelessWidget {
           ),
           suffix: Card(
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 8),
-                child: Text(suffix.toString()),
-              )),
+            padding: EdgeInsets.symmetric(horizontal: 30, vertical: 8),
+            child: Text(suffix.toString()),
+          )),
         ),
         keyboardType: keyBoardType ?? TextInputType.emailAddress,
         onTap: onTap,
@@ -369,7 +376,6 @@ class AmountTextField extends StatelessWidget {
     );
   }
 }
-
 
 class DateTextField extends StatelessWidget {
   final TextEditingController? controller;
@@ -404,7 +410,7 @@ class DateTextField extends StatelessWidget {
       child: TextFormField(
         cursorColor: AppTheme.gray45,
         validator: (val) =>
-        val!.isEmpty ? 'Required field, Please fill in.' : null,
+            val!.isEmpty ? 'Required field, Please fill in.' : null,
         controller: controller,
         onChanged: onChanged,
         obscureText: obscureText,
@@ -413,27 +419,27 @@ class DateTextField extends StatelessWidget {
         decoration: InputDecoration(
           focusedBorder: (borderSide != BorderSide.none)
               ? OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: const BorderSide(
-              color: AppTheme.gray45,
-              width: 2.0,
-            ),
-          )
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: const BorderSide(
+                    color: AppTheme.gray45,
+                    width: 2.0,
+                  ),
+                )
               : null,
           enabledBorder: (borderSide != BorderSide.none)
               ? OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: const BorderSide(
-              color: AppTheme.gray45,
-            ),
-          )
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: const BorderSide(
+                    color: AppTheme.gray45,
+                  ),
+                )
               : null,
           border: OutlineInputBorder(
             borderSide: borderSide,
             borderRadius: BorderRadius.circular(10),
           ),
           // fillColor: fillColor,
-          fillColor: AppTheme.appWidgetColor,
+          fillColor: AppTheme.itemBgColor,
           filled: true,
           hintText: hintText,
           hintStyle: const TextStyle(
@@ -443,9 +449,9 @@ class DateTextField extends StatelessWidget {
           prefix: Text(hintText),
           suffix: Card(
               child: Padding(
-                padding:  EdgeInsets.symmetric(horizontal: 30, vertical: 8),
-                child: Text(controller!.text.toString()),
-              )),
+            padding: EdgeInsets.symmetric(horizontal: 30, vertical: 8),
+            child: Text(controller!.text.toString()),
+          )),
         ),
         keyboardType: TextInputType.emailAddress,
         onTap: onTap,
@@ -457,7 +463,6 @@ class DateTextField extends StatelessWidget {
     );
   }
 }
-
 
 class DateTextField2 extends StatelessWidget {
   final TextEditingController? controller;
@@ -494,7 +499,7 @@ class DateTextField2 extends StatelessWidget {
       child: TextFormField(
         cursorColor: AppTheme.gray45,
         validator: (val) =>
-        val!.isEmpty ? 'Required field, Please fill in.' : null,
+            val!.isEmpty ? 'Required field, Please fill in.' : null,
         controller: controller,
         onChanged: onChanged,
         obscureText: obscureText,
@@ -503,20 +508,20 @@ class DateTextField2 extends StatelessWidget {
         decoration: InputDecoration(
           focusedBorder: (borderSide != BorderSide.none)
               ? OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: const BorderSide(
-              color: AppTheme.gray45,
-              width: 2.0,
-            ),
-          )
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: const BorderSide(
+                    color: AppTheme.gray45,
+                    width: 2.0,
+                  ),
+                )
               : null,
           enabledBorder: (borderSide != BorderSide.none)
               ? OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: const BorderSide(
-              color: AppTheme.gray45,
-            ),
-          )
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: const BorderSide(
+                    color: AppTheme.gray45,
+                  ),
+                )
               : null,
           border: OutlineInputBorder(
             borderSide: borderSide,
@@ -533,11 +538,13 @@ class DateTextField2 extends StatelessWidget {
           prefix: Text(hintText),
           suffix: Card(
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 8),
-                child: Obx(() {
-                  return tenantController!.tenantUnitAmount.value == 0 ? Container() : Text(controller!.text.toString());
-                }),
-              )),
+            padding: EdgeInsets.symmetric(horizontal: 30, vertical: 8),
+            child: Obx(() {
+              return tenantController!.tenantUnitAmount.value == 0
+                  ? Container()
+                  : Text(controller!.text.toString());
+            }),
+          )),
         ),
         keyboardType: TextInputType.emailAddress,
         onTap: onTap,
@@ -549,7 +556,6 @@ class DateTextField2 extends StatelessWidget {
     );
   }
 }
-
 
 class AppDateTextField extends StatelessWidget {
   final TextEditingController controller;
@@ -593,8 +599,17 @@ class AppDateTextField extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        title == null ? Container() : Text(title ?? '', style: AppTheme.appFieldTitle,),
-        title == null ? Container() : SizedBox(height: 1.h,),
+        title == null
+            ? Container()
+            : Text(
+                title ?? '',
+                style: AppTheme.appFieldTitle,
+              ),
+        title == null
+            ? Container()
+            : SizedBox(
+                height: 1.h,
+              ),
         SizedBox(
           height: 8.5.h,
           child: TextFormField(
@@ -612,20 +627,20 @@ class AppDateTextField extends StatelessWidget {
             decoration: InputDecoration(
               focusedBorder: (borderSide != BorderSide.none)
                   ? OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15.sp),
-                borderSide: const BorderSide(
-                  color: Colors.grey,
-                  width: 2.0,
-                ),
-              )
+                      borderRadius: BorderRadius.circular(15.sp),
+                      borderSide: const BorderSide(
+                        color: Colors.grey,
+                        width: 2.0,
+                      ),
+                    )
                   : null,
               enabledBorder: (borderSide != BorderSide.none)
                   ? OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15.sp),
-                borderSide: const BorderSide(
-                  color: Colors.grey,
-                ),
-              )
+                      borderRadius: BorderRadius.circular(15.sp),
+                      borderSide: const BorderSide(
+                        color: Colors.grey,
+                      ),
+                    )
                   : null,
               border: OutlineInputBorder(
                 borderSide: borderSide,
@@ -639,7 +654,6 @@ class AppDateTextField extends StatelessWidget {
                 color: Colors.grey,
                 fontSize: 16.sp,
               ),
-
             ),
             keyboardType: keyBoardType ?? TextInputType.emailAddress,
             // maxLines: 10,

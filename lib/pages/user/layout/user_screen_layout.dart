@@ -37,14 +37,17 @@ class UserListScreenLayout extends StatelessWidget {
                   itemBuilder: (context, index) {
                     var user = state.users![index];
                     return GestureDetector(
-                      onTap: (){
+                      onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => UserDetailsScreen(id: user.id!,),
+                            builder: (context) => UserDetailsScreen(
+                              id: user.id!,
+                            ),
                           ),
                         );
                       },
-                      child: Card(child: Padding(
+                      child: Card(
+                          child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(user.firstName.toString()),
                       )),

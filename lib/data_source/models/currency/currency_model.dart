@@ -6,9 +6,12 @@ import 'dart:convert';
 
 import 'package:smart_rent/models/general/smart_model.dart';
 
-List<CurrencyModel> currencyModelFromJson(String str) => List<CurrencyModel>.from(json.decode(str).map((x) => CurrencyModel.fromJson(x)));
+List<CurrencyModel> currencyModelFromJson(String str) =>
+    List<CurrencyModel>.from(
+        json.decode(str).map((x) => CurrencyModel.fromJson(x)));
 
-String currencyModelToJson(List<CurrencyModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String currencyModelToJson(List<CurrencyModel> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class CurrencyModel extends SmartModel {
   int? id;
@@ -32,32 +35,38 @@ class CurrencyModel extends SmartModel {
   });
 
   factory CurrencyModel.fromJson(Map<String, dynamic> json) => CurrencyModel(
-    id: json["id"],
-    name: json["name"],
-    code: json["code"],
-    isActive: json["is_active"],
-    createdBy: json["created_by"],
-    updatedBy: json["updated_by"],
-    createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
-    updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
-  );
+        id: json["id"],
+        name: json["name"],
+        code: json["code"],
+        isActive: json["is_active"],
+        createdBy: json["created_by"],
+        updatedBy: json["updated_by"],
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-    "code": code,
-    "is_active": isActive,
-    "created_by": createdBy,
-    "updated_by": updatedBy,
-    "created_at": createdAt?.toIso8601String(),
-    "updated_at": updatedAt?.toIso8601String(),
-  };
+        "id": id,
+        "name": name,
+        "code": code,
+        "is_active": isActive,
+        "created_by": createdBy,
+        "updated_by": updatedBy,
+        "created_at": createdAt?.toIso8601String(),
+        "updated_at": updatedAt?.toIso8601String(),
+      };
 
   @override
-  int getId() { return id!;
+  int getId() {
+    return id!;
   }
 
   @override
-  String getName() { return name!;
+  String getName() {
+    return name!;
   }
 }

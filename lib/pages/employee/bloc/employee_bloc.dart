@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:smart_rent/data_source/models/employee/employee_list_response_model.dart';
 import 'package:smart_rent/data_source/repositories/implemantation/employee_repo_impl.dart';
@@ -16,11 +15,15 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
     on<LoadEmployeesEvent>(_mapFetchEmployeesToState);
   }
 
-  _mapFetchEmployeesToState(LoadEmployeesEvent event, Emitter<EmployeeState> emit) async{
+  _mapFetchEmployeesToState(
+      LoadEmployeesEvent event, Emitter<EmployeeState> emit) async {
     emit(state.copyWith(status: EmployeeStatus.loading));
-    await EmployeeRepoImpl().getALlEmployees(userStorage.read('accessToken').toString()).then((employees) {
-      if(employees.isNotEmpty){
-        emit(state.copyWith(status: EmployeeStatus.success, employees: employees));
+    await EmployeeRepoImpl()
+        .getALlEmployees(userStorage.read('accessToken').toString())
+        .then((employees) {
+      if (employees.isNotEmpty) {
+        emit(state.copyWith(
+            status: EmployeeStatus.success, employees: employees));
       } else {
         emit(state.copyWith(status: EmployeeStatus.empty));
       }
@@ -57,5 +60,4 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
     print(stackTrace);
     super.onError(error, stackTrace);
   }
-
 }

@@ -9,7 +9,9 @@ import 'package:smart_rent/widgets/app_textfield.dart';
 
 class FloorTabScreen extends StatelessWidget {
   final PropertyDetailsOptionsController propertyDetailsOptionsController;
-  const FloorTabScreen({super.key, required this.propertyDetailsOptionsController});
+
+  const FloorTabScreen(
+      {super.key, required this.propertyDetailsOptionsController});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +21,9 @@ class FloorTabScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            SizedBox(height: 6.h,),
+            SizedBox(
+              height: 6.h,
+            ),
             Align(
               alignment: Alignment.centerRight,
               child: SizedBox(
@@ -28,27 +32,24 @@ class FloorTabScreen extends StatelessWidget {
                 child: AppButton(
                   // onTap: widget.function,
                   function: () {
-                    if(propertyDetailsOptionsController.floorDataList.isNotEmpty){
-
+                    if (propertyDetailsOptionsController
+                        .floorDataList.isNotEmpty) {
                     } else {
                       propertyDetailsOptionsController.addFloorWidget();
                     }
                     Get.bottomSheet(
-                      backgroundColor: Theme
-                          .of(context)
-                          .scaffoldBackgroundColor,
+                      backgroundColor:
+                          Theme.of(context).scaffoldBackgroundColor,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.only(
                               topRight: Radius.circular(20.sp),
-                              topLeft: Radius.circular(20.sp)
-                          )
-                      ),
+                              topLeft: Radius.circular(20.sp))),
                       Container(
                         height: 42.5.h,
                         width: double.infinity,
                         child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 5.w,
-                              vertical: 1.h),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 5.w, vertical: 1.h),
                           child: Obx(() {
                             return Column(
                               children: [
@@ -57,8 +58,13 @@ class FloorTabScreen extends StatelessWidget {
                                     mainAxisSize: MainAxisSize.min,
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
-                                      Text('Add Floor', style: AppTheme.subTextBold,),
-                                      Image.asset('assets/general/green_add.png', width: 5.w),
+                                      Text(
+                                        'Add Floor',
+                                        style: AppTheme.subTextBold,
+                                      ),
+                                      Image.asset(
+                                          'assets/general/green_add.png',
+                                          width: 5.w),
                                     ],
                                   ),
                                   onTap: () {
@@ -72,18 +78,20 @@ class FloorTabScreen extends StatelessWidget {
                                         padding: EdgeInsets.only(top: 2.h),
                                         physics: NeverScrollableScrollPhysics(),
                                         shrinkWrap: true,
-                                        itemCount: propertyDetailsOptionsController
-                                            .floorDataList
-                                            .length,
+                                        itemCount:
+                                            propertyDetailsOptionsController
+                                                .floorDataList.length,
                                         itemBuilder: (context, index) {
-                                          var floorData = propertyDetailsOptionsController
-                                              .floorDataList[index];
+                                          var floorData =
+                                              propertyDetailsOptionsController
+                                                  .floorDataList[index];
                                           return Padding(
-                                            padding: EdgeInsets.only(
-                                                bottom: 1.h),
+                                            padding:
+                                                EdgeInsets.only(bottom: 1.h),
                                             child: Row(
-                                              mainAxisAlignment: MainAxisAlignment
-                                                  .spaceBetween,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
                                                 SizedBox(
@@ -98,17 +106,16 @@ class FloorTabScreen extends StatelessWidget {
                                                   child: Image.asset(
                                                       'assets/general/edit.png'),
                                                   onTap: () {
-                                                   propertyDetailsOptionsController
+                                                    propertyDetailsOptionsController
                                                         .removeFloorWidget(
-                                                        index);
-                                                    if(propertyDetailsOptionsController.floorDataList.isEmpty){
+                                                            index);
+                                                    if (propertyDetailsOptionsController
+                                                        .floorDataList
+                                                        .isEmpty) {
                                                       Get.back();
-                                                    } else {
-
-                                                    }
+                                                    } else {}
                                                   },
                                                 ),
-
                                               ],
                                             ),
                                           );
@@ -116,17 +123,17 @@ class FloorTabScreen extends StatelessWidget {
                                   ),
                                 ),
                                 propertyDetailsOptionsController
-                                    .floorDataList
-                                    .isEmpty
+                                        .floorDataList.isEmpty
                                     ? Container()
                                     : Padding(
-                                  padding: EdgeInsets.only(top: 1.h),
-                                  child: AppButton(title: 'Submit',
-                                      color: AppTheme.primaryColor,
-                                      function: () {
-                                        Get.back();
-                                      }),
-                                ),
+                                        padding: EdgeInsets.only(top: 1.h),
+                                        child: AppButton(
+                                            title: 'Submit',
+                                            color: AppTheme.primaryColor,
+                                            function: () {
+                                              Get.back();
+                                            }),
+                                      ),
                               ],
                             );
                           }),
@@ -139,16 +146,13 @@ class FloorTabScreen extends StatelessWidget {
                 ),
               ),
             ),
-
-
             ListView.builder(
                 physics: NeverScrollableScrollPhysics(),
-                itemCount: propertyDetailsOptionsController.floorList
-                    .length,
+                itemCount: propertyDetailsOptionsController.floorList.length,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
-                  var floorModel = propertyDetailsOptionsController
-                      .floorList[index];
+                  var floorModel =
+                      propertyDetailsOptionsController.floorList[index];
                   return Text(floorModel.floorName + '$index');
                 }),
           ],

@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:smart_rent/models/payment/tenant_payment_model.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 import 'package:smart_rent/utils/extra.dart';
 
-
 class PaymentCardWidget extends StatelessWidget {
   final TenantPaymentModel tenantPaymentModel;
-  const PaymentCardWidget({super.key, required this.tenantPaymentModel});
 
+  const PaymentCardWidget({super.key, required this.tenantPaymentModel});
 
   @override
   Widget build(BuildContext context) {
-
     // final Rx<String> cardFitUnit = Rx<String>('');
     // final Rx<int> cardFitValue = Rx<int>(0);
     //
@@ -70,20 +67,25 @@ class PaymentCardWidget extends StatelessWidget {
     return Card(
       child: ListTile(
         title: Text(
-          '${tenantPaymentModel.tenantModel?.name}', style: AppTheme.appTitle3,),
+          '${tenantPaymentModel.tenantModel?.name}',
+          style: AppTheme.appTitle3,
+        ),
         subtitle: Text(
-          'Unit ${tenantPaymentModel.unitModel?.unitNumber.toString()}', style: AppTheme.subText,),
+          'Unit ${tenantPaymentModel.unitModel?.unitNumber.toString()}',
+          style: AppTheme.subText,
+        ),
         trailing: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('${amountFormatter.format(tenantPaymentModel.amount
-                .toString())}/=', style: AppTheme.greenTitle1,),
+            Text(
+              '${amountFormatter.format(tenantPaymentModel.amount.toString())}/=',
+              style: AppTheme.greenTitle1,
+            ),
             // Text('for ${cardFitValue.value} ${cardFitUnit.toString()}')
           ],
         ),
       ),
     );
   }
-  }
-
+}

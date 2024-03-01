@@ -21,10 +21,8 @@ import 'package:smart_rent/data_source/models/property/general.dart';
 import 'package:smart_rent/data_source/models/property/property_category_model.dart';
 import 'package:smart_rent/data_source/models/property/property_response_model.dart';
 import 'package:smart_rent/data_source/models/property/property_types_model.dart';
-import 'package:smart_rent/data_source/models/tenant/tenant_model.dart';
 import 'package:smart_rent/data_source/models/tenant/tenant_type_model.dart';
 import 'package:smart_rent/models/business/business_type_model.dart';
-import 'package:smart_rent/models/general/smart_model.dart';
 import 'package:smart_rent/models/salutation/salutation_model.dart';
 import 'package:smart_rent/pages/floor/bloc/floor_bloc.dart';
 import 'package:smart_rent/pages/home/bloc/home_bloc.dart';
@@ -217,7 +215,6 @@ class _HomeScreenLayoutState extends State<HomeScreenLayout> {
   final propertyTypes = PropertyTypeG.propertyTypes;
   final propertyCategoryTypes = PropertyCategoryTypeG.propertyCategoryTypes;
 
-
   @override
   void initState() {
     // TODO: implement initState
@@ -361,7 +358,6 @@ class _HomeScreenLayoutState extends State<HomeScreenLayout> {
                         }
 
                         showAddTenantBottomSheet(context);
-                  
                       },
                       child: Card(
                         child: Padding(
@@ -405,8 +401,7 @@ class _HomeScreenLayoutState extends State<HomeScreenLayout> {
                               SizedBox(
                                 width: 3.w,
                               ),
-                              Text('Add Property',
-                                  style: AppTheme.subTextBold2)
+                              Text('Add Property', style: AppTheme.subTextBold2)
                             ],
                           ),
                         ),
@@ -431,170 +426,220 @@ class _HomeScreenLayoutState extends State<HomeScreenLayout> {
                             builder: (BuildContext c) {
                               return MultiBlocProvider(
                                 providers: [
-                                  BlocProvider<PropertyBloc>(create: (context) => PropertyBloc(),),
-                                  BlocProvider<FloorBloc>(create: (context) => FloorBloc(),),
-
+                                  BlocProvider<PropertyBloc>(
+                                    create: (context) => PropertyBloc(),
+                                  ),
+                                  BlocProvider<FloorBloc>(
+                                    create: (context) => FloorBloc(),
+                                  ),
                                 ],
                                 child: Dialog(
                                   shape: RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.circular(15.sp)),
-                                                                  child: Container(
-                                // height: 50.h,
-                                decoration: BoxDecoration(
-                                  // color: Colors.red,
-                                  borderRadius:
-                                      BorderRadius.circular(15.sp),
-                                ),
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 3.w, vertical: 2.h),
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.center,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      SizedBox(
-                                        height: 1.h,
-                                      ),
-                                      Text(
-                                        'Attach Floor To Property',
-                                        style: AppTheme.appTitle3,
-                                      ),
-                                      SizedBox(
-                                        height: 3.h,
-                                      ),
-                                      SizedBox(
-                                        width: 90.w,
-                                        child: BlocBuilder<PropertyBloc,
-                                            PropertyState>(
-                                          // bloc: PropertyBloc(),
-                                          builder: (context, state) {
-                                            if (state.status ==
-                                                PropertyStatus.initial) {
-                                              context
-                                                  .read<PropertyBloc>()
-                                                  .add(
-                                                      LoadPropertiesEvent());
-                                            }
-                                            if (state.status ==
-                                                PropertyStatus.empty) {
-                                              return Center(child: Text('No Tenants'),);
-                                            }  if (state.status ==
-                                                PropertyStatus.error) {
-                                              return Center(child: Text('An Error Occurred'),);
-                                            }
-                                            return SearchablePropertyModelListDropDown<
-                                                Property>(
-                                              hintText: 'Property',
-                                              menuItems: state.properties == null ? [] : state.properties! ,
-                                              controller:
-                                              _propertyModelCont,
-                                              onChanged: (value) {
-                                                setState(() {
-                                                  selectedPropertyId = value.value.id;
-                                                });
-                                                print('Property is $selectedPropertyId}');
+                                      borderRadius:
+                                          BorderRadius.circular(15.sp)),
+                                  child: Container(
+                                    // height: 50.h,
+                                    decoration: BoxDecoration(
+                                      // color: Colors.red,
+                                      borderRadius:
+                                          BorderRadius.circular(15.sp),
+                                    ),
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 3.w, vertical: 2.h),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          SizedBox(
+                                            height: 1.h,
+                                          ),
+                                          Text(
+                                            'Attach Floor To Property',
+                                            style: AppTheme.appTitle3,
+                                          ),
+                                          SizedBox(
+                                            height: 3.h,
+                                          ),
+                                          SizedBox(
+                                            width: 90.w,
+                                            child: BlocBuilder<PropertyBloc,
+                                                PropertyState>(
+                                              // bloc: PropertyBloc(),
+                                              builder: (context, state) {
+                                                if (state.status ==
+                                                    PropertyStatus.initial) {
+                                                  context
+                                                      .read<PropertyBloc>()
+                                                      .add(
+                                                          LoadPropertiesEvent());
+                                                }
+                                                if (state.status ==
+                                                    PropertyStatus.empty) {
+                                                  return Center(
+                                                    child: Text('No Tenants'),
+                                                  );
+                                                }
+                                                if (state.status ==
+                                                    PropertyStatus.error) {
+                                                  return Center(
+                                                    child: Text(
+                                                        'An Error Occurred'),
+                                                  );
+                                                }
+                                                return SearchablePropertyModelListDropDown<
+                                                    Property>(
+                                                  hintText: 'Property',
+                                                  menuItems:
+                                                      state.properties == null
+                                                          ? []
+                                                          : state.properties!,
+                                                  controller:
+                                                      _propertyModelCont,
+                                                  onChanged: (value) {
+                                                    setState(() {
+                                                      selectedPropertyId =
+                                                          value.value.id;
+                                                    });
+                                                    print(
+                                                        'Property is $selectedPropertyId}');
+                                                  },
+                                                );
                                               },
-                                            );
-
-
-
-                                          },
-                                        ),
+                                            ),
+                                          ),
+                                          AuthTextField(
+                                            controller: floorController,
+                                            hintText: 'Floor Name.',
+                                            obscureText: false,
+                                            onChanged: (value) {
+                                              floorName =
+                                                  floorController.text.trim();
+                                              print(floorName.toString());
+                                            },
+                                          ),
+                                          SizedBox(
+                                            height: 1.h,
+                                          ),
+                                          DescriptionTextField(
+                                            controller:
+                                                propertyDescriptionController,
+                                            hintText: 'Description',
+                                            obscureText: false,
+                                            onChanged: (value) {
+                                              print(
+                                                  '${propertyDescriptionController.text.trim().toString()}');
+                                            },
+                                          ),
+                                          SizedBox(
+                                            height: 1.h,
+                                          ),
+                                          SizedBox(
+                                            width: 50.w,
+                                            child: BlocListener<FloorBloc,
+                                                FloorState>(
+                                              listener: (context, state) {
+                                                print(context
+                                                    .read<FloorBloc>()
+                                                    .state
+                                                    .status);
+                                                if (state.status ==
+                                                    FloorStatus.successAdd) {
+                                                  Fluttertoast.showToast(
+                                                      msg:
+                                                          'Floor Added Successfully',
+                                                      backgroundColor:
+                                                          Colors.green,
+                                                      gravity:
+                                                          ToastGravity.TOP);
+                                                  Navigator.pop(context);
+                                                }
+                                                if (state.status ==
+                                                    FloorStatus
+                                                        .accessDeniedAdd) {
+                                                  Fluttertoast.showToast(
+                                                      msg: state.message
+                                                          .toString(),
+                                                      gravity:
+                                                          ToastGravity.TOP);
+                                                }
+                                                if (state.status ==
+                                                    FloorStatus.errorAdd) {
+                                                  Fluttertoast.showToast(
+                                                      msg: state.message
+                                                          .toString(),
+                                                      gravity:
+                                                          ToastGravity.TOP);
+                                                }
+                                              },
+                                              child: BlocBuilder<FloorBloc,
+                                                  FloorState>(
+                                                builder: (context, state) {
+                                                  return AppButton(
+                                                    isLoading: context
+                                                        .read<FloorBloc>()
+                                                        .state
+                                                        .isFloorLoading,
+                                                    title: 'Add Floor',
+                                                    color:
+                                                        AppTheme.primaryColor,
+                                                    function: () async {
+                                                      if (selectedPropertyId ==
+                                                          null) {
+                                                        Fluttertoast.showToast(
+                                                            msg:
+                                                                'select property',
+                                                            gravity:
+                                                                ToastGravity
+                                                                    .TOP);
+                                                      } else if (floorController
+                                                          .text.isEmpty) {
+                                                        Fluttertoast.showToast(
+                                                            msg:
+                                                                'floor name required',
+                                                            gravity:
+                                                                ToastGravity
+                                                                    .TOP);
+                                                      } else if (floorController
+                                                              .text.length <=
+                                                          1) {
+                                                        Fluttertoast.showToast(
+                                                            msg:
+                                                                'floor name too short',
+                                                            gravity:
+                                                                ToastGravity
+                                                                    .TOP);
+                                                      } else {
+                                                        context
+                                                            .read<FloorBloc>()
+                                                            .add(AddFloorEvent(
+                                                              userStorage
+                                                                  .read(
+                                                                      'accessToken')
+                                                                  .toString(),
+                                                              selectedPropertyId!,
+                                                              floorController
+                                                                  .text
+                                                                  .trim()
+                                                                  .toString(),
+                                                              descriptionController
+                                                                  .text
+                                                                  .trim()
+                                                                  .toString(),
+                                                            ));
+                                                      }
+                                                    },
+                                                  );
+                                                },
+                                              ),
+                                            ),
+                                          )
+                                        ],
                                       ),
-                                      AuthTextField(
-                                        controller: floorController,
-                                        hintText: 'Floor Name.',
-                                        obscureText: false,
-                                        onChanged: (value) {
-                                          floorName =
-                                              floorController.text.trim();
-                                          print(floorName.toString());
-                                        },
-                                      ),
-
-                                      SizedBox(
-                                        height: 1.h,
-                                      ),
-                                      DescriptionTextField(
-                                        controller:
-                                            propertyDescriptionController,
-                                        hintText: 'Description',
-                                        obscureText: false,
-                                        onChanged: (value) {
-                                          print(
-                                              '${propertyDescriptionController.text.trim().toString()}');
-                                        },
-                                      ),
-                                      SizedBox(
-                                        height: 1.h,
-                                      ),
-                                      SizedBox(
-                                        width: 50.w,
-                                        child: BlocListener<FloorBloc, FloorState>(
-                                          listener: (context, state) {
-                                            print(context.read<FloorBloc>().state.status);
-                                            if (state.status == FloorStatus.successAdd) {
-                                              Fluttertoast.showToast(msg: 'Floor Added Successfully', backgroundColor: Colors.green, gravity: ToastGravity.TOP);
-                                              Navigator.pop(context);
-                                            }
-                                            if (state.status == FloorStatus.accessDeniedAdd) {
-                                              Fluttertoast.showToast(
-                                                  msg: state.message.toString(),gravity: ToastGravity.TOP);
-                                            }if (state.status == FloorStatus.errorAdd) {
-                                              Fluttertoast.showToast(
-                                                  msg: state.message.toString(),gravity: ToastGravity.TOP);
-                                            }
-                                          },
-                                          child: BlocBuilder<FloorBloc, FloorState>(
-                                          builder: (context, state) {
-                                            return AppButton(
-                                              isLoading: context.read<FloorBloc>().state.isFloorLoading,
-                                          title: 'Add Floor',
-                                          color: AppTheme.primaryColor,
-                                          function: () async {
-
-                                            if (selectedPropertyId == null) {
-                                              Fluttertoast.showToast(
-                                                  msg:
-                                                  'select property',
-                                                  gravity:
-                                                  ToastGravity.TOP);
-                                            } else if (floorController
-                                                .text.isEmpty) {
-                                              Fluttertoast.showToast(
-                                                  msg:
-                                                      'floor name required',
-                                                  gravity:
-                                                      ToastGravity.TOP);
-                                            } else if (floorController
-                                                    .text.length <=
-                                                1) {
-                                              Fluttertoast.showToast(
-                                                  msg:
-                                                      'floor name too short',
-                                                  gravity:
-                                                      ToastGravity.TOP);
-                                            } else {
-                                              context.read<FloorBloc>().add(AddFloorEvent(
-                                                userStorage.read('accessToken').toString(),
-                                                  selectedPropertyId!,
-                                                  floorController.text.trim().toString(),
-                                                  descriptionController.text.trim().toString(),
-                                              ));
-                                            }
-                                          },
-                                        );
-                                  },
-                                ),
-      ),
-                                      )
-                                    ],
+                                    ),
                                   ),
                                 ),
-                                                                  ),
-                                                              ),
                               );
                             });
                       },
@@ -628,42 +673,45 @@ class _HomeScreenLayoutState extends State<HomeScreenLayout> {
             BlocListener<HomeBloc, HomeState>(
               listener: (context, state) {
                 if (state.status == HomeStatus.successLogout) {
-                  Fluttertoast.showToast(msg: 'LoggedOut Successfully', backgroundColor: Colors.green, gravity: ToastGravity.TOP);
-                  Get.offAll(() => InitialScreen());
-                } if (state.status == HomeStatus.error) {
                   Fluttertoast.showToast(
-                      msg: state.message.toString(),gravity: ToastGravity.TOP);
+                      msg: 'LoggedOut Successfully',
+                      backgroundColor: Colors.green,
+                      gravity: ToastGravity.TOP);
+                  Get.offAll(() => InitialScreen());
                 }
-
-                },
-              child: BlocBuilder<HomeBloc, HomeState>(
-              builder: (context, state) {
-                return PopupMenuButton(
-                  icon: Padding(
-                    padding: EdgeInsets.only(right: 5.w),
-                    child: Image.asset(
-                      'assets/home/sidely.png',
-                      color: Colors.white,
-                    ),
-                  ),
-                  onSelected: (value) async {
-                    if (value == 1) {
-                      context.read<HomeBloc>().add(
-                          LogoutUserEvent(userStorage.read('accessToken')));
-                    }
-                  },
-                  itemBuilder: (context) {
-                    return [
-                      PopupMenuItem(
-                        value: 1,
-                        child: Text('LogOut'),
-                      )
-                    ];
-                  },
-                );
+                if (state.status == HomeStatus.error) {
+                  Fluttertoast.showToast(
+                      msg: state.message.toString(), gravity: ToastGravity.TOP);
+                }
               },
+              child: BlocBuilder<HomeBloc, HomeState>(
+                builder: (context, state) {
+                  return PopupMenuButton(
+                    icon: Padding(
+                      padding: EdgeInsets.only(right: 5.w),
+                      child: Image.asset(
+                        'assets/home/sidely.png',
+                        color: Colors.white,
+                      ),
+                    ),
+                    onSelected: (value) async {
+                      if (value == 1) {
+                        context.read<HomeBloc>().add(
+                            LogoutUserEvent(userStorage.read('accessToken')));
+                      }
+                    },
+                    itemBuilder: (context) {
+                      return [
+                        PopupMenuItem(
+                          value: 1,
+                          child: Text('LogOut'),
+                        )
+                      ];
+                    },
+                  );
+                },
+              ),
             ),
-),
           ],
         ),
         body: Padding(
@@ -745,16 +793,13 @@ class _HomeScreenLayoutState extends State<HomeScreenLayout> {
                     BlocBuilder<TenantBloc, TenantState>(
                       builder: (context, state) {
                         if (state.status == TenantStatus.initial) {
-                          context
-                              .read<TenantBloc>()
-                              .add(LoadAllTenantsEvent());
+                          context.read<TenantBloc>().add(LoadAllTenantsEvent());
                         }
 
                         return HomeCardWidget1(
                           color: AppTheme.redCardColor,
-                          total: state.tenants == null
-                              ? 0
-                              : state.tenants!.length,
+                          total:
+                              state.tenants == null ? 0 : state.tenants!.length,
                           title: 'Total Tenants',
                           function: () {
                             Get.to(() => TenantListPage());
@@ -820,108 +865,126 @@ class _HomeScreenLayoutState extends State<HomeScreenLayout> {
         ),
         headerBuilder: (context, setState) {
           return BlocProvider<PropertyBloc>(
-  create: (context) => PropertyBloc(),
-  child: Material(
-            elevation: 1,
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              height: 7.5.h,
-              decoration: BoxDecoration(boxShadow: []),
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Bounceable(
-                        onTap: () {
-                          propertyTitleController.clear();
-                          propertyAddressController.clear();
-                          propertyDescriptionController.clear();
-                          propertyLocationController.clear();
-                          propertySqmController.clear();
-                          propertyPic = File('');
-                          print('Pic = ${propertyPic!.path}');
+            create: (context) => PropertyBloc(),
+            child: Material(
+              elevation: 1,
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                height: 7.5.h,
+                decoration: BoxDecoration(boxShadow: []),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Bounceable(
+                          onTap: () {
+                            propertyTitleController.clear();
+                            propertyAddressController.clear();
+                            propertyDescriptionController.clear();
+                            propertyLocationController.clear();
+                            propertySqmController.clear();
+                            propertyPic = File('');
+                            print('Pic = ${propertyPic!.path}');
 
-                          Get.back();
-                        },
-                        child: Text(
-                          'Cancel',
-                          style: TextStyle(
-                            color: Colors.red,
-                            fontSize: 17.5.sp,
-                          ),
-                        )),
-                    Text(
-                      'Add Property',
-                      style: AppTheme.darkBlueTitle2,
-                    ),
-                    BlocListener<PropertyBloc, PropertyState>(
-                      listener: (context, state) {
-                        if (state.status == PropertyStatus.successAdd) {
-                          Fluttertoast.showToast(msg: 'Property Added Successfully', backgroundColor: Colors.green, gravity: ToastGravity.TOP);
-                          Navigator.pop(context);
-                        }
-                        if (state.status == PropertyStatus.accessDeniedAdd) {
-                          Fluttertoast.showToast(
-                              msg: state.message.toString(),gravity: ToastGravity.TOP);
-                        }if (state.status == PropertyStatus.errorAdd) {
-                          Fluttertoast.showToast(
-                              msg: state.message.toString(),gravity: ToastGravity.TOP);
-                        }
-                        },
-                      child: BlocBuilder<PropertyBloc, PropertyState>(
-                      builder: (context, state) {
-                        if (state.status == PropertyStatus.loadingDetails) {
-                          return CircularProgressIndicator();
-                        }
-                      return Bounceable(
-                        onTap: () async {
-                          if (propertyTitleController.text.isEmpty ||
-                              propertyLocationController.text.isEmpty ||
-                              propertySqmController.text.isEmpty
-                              // propertyPic == null
-                          ) {
+                            Get.back();
+                          },
+                          child: Text(
+                            'Cancel',
+                            style: TextStyle(
+                              color: Colors.red,
+                              fontSize: 17.5.sp,
+                            ),
+                          )),
+                      Text(
+                        'Add Property',
+                        style: AppTheme.darkBlueTitle2,
+                      ),
+                      BlocListener<PropertyBloc, PropertyState>(
+                        listener: (context, state) {
+                          if (state.status == PropertyStatus.successAdd) {
                             Fluttertoast.showToast(
-                                msg: 'fill in all fields',
+                                msg: 'Property Added Successfully',
+                                backgroundColor: Colors.green,
                                 gravity: ToastGravity.TOP);
-                          } else {
-
-                            context.read<PropertyBloc>().add(AddPropertyEvent(
-                              userStorage.read('accessToken').toString(),
-                                propertyTitleController.text.trim().toString(),
-                                propertyLocationController.text.trim().toString(),
-                                propertySqmController.text.trim().toString(),
-                                descriptionController.text.trim().toString(),
-                                selectedPropertyTypeId!,
-                                selectedPropertyCategoryId!,
-                            ));
-
-                            // propertyTitleController.clear();
-                            // propertyAddressController.clear();
-                            // propertyDescriptionController.clear();
-                            // propertyLocationController.clear();
-                            // propertySqmController.clear();
-                            // propertyPic = File('');
-                            // print('Pic = ${propertyPic!.path}');
+                            Navigator.pop(context);
+                          }
+                          if (state.status == PropertyStatus.accessDeniedAdd) {
+                            Fluttertoast.showToast(
+                                msg: state.message.toString(),
+                                gravity: ToastGravity.TOP);
+                          }
+                          if (state.status == PropertyStatus.errorAdd) {
+                            Fluttertoast.showToast(
+                                msg: state.message.toString(),
+                                gravity: ToastGravity.TOP);
                           }
                         },
-                        child: Text(
-                          'Add',
-                          style: TextStyle(
-                            color: AppTheme.primaryColor,
-                            fontSize: 17.5.sp,
-                          ),
-                        ));
-  },
-),
-),
-                  ],
+                        child: BlocBuilder<PropertyBloc, PropertyState>(
+                          builder: (context, state) {
+                            if (state.status == PropertyStatus.loadingDetails) {
+                              return CircularProgressIndicator();
+                            }
+                            return Bounceable(
+                                onTap: () async {
+                                  if (propertyTitleController.text.isEmpty ||
+                                          propertyLocationController
+                                              .text.isEmpty ||
+                                          propertySqmController.text.isEmpty
+                                      // propertyPic == null
+                                      ) {
+                                    Fluttertoast.showToast(
+                                        msg: 'fill in all fields',
+                                        gravity: ToastGravity.TOP);
+                                  } else {
+                                    context
+                                        .read<PropertyBloc>()
+                                        .add(AddPropertyEvent(
+                                          userStorage
+                                              .read('accessToken')
+                                              .toString(),
+                                          propertyTitleController.text
+                                              .trim()
+                                              .toString(),
+                                          propertyLocationController.text
+                                              .trim()
+                                              .toString(),
+                                          propertySqmController.text
+                                              .trim()
+                                              .toString(),
+                                          descriptionController.text
+                                              .trim()
+                                              .toString(),
+                                          selectedPropertyTypeId!,
+                                          selectedPropertyCategoryId!,
+                                        ));
+
+                                    // propertyTitleController.clear();
+                                    // propertyAddressController.clear();
+                                    // propertyDescriptionController.clear();
+                                    // propertyLocationController.clear();
+                                    // propertySqmController.clear();
+                                    // propertyPic = File('');
+                                    // print('Pic = ${propertyPic!.path}');
+                                  }
+                                },
+                                child: Text(
+                                  'Add',
+                                  style: TextStyle(
+                                    color: AppTheme.primaryColor,
+                                    fontSize: 17.5.sp,
+                                  ),
+                                ));
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-);
+          );
         },
         builder: (context, state) {
           return StatefulBuilder(
@@ -939,16 +1002,20 @@ class _HomeScreenLayoutState extends State<HomeScreenLayout> {
               },
               child: MultiBlocProvider(
                 providers: [
-                  BlocProvider<PropertyCategoryBloc>(create: (_) => PropertyCategoryBloc()..add(LoadAllPropertyCategoriesEvent())),
-                  BlocProvider<PropertyTypeBloc>(create: (_) => PropertyTypeBloc()..add(LoadAllPropertyTypesEvent())),
+                  BlocProvider<PropertyCategoryBloc>(
+                      create: (_) => PropertyCategoryBloc()
+                        ..add(LoadAllPropertyCategoriesEvent())),
+                  BlocProvider<PropertyTypeBloc>(
+                      create: (_) =>
+                          PropertyTypeBloc()..add(LoadAllPropertyTypesEvent())),
                 ],
                 child: Material(
                   color: AppTheme.whiteColor,
                   child: Column(
                     children: [
                       Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 5.w, vertical: 1.h),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 5.w, vertical: 1.h),
                         child: SingleChildScrollView(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -962,43 +1029,54 @@ class _HomeScreenLayoutState extends State<HomeScreenLayout> {
                                 height: 1.h,
                               ),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   SizedBox(
                                     width: 42.5.w,
-                                    child: BlocBuilder<PropertyTypeBloc, PropertyTypeState>(
+                                    child: BlocBuilder<PropertyTypeBloc,
+                                        PropertyTypeState>(
                                       builder: (context, state) {
-                                        return CustomApiGenericDropdown<PropertyTypeModel>(
-                                      hintText: 'Type',
-                                      menuItems: state.propertyTypes == null ? [] : state.propertyTypes!,
-                                      onChanged: (value) {
-                                        setState((){
-                                          selectedPropertyTypeId = value!.id!;
-                                        });
-                                        print(value!.id);
+                                        return CustomApiGenericDropdown<
+                                            PropertyTypeModel>(
+                                          hintText: 'Type',
+                                          menuItems: state.propertyTypes == null
+                                              ? []
+                                              : state.propertyTypes!,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              selectedPropertyTypeId =
+                                                  value!.id!;
+                                            });
+                                            print(value!.id);
+                                          },
+                                        );
                                       },
-                                    );
-                  },
-                ),
+                                    ),
                                   ),
                                   SizedBox(
                                     width: 42.5.w,
-                                    child: BlocBuilder<PropertyCategoryBloc, PropertyCategoryState>(
+                                    child: BlocBuilder<PropertyCategoryBloc,
+                                        PropertyCategoryState>(
                                       builder: (context, state) {
                                         return CustomApiGenericDropdown<
                                             PropertyCategoryModel>(
-                                      hintText: 'Category',
-                                      menuItems: state.propertyCategories == null ? [] : state.propertyCategories!,
-                                      onChanged: (value) {
-                                        print(value!.id);
-                                        setState((){
-                                          selectedPropertyCategoryId = value.id!;
-                                        });
+                                          hintText: 'Category',
+                                          menuItems:
+                                              state.propertyCategories == null
+                                                  ? []
+                                                  : state.propertyCategories!,
+                                          onChanged: (value) {
+                                            print(value!.id);
+                                            setState(() {
+                                              selectedPropertyCategoryId =
+                                                  value.id!;
+                                            });
+                                          },
+                                        );
                                       },
-                                    );
-                  },
-                ),
+                                    ),
                                   ),
                                 ],
                               ),
@@ -1006,7 +1084,8 @@ class _HomeScreenLayoutState extends State<HomeScreenLayout> {
                                 height: 1.h,
                               ),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   SizedBox(
                                     width: 42.5.w,
@@ -1060,7 +1139,8 @@ class _HomeScreenLayoutState extends State<HomeScreenLayout> {
                                             .file.first!.path
                                             .split('.')
                                             .last;
-                                        propertyFileName = value.file.first!.path
+                                        propertyFileName = value
+                                            .file.first!.path
                                             .split('/')
                                             .last;
                                       });
@@ -1071,7 +1151,8 @@ class _HomeScreenLayoutState extends State<HomeScreenLayout> {
                                       print('MY bytes == $propertyBytes');
                                       print(
                                           'MY extension == $propertyImageExtension');
-                                      print('MY FILE NAME == $propertyFileName');
+                                      print(
+                                          'MY FILE NAME == $propertyFileName');
                                     },
                                   );
                                 },
@@ -1080,10 +1161,11 @@ class _HomeScreenLayoutState extends State<HomeScreenLayout> {
                                   height: 30.h,
                                   decoration: BoxDecoration(
                                       color: AppTheme.appWidgetColor,
-                                      borderRadius: BorderRadius.circular(15.sp),
+                                      borderRadius:
+                                          BorderRadius.circular(15.sp),
                                       image: DecorationImage(
-                                          image:
-                                              FileImage(propertyPic ?? File('')),
+                                          image: FileImage(
+                                              propertyPic ?? File('')),
                                           fit: BoxFit.cover)),
                                   child: propertyPic == null ||
                                           propertyPic!.path.isEmpty
@@ -1126,117 +1208,67 @@ class _HomeScreenLayoutState extends State<HomeScreenLayout> {
         ),
         headerBuilder: (context, state) {
           return Material(
-          elevation: 1,
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            height: 7.5.h,
-            decoration: BoxDecoration(boxShadow: []),
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Bounceable(
-                      onTap: () {
-                        firstNameController.clear();
-                        surnameNameController.clear();
-                        otherNameController.clear();
-                        phoneNoController.clear();
-                        companyNameController.clear();
-                        companyDescriptionController.clear();
-                        individualFirstNameController.clear();
-                        individualLastNameController.clear();
-                        individualEmailNameController.clear();
-                        individualPhoneNameController.clear();
-                        individualDateOfBirthController.clear();
-                        individualNinController.clear();
-                        individualDescriptionController.clear();
-                        individualGenderController.clear();
-                        contactFirstNameController.clear();
-                        contactLastNameController.clear();
-                        contactNinController.clear();
-                        contactDesignationController.clear();
-                        contactPhoneController.clear();
-                        contactEmailController.clear();
-                        tenantPic = File('');
-                        companyTenantPic = File('');
-                        Get.back();
-                      },
-                      child: Text(
-                        'Cancel',
-                        style: TextStyle(
-                          color: Colors.red,
-                          fontSize: 17.5.sp,
-                        ),
-                      )),
-                  Text(
-                    'Add Tenant',
-                    style: AppTheme.darkBlueTitle2,
-                  ),
-                  Bounceable(
-                      onTap: () async {
-                        var t = 0;
-                        if (t == 10) {
-                          Fluttertoast.showToast(
-                              msg: 'Select Tenant Type',
-                              gravity: ToastGravity.TOP);
-                        } else {
-                          if (t == 1) {
-                            if (_formKey.currentState!.validate() &&
-                                _individualFormKey.currentState!.validate()) {
-                              // Get.snackbar(
-                              //     'Posting Individual', 'Adding Individual Tenant');
-                              if (tenantPic == null) {
-                                Fluttertoast.showToast(
-                                    msg: 'Tenant pic required',
-                                    gravity: ToastGravity.TOP);
-                              } else {
-                                firstNameController.clear();
-                                surnameNameController.clear();
-                                otherNameController.clear();
-                                phoneNoController.clear();
-                                companyNameController.clear();
-                                companyDescriptionController.clear();
-                                individualFirstNameController.clear();
-                                individualLastNameController.clear();
-                                individualEmailNameController.clear();
-                                individualPhoneNameController.clear();
-                                individualDateOfBirthController.clear();
-                                individualNinController.clear();
-                                individualDescriptionController.clear();
-                                individualGenderController.clear();
-                                contactFirstNameController.clear();
-                                contactLastNameController.clear();
-                                contactNinController.clear();
-                                contactDesignationController.clear();
-                                contactPhoneController.clear();
-                                contactEmailController.clear();
-                                tenantPic = File('');
-                                companyTenantPic = File('');
-                                Get.back();
-                              }
-
-                              // tenantController.addIndividualTenant(
-                              //   "${firstNameController.text
-                              //       .trim()} ${surnameNameController.text.trim()}",
-                              //   12,
-                              //   tenantController.tenantTypeId.value,
-                              //   "userStorage.read('userProfileId')",
-                              //   tenantController.nationalityId.value,
-                              // );
-                            } else {
-                              Fluttertoast.showToast(
-                                  msg: 'Fill required fields',
-                                  gravity: ToastGravity.TOP);
-                            }
+            elevation: 1,
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: 7.5.h,
+              decoration: BoxDecoration(boxShadow: []),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Bounceable(
+                        onTap: () {
+                          firstNameController.clear();
+                          surnameNameController.clear();
+                          otherNameController.clear();
+                          phoneNoController.clear();
+                          companyNameController.clear();
+                          companyDescriptionController.clear();
+                          individualFirstNameController.clear();
+                          individualLastNameController.clear();
+                          individualEmailNameController.clear();
+                          individualPhoneNameController.clear();
+                          individualDateOfBirthController.clear();
+                          individualNinController.clear();
+                          individualDescriptionController.clear();
+                          individualGenderController.clear();
+                          contactFirstNameController.clear();
+                          contactLastNameController.clear();
+                          contactNinController.clear();
+                          contactDesignationController.clear();
+                          contactPhoneController.clear();
+                          contactEmailController.clear();
+                          tenantPic = File('');
+                          companyTenantPic = File('');
+                          Get.back();
+                        },
+                        child: Text(
+                          'Cancel',
+                          style: TextStyle(
+                            color: Colors.red,
+                            fontSize: 17.5.sp,
+                          ),
+                        )),
+                    Text(
+                      'Add Tenant',
+                      style: AppTheme.darkBlueTitle2,
+                    ),
+                    Bounceable(
+                        onTap: () async {
+                          var t = 0;
+                          if (t == 10) {
+                            Fluttertoast.showToast(
+                                msg: 'Select Tenant Type',
+                                gravity: ToastGravity.TOP);
                           } else {
-                            var t = 0;
                             if (t == 1) {
                               if (_formKey.currentState!.validate() &&
-                                  _companyFormKey.currentState!.validate()) {
+                                  _individualFormKey.currentState!.validate()) {
                                 // Get.snackbar(
-                                //     'Posting Company', 'No Company Contact');
+                                //     'Posting Individual', 'Adding Individual Tenant');
                                 if (tenantPic == null) {
                                   Fluttertoast.showToast(
                                       msg: 'Tenant pic required',
@@ -1266,67 +1298,117 @@ class _HomeScreenLayoutState extends State<HomeScreenLayout> {
                                   companyTenantPic = File('');
                                   Get.back();
                                 }
+
+                                // tenantController.addIndividualTenant(
+                                //   "${firstNameController.text
+                                //       .trim()} ${surnameNameController.text.trim()}",
+                                //   12,
+                                //   tenantController.tenantTypeId.value,
+                                //   "userStorage.read('userProfileId')",
+                                //   tenantController.nationalityId.value,
+                                // );
                               } else {
                                 Fluttertoast.showToast(
-                                    msg: 'Fill in fields',
+                                    msg: 'Fill required fields',
                                     gravity: ToastGravity.TOP);
                               }
                             } else {
-                              if (_formKey.currentState!.validate() &&
-                                  _companyFormKey.currentState!.validate() &&
-                                  _contactFormKey.currentState!.validate()) {
-                                // Get.snackbar(
-                                //     'Posting Company', 'With Company Contact');
-                                if (companyTenantPic == null) {
-                                  Fluttertoast.showToast(
-                                      msg: 'Company tenant pic required',
-                                      gravity: ToastGravity.TOP);
+                              var t = 0;
+                              if (t == 1) {
+                                if (_formKey.currentState!.validate() &&
+                                    _companyFormKey.currentState!.validate()) {
+                                  // Get.snackbar(
+                                  //     'Posting Company', 'No Company Contact');
+                                  if (tenantPic == null) {
+                                    Fluttertoast.showToast(
+                                        msg: 'Tenant pic required',
+                                        gravity: ToastGravity.TOP);
+                                  } else {
+                                    firstNameController.clear();
+                                    surnameNameController.clear();
+                                    otherNameController.clear();
+                                    phoneNoController.clear();
+                                    companyNameController.clear();
+                                    companyDescriptionController.clear();
+                                    individualFirstNameController.clear();
+                                    individualLastNameController.clear();
+                                    individualEmailNameController.clear();
+                                    individualPhoneNameController.clear();
+                                    individualDateOfBirthController.clear();
+                                    individualNinController.clear();
+                                    individualDescriptionController.clear();
+                                    individualGenderController.clear();
+                                    contactFirstNameController.clear();
+                                    contactLastNameController.clear();
+                                    contactNinController.clear();
+                                    contactDesignationController.clear();
+                                    contactPhoneController.clear();
+                                    contactEmailController.clear();
+                                    tenantPic = File('');
+                                    companyTenantPic = File('');
+                                    Get.back();
+                                  }
                                 } else {
-                                  firstNameController.clear();
-                                  surnameNameController.clear();
-                                  otherNameController.clear();
-                                  phoneNoController.clear();
-                                  companyNameController.clear();
-                                  companyDescriptionController.clear();
-                                  individualFirstNameController.clear();
-                                  individualLastNameController.clear();
-                                  individualEmailNameController.clear();
-                                  individualPhoneNameController.clear();
-                                  individualDateOfBirthController.clear();
-                                  individualNinController.clear();
-                                  individualDescriptionController.clear();
-                                  individualGenderController.clear();
-                                  contactFirstNameController.clear();
-                                  contactLastNameController.clear();
-                                  contactNinController.clear();
-                                  contactDesignationController.clear();
-                                  contactPhoneController.clear();
-                                  contactEmailController.clear();
-                                  tenantPic = File('');
-                                  companyTenantPic = File('');
-                                  Get.back();
+                                  Fluttertoast.showToast(
+                                      msg: 'Fill in fields',
+                                      gravity: ToastGravity.TOP);
                                 }
                               } else {
-                                Fluttertoast.showToast(
-                                    msg: 'Fill in fields',
-                                    gravity: ToastGravity.TOP);
+                                if (_formKey.currentState!.validate() &&
+                                    _companyFormKey.currentState!.validate() &&
+                                    _contactFormKey.currentState!.validate()) {
+                                  // Get.snackbar(
+                                  //     'Posting Company', 'With Company Contact');
+                                  if (companyTenantPic == null) {
+                                    Fluttertoast.showToast(
+                                        msg: 'Company tenant pic required',
+                                        gravity: ToastGravity.TOP);
+                                  } else {
+                                    firstNameController.clear();
+                                    surnameNameController.clear();
+                                    otherNameController.clear();
+                                    phoneNoController.clear();
+                                    companyNameController.clear();
+                                    companyDescriptionController.clear();
+                                    individualFirstNameController.clear();
+                                    individualLastNameController.clear();
+                                    individualEmailNameController.clear();
+                                    individualPhoneNameController.clear();
+                                    individualDateOfBirthController.clear();
+                                    individualNinController.clear();
+                                    individualDescriptionController.clear();
+                                    individualGenderController.clear();
+                                    contactFirstNameController.clear();
+                                    contactLastNameController.clear();
+                                    contactNinController.clear();
+                                    contactDesignationController.clear();
+                                    contactPhoneController.clear();
+                                    contactEmailController.clear();
+                                    tenantPic = File('');
+                                    companyTenantPic = File('');
+                                    Get.back();
+                                  }
+                                } else {
+                                  Fluttertoast.showToast(
+                                      msg: 'Fill in fields',
+                                      gravity: ToastGravity.TOP);
+                                }
                               }
                             }
                           }
-                        }
-                      },
-                      child: Text(
-                        'Add',
-                        style: TextStyle(
-                          color: AppTheme.primaryColor,
-                          fontSize: 17.5.sp,
-                        ),
-                      )),
-                ],
+                        },
+                        child: Text(
+                          'Add',
+                          style: TextStyle(
+                            color: AppTheme.primaryColor,
+                            fontSize: 17.5.sp,
+                          ),
+                        )),
+                  ],
+                ),
               ),
             ),
-          ),
-                    );
+          );
         },
         builder: (context, state) {
           return StatefulBuilder(
@@ -1360,16 +1442,20 @@ class _HomeScreenLayoutState extends State<HomeScreenLayout> {
               },
               child: MultiBlocProvider(
                 providers: [
-              BlocProvider<TenantBloc>(create: (context) => TenantBloc(),),
-              BlocProvider<NationBloc>(create: (context) => NationBloc(),),
+                  BlocProvider<TenantBloc>(
+                    create: (context) => TenantBloc(),
+                  ),
+                  BlocProvider<NationBloc>(
+                    create: (context) => NationBloc(),
+                  ),
                 ],
                 child: Material(
                   color: AppTheme.whiteColor,
                   child: Column(
                     children: [
                       Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 5.w, vertical: 1.h),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 5.w, vertical: 1.h),
                         child: SingleChildScrollView(
                           child: Form(
                             key: _formKey,
@@ -1377,18 +1463,21 @@ class _HomeScreenLayoutState extends State<HomeScreenLayout> {
                               children: [
                                 BlocBuilder<TenantBloc, TenantState>(
                                   builder: (context, state) {
-                                    if(state.status == TenantStatus.initial){
-                                      context.read<TenantBloc>().add(LoadTenantTypes());
+                                    if (state.status == TenantStatus.initial) {
+                                      context
+                                          .read<TenantBloc>()
+                                          .add(LoadTenantTypes());
                                     }
-                                    return CustomApiGenericDropdown<TenantTypeModel>(
-                                  hintText: 'Select Tenant Type',
-                                  menuItems: state.tenantTypes == null ? [] : state.tenantTypes!,
-                                  onChanged: (value) {
-
+                                    return CustomApiGenericDropdown<
+                                        TenantTypeModel>(
+                                      hintText: 'Select Tenant Type',
+                                      menuItems: state.tenantTypes == null
+                                          ? []
+                                          : state.tenantTypes!,
+                                      onChanged: (value) {},
+                                    );
                                   },
-                                );
-                  },
-                ),
+                                ),
                                 SizedBox(
                                   height: 1.h,
                                 ),
@@ -1405,15 +1494,21 @@ class _HomeScreenLayoutState extends State<HomeScreenLayout> {
 
                                 BlocBuilder<NationBloc, NationState>(
                                   builder: (context, state) {
-                                    if(state.status == NationStatus.initial){
-                                      context.read<NationBloc>().add(LoadNationsEvent());
+                                    if (state.status == NationStatus.initial) {
+                                      context
+                                          .read<NationBloc>()
+                                          .add(LoadNationsEvent());
                                     }
-                                    return CustomApiGenericDropdown<NationModel>(
+                                    return CustomApiGenericDropdown<
+                                        NationModel>(
                                       hintText: 'Country',
-                                      menuItems: state.nations == null ? [] : state.nations!,
+                                      menuItems: state.nations == null
+                                          ? []
+                                          : state.nations!,
                                       onChanged: (value) {},
                                     );
-                                  },),
+                                  },
+                                ),
 
                                 SlideInUp(
                                   child: Container(
@@ -1446,7 +1541,8 @@ class _HomeScreenLayoutState extends State<HomeScreenLayout> {
                                               SizedBox(
                                                 width: 42.5.w,
                                                 child: AuthTextField(
-                                                  controller: firstNameController,
+                                                  controller:
+                                                      firstNameController,
                                                   hintText: 'First Name',
                                                   obscureText: false,
                                                   keyBoardType:
@@ -1618,10 +1714,12 @@ class _HomeScreenLayoutState extends State<HomeScreenLayout> {
                                                       " ----  onError ----=$value");
                                                 },
                                                 onSelected: (value) async {
-                                                  print(" ----  onSelected ----");
+                                                  print(
+                                                      " ----  onSelected ----");
 
                                                   setState(() {
-                                                    tenantPic = value.file.first;
+                                                    tenantPic =
+                                                        value.file.first;
                                                     tenantImagePath =
                                                         value.file.first!.path;
                                                     tenantImageExtension = value
@@ -1651,13 +1749,15 @@ class _HomeScreenLayoutState extends State<HomeScreenLayout> {
                                               width: 50.w,
                                               height: 30.h,
                                               decoration: BoxDecoration(
-                                                  color: AppTheme.appWidgetColor,
+                                                  color:
+                                                      AppTheme.appWidgetColor,
                                                   borderRadius:
                                                       BorderRadius.circular(
                                                           15.sp),
                                                   image: DecorationImage(
                                                       image: FileImage(
-                                                          tenantPic ?? File('')),
+                                                          tenantPic ??
+                                                              File('')),
                                                       fit: BoxFit.cover)),
                                               child: tenantPic == null
                                                   ? Center(
@@ -1722,7 +1822,8 @@ class _HomeScreenLayoutState extends State<HomeScreenLayout> {
                                           ),
                                           SizedBox(height: 1.h),
                                           AuthTextField(
-                                            controller: companyAddressController,
+                                            controller:
+                                                companyAddressController,
                                             hintText: 'Address',
                                             obscureText: false,
                                             keyBoardType:
@@ -1744,11 +1845,13 @@ class _HomeScreenLayoutState extends State<HomeScreenLayout> {
                                             title: true
                                                 ? Text(
                                                     'remove Contact Person',
-                                                    style: AppTheme.subTextBold1,
+                                                    style:
+                                                        AppTheme.subTextBold1,
                                                   )
                                                 : Text(
                                                     'add Contact Person',
-                                                    style: AppTheme.subTextBold1,
+                                                    style:
+                                                        AppTheme.subTextBold1,
                                                   ),
                                           ),
                                         ],
@@ -1785,7 +1888,8 @@ class _HomeScreenLayoutState extends State<HomeScreenLayout> {
                                               .last;
                                         });
                                         companyTenantBytes =
-                                            await companyTenantPic!.readAsBytes();
+                                            await companyTenantPic!
+                                                .readAsBytes();
                                         print(
                                             'MY Company PIC == $companyTenantPic');
                                         print(
@@ -1917,8 +2021,10 @@ class _HomeScreenLayoutState extends State<HomeScreenLayout> {
                                   contactNinController: contactNinController,
                                   contactDesignationController:
                                       contactDesignationController,
-                                  contactPhoneController: contactPhoneController,
-                                  contactEmailController: contactEmailController,
+                                  contactPhoneController:
+                                      contactPhoneController,
+                                  contactEmailController:
+                                      contactEmailController,
                                   designationValidator:
                                       contactDesignationValidator,
                                   emailValidator: contactEmailValidator,

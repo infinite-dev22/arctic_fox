@@ -4,9 +4,11 @@
 
 import 'dart:convert';
 
-UserDetailsModel userDetailsModelFromJson(String str) => UserDetailsModel.fromJson(json.decode(str));
+UserDetailsModel userDetailsModelFromJson(String str) =>
+    UserDetailsModel.fromJson(json.decode(str));
 
-String userDetailsModelToJson(UserDetailsModel data) => json.encode(data.toJson());
+String userDetailsModelToJson(UserDetailsModel data) =>
+    json.encode(data.toJson());
 
 class UserDetailsModel {
   UserDetails? data;
@@ -17,15 +19,17 @@ class UserDetailsModel {
     this.support,
   });
 
-  factory UserDetailsModel.fromJson(Map<String, dynamic> json) => UserDetailsModel(
-    data: json["data"] == null ? null : UserDetails.fromJson(json["data"]),
-    support: json["support"] == null ? null : Support.fromJson(json["support"]),
-  );
+  factory UserDetailsModel.fromJson(Map<String, dynamic> json) =>
+      UserDetailsModel(
+        data: json["data"] == null ? null : UserDetails.fromJson(json["data"]),
+        support:
+            json["support"] == null ? null : Support.fromJson(json["support"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "data": data?.toJson(),
-    "support": support?.toJson(),
-  };
+        "data": data?.toJson(),
+        "support": support?.toJson(),
+      };
 }
 
 class UserDetails {
@@ -44,20 +48,20 @@ class UserDetails {
   });
 
   factory UserDetails.fromJson(Map<String, dynamic> json) => UserDetails(
-    id: json["id"],
-    name: json["name"],
-    year: json["year"],
-    color: json["color"],
-    pantoneValue: json["pantone_value"],
-  );
+        id: json["id"],
+        name: json["name"],
+        year: json["year"],
+        color: json["color"],
+        pantoneValue: json["pantone_value"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-    "year": year,
-    "color": color,
-    "pantone_value": pantoneValue,
-  };
+        "id": id,
+        "name": name,
+        "year": year,
+        "color": color,
+        "pantone_value": pantoneValue,
+      };
 }
 
 class Support {
@@ -70,12 +74,12 @@ class Support {
   });
 
   factory Support.fromJson(Map<String, dynamic> json) => Support(
-    url: json["url"],
-    text: json["text"],
-  );
+        url: json["url"],
+        text: json["text"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "url": url,
-    "text": text,
-  };
+        "url": url,
+        "text": text,
+      };
 }

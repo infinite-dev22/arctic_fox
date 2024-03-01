@@ -4,10 +4,8 @@ abstract class PropertyCategoryEvent extends Equatable {
   const PropertyCategoryEvent();
 }
 
-
 class LoadAllPropertyCategoriesEvent extends PropertyCategoryEvent {
   @override
   // TODO: implement props
   List<Object?> get props => [];
-
 }

@@ -22,8 +22,7 @@ class ComplaintsWidget extends StatelessWidget {
             topLeft: Radius.circular(15.sp),
             topRight: Radius.circular(15.sp),
             bottomLeft: Radius.circular(15.sp),
-            bottomRight: Radius.circular(15.sp)
-        ),
+            bottomRight: Radius.circular(15.sp)),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.1),
@@ -37,14 +36,26 @@ class ComplaintsWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Complaints', style: AppTheme.appTitle1,),
+          Text(
+            'Complaints',
+            style: AppTheme.appTitle1,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Tenant', style: AppTheme.subText,),
-              Text('Complaint', style: AppTheme.subText,),
-              Text('Seveirity', style: AppTheme.subText,),
+              Text(
+                'Tenant',
+                style: AppTheme.subText,
+              ),
+              Text(
+                'Complaint',
+                style: AppTheme.subText,
+              ),
+              Text(
+                'Seveirity',
+                style: AppTheme.subText,
+              ),
             ],
           ),
           Divider(
@@ -64,8 +75,14 @@ class ComplaintsWidget extends StatelessWidget {
                     return Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(complaint.tenant, style: AppTheme.gray70Text,),
-                        Text(complaint.description, style: AppTheme.gray70Text2,),
+                        Text(
+                          complaint.tenant,
+                          style: AppTheme.gray70Text,
+                        ),
+                        Text(
+                          complaint.description,
+                          style: AppTheme.gray70Text2,
+                        ),
                         CircleAvatar(
                           radius: 5,
                           backgroundColor: complaint.sevierity,
@@ -75,14 +92,16 @@ class ComplaintsWidget extends StatelessWidget {
                   }),
             );
           }),
-
           Obx(() {
             return Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                for (int page = 1; page <=
-                    (complaintsController.initialComplaints.length /
-                        complaintsController.complaintsPerPage).ceil(); page++)
+                for (int page = 1;
+                    page <=
+                        (complaintsController.initialComplaints.length /
+                                complaintsController.complaintsPerPage)
+                            .ceil();
+                    page++)
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 2.w),
                     child: Bounceable(
@@ -93,14 +112,21 @@ class ComplaintsWidget extends StatelessWidget {
                         height: 5.h,
                         width: 10.w,
                         decoration: BoxDecoration(
-                          color: AppTheme.fillColor,
-                          borderRadius: BorderRadius.circular(10.sp),
-                          border: Border.all(
-                            color: page == complaintsController.currentPage.value ? AppTheme.greyTextColor1 : Colors.transparent,
-                            width: 2,
-                          )
+                            color: AppTheme.fillColor,
+                            borderRadius: BorderRadius.circular(10.sp),
+                            border: Border.all(
+                              color:
+                                  page == complaintsController.currentPage.value
+                                      ? AppTheme.greyTextColor1
+                                      : Colors.transparent,
+                              width: 2,
+                            )),
+                        child: Center(
+                          child: Text(
+                            page.toString(),
+                            style: AppTheme.subTextInter1,
+                          ),
                         ),
-                        child: Center(child: Text(page.toString(), style: AppTheme.subTextInter1,),),
                       ),
                       // child: CircleAvatar(
                       //   backgroundColor: page ==

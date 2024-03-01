@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/controllers/user/user_controller.dart';
-import 'package:smart_rent/models/general/smart_model.dart';
 import 'package:smart_rent/models/role/user_role_model.dart';
-import 'package:smart_rent/models/user/user_model.dart';
-import 'package:smart_rent/screens/bottom_nav_bar/bottom_nav_bar.dart';
-import 'package:smart_rent/screens/home/homepage_screen.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 import 'package:smart_rent/widgets/app_button.dart';
 import 'package:smart_rent/widgets/app_drop_downs.dart';
@@ -20,25 +15,29 @@ import 'package:smart_rent/widgets/app_textfield.dart';
 class AddPropertyToEmployeeScreen extends StatefulWidget {
   final UserController userController;
 
-  const AddPropertyToEmployeeScreen({super.key, required this.userController,});
+  const AddPropertyToEmployeeScreen({
+    super.key,
+    required this.userController,
+  });
 
   @override
-  State<AddPropertyToEmployeeScreen> createState() => _AddPropertyToEmployeeScreenState();
+  State<AddPropertyToEmployeeScreen> createState() =>
+      _AddPropertyToEmployeeScreenState();
 }
 
-class _AddPropertyToEmployeeScreenState extends State<AddPropertyToEmployeeScreen> {
-
-  final TextEditingController firstNameEditingController = TextEditingController();
-  final TextEditingController lastNameEditingController = TextEditingController();
+class _AddPropertyToEmployeeScreenState
+    extends State<AddPropertyToEmployeeScreen> {
+  final TextEditingController firstNameEditingController =
+      TextEditingController();
+  final TextEditingController lastNameEditingController =
+      TextEditingController();
   final TextEditingController emailEditingController = TextEditingController();
-  final TextEditingController passwordEditingController = TextEditingController();
-  final TextEditingController confirmPasswordEditingController = TextEditingController();
+  final TextEditingController passwordEditingController =
+      TextEditingController();
+  final TextEditingController confirmPasswordEditingController =
+      TextEditingController();
 
-  var userList = [
-    'admin',
-    'manager',
-    'user'
-  ];
+  var userList = ['admin', 'manager', 'user'];
 
   final passwordValidator = MultiValidator([
     RequiredValidator(errorText: 'password is required'),
@@ -51,7 +50,6 @@ class _AddPropertyToEmployeeScreenState extends State<AddPropertyToEmployeeScree
     RequiredValidator(errorText: 'email is required'),
     EmailValidator(errorText: 'input does\'nt match email'),
   ]);
-
 
   final firstNameValidator = MultiValidator([
     RequiredValidator(errorText: 'first name required'),
@@ -76,7 +74,6 @@ class _AddPropertyToEmployeeScreenState extends State<AddPropertyToEmployeeScree
         title: 'assets/auth/srw.png',
         isTitleCentred: true,
       ),
-
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 5.w),
@@ -92,9 +89,14 @@ class _AddPropertyToEmployeeScreenState extends State<AddPropertyToEmployeeScree
                   // Center(child: Text('Congratulations', style: AppTheme.appTitle1,)),
                   // Center(child: Text('on verifying the email belongs to you', style: AppTheme.blueSubText,)),
                   // SizedBox(height: 3.h,),
-                  Text('Add User', style: AppTheme.appTitle2,),
+                  Text(
+                    'Add User',
+                    style: AppTheme.appTitle2,
+                  ),
 
-                  SizedBox(height: 3.h,),
+                  SizedBox(
+                    height: 3.h,
+                  ),
 
                   Obx(() {
                     return CustomApiUserRoleDropdown<UserRoleModel>(
@@ -105,45 +107,45 @@ class _AddPropertyToEmployeeScreenState extends State<AddPropertyToEmployeeScree
                       },
                     );
                   }),
-                  SizedBox(height: 1.h,),
+                  SizedBox(
+                    height: 1.h,
+                  ),
 
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-
                       SizedBox(
                         width: 42.5.w,
                         child: AuthTextField(
                           controller: firstNameEditingController,
                           hintText: 'Firstname',
                           obscureText: false,
-
                         ),
                       ),
-
                       SizedBox(
                         width: 42.5.w,
                         child: AuthTextField(
                           controller: lastNameEditingController,
                           hintText: 'Lastname',
                           obscureText: false,
-
                         ),
                       ),
-
                     ],
                   ),
 
-                  SizedBox(height: 1.h,),
+                  SizedBox(
+                    height: 1.h,
+                  ),
 
                   AuthTextField(
                     isEmail: true,
                     controller: emailEditingController,
                     hintText: 'Email',
                     obscureText: false,
-
                   ),
-                  SizedBox(height: 1.h,),
+                  SizedBox(
+                    height: 1.h,
+                  ),
 
                   AppPasswordTextField(
                     controller: passwordEditingController,
@@ -158,7 +160,9 @@ class _AddPropertyToEmployeeScreenState extends State<AddPropertyToEmployeeScree
                   //   validator: (val) => MatchValidator(errorText: 'passwords do not match').validateMatch(val.toString(), ),
                   // ),
 
-                  SizedBox(height: 3.h,),
+                  SizedBox(
+                    height: 3.h,
+                  ),
 
                   // Text('TYPE OF USER', style: AppTheme.appFieldTitle,),
                   // CustomGenericDropdown<String>(
@@ -169,27 +173,28 @@ class _AddPropertyToEmployeeScreenState extends State<AddPropertyToEmployeeScree
                   //   },
                   // ),
 
-
                   AppButton(
                       title: 'Add User',
                       color: AppTheme.primaryColor,
                       function: () async {
-                        if(firstNameEditingController.text.isEmpty && lastNameEditingController.text.isEmpty &&
-                            emailEditingController.text.isEmpty && passwordEditingController.text.isEmpty
-                        ) {
-                          Fluttertoast.showToast(msg: 'fill in all fields', gravity: ToastGravity.TOP);
-
+                        if (firstNameEditingController.text.isEmpty &&
+                            lastNameEditingController.text.isEmpty &&
+                            emailEditingController.text.isEmpty &&
+                            passwordEditingController.text.isEmpty) {
+                          Fluttertoast.showToast(
+                              msg: 'fill in all fields',
+                              gravity: ToastGravity.TOP);
                         } else {
-
-                          await userController.adminCreateUser(
-                              emailEditingController.text.trim().toString(),
-                              passwordEditingController.text.trim().toString(),
-                              firstNameEditingController.text.trim().toString(),
-                              lastNameEditingController.text.trim().toString(),
-                              userController.addedUserRoleId.value,
+                          await userController
+                              .adminCreateUser(
+                            emailEditingController.text.trim().toString(),
+                            passwordEditingController.text.trim().toString(),
+                            firstNameEditingController.text.trim().toString(),
+                            lastNameEditingController.text.trim().toString(),
+                            userController.addedUserRoleId.value,
                             '',
-
-                          ).then((value) {
+                          )
+                              .then((value) {
                             emailEditingController.clear();
                             passwordEditingController.clear();
                             firstNameEditingController.clear();
@@ -197,11 +202,8 @@ class _AddPropertyToEmployeeScreenState extends State<AddPropertyToEmployeeScree
                             userController.addedUserRoleId.value == 0;
                             Get.back();
                           });
-
                         }
-
                       }),
-
                 ],
               ),
             ),

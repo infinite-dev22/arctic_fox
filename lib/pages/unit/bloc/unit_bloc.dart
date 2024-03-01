@@ -2,8 +2,9 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:smart_rent/data_source/dtos/implemantation/unit_dto_impl.dart';
+import 'package:smart_rent/data_source/models/unit/add_unit_response.dart';
 import 'package:smart_rent/data_source/models/unit/unit_model.dart';
 import 'package:smart_rent/data_source/models/unit/unit_type_model.dart';
 import 'package:smart_rent/data_source/repositories/implemantation/unit_repo_impl.dart';
@@ -16,12 +17,16 @@ class UnitBloc extends Bloc<UnitEvent, UnitState> {
   UnitBloc() : super(UnitState()) {
     on<LoadAllUnitsEvent>(_mapFetchUnitsToState);
     on<LoadUnitTypesEvent>(_mapFetchUnitTypesToState);
+    on<AddUnitEvent>(_mapAddUnitEventToState);
   }
 
-  _mapFetchUnitsToState(LoadAllUnitsEvent event, Emitter<UnitState> emit) async{
+  _mapFetchUnitsToState(
+      LoadAllUnitsEvent event, Emitter<UnitState> emit) async {
     emit(state.copyWith(status: UnitStatus.loading));
-    await UnitRepoImpl().getALlUnits(userStorage.read('accessToken').toString(), event.id).then((units) {
-      if(units.isNotEmpty){
+    await UnitRepoImpl()
+        .getALlUnits(userStorage.read('accessToken').toString(), event.id)
+        .then((units) {
+      if (units.isNotEmpty) {
         emit(state.copyWith(status: UnitStatus.success, units: units));
       } else {
         emit(state.copyWith(status: UnitStatus.empty));
@@ -35,10 +40,13 @@ class UnitBloc extends Bloc<UnitEvent, UnitState> {
     });
   }
 
-  _mapFetchUnitTypesToState(LoadUnitTypesEvent event, Emitter<UnitState> emit) async{
+  _mapFetchUnitTypesToState(
+      LoadUnitTypesEvent event, Emitter<UnitState> emit) async {
     emit(state.copyWith(status: UnitStatus.loadingUT));
-    await UnitRepoImpl().getUnitTypes(userStorage.read('accessToken').toString()).then((types) {
-      if(types.isNotEmpty){
+    await UnitRepoImpl()
+        .getUnitTypes(userStorage.read('accessToken').toString())
+        .then((types) {
+      if (types.isNotEmpty) {
         emit(state.copyWith(status: UnitStatus.successUT, unitTypes: types));
       } else {
         emit(state.copyWith(status: UnitStatus.emptyUT));
@@ -51,7 +59,6 @@ class UnitBloc extends Bloc<UnitEvent, UnitState> {
       }
     });
   }
-
 
   // _mapViewSingleFloorDetailsEventToState(LoadSinglePropertyEvent event, Emitter<PropertyState> emit) async {
   //   emit(state.copyWith(status: PropertyStatus.loadingDetails,));
@@ -66,6 +73,37 @@ class UnitBloc extends Bloc<UnitEvent, UnitState> {
   //   });
   //
   // }
+
+
+  _mapAddUnitEventToState(
+      AddUnitEvent event, Emitter<UnitState> emit) async {
+    emit(state.copyWith(status: UnitStatus.loadingAdd, isLoading: true));
+    await UnitDtoImpl.addUnitToProperty(userStorage.read('accessToken').toString(),
+         event.unitTypeId, event.floorId, event.name, event.sqm,
+        event.periodId, event.currencyId, event.initialAmount, event.description, event.propertyId,
+    )
+        .then((response) {
+      print('success ${response.unitApi}');
+
+      if (response != null) {
+        emit(state.copyWith(
+            status: UnitStatus.successAdd,
+            isLoading: false,
+            addUnitResponse: response));
+
+      } else {
+        emit(state.copyWith(
+          status: UnitStatus.accessDeniedAdd,
+          isLoading: false,
+        ));
+      }
+    }).onError((error, stackTrace) {
+      emit(state.copyWith(
+          status: UnitStatus.errorAdd,
+          isLoading: false,
+          message: error.toString()));
+    });
+  }
 
   @override
   void onEvent(UnitEvent event) {
@@ -91,5 +129,4 @@ class UnitBloc extends Bloc<UnitEvent, UnitState> {
     print(stackTrace);
     super.onError(error, stackTrace);
   }
-
 }

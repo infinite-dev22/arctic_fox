@@ -18,12 +18,12 @@ class ChatModel {
   });
 
   factory ChatModel.fromJson(Map<String, dynamic> json) => ChatModel(
-    id: json["id"],
-    message: json["message"],
-  );
+        id: json["id"],
+        message: json["message"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "message": message,
-  };
+        "id": id,
+        "message": message,
+      };
 }

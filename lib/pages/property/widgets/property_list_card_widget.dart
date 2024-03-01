@@ -5,17 +5,15 @@ import 'package:smart_rent/data_source/models/property/property_response_model.d
 import 'package:smart_rent/styles/app_theme.dart';
 import 'package:smart_rent/utils/extra.dart';
 
-
-
 class PropertyListCardWidget extends StatelessWidget {
   final Property propertyModel;
   final int index;
-  const PropertyListCardWidget({super.key,required this.propertyModel, required this.index});
+
+  const PropertyListCardWidget(
+      {super.key, required this.propertyModel, required this.index});
 
   @override
   Widget build(BuildContext context) {
-
-
     // var availablePercentage= ((propertyModel.propertyUnitModel!.available! / propertyModel.propertyUnitModel!.totalUnits!.toInt()) * 100).ceil();
     // var occupiedPercentage= ((propertyModel.propertyUnitModel!.occupied! / propertyModel.propertyUnitModel!.totalUnits!.toInt()) * 100).ceil();
 
@@ -44,13 +42,12 @@ class PropertyListCardWidget extends StatelessWidget {
           height: 25.h,
           width: 90.w,
           decoration: BoxDecoration(
-            color: AppTheme.appBgColor,
+            color: AppTheme.itemBgColor,
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(15.sp),
                 topRight: Radius.circular(15.sp),
                 bottomLeft: Radius.circular(15.sp),
-                bottomRight: Radius.circular(15.sp)
-            ),
+                bottomRight: Radius.circular(15.sp)),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withOpacity(0.1),
@@ -67,7 +64,8 @@ class PropertyListCardWidget extends StatelessWidget {
               Expanded(
                 flex: 1,
                 child: CachedNetworkImage(
-                  imageUrl: 'https://img.freepik.com/free-photo/modern-country-houses-construction_1385-14.jpg?w=900&t=st=1708264632~exp=1708265232~hmac=cc78e1288b7e9b43dff1d13acace6b0361732bec2181434728fff2f70e44c73d',
+                  imageUrl:
+                      'https://img.freepik.com/free-photo/modern-country-houses-construction_1385-14.jpg?w=900&t=st=1708264632~exp=1708265232~hmac=cc78e1288b7e9b43dff1d13acace6b0361732bec2181434728fff2f70e44c73d',
                   fit: BoxFit.cover,
                   height: 25.h,
                 ),
@@ -76,70 +74,96 @@ class PropertyListCardWidget extends StatelessWidget {
                 //     height: 25.h,
                 //   ),
               ),
-
               Expanded(
                 flex: 2,
                 child: Padding(
-                  padding:  EdgeInsets.only(left: 2.w, top: 1.h),
+                  padding: EdgeInsets.only(left: 2.w, top: 1.h),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(propertyModel.name.toString(), style: AppTheme.appTitle6,),
-                      Text(propertyModel.location.toString(), style: AppTheme.subText,),
-
-                      SizedBox(height: 1.h,),
-
+                      Text(
+                        propertyModel.name.toString(),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: AppTheme.appTitle6,
+                      ),
+                      Text(
+                        propertyModel.location.toString(),
+                        style: AppTheme.subText,
+                      ),
+                      SizedBox(
+                        height: 1.h,
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Row(
                             children: [
                               Image.asset('assets/property/bed.png'),
-                              SizedBox(width: 2.w,),
+                              SizedBox(
+                                width: 2.w,
+                              ),
                               // Text('${propertyModel.propertyUnitModel!.totalUnits.toString()} units', style: AppTheme.descriptionText1,)
-                              Text('0 units', style: AppTheme.descriptionText1,),
+                              Text(
+                                '0 units',
+                                style: AppTheme.descriptionText1,
+                              ),
                             ],
                           ),
                           Row(
                             children: [
                               Text('sqm'),
-                              SizedBox(width: 2.w,),
-                              Text(propertyModel.squareMeters.toString(), style: AppTheme.descriptionText1,)
+                              SizedBox(
+                                width: 2.w,
+                              ),
+                              Text(
+                                propertyModel.squareMeters.toString(),
+                                style: AppTheme.descriptionText1,
+                              )
                             ],
                           ),
                         ],
                       ),
-
-
-
                       Row(
                         children: [
                           Image.asset('assets/property/bed.png'),
-                          SizedBox(width: 2.w,),
+                          SizedBox(
+                            width: 2.w,
+                          ),
                           Row(
                             children: [
-                              Text('Available - 0 units', style: AppTheme.descriptionText1,),
-
+                              Text(
+                                'Available - 0 units',
+                                style: AppTheme.descriptionText1,
+                              ),
                             ],
                           ),
                         ],
                       ),
-
                       Row(
                         children: [
                           Image.asset('assets/property/bed.png'),
-                          SizedBox(width: 2.w,),
-                          Text('Occupied - 0 units', style: AppTheme.descriptionText1,),                        ],
-                      ),
-
-                      Row(
-                        children: [
-                          Text(amountFormatter.format('200000'), style: AppTheme.cardPrice1,),
-                          Text('/ month', style: AppTheme.subText,),
+                          SizedBox(
+                            width: 2.w,
+                          ),
+                          Text(
+                            'Occupied - 0 units',
+                            style: AppTheme.descriptionText1,
+                          ),
                         ],
                       ),
-
-
+                      Row(
+                        children: [
+                          Text(
+                            amountFormatter.format('200000'),
+                            style: AppTheme.cardPrice1,
+                          ),
+                          Text(
+                            '/ month',
+                            style: AppTheme.subText,
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ),

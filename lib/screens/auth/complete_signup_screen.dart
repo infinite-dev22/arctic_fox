@@ -8,14 +8,8 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/controllers/user/user_controller.dart';
-import 'package:smart_rent/models/general/smart_model.dart';
-import 'package:smart_rent/models/user/user_model.dart';
-import 'package:smart_rent/screens/auth/verify_phone_otp.dart';
-import 'package:smart_rent/screens/bottom_nav_bar/bottom_nav_bar.dart';
-import 'package:smart_rent/screens/home/homepage_screen.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 import 'package:smart_rent/widgets/app_button.dart';
-import 'package:smart_rent/widgets/app_drop_downs.dart';
 import 'package:smart_rent/widgets/app_password_textfield.dart';
 import 'package:smart_rent/widgets/app_textfield.dart';
 
@@ -31,7 +25,6 @@ class CompleteSignUpScreen extends StatefulWidget {
 }
 
 class _CompleteSignUpScreenState extends State<CompleteSignUpScreen> {
-
   TextEditingController mobileCont = TextEditingController();
 
   final String _countryCode = "+256";
@@ -44,11 +37,15 @@ class _CompleteSignUpScreenState extends State<CompleteSignUpScreen> {
 
   final RegExp _numberRegex = RegExp(r'\d');
 
-  final TextEditingController firstNameEditingController = TextEditingController();
-  final TextEditingController lastNameEditingController = TextEditingController();
+  final TextEditingController firstNameEditingController =
+      TextEditingController();
+  final TextEditingController lastNameEditingController =
+      TextEditingController();
   final TextEditingController emailEditingController = TextEditingController();
-  final TextEditingController passwordEditingController = TextEditingController();
-  final TextEditingController confirmPasswordEditingController = TextEditingController();
+  final TextEditingController passwordEditingController =
+      TextEditingController();
+  final TextEditingController confirmPasswordEditingController =
+      TextEditingController();
 
   final phoneValidator = MultiValidator([
     RequiredValidator(errorText: 'phone is required'),
@@ -56,11 +53,7 @@ class _CompleteSignUpScreenState extends State<CompleteSignUpScreen> {
     MaxLengthValidator(9, errorText: 'phone number has exceeded'),
   ]);
 
-  var userList = [
-    'admin',
-    'manager',
-    'user'
-  ];
+  var userList = ['admin', 'manager', 'user'];
 
   final passwordValidator = MultiValidator([
     RequiredValidator(errorText: 'password is required'),
@@ -73,7 +66,6 @@ class _CompleteSignUpScreenState extends State<CompleteSignUpScreen> {
     RequiredValidator(errorText: 'email is required'),
     EmailValidator(errorText: 'input does\'nt match email'),
   ]);
-
 
   final firstNameValidator = MultiValidator([
     RequiredValidator(errorText: 'first name required'),
@@ -95,7 +87,7 @@ class _CompleteSignUpScreenState extends State<CompleteSignUpScreen> {
     // TODO: implement initState
     super.initState();
     countryCode =
-    const CountryCode(name: 'Uganda', code: 'UG', dialCode: '+256');
+        const CountryCode(name: 'Uganda', code: 'UG', dialCode: '+256');
   }
 
   @override
@@ -116,8 +108,13 @@ class _CompleteSignUpScreenState extends State<CompleteSignUpScreen> {
                   // SizedBox(height: 2.h,),
                   // Center(child: Text('Congratulations', style: AppTheme.appTitle1,)),
                   // Center(child: Text('on verifying the email belongs to you', style: AppTheme.blueSubText,)),
-                  SizedBox(height: 3.h,),
-                  Text('Complete Sign Up', style: AppTheme.appTitle2,),
+                  SizedBox(
+                    height: 3.h,
+                  ),
+                  Text(
+                    'Complete Sign Up',
+                    style: AppTheme.appTitle2,
+                  ),
                   // Center(child: Text('we need something more', style: AppTheme.blueSubText,)),
 
                   Row(
@@ -132,10 +129,8 @@ class _CompleteSignUpScreenState extends State<CompleteSignUpScreen> {
                           controller: firstNameEditingController,
                           hintText: 'Firstname',
                           obscureText: false,
-
                         ),
                       ),
-
                       SizedBox(
                         width: 42.5.w,
                         child: AuthTextField(
@@ -145,27 +140,25 @@ class _CompleteSignUpScreenState extends State<CompleteSignUpScreen> {
                           controller: lastNameEditingController,
                           hintText: 'Lastname',
                           obscureText: false,
-
                         ),
                       ),
-
                     ],
                   ),
 
-                  SizedBox(height: 1.h,),
+                  SizedBox(
+                    height: 1.h,
+                  ),
 
                   Container(
                     clipBehavior: Clip.antiAlias,
                     width: 90.w,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15.sp)
-                    ),
+                        borderRadius: BorderRadius.circular(15.sp)),
                     child: TextFormField(
                       // maxLength: 9,
                       onChanged: (value) {
-                        print('dialCode==${countryCode
-                            .dialCode} code==${countryCode
-                            .code} phone==${mobileCont.text}');
+                        print(
+                            'dialCode==${countryCode.dialCode} code==${countryCode.code} phone==${mobileCont.text}');
                       },
                       textAlign: TextAlign.left,
                       keyboardType: TextInputType.phone,
@@ -186,8 +179,8 @@ class _CompleteSignUpScreenState extends State<CompleteSignUpScreen> {
                             child: SizedBox(
                               width: 30.w,
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment
-                                    .spaceEvenly,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: [
                                   countryCode.flagImage,
                                   Container(
@@ -212,19 +205,20 @@ class _CompleteSignUpScreenState extends State<CompleteSignUpScreen> {
                     ),
                   ),
 
-
-                  SizedBox(height: 1.h,),
+                  SizedBox(
+                    height: 1.h,
+                  ),
 
                   AuthTextField(
                     isEmail: true,
                     controller: emailEditingController,
                     hintText: 'Email',
                     obscureText: false,
-
                   ),
 
-                  SizedBox(height: 1.h,),
-
+                  SizedBox(
+                    height: 1.h,
+                  ),
 
                   AppPasswordTextField(
                     controller: passwordEditingController,
@@ -233,7 +227,9 @@ class _CompleteSignUpScreenState extends State<CompleteSignUpScreen> {
                     // validator: passwordValidator,
                   ),
 
-                  SizedBox(height: 1.h,),
+                  SizedBox(
+                    height: 1.h,
+                  ),
 
                   AppPasswordTextField(
                     controller: confirmPasswordEditingController,
@@ -241,7 +237,9 @@ class _CompleteSignUpScreenState extends State<CompleteSignUpScreen> {
                     fillColor: AppTheme.appWidgetColor,
                   ),
 
-                  SizedBox(height: 1.h,),
+                  SizedBox(
+                    height: 1.h,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -255,24 +253,30 @@ class _CompleteSignUpScreenState extends State<CompleteSignUpScreen> {
                           padding: 2.0,
                           activeToggleColor: AppTheme.primaryColor,
                           inactiveToggleColor: AppTheme.appWidgetColor,
-
                           activeColor: AppTheme.primaryColor,
                           inactiveColor: AppTheme.appWidgetColor,
                           activeIcon: Icon(Icons.phone, color: Colors.white),
-                          inactiveIcon: Icon(Icons.email,),
+                          inactiveIcon: Icon(
+                            Icons.email,
+                          ),
                           onToggle: (val) {
                             userController.setPhoneAsUsername();
                           },
                         );
                       }),
-
                       Row(
                         children: [
                           Text('use '),
                           Obx(() {
                             return userController.isPhoneSelected.value == true
-                                ? Text('phone', style: AppTheme.blueSubText,)
-                                : Text('email', style: AppTheme.blackSubText,);
+                                ? Text(
+                                    'phone',
+                                    style: AppTheme.blueSubText,
+                                  )
+                                : Text(
+                                    'email',
+                                    style: AppTheme.blackSubText,
+                                  );
                           }),
                           Text(' as Username'),
                         ],
@@ -280,7 +284,9 @@ class _CompleteSignUpScreenState extends State<CompleteSignUpScreen> {
                     ],
                   ),
 
-                  SizedBox(height: 3.h,),
+                  SizedBox(
+                    height: 3.h,
+                  ),
 
                   // Text('TYPE OF USER', style: AppTheme.appFieldTitle,),
                   // CustomGenericDropdown<String>(
@@ -291,70 +297,90 @@ class _CompleteSignUpScreenState extends State<CompleteSignUpScreen> {
                   //   },
                   // ),
 
-
                   Obx(() {
                     return AppButton(
-                      isLoading: userController.isSignUpLoading.value,
+                        isLoading: userController.isSignUpLoading.value,
                         title: 'Submit',
                         color: AppTheme.primaryColor,
                         function: () async {
-                          print('mobile length ==${countryCode
-                              .dialCode} ${mobileCont.text} is ${mobileCont.text
-                              .length}');
-
+                          print(
+                              'mobile length ==${countryCode.dialCode} ${mobileCont.text} is ${mobileCont.text.length}');
 
                           if (firstNameEditingController.text.isEmpty ||
                               lastNameEditingController.text.isEmpty ||
                               emailEditingController.text.isEmpty ||
                               passwordEditingController.text.isEmpty ||
                               confirmPasswordEditingController.text.isEmpty ||
-                              mobileCont.text.isEmpty
-                          ) {
-                            Fluttertoast.showToast(msg: 'fill in all fields', gravity: ToastGravity.TOP);
-                          }  else {
+                              mobileCont.text.isEmpty) {
+                            Fluttertoast.showToast(
+                                msg: 'fill in all fields',
+                                gravity: ToastGravity.TOP);
+                          } else {
                             if (mobileCont.text.length < 9) {
                               Fluttertoast.showToast(
-                                  msg: 'phone number is short', gravity: ToastGravity.TOP);
+                                  msg: 'phone number is short',
+                                  gravity: ToastGravity.TOP);
                             } else if (mobileCont.text.length > 11) {
                               Fluttertoast.showToast(
-                                  msg: 'phone number is long', gravity: ToastGravity.TOP);
-                            } else if (firstNameEditingController.text.length < 3) {
+                                  msg: 'phone number is long',
+                                  gravity: ToastGravity.TOP);
+                            } else if (firstNameEditingController.text.length <
+                                3) {
                               Fluttertoast.showToast(
-                                  msg: 'short first name', gravity: ToastGravity.TOP);
-                            } else if (lastNameEditingController.text.length < 3) {
+                                  msg: 'short first name',
+                                  gravity: ToastGravity.TOP);
+                            } else if (lastNameEditingController.text.length <
+                                3) {
                               Fluttertoast.showToast(
-                                  msg: 'short last name', gravity: ToastGravity.TOP);
-                            } else if (passwordEditingController.text.length < 6) {
-                              Fluttertoast.showToast(msg: 'short password : min is 6', gravity: ToastGravity.TOP);
-                            } else if (passwordEditingController.text.toString() != confirmPasswordEditingController.text.toString()) {
-                              Fluttertoast.showToast(msg: 'mismatching passwords', gravity: ToastGravity.TOP);
-                            } else if (!_numberRegex.hasMatch(passwordEditingController.text.toString())) {
+                                  msg: 'short last name',
+                                  gravity: ToastGravity.TOP);
+                            } else if (passwordEditingController.text.length <
+                                6) {
                               Fluttertoast.showToast(
-                                  msg: 'password must have a number', gravity: ToastGravity.TOP);
-                            }  else if (!_numberRegex.hasMatch(confirmPasswordEditingController.text.toString())) {
+                                  msg: 'short password : min is 6',
+                                  gravity: ToastGravity.TOP);
+                            } else if (passwordEditingController.text
+                                    .toString() !=
+                                confirmPasswordEditingController.text
+                                    .toString()) {
                               Fluttertoast.showToast(
-                                  msg: 'confirm password must have a number', gravity: ToastGravity.TOP);
+                                  msg: 'mismatching passwords',
+                                  gravity: ToastGravity.TOP);
+                            } else if (!_numberRegex.hasMatch(
+                                passwordEditingController.text.toString())) {
+                              Fluttertoast.showToast(
+                                  msg: 'password must have a number',
+                                  gravity: ToastGravity.TOP);
+                            } else if (!_numberRegex.hasMatch(
+                                confirmPasswordEditingController.text
+                                    .toString())) {
+                              Fluttertoast.showToast(
+                                  msg: 'confirm password must have a number',
+                                  gravity: ToastGravity.TOP);
                             } else {
                               print('EVERYTHING IS OKAY');
                               if (userController.isPhoneSelected.value ==
                                   true) {
                                 print('Phone SignUp');
-                                await userController.createUserWithPhone(
-                                    '${countryCode.dialCode}${mobileCont.text
-                                        .trim()}',
-                                    passwordEditingController.text.trim()
-                                        .toString(),
-                                    emailEditingController.text.trim()
-                                        .toString(),
-                                    widget.businessName.toString(),
-                                    widget.description.toString(),
-                                    firstNameEditingController.text.trim()
-                                        .toString(),
-                                    lastNameEditingController.text.trim()
-                                        .toString(),
-                                    userController.isPhoneSelected.value
-
-                                ).then((value) {
+                                await userController
+                                    .createUserWithPhone(
+                                        '${countryCode.dialCode}${mobileCont.text.trim()}',
+                                        passwordEditingController.text
+                                            .trim()
+                                            .toString(),
+                                        emailEditingController.text
+                                            .trim()
+                                            .toString(),
+                                        widget.businessName.toString(),
+                                        widget.description.toString(),
+                                        firstNameEditingController.text
+                                            .trim()
+                                            .toString(),
+                                        lastNameEditingController.text
+                                            .trim()
+                                            .toString(),
+                                        userController.isPhoneSelected.value)
+                                    .then((value) {
                                   emailEditingController.clear();
                                   passwordEditingController.clear();
                                   firstNameEditingController.clear();
@@ -362,51 +388,54 @@ class _CompleteSignUpScreenState extends State<CompleteSignUpScreen> {
                                   confirmPasswordEditingController.clear();
                                   mobileCont.clear();
                                   // Get.to(() => VerifyPhoneOtpScreen(phone: '${countryCode.dialCode}${mobileCont.text.trim()}'));
-
                                 });
                               } else {
                                 print('Email SignUp');
-                                await userController.createUserWithEmail(
-                                    emailEditingController.text.trim()
-                                        .toString(),
-                                    passwordEditingController.text.trim()
-                                        .toString(),
-                                    widget.businessName.toString(),
-                                    widget.description.toString(),
-                                    firstNameEditingController.text.trim()
-                                        .toString(),
-                                    lastNameEditingController.text.trim()
-                                        .toString(),
-                                    '${countryCode.dialCode}${mobileCont.text
-                                        .trim()}',
-                                    userController.isPhoneSelected.value
-                                ).then((value) {
+                                await userController
+                                    .createUserWithEmail(
+                                        emailEditingController.text
+                                            .trim()
+                                            .toString(),
+                                        passwordEditingController.text
+                                            .trim()
+                                            .toString(),
+                                        widget.businessName.toString(),
+                                        widget.description.toString(),
+                                        firstNameEditingController.text
+                                            .trim()
+                                            .toString(),
+                                        lastNameEditingController.text
+                                            .trim()
+                                            .toString(),
+                                        '${countryCode.dialCode}${mobileCont.text.trim()}',
+                                        userController.isPhoneSelected.value)
+                                    .then((value) {
                                   emailEditingController.clear();
                                   passwordEditingController.clear();
                                   firstNameEditingController.clear();
                                   lastNameEditingController.clear();
                                   confirmPasswordEditingController.clear();
                                   mobileCont.clear();
-
                                 });
                               }
                             }
-
                           }
-
                         });
                   }),
 
-                  SizedBox(height: 3.h,),
+                  SizedBox(
+                    height: 3.h,
+                  ),
 
-                  Center(child: Bounceable(
-                      onTap: () {
-                        Get.back();
-                      },
-                      child: Text(
-                        'back to login', style: AppTheme.subTextBold,))),
-
-
+                  Center(
+                      child: Bounceable(
+                          onTap: () {
+                            Get.back();
+                          },
+                          child: Text(
+                            'back to login',
+                            style: AppTheme.subTextBold,
+                          ))),
                 ],
               ),
             ),

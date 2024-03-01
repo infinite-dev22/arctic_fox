@@ -6,11 +6,14 @@ import 'dart:convert';
 
 import 'package:smart_rent/models/general/smart_model.dart';
 
-List<SpecificTenantUnitModel> specificTenantUnitModelFromJson(String str) => List<SpecificTenantUnitModel>.from(json.decode(str).map((x) => SpecificTenantUnitModel.fromJson(x)));
+List<SpecificTenantUnitModel> specificTenantUnitModelFromJson(String str) =>
+    List<SpecificTenantUnitModel>.from(
+        json.decode(str).map((x) => SpecificTenantUnitModel.fromJson(x)));
 
-String specificTenantUnitModelToJson(List<SpecificTenantUnitModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String specificTenantUnitModelToJson(List<SpecificTenantUnitModel> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class SpecificTenantUnitModel extends SmartSpecificTenantUnitModel{
+class SpecificTenantUnitModel extends SmartSpecificTenantUnitModel {
   int? id;
   int? amount;
   DateTime? fromDate;
@@ -33,64 +36,78 @@ class SpecificTenantUnitModel extends SmartSpecificTenantUnitModel{
     this.propertyId,
   });
 
-  factory SpecificTenantUnitModel.fromJson(Map<String, dynamic> json) => SpecificTenantUnitModel(
-    id: json["id"],
-    amount: json["amount"],
-    fromDate: json["from_date"] == null ? null : DateTime.parse(json["from_date"]),
-    toDate: json["to_date"] == null ? null : DateTime.parse(json["to_date"]),
-    tenants: json["tenants"] == null ? null : Tenants.fromJson(json["tenants"]),
-    units: json["units"] == null ? null : Units.fromJson(json["units"]),
-    unitId: json["unit_id"],
-    tenantId: json["tenant_id"],
-    propertyId: json["property_id"],
-  );
+  factory SpecificTenantUnitModel.fromJson(Map<String, dynamic> json) =>
+      SpecificTenantUnitModel(
+        id: json["id"],
+        amount: json["amount"],
+        fromDate: json["from_date"] == null
+            ? null
+            : DateTime.parse(json["from_date"]),
+        toDate:
+            json["to_date"] == null ? null : DateTime.parse(json["to_date"]),
+        tenants:
+            json["tenants"] == null ? null : Tenants.fromJson(json["tenants"]),
+        units: json["units"] == null ? null : Units.fromJson(json["units"]),
+        unitId: json["unit_id"],
+        tenantId: json["tenant_id"],
+        propertyId: json["property_id"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "amount": amount,
-    "from_date": fromDate?.toIso8601String(),
-    "to_date": toDate?.toIso8601String(),
-    "tenants": tenants?.toJson(),
-    "units": units?.toJson(),
-    "unit_id": unitId,
-    "tenant_id": tenantId,
-    "property_id": propertyId,
-  };
+        "id": id,
+        "amount": amount,
+        "from_date": fromDate?.toIso8601String(),
+        "to_date": toDate?.toIso8601String(),
+        "tenants": tenants?.toJson(),
+        "units": units?.toJson(),
+        "unit_id": unitId,
+        "tenant_id": tenantId,
+        "property_id": propertyId,
+      };
 
   @override
-  int getAmount() { return amount!;
+  int getAmount() {
+    return amount!;
   }
 
   @override
-  DateTime getFromDate() { return fromDate!;
+  DateTime getFromDate() {
+    return fromDate!;
   }
 
   @override
-  int getId() { return id!;
+  int getId() {
+    return id!;
   }
 
   @override
-  int getTenantId() { return tenantId!;
+  int getTenantId() {
+    return tenantId!;
   }
 
   @override
-  DateTime getToDate() { return toDate!;
+  DateTime getToDate() {
+    return toDate!;
   }
 
   @override
-  int getUnitId() { return unitId!;
+  int getUnitId() {
+    return unitId!;
   }
 
   @override
-  String getUnitNumber() { return units!.unitNumber.toString();
+  String getUnitNumber() {
+    return units!.unitNumber.toString();
   }
 
   @override
-  String getTenantName() { return tenants!.name.toString();
+  String getTenantName() {
+    return tenants!.name.toString();
   }
 
   @override
-  int getPropertyId() { return propertyId!;
+  int getPropertyId() {
+    return propertyId!;
   }
 }
 
@@ -102,12 +119,12 @@ class Tenants {
   });
 
   factory Tenants.fromJson(Map<String, dynamic> json) => Tenants(
-    name: json["name"],
-  );
+        name: json["name"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "name": name,
-  };
+        "name": name,
+      };
 }
 
 class Units {
@@ -118,10 +135,10 @@ class Units {
   });
 
   factory Units.fromJson(Map<String, dynamic> json) => Units(
-    unitNumber: json["unit_number"],
-  );
+        unitNumber: json["unit_number"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "unit_number": unitNumber,
-  };
+        "unit_number": unitNumber,
+      };
 }

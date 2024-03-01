@@ -6,11 +6,13 @@ import 'dart:convert';
 
 import 'package:smart_rent/models/general/smart_model.dart';
 
-PaymentScheduleModel paymentScheduleModelFromJson(String str) => PaymentScheduleModel.fromJson(json.decode(str));
+PaymentScheduleModel paymentScheduleModelFromJson(String str) =>
+    PaymentScheduleModel.fromJson(json.decode(str));
 
-String paymentScheduleModelToJson(PaymentScheduleModel data) => json.encode(data.toJson());
+String paymentScheduleModelToJson(PaymentScheduleModel data) =>
+    json.encode(data.toJson());
 
-class PaymentScheduleModel extends SmartPeriodModel{
+class PaymentScheduleModel extends SmartModel {
   int? id;
   String? name;
   int? period;
@@ -21,28 +23,31 @@ class PaymentScheduleModel extends SmartPeriodModel{
     required this.period,
   });
 
-  factory PaymentScheduleModel.fromJson(Map<String, dynamic> json) => PaymentScheduleModel(
-    id: json["id"],
-    name: json["name"],
-    period: json["period"],
-  );
+  factory PaymentScheduleModel.fromJson(Map<String, dynamic> json) =>
+      PaymentScheduleModel(
+        id: json["id"],
+        name: json["name"],
+        period: json["period"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-    "period": period,
-  };
+        "id": id,
+        "name": name,
+        "period": period,
+      };
 
   @override
-  int getId() { return id!;
+  int getId() {
+    return id!;
   }
 
   @override
-  String getName() { return name!;
+  String getName() {
+    return name!;
   }
 
   @override
-  int getPeriod() { return period!;
+  int getPeriod() {
+    return period!;
   }
-
 }

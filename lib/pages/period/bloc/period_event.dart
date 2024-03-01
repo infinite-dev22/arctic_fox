@@ -8,5 +8,4 @@ class LoadAllPeriodsEvent extends PeriodEvent {
   @override
   // TODO: implement props
   List<Object?> get props => [];
-
 }

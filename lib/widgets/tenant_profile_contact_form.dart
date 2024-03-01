@@ -18,14 +18,22 @@ class TenantProfileContactForm extends StatelessWidget {
   final String? Function(String?)? phoneValidator;
   final String? Function(String?)? emailValidator;
   final GlobalKey<FormState> contactKey;
-  const TenantProfileContactForm({super.key,
+
+  const TenantProfileContactForm({
+    super.key,
     required this.contactFirstNameController,
     required this.contactLastNameController,
     required this.contactNinController,
     required this.contactDesignationController,
     required this.contactPhoneController,
     required this.contactEmailController,
-    required this.contactKey, this.firstNameValidator, this.lastNameValidator, this.designationValidator, this.ninValidator, this.phoneValidator, this.emailValidator,
+    required this.contactKey,
+    this.firstNameValidator,
+    this.lastNameValidator,
+    this.designationValidator,
+    this.ninValidator,
+    this.phoneValidator,
+    this.emailValidator,
   });
 
   @override
@@ -44,7 +52,6 @@ class TenantProfileContactForm extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   // crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-
                     SizedBox(
                       width: 40.w,
                       child: AuthTextField(
@@ -55,7 +62,6 @@ class TenantProfileContactForm extends StatelessWidget {
                         keyBoardType: TextInputType.text,
                       ),
                     ),
-
                     SizedBox(
                       width: 40.w,
                       child: AuthTextField(
@@ -68,9 +74,9 @@ class TenantProfileContactForm extends StatelessWidget {
                     ),
                   ],
                 ),
-
-                SizedBox(height: 1.h,),
-
+                SizedBox(
+                  height: 1.h,
+                ),
                 AuthTextField(
                   controller: contactDesignationController,
                   hintText: 'Designation',
@@ -78,20 +84,19 @@ class TenantProfileContactForm extends StatelessWidget {
                   // validator: designationValidator,
                   keyBoardType: TextInputType.text,
                 ),
-
-                SizedBox(height: 1.h,),
-
+                SizedBox(
+                  height: 1.h,
+                ),
                 AuthTextField(
                   controller: contactNinController,
                   hintText: 'NIN',
                   obscureText: false,
                   keyBoardType: TextInputType.text,
                   // validator: ninValidator,
-
                 ),
-
-                SizedBox(height: 1.h,),
-
+                SizedBox(
+                  height: 1.h,
+                ),
                 AuthTextField(
                   controller: contactPhoneController,
                   hintText: 'Contact',
@@ -99,9 +104,9 @@ class TenantProfileContactForm extends StatelessWidget {
                   keyBoardType: TextInputType.number,
                   // validator: phoneValidator,
                 ),
-
-                SizedBox(height: 1.h,),
-
+                SizedBox(
+                  height: 1.h,
+                ),
                 AuthTextField(
                   controller: contactEmailController,
                   hintText: 'Email',
@@ -109,7 +114,6 @@ class TenantProfileContactForm extends StatelessWidget {
                   keyBoardType: TextInputType.emailAddress,
                   // validator: emailValidator,
                 ),
-
               ],
             ),
           ),

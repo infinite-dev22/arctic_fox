@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 
-
 class AppMaxTextField extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
@@ -14,18 +13,17 @@ class AppMaxTextField extends StatelessWidget {
   final bool enabled;
   final String? title;
 
-  const AppMaxTextField({
-    super.key,
-    required this.controller,
-    required this.hintText,
-    required this.obscureText,
-    this.isEmail = false,
-    this.borderSide = BorderSide.none,
-    this.fillColor = AppTheme.fillColor,
-    this.style,
-    this.enabled = true,
-    this.title
-  });
+  const AppMaxTextField(
+      {super.key,
+      required this.controller,
+      required this.hintText,
+      required this.obscureText,
+      this.isEmail = false,
+      this.borderSide = BorderSide.none,
+      this.fillColor = AppTheme.fillColor,
+      this.style,
+      this.enabled = true,
+      this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +36,6 @@ class AppMaxTextField extends StatelessWidget {
         SizedBox(
           height: 13.h,
           child: TextFormField(
-
             controller: controller,
             obscureText: obscureText,
             style: style,
@@ -46,20 +43,20 @@ class AppMaxTextField extends StatelessWidget {
             decoration: InputDecoration(
               focusedBorder: (borderSide != BorderSide.none)
                   ? OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15.sp),
-                borderSide: const BorderSide(
-                  color: Colors.grey,
-                  width: 2.0,
-                ),
-              )
+                      borderRadius: BorderRadius.circular(15.sp),
+                      borderSide: const BorderSide(
+                        color: Colors.grey,
+                        width: 2.0,
+                      ),
+                    )
                   : null,
               enabledBorder: (borderSide != BorderSide.none)
                   ? OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15.sp),
-                borderSide: const BorderSide(
-                  color: Colors.grey,
-                ),
-              )
+                      borderRadius: BorderRadius.circular(15.sp),
+                      borderSide: const BorderSide(
+                        color: Colors.grey,
+                      ),
+                    )
                   : null,
               border: OutlineInputBorder(
                 borderSide: borderSide,
@@ -76,7 +73,6 @@ class AppMaxTextField extends StatelessWidget {
             keyboardType: TextInputType.emailAddress,
             maxLines: 5,
             maxLength: 200,
-
           ),
         ),
       ],

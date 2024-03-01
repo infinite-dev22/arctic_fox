@@ -2,29 +2,21 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:animate_do/animate_do.dart';
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bounceable/flutter_bounceable.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/controllers/tenants/tenant_controller.dart';
 import 'package:smart_rent/models/business/business_type_model.dart';
-import 'package:smart_rent/models/general/smart_model.dart';
 import 'package:smart_rent/models/salutation/salutation_model.dart';
 import 'package:smart_rent/models/tenant/tenant_model.dart';
-import 'package:smart_rent/models/tenant/tenant_type_model.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 import 'package:smart_rent/widgets/app_button.dart';
 import 'package:smart_rent/widgets/app_drop_downs.dart';
 import 'package:smart_rent/widgets/app_image_header.dart';
-import 'package:smart_rent/widgets/app_max_textfield.dart';
 import 'package:smart_rent/widgets/app_textfield.dart';
-import 'package:smart_rent/widgets/tenant_profile_contact_form.dart';
 
 class UpdateIndividualTenantScreen extends StatefulWidget {
   final TenantModel tenantModel;
@@ -44,7 +36,8 @@ class _UpdateIndividualTenantScreenState
   final TextEditingController phoneNoController = TextEditingController();
 
   final TextEditingController companyNameController = TextEditingController();
-  final TextEditingController companyDescriptionController = TextEditingController();
+  final TextEditingController companyDescriptionController =
+      TextEditingController();
 
   late TextEditingController? individualNameController;
   late TextEditingController individualEmailNameController;
@@ -78,7 +71,6 @@ class _UpdateIndividualTenantScreenState
     EmailValidator(errorText: 'input does\'nt match email'),
   ]);
 
-
   final iFirstNameValidator = MultiValidator([
     RequiredValidator(errorText: 'first name required'),
     MinLengthValidator(2, errorText: 'first name too short'),
@@ -101,7 +93,6 @@ class _UpdateIndividualTenantScreenState
     MaxLengthValidator(500, errorText: 'descrition too long'),
   ]);
 
-
   final companyDescriptionValidator = MultiValidator([
     MaxLengthValidator(500, errorText: 'descrition too long'),
   ]);
@@ -111,8 +102,8 @@ class _UpdateIndividualTenantScreenState
   //   RequiredValidator(errorText: 'salutation required'),
   // ]);
 
-  final iSalutationValidator = RequiredValidator(
-      errorText: 'salutation required');
+  final iSalutationValidator =
+      RequiredValidator(errorText: 'salutation required');
 
   final iGenderValidator = MultiValidator([
     RequiredValidator(errorText: 'gender required'),
@@ -134,7 +125,6 @@ class _UpdateIndividualTenantScreenState
     RequiredValidator(errorText: 'email is required'),
     EmailValidator(errorText: 'input does\'nt match email'),
   ]);
-
 
   final contactFirstNameValidator = MultiValidator([
     RequiredValidator(errorText: 'first name required'),
@@ -196,7 +186,6 @@ class _UpdateIndividualTenantScreenState
     }
   }
 
-
   Future<void> _selectDateOfBirth(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -208,8 +197,7 @@ class _UpdateIndividualTenantScreenState
     if (picked != null) {
       myDateOfBirth(picked);
       individualDateOfBirthController.text =
-      '${myDateOfBirth.value.day}/${myDateOfBirth.value.month}/${myDateOfBirth
-          .value.year}';
+          '${myDateOfBirth.value.day}/${myDateOfBirth.value.month}/${myDateOfBirth.value.year}';
     }
   }
 
@@ -292,32 +280,29 @@ class _UpdateIndividualTenantScreenState
               //       style: AppTheme.subTextBold1,
               //     )),
 
-
               Container(
                 child: Form(
                   key: _formKey,
                   child: Column(
                     children: [
-
-
                       Obx(() {
                         return CustomUpdateApiGenericDropdown<
                             BusinessTypeModel>(
-                          hintText: tenantController.uIndividualBusinessType
-                              .value,
+                          hintText:
+                              tenantController.uIndividualBusinessType.value,
                           menuItems: tenantController.businessList.value,
                           onChanged: (value) {
                             tenantController.setBusinessTypeId(value!.id!);
                           },
                         );
                       }),
-
-                      SizedBox(height: 1.h,),
-
+                      SizedBox(
+                        height: 1.h,
+                      ),
                       Obx(() {
                         return CustomUpdateApiNationalityDropdown(
-                          hintText: tenantController.uIndividualCountryType
-                              .value,
+                          hintText:
+                              tenantController.uIndividualCountryType.value,
                           menuItems: tenantController.nationalityList.value,
                           onChanged: (value) {
                             tenantController.setNationalityId(value!.id!);
@@ -335,19 +320,22 @@ class _UpdateIndividualTenantScreenState
                     key: _individualFormKey,
                     child: Column(
                       children: [
-                        Text('Personal Details', style: AppTheme.appTitle3,),
+                        Text(
+                          'Personal Details',
+                          style: AppTheme.appTitle3,
+                        ),
                         Obx(() {
-                          return CustomApiGenericDropdown<
-                              SalutationModel>(
+                          return CustomApiGenericDropdown<SalutationModel>(
                             hintText: 'Mr',
-                            menuItems:
-                            tenantController.salutationList.value,
+                            menuItems: tenantController.salutationList.value,
                             onChanged: (value) {},
                             height: 6.5.h,
                           );
                         }),
 
-                        SizedBox(height: 1.h,),
+                        SizedBox(
+                          height: 1.h,
+                        ),
 
                         // Row(
                         //   mainAxisAlignment:
@@ -401,7 +389,9 @@ class _UpdateIndividualTenantScreenState
                           obscureText: false,
                         ),
 
-                        SizedBox(height: 1.h,),
+                        SizedBox(
+                          height: 1.h,
+                        ),
 
                         // Obx(() {
                         //   return AppTextField(
@@ -425,7 +415,9 @@ class _UpdateIndividualTenantScreenState
                           );
                         }),
 
-                        SizedBox(height: 1.h,),
+                        SizedBox(
+                          height: 1.h,
+                        ),
 
                         Obx(() {
                           return AuthTextField(
@@ -437,13 +429,16 @@ class _UpdateIndividualTenantScreenState
                           );
                         }),
 
-                        SizedBox(height: 1.h,),
+                        SizedBox(
+                          height: 1.h,
+                        ),
 
                         Obx(() {
                           return AuthTextField(
                             controller: TextEditingController(
-                                text: tenantController.uIndividualDateOfBirth
-                                    .value.toString()),
+                                text: tenantController
+                                    .uIndividualDateOfBirth.value
+                                    .toString()),
                             hintText: 'D.O.B',
                             obscureText: false,
                             onTap: () {
@@ -452,7 +447,9 @@ class _UpdateIndividualTenantScreenState
                           );
                         }),
 
-                        SizedBox(height: 1.h,),
+                        SizedBox(
+                          height: 1.h,
+                        ),
 
                         Obx(() {
                           return AuthTextField(
@@ -464,7 +461,9 @@ class _UpdateIndividualTenantScreenState
                           );
                         }),
 
-                        SizedBox(height: 1.h,),
+                        SizedBox(
+                          height: 1.h,
+                        ),
 
                         Obx(() {
                           return CustomGenericDropdown<String>(
@@ -474,30 +473,28 @@ class _UpdateIndividualTenantScreenState
                             onChanged: (value) {
                               tenantController.setNewGender(value.toString());
                             },
-
                           );
                         }),
 
-                        SizedBox(height: 1.h,),
+                        SizedBox(
+                          height: 1.h,
+                        ),
 
                         Obx(() {
                           return DescriptionTextField(
                             controller: TextEditingController(
-                                text: tenantController.uIndividualDescription
-                                    .value
+                                text: tenantController
+                                    .uIndividualDescription.value
                                     .toString()),
                             hintText: 'Description',
                             obscureText: false,
-
                           );
                         }),
-
                       ],
                     ),
                   ),
                 ),
               ),
-
 
               SizedBox(
                 height: 2.h,
@@ -588,7 +585,6 @@ class _UpdateIndividualTenantScreenState
               //   ),),
               // ),
 
-
               SizedBox(
                 height: 2.h,
               ),
@@ -598,8 +594,8 @@ class _UpdateIndividualTenantScreenState
                 color: AppTheme.primaryColor,
                 function: () async {
                   print('MY name controller == $individualNameController');
-                  print('MY name api == ${tenantController.uIndividualName
-                      .value}');
+                  print(
+                      'MY name api == ${tenantController.uIndividualName.value}');
 
                   // if (_formKey.currentState!.validate() &&
                   //     _companyFormKey.currentState!.validate() &&
@@ -627,7 +623,6 @@ class _UpdateIndividualTenantScreenState
               SizedBox(
                 height: 2.h,
               ),
-
             ],
           ),
         ),

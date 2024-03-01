@@ -1,11 +1,12 @@
 part of 'role_bloc.dart';
 
-enum RoleStatus {initial, loading, success, error, accessDenied, empty}
+enum RoleStatus { initial, loading, success, error, accessDenied, empty }
 
 @immutable
 class RoleState extends Equatable {
   final List<RoleModel>? roles;
   final RoleStatus status;
+
   const RoleState({this.roles, this.status = RoleStatus.initial});
 
   @override
@@ -15,13 +16,12 @@ class RoleState extends Equatable {
   RoleState copyWith({
     final List<RoleModel>? roles,
     final RoleStatus? status,
-}) {
+  }) {
     return RoleState(
-      roles : roles ?? this.roles,
-      status : status ?? this.status,
+      roles: roles ?? this.roles,
+      status: status ?? this.status,
     );
   }
-
 }
 
 class RoleInitial extends RoleState {

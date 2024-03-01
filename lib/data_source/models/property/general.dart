@@ -1,6 +1,6 @@
 import 'package:smart_rent/models/general/smart_model.dart';
 
-class PropertyTypeG extends SmartModel{
+class PropertyTypeG extends SmartModel {
   final int id;
   final String name;
 
@@ -13,16 +13,17 @@ class PropertyTypeG extends SmartModel{
   ];
 
   @override
-  int getId() { return id;
+  int getId() {
+    return id;
   }
 
   @override
-  String getName() { return name;
+  String getName() {
+    return name;
   }
-
 }
 
-class PropertyCategoryTypeG extends SmartModel{
+class PropertyCategoryTypeG extends SmartModel {
   final int id;
   final String name;
 
@@ -31,15 +32,15 @@ class PropertyCategoryTypeG extends SmartModel{
   static List<PropertyCategoryTypeG> propertyCategoryTypes = [
     PropertyCategoryTypeG(id: 1, name: 'Plaza'),
     PropertyCategoryTypeG(id: 2, name: 'Mall'),
-
   ];
 
   @override
-  int getId() { return id;
+  int getId() {
+    return id;
   }
 
   @override
-  String getName() { return name;
+  String getName() {
+    return name;
   }
-
 }

@@ -9,22 +9,70 @@ class ComplaintsController extends GetxController {
   var complaints = <ComplaintModel>[].obs;
 
   List<ComplaintModel> initialComplaints = [
-    ComplaintModel(tenant: 'Ramesh D', description: 'Water tank leackage', sevierity: Colors.green),
-    ComplaintModel(tenant: 'Cabin K', description: 'Elivator shaking', sevierity: Colors.purpleAccent),
-    ComplaintModel(tenant: 'Tylor S', description: 'Parking area is', sevierity: Colors.orange),
-    ComplaintModel(tenant: 'Micheal J', description: 'No water since mon', sevierity: Colors.red),
-    ComplaintModel(tenant: 'Cabin D', description: 'Water tank leackage', sevierity: Colors.green),
-    ComplaintModel(tenant: 'Cabin K', description: 'Elivator shaking', sevierity: Colors.purpleAccent),
-    ComplaintModel(tenant: 'Tylor S', description: 'Parking area is', sevierity: Colors.orange),
-    ComplaintModel(tenant: 'Micheal J', description: 'No water since mon', sevierity: Colors.red),
-    ComplaintModel(tenant: 'Taylor D', description: 'Water tank leackage', sevierity: Colors.green),
-    ComplaintModel(tenant: 'Cabin K', description: 'Elivator shaking', sevierity: Colors.purpleAccent),
-    ComplaintModel(tenant: 'Tylor S', description: 'Parking area is', sevierity: Colors.orange),
-    ComplaintModel(tenant: 'Micheal J', description: 'No water since mon', sevierity: Colors.red),
-    ComplaintModel(tenant: 'Micheal D', description: 'Water tank leackage', sevierity: Colors.green),
-    ComplaintModel(tenant: 'Cabin K', description: 'Elivator shaking', sevierity: Colors.purpleAccent),
-    ComplaintModel(tenant: 'Tylor S', description: 'Parking area is', sevierity: Colors.orange),
-    ComplaintModel(tenant: 'Micheal J', description: 'No water since mon', sevierity: Colors.red),
+    ComplaintModel(
+        tenant: 'Ramesh D',
+        description: 'Water tank leackage',
+        sevierity: Colors.green),
+    ComplaintModel(
+        tenant: 'Cabin K',
+        description: 'Elivator shaking',
+        sevierity: Colors.purpleAccent),
+    ComplaintModel(
+        tenant: 'Tylor S',
+        description: 'Parking area is',
+        sevierity: Colors.orange),
+    ComplaintModel(
+        tenant: 'Micheal J',
+        description: 'No water since mon',
+        sevierity: Colors.red),
+    ComplaintModel(
+        tenant: 'Cabin D',
+        description: 'Water tank leackage',
+        sevierity: Colors.green),
+    ComplaintModel(
+        tenant: 'Cabin K',
+        description: 'Elivator shaking',
+        sevierity: Colors.purpleAccent),
+    ComplaintModel(
+        tenant: 'Tylor S',
+        description: 'Parking area is',
+        sevierity: Colors.orange),
+    ComplaintModel(
+        tenant: 'Micheal J',
+        description: 'No water since mon',
+        sevierity: Colors.red),
+    ComplaintModel(
+        tenant: 'Taylor D',
+        description: 'Water tank leackage',
+        sevierity: Colors.green),
+    ComplaintModel(
+        tenant: 'Cabin K',
+        description: 'Elivator shaking',
+        sevierity: Colors.purpleAccent),
+    ComplaintModel(
+        tenant: 'Tylor S',
+        description: 'Parking area is',
+        sevierity: Colors.orange),
+    ComplaintModel(
+        tenant: 'Micheal J',
+        description: 'No water since mon',
+        sevierity: Colors.red),
+    ComplaintModel(
+        tenant: 'Micheal D',
+        description: 'Water tank leackage',
+        sevierity: Colors.green),
+    ComplaintModel(
+        tenant: 'Cabin K',
+        description: 'Elivator shaking',
+        sevierity: Colors.purpleAccent),
+    ComplaintModel(
+        tenant: 'Tylor S',
+        description: 'Parking area is',
+        sevierity: Colors.orange),
+    ComplaintModel(
+        tenant: 'Micheal J',
+        description: 'No water since mon',
+        sevierity: Colors.red),
   ];
 
   @override

@@ -5,14 +5,16 @@ class Responsive extends StatelessWidget {
   final Widget? tablet;
   final Widget desktop;
 
-  const Responsive({Key? key, required this.mobile, this.tablet, required this.desktop}) : super(key: key);
+  const Responsive(
+      {Key? key, required this.mobile, this.tablet, required this.desktop})
+      : super(key: key);
 
   static bool isMobile(BuildContext context) =>
       MediaQuery.of(context).size.width < 480;
 
   static bool isTablet(BuildContext context) =>
       MediaQuery.of(context).size.width < 800 &&
-          MediaQuery.of(context).size.width >= 480;
+      MediaQuery.of(context).size.width >= 480;
 
   static bool isDesktop(BuildContext context) =>
       MediaQuery.of(context).size.width >= 800;
@@ -21,20 +23,15 @@ class Responsive extends StatelessWidget {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
 
-    if(size.width >= 800){
+    if (size.width >= 800) {
       return desktop;
-
-    } else if(size.width >= 480 && tablet != null) {
+    } else if (size.width >= 480 && tablet != null) {
       return tablet!;
-
     } else {
       return mobile;
     }
-
   }
 }
-
-
 
 // import 'package:flutter/material.dart';
 //

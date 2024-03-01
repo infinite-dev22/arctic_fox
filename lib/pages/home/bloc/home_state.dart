@@ -1,6 +1,5 @@
 part of 'home_bloc.dart';
 
-
 enum HomeStatus { initial, successLogout, loading, accessDenied, error, logout }
 
 extension HomeStatusX on HomeStatus {
@@ -15,16 +14,13 @@ extension HomeStatusX on HomeStatus {
   bool get isLogout => this == HomeStatus.logout;
 }
 
-
- class HomeState extends Equatable {
+class HomeState extends Equatable {
   final String? token;
   final String? message;
   final HomeStatus status;
-  const HomeState({
-    this.token = '',
-    this.message = '',
-    this.status = HomeStatus.initial
- });
+
+  const HomeState(
+      {this.token = '', this.message = '', this.status = HomeStatus.initial});
 
   @override
   // TODO: implement props
@@ -34,14 +30,12 @@ extension HomeStatusX on HomeStatus {
     String? token,
     String? message,
     HomeStatus? status,
- }){
+  }) {
     return HomeState(
-      token: token ?? this.token,
-      message: message ?? this.message,
-      status: status ?? this.status
-    );
+        token: token ?? this.token,
+        message: message ?? this.message,
+        status: status ?? this.status);
   }
-
 }
 
 class HomeInitial extends HomeState {
@@ -50,6 +44,9 @@ class HomeInitial extends HomeState {
 }
 
 class HomeSuccess extends HomeState {}
+
 class HomeLoading extends HomeState {}
+
 class HomeError extends HomeState {}
+
 class HomeLogout extends HomeState {}

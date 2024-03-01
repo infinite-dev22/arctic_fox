@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/styles/app_theme.dart';
-import 'package:smart_rent/utils/app_prefs.dart';
-
 
 class AppSearchTextField extends StatelessWidget {
   final TextEditingController controller;
@@ -18,18 +15,19 @@ class AppSearchTextField extends StatelessWidget {
   final VoidCallback function;
   final int number;
 
-  const AppSearchTextField({
-    super.key,
-    required this.controller,
-    required this.hintText,
-    required this.obscureText,
-    this.isEmail = false,
-    this.borderSide = BorderSide.none,
-    this.fillColor = AppTheme.fillColor,
-    this.style,
-    this.enabled = true,
-    this.title, required this.function, required this.number
-  });
+  const AppSearchTextField(
+      {super.key,
+      required this.controller,
+      required this.hintText,
+      required this.obscureText,
+      this.isEmail = false,
+      this.borderSide = BorderSide.none,
+      this.fillColor = AppTheme.fillColor,
+      this.style,
+      this.enabled = true,
+      this.title,
+      required this.function,
+      required this.number});
 
   @override
   Widget build(BuildContext context) {
@@ -37,12 +35,11 @@ class AppSearchTextField extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-
         SizedBox(
           height: 6.5.h,
           child: TextFormField(
             validator: (val) =>
-            val!.isEmpty ? 'Required field, Please fill in.' : null,
+                val!.isEmpty ? 'Required field, Please fill in.' : null,
             controller: controller,
             obscureText: obscureText,
             style: style,
@@ -50,27 +47,27 @@ class AppSearchTextField extends StatelessWidget {
             decoration: InputDecoration(
               focusedBorder: (borderSide != BorderSide.none)
                   ? OutlineInputBorder(
-                borderRadius: BorderRadius.circular(20.sp),
-                borderSide: const BorderSide(
-                  color: Colors.grey,
-                  width: 2.0,
-                ),
-              )
+                      borderRadius: BorderRadius.circular(20.sp),
+                      borderSide: const BorderSide(
+                        color: Colors.grey,
+                        width: 2.0,
+                      ),
+                    )
                   : null,
               enabledBorder: (borderSide != BorderSide.none)
                   ? OutlineInputBorder(
-                borderRadius: BorderRadius.circular(20.sp),
-                borderSide: const BorderSide(
-                  color: Colors.grey,
-                ),
-              )
+                      borderRadius: BorderRadius.circular(20.sp),
+                      borderSide: const BorderSide(
+                        color: Colors.grey,
+                      ),
+                    )
                   : null,
               border: OutlineInputBorder(
                 borderSide: borderSide,
                 borderRadius: BorderRadius.circular(20.sp),
               ),
               // fillColor: fillColor,
-              fillColor: AppTheme.appWidgetColor,
+              fillColor: AppTheme.itemBgColor,
               filled: true,
               hintText: hintText,
               hintStyle: TextStyle(
@@ -84,7 +81,9 @@ class AppSearchTextField extends StatelessWidget {
           ),
         ),
 
-        SizedBox(height: 1.h,),
+        SizedBox(
+          height: 1.h,
+        ),
         //
         // userStorage.read('roleId') == 4 ? Container() : Align(alignment: Alignment.centerRight, child: Bounceable(
         //   onTap: function,
@@ -103,9 +102,14 @@ class AppSearchTextField extends StatelessWidget {
         //   ),
         // )),
 
-        Text('Your properties', style: AppTheme.appTitle1,),
-        Text('$number ${number >1 ? 'properties' : 'property'}', style: AppTheme.subText,),
-
+        Text(
+          'Your properties',
+          style: AppTheme.appTitle1,
+        ),
+        Text(
+          '$number ${number > 1 ? 'properties' : 'property'}',
+          style: AppTheme.subText,
+        ),
       ],
     );
   }

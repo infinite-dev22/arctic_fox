@@ -8,7 +8,6 @@ class LoadAllCountries extends CountryCityEvent {
   @override
   // TODO: implement props
   List<Object?> get props => [];
-
 }
 
 class LoadSelectedCountry extends CountryCityEvent {
@@ -19,7 +18,6 @@ class LoadSelectedCountry extends CountryCityEvent {
   @override
   // TODO: implement props
   List<Object?> get props => [selectedCountry];
-
 }
 
 class LoadAllRespectiveCities extends CountryCityEvent {
@@ -30,5 +28,4 @@ class LoadAllRespectiveCities extends CountryCityEvent {
   @override
   // TODO: implement props
   List<Object?> get props => [cities];
-
 }

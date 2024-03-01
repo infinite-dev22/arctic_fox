@@ -6,14 +6,10 @@ import 'package:smart_rent/controllers/tenants/tenant_controller.dart';
 import 'package:smart_rent/controllers/user/user_controller.dart';
 import 'package:smart_rent/pages/employee/employee_list_screen.dart';
 import 'package:smart_rent/pages/home/home_screen.dart';
-
 import 'package:smart_rent/screens/chat/chat_screen.dart';
 import 'package:smart_rent/screens/find/find_screen.dart';
-
 import 'package:smart_rent/screens/profile/profile_screen.dart';
-import 'package:smart_rent/screens/test/country_state_list_screen.dart';
 import 'package:smart_rent/styles/app_theme.dart';
-
 
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({super.key});
@@ -23,12 +19,14 @@ class BottomNavBar extends StatefulWidget {
 }
 
 class _BottomNavBarState extends State<BottomNavBar> {
-
-  final UserController userController = Get.put(UserController(),);
+  final UserController userController = Get.put(
+    UserController(),
+  );
 
   final TenantController tenantController = Get.put(
     TenantController(),
   );
+
   @override
   void initState() {
     // TODO: implement initState
@@ -38,8 +36,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
   @override
   Widget build(BuildContext context) {
-    final BottomNavBarController bottomNavBarController = Get.put(
-        BottomNavBarController());
+    final BottomNavBarController bottomNavBarController =
+        Get.put(BottomNavBarController());
     final screens = [
       // HomePage(userController: userController, tenantController:  tenantController,),
       HomeScreen(),
@@ -49,7 +47,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
       EmployeeListScreen(),
       ChatScreen(),
       ProfileScreen(),
-
     ];
     return Obx(() {
       return Scaffold(
@@ -57,7 +54,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
         backgroundColor: AppTheme.appWidgetColor,
         body: screens[bottomNavBarController.currentIndex.value],
         bottomNavigationBar: ClipRRect(
-          borderRadius: BorderRadius.only(topLeft: Radius.circular(20.sp), topRight: Radius.circular(20.sp)),
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20.sp),
+              topRight: Radius.circular(20.sp)),
           child: NavigationBar(
             selectedIndex: bottomNavBarController.currentIndex.value,
             onDestinationSelected: (index) {
@@ -69,12 +68,14 @@ class _BottomNavBarState extends State<BottomNavBar> {
               NavigationDestination(
                 icon: Image.asset('assets/general/home2.png'),
                 label: 'Home',
-                selectedIcon: Image.asset('assets/general/home.png', color: Theme.of(context).primaryColor),
+                selectedIcon: Image.asset('assets/general/home.png',
+                    color: Theme.of(context).primaryColor),
               ),
               NavigationDestination(
                 icon: Image.asset('assets/general/signpost.png'),
                 label: 'Find',
-                selectedIcon: Image.asset('assets/general/signpost.png', color: Theme.of(context).primaryColor),
+                selectedIcon: Image.asset('assets/general/signpost.png',
+                    color: Theme.of(context).primaryColor),
               ),
               NavigationDestination(
                 // icon: Image.asset('assets/home/add.png'),
@@ -88,7 +89,10 @@ class _BottomNavBarState extends State<BottomNavBar> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Center(
-                      child: Icon(Icons.add, color: Colors.white,),
+                      child: Icon(
+                        Icons.add,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
@@ -100,12 +104,14 @@ class _BottomNavBarState extends State<BottomNavBar> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12.5.sp),
                     color: AppTheme.primaryColor,
-
                   ),
                   child: Padding(
-                    padding:  EdgeInsets.only(bottom: 1.h),
+                    padding: EdgeInsets.only(bottom: 1.h),
                     child: Center(
-                      child: Icon(Icons.add, color: Colors.white,),
+                      child: Icon(
+                        Icons.add,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
@@ -113,16 +119,16 @@ class _BottomNavBarState extends State<BottomNavBar> {
               NavigationDestination(
                 icon: Image.asset('assets/general/message-text.png'),
                 label: 'Chat',
-                selectedIcon: Image.asset('assets/general/message-text.png', color: Theme.of(context).primaryColor),
+                selectedIcon: Image.asset('assets/general/message-text.png',
+                    color: Theme.of(context).primaryColor),
               ),
               NavigationDestination(
                 icon: Image.asset('assets/general/profile.png'),
                 label: 'Profile',
-                selectedIcon: Image.asset('assets/general/profile.png', color: Theme.of(context).primaryColor),
+                selectedIcon: Image.asset('assets/general/profile.png',
+                    color: Theme.of(context).primaryColor),
               ),
-
             ],
-
           ),
         ),
       );

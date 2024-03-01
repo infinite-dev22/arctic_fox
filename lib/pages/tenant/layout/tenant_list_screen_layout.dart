@@ -19,30 +19,23 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/controllers/tenants/tenant_controller.dart';
 import 'package:smart_rent/data_source/models/nation/nation_model.dart';
 import 'package:smart_rent/data_source/models/tenant/tenant_type_model.dart';
-import 'package:smart_rent/models/general/smart_model.dart';
-
+import 'package:smart_rent/models/business/business_type_model.dart';
 import 'package:smart_rent/models/salutation/salutation_model.dart';
 import 'package:smart_rent/pages/floor/widgets/tenant_card_widget.dart';
 import 'package:smart_rent/pages/nation/bloc/nation_bloc.dart';
 import 'package:smart_rent/pages/tenant/bloc/tenant_bloc.dart';
 import 'package:smart_rent/pages/tenant/tenant_details_page.dart';
-
-import 'package:smart_rent/screens/tenant/update_company_tenant_with%20contact_screen.dart';
-import 'package:smart_rent/screens/tenant/update_individual_tenant_screen.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 import 'package:smart_rent/utils/app_prefs.dart';
-import 'package:smart_rent/widgets/app_button.dart';
 import 'package:smart_rent/widgets/app_drop_downs.dart';
-import 'package:smart_rent/widgets/app_header.dart';
 import 'package:smart_rent/widgets/app_image_header.dart';
-import 'package:smart_rent/widgets/app_loader.dart';
 import 'package:smart_rent/widgets/app_textfield.dart';
 import 'package:smart_rent/widgets/tenant_profile_contact_form.dart';
-import 'package:smart_rent/models/business/business_type_model.dart';
 import 'package:wtf_sliding_sheet/wtf_sliding_sheet.dart';
 
 class TenantListScreenLayout extends StatefulWidget {
   final TenantController tenantController;
+
   const TenantListScreenLayout({super.key, required this.tenantController});
 
   @override
@@ -79,31 +72,34 @@ class _TenantListScreenLayoutState extends State<TenantListScreenLayout> {
   final TextEditingController companyBranchController = TextEditingController();
   final TextEditingController companyEmailController = TextEditingController();
   final TextEditingController companyTinController = TextEditingController();
-  final TextEditingController companyAddressController = TextEditingController();
-  final TextEditingController companyDescriptionController = TextEditingController();
+  final TextEditingController companyAddressController =
+      TextEditingController();
+  final TextEditingController companyDescriptionController =
+      TextEditingController();
 
   final TextEditingController individualFirstNameController =
-  TextEditingController();
+      TextEditingController();
   final TextEditingController individualLastNameController =
-  TextEditingController();
+      TextEditingController();
   final TextEditingController individualEmailNameController =
-  TextEditingController();
+      TextEditingController();
   final TextEditingController individualPhoneNameController =
-  TextEditingController();
+      TextEditingController();
   final TextEditingController individualDateOfBirthController =
-  TextEditingController();
+      TextEditingController();
   final TextEditingController individualNinController = TextEditingController();
-  final TextEditingController individualDescriptionController = TextEditingController();
+  final TextEditingController individualDescriptionController =
+      TextEditingController();
   final TextEditingController individualGenderController =
-  TextEditingController();
+      TextEditingController();
 
   final TextEditingController contactFirstNameController =
-  TextEditingController();
+      TextEditingController();
   final TextEditingController contactLastNameController =
-  TextEditingController();
+      TextEditingController();
   final TextEditingController contactNinController = TextEditingController();
   final TextEditingController contactDesignationController =
-  TextEditingController();
+      TextEditingController();
   final TextEditingController contactPhoneController = TextEditingController();
   final TextEditingController contactEmailController = TextEditingController();
 
@@ -131,7 +127,6 @@ class _TenantListScreenLayoutState extends State<TenantListScreenLayout> {
     EmailValidator(errorText: 'input does\'nt match email'),
   ]);
 
-
   final iFirstNameValidator = MultiValidator([
     RequiredValidator(errorText: 'first name required'),
     MinLengthValidator(2, errorText: 'first name too short'),
@@ -154,7 +149,6 @@ class _TenantListScreenLayoutState extends State<TenantListScreenLayout> {
     MaxLengthValidator(500, errorText: 'descrition too long'),
   ]);
 
-
   final companyDescriptionValidator = MultiValidator([
     MaxLengthValidator(500, errorText: 'descrition too long'),
   ]);
@@ -164,8 +158,8 @@ class _TenantListScreenLayoutState extends State<TenantListScreenLayout> {
   //   RequiredValidator(errorText: 'salutation required'),
   // ]);
 
-  final iSalutationValidator = RequiredValidator(
-      errorText: 'salutation required');
+  final iSalutationValidator =
+      RequiredValidator(errorText: 'salutation required');
 
   final iGenderValidator = MultiValidator([
     RequiredValidator(errorText: 'gender required'),
@@ -187,7 +181,6 @@ class _TenantListScreenLayoutState extends State<TenantListScreenLayout> {
     RequiredValidator(errorText: 'email is required'),
     EmailValidator(errorText: 'input does\'nt match email'),
   ]);
-
 
   final contactFirstNameValidator = MultiValidator([
     RequiredValidator(errorText: 'first name required'),
@@ -249,7 +242,6 @@ class _TenantListScreenLayoutState extends State<TenantListScreenLayout> {
     }
   }
 
-
   Future<void> _selectDateOfBirth(BuildContext context) async {
     // final DateTime? picked = await showDatePicker(
     //   context: context,
@@ -268,10 +260,9 @@ class _TenantListScreenLayoutState extends State<TenantListScreenLayout> {
     if (picked != null) {
       myDateOfBirth(picked);
       individualDateOfBirthController.text =
-      '${DateFormat('MM/dd/yyyy').format(myDateOfBirth.value)}';
+          '${DateFormat('MM/dd/yyyy').format(myDateOfBirth.value)}';
     }
   }
-
 
   @override
   void initState() {
@@ -311,45 +302,47 @@ class _TenantListScreenLayoutState extends State<TenantListScreenLayout> {
       appBar: AppImageHeader(
         title: 'assets/auth/srw.png',
         isTitleCentred: true,
-
       ),
-
-      floatingActionButtonLocation: userStorage.read('roleId') == 4 ? null : ExpandableFab.location,
-      floatingActionButton: userStorage.read('roleId') == 4 ? Container() : ExpandableFab(
-        key: _tenantKey,
-        type: ExpandableFabType.up,
-        openButtonBuilder: RotateFloatingActionButtonBuilder(
-          child: Container(
-            width: 14.w,
-            height: 10.h,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10.sp),
-              color: AppTheme.primaryColor,
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Center(
-                child: Icon(Icons.add, color: Colors.white,),
+      floatingActionButtonLocation:
+          userStorage.read('roleId') == 4 ? null : ExpandableFab.location,
+      floatingActionButton: userStorage.read('roleId') == 4
+          ? Container()
+          : ExpandableFab(
+              key: _tenantKey,
+              type: ExpandableFabType.up,
+              openButtonBuilder: RotateFloatingActionButtonBuilder(
+                child: Container(
+                  width: 14.w,
+                  height: 10.h,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.sp),
+                    color: AppTheme.primaryColor,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Center(
+                      child: Icon(
+                        Icons.add,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+                fabSize: ExpandableFabSize.regular,
+                foregroundColor: Colors.transparent,
+                backgroundColor: Colors.transparent,
+                shape: const CircleBorder(),
               ),
+              children: [],
+              onOpen: () {
+                final state = _tenantKey.currentState;
+                if (state != null) {
+                  debugPrint('isOpen:${state.isOpen}');
+                  state.toggle();
+                }
+                showAddTenantBottomSheet(context);
+              },
             ),
-          ),
-          fabSize: ExpandableFabSize.regular,
-          foregroundColor: Colors.transparent,
-          backgroundColor: Colors.transparent,
-          shape: const CircleBorder(),
-        ),
-        children: [],
-        onOpen: (){
-          final state = _tenantKey.currentState;
-          if (state != null) {
-            debugPrint('isOpen:${state.isOpen}');
-            state.toggle();
-          }
-          showAddTenantBottomSheet(context);
-
-        },
-      ),
-
       body: Padding(
         padding: EdgeInsets.only(left: 5.w, right: 5.w, top: 0.h),
         child: SingleChildScrollView(
@@ -366,8 +359,14 @@ class _TenantListScreenLayoutState extends State<TenantListScreenLayout> {
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Tenants', style: AppTheme.appTitle5,),
-                        Text('Manage your tenants', style: AppTheme.subText,),
+                        Text(
+                          'Tenants',
+                          style: AppTheme.appTitle5,
+                        ),
+                        Text(
+                          'Manage your tenants',
+                          style: AppTheme.subText,
+                        ),
                       ],
                     ),
                   ),
@@ -394,66 +393,65 @@ class _TenantListScreenLayoutState extends State<TenantListScreenLayout> {
                 ],
               ),
 
-               BlocBuilder<TenantBloc, TenantState>(
-  builder: (context, state) {
-
-    if (state.status == TenantStatus.initial) {
-      context.read<TenantBloc>().add(LoadAllTenantsEvent());
-    }
-    if (state.status == TenantStatus.loading) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
-    } if (state.status == TenantStatus.success) {
-      return ListView.builder(
-          physics: NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          itemCount: state.tenants!.length,
-          itemBuilder: (context, index) {
-            var tenant = state.tenants![index];
-            return Padding(
-              padding: EdgeInsets.only(top: 1.h),
-              child: SlideInUp(
-                  child: Bounceable(
-                    onTap: (){
-                      Get.to(() => TenantDetailsPage(id: tenant.id!));
-                    },
-                    child: TenantCardWidget(
-                      tenantModel: tenant,
-                      index: index,
-                      deleteFunction: ()async {
-                        // if(  tenant.tenantTypeId == 2){
-                        //   widget.tenantController.deleteCompanyTenant(tenant.id);
-                        // } else {
-                        //   widget.tenantController.deleteTenant(tenant.id);
-                        // }
-                      },
-                      editFunction: () {
-                        // if(  tenant.tenantTypeId == 2){
-                        //   Get.to(() => UpdateCompanyTenantWithContactScreen(tenantModel: tenant));
-                        // } else {
-                        //   Get.to(() => UpdateIndividualTenantScreen(tenantModel: tenant));
-                        // }
-                      },
-                    ),
-                  )),
-            );
-          });
-    }
-    if (state.status == TenantStatus.empty) {
-      return const Center(
-        child: Text('No Tenants'),
-      );
-    }
-    if (state.status == TenantStatus.error) {
-      return const Center(
-        child: Text('An error occurred'),
-      );
-    }
-    return Container();
-
-  },
-),
+              BlocBuilder<TenantBloc, TenantState>(
+                builder: (context, state) {
+                  if (state.status == TenantStatus.initial) {
+                    context.read<TenantBloc>().add(LoadAllTenantsEvent());
+                  }
+                  if (state.status == TenantStatus.loading) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  if (state.status == TenantStatus.success) {
+                    return ListView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: state.tenants!.length,
+                        itemBuilder: (context, index) {
+                          var tenant = state.tenants![index];
+                          return Padding(
+                            padding: EdgeInsets.only(top: 1.h),
+                            child: SlideInUp(
+                                child: Bounceable(
+                              onTap: () {
+                                Get.to(() => TenantDetailsPage(id: tenant.id!));
+                              },
+                              child: TenantCardWidget(
+                                tenantModel: tenant,
+                                index: index,
+                                deleteFunction: () async {
+                                  // if(  tenant.tenantTypeId == 2){
+                                  //   widget.tenantController.deleteCompanyTenant(tenant.id);
+                                  // } else {
+                                  //   widget.tenantController.deleteTenant(tenant.id);
+                                  // }
+                                },
+                                editFunction: () {
+                                  // if(  tenant.tenantTypeId == 2){
+                                  //   Get.to(() => UpdateCompanyTenantWithContactScreen(tenantModel: tenant));
+                                  // } else {
+                                  //   Get.to(() => UpdateIndividualTenantScreen(tenantModel: tenant));
+                                  // }
+                                },
+                              ),
+                            )),
+                          );
+                        });
+                  }
+                  if (state.status == TenantStatus.empty) {
+                    return const Center(
+                      child: Text('No Tenants'),
+                    );
+                  }
+                  if (state.status == TenantStatus.error) {
+                    return const Center(
+                      child: Text('An error occurred'),
+                    );
+                  }
+                  return Container();
+                },
+              ),
 
               // Obx(() {
               //   return widget.tenantController.isTenantListLoading.value
@@ -498,12 +496,10 @@ class _TenantListScreenLayoutState extends State<TenantListScreenLayout> {
               //         );
               //       });
               // }),
-
             ],
           ),
         ),
       ),
-
     );
   }
 
@@ -521,7 +517,6 @@ class _TenantListScreenLayoutState extends State<TenantListScreenLayout> {
           snappings: [0.9],
           positioning: SnapPositioning.relativeToAvailableSpace,
         ),
-
         headerBuilder: (context, state) {
           return Material(
             elevation: 1,
@@ -729,623 +724,645 @@ class _TenantListScreenLayoutState extends State<TenantListScreenLayout> {
         builder: (context, state) {
           return StatefulBuilder(
               builder: (BuildContext context, StateSetter setState) {
-                return WillPopScope(
-                  onWillPop: () async {
-                    firstNameController.clear();
-                    surnameNameController.clear();
-                    otherNameController.clear();
-                    phoneNoController.clear();
-                    companyNameController.clear();
-                    companyDescriptionController.clear();
-                    individualFirstNameController.clear();
-                    individualLastNameController.clear();
-                    individualEmailNameController.clear();
-                    individualPhoneNameController.clear();
-                    individualDateOfBirthController.clear();
-                    individualNinController.clear();
-                    individualDescriptionController.clear();
-                    individualGenderController.clear();
-                    contactFirstNameController.clear();
-                    contactLastNameController.clear();
-                    contactNinController.clear();
-                    contactDesignationController.clear();
-                    contactPhoneController.clear();
-                    contactEmailController.clear();
-                    tenantPic = File('');
-                    companyTenantPic = File('');
+            return WillPopScope(
+              onWillPop: () async {
+                firstNameController.clear();
+                surnameNameController.clear();
+                otherNameController.clear();
+                phoneNoController.clear();
+                companyNameController.clear();
+                companyDescriptionController.clear();
+                individualFirstNameController.clear();
+                individualLastNameController.clear();
+                individualEmailNameController.clear();
+                individualPhoneNameController.clear();
+                individualDateOfBirthController.clear();
+                individualNinController.clear();
+                individualDescriptionController.clear();
+                individualGenderController.clear();
+                contactFirstNameController.clear();
+                contactLastNameController.clear();
+                contactNinController.clear();
+                contactDesignationController.clear();
+                contactPhoneController.clear();
+                contactEmailController.clear();
+                tenantPic = File('');
+                companyTenantPic = File('');
 
-                    return true;
-                  },
-                  child: MultiBlocProvider(
-                    providers: [
-                      BlocProvider<TenantBloc>(create: (context) => TenantBloc(),),
-                      BlocProvider<NationBloc>(create: (context) => NationBloc(),)
-                    ],
-                    child: Material(
-                      color: AppTheme.whiteColor,
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding:
-                            EdgeInsets.symmetric(horizontal: 5.w, vertical: 1.h),
-                            child: SingleChildScrollView(
-                              child: Form(
-                                key: _formKey,
-                                child: Column(
-                                  children: [
-                                    BlocBuilder<TenantBloc, TenantState>(
-                                      builder: (context, state) {
-                                        if(state.status == TenantStatus.initial){
-                                          context.read<TenantBloc>().add(LoadTenantTypes());
-                                        }
-                                        return CustomApiGenericDropdown<TenantTypeModel>(
-                                          hintText: 'Select Tenant Type',
-                                          menuItems: state.tenantTypes == null ? [] : state.tenantTypes!,
-                                          onChanged: (value) {
-
-                                          },
-                                        );
-                                      },
-                                    ),
-                                    SizedBox(
-                                      height: 1.h,
-                                    ),
-
-                                    CustomApiGenericDropdown<BusinessTypeModel>(
-                                      hintText: "Business Type",
-                                      menuItems: [],
-                                      onChanged: (value) {},
-                                    ),
-
-                                    SizedBox(
-                                      height: 1.h,
-                                    ),
-
-                                    BlocBuilder<NationBloc, NationState>(
-                                      builder: (context, state) {
-                                        if(state.status == NationStatus.initial){
-                                          context.read<NationBloc>().add(LoadNationsEvent());
-                                        }
-                                      return CustomApiGenericDropdown<NationModel>(
-                                      hintText: 'Country',
-                                      menuItems: state.nations == null ? [] : state.nations!,
+                return true;
+              },
+              child: MultiBlocProvider(
+                providers: [
+                  BlocProvider<TenantBloc>(
+                    create: (context) => TenantBloc(),
+                  ),
+                  BlocProvider<NationBloc>(
+                    create: (context) => NationBloc(),
+                  )
+                ],
+                child: Material(
+                  color: AppTheme.whiteColor,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 5.w, vertical: 1.h),
+                        child: SingleChildScrollView(
+                          child: Form(
+                            key: _formKey,
+                            child: Column(
+                              children: [
+                                BlocBuilder<TenantBloc, TenantState>(
+                                  builder: (context, state) {
+                                    if (state.status == TenantStatus.initial) {
+                                      context
+                                          .read<TenantBloc>()
+                                          .add(LoadTenantTypes());
+                                    }
+                                    return CustomApiGenericDropdown<
+                                        TenantTypeModel>(
+                                      hintText: 'Select Tenant Type',
+                                      menuItems: state.tenantTypes == null
+                                          ? []
+                                          : state.tenantTypes!,
                                       onChanged: (value) {},
                                     );
-                                        },),
+                                  },
+                                ),
+                                SizedBox(
+                                  height: 1.h,
+                                ),
 
-                                    SlideInUp(
-                                      child: Container(
-                                        child: Form(
-                                          key: _individualFormKey,
-                                          child: Column(
-                                            children: [
-                                              Text(
-                                                'Personal Details',
-                                                style: AppTheme.appTitle3,
-                                              ),
-                                              CustomApiGenericDropdown<
-                                                  SalutationModel>(
-                                                hintText: 'Mr',
-                                                menuItems: [],
-                                                onChanged: (value) {},
-                                                height: 6.5.h,
-                                              ),
+                                CustomApiGenericDropdown<BusinessTypeModel>(
+                                  hintText: "Business Type",
+                                  menuItems: [],
+                                  onChanged: (value) {},
+                                ),
 
-                                              SizedBox(
-                                                height: 1.h,
-                                              ),
+                                SizedBox(
+                                  height: 1.h,
+                                ),
 
-                                              Row(
-                                                mainAxisAlignment:
+                                BlocBuilder<NationBloc, NationState>(
+                                  builder: (context, state) {
+                                    if (state.status == NationStatus.initial) {
+                                      context
+                                          .read<NationBloc>()
+                                          .add(LoadNationsEvent());
+                                    }
+                                    return CustomApiGenericDropdown<
+                                        NationModel>(
+                                      hintText: 'Country',
+                                      menuItems: state.nations == null
+                                          ? []
+                                          : state.nations!,
+                                      onChanged: (value) {},
+                                    );
+                                  },
+                                ),
+
+                                SlideInUp(
+                                  child: Container(
+                                    child: Form(
+                                      key: _individualFormKey,
+                                      child: Column(
+                                        children: [
+                                          Text(
+                                            'Personal Details',
+                                            style: AppTheme.appTitle3,
+                                          ),
+                                          CustomApiGenericDropdown<
+                                              SalutationModel>(
+                                            hintText: 'Mr',
+                                            menuItems: [],
+                                            onChanged: (value) {},
+                                            height: 6.5.h,
+                                          ),
+
+                                          SizedBox(
+                                            height: 1.h,
+                                          ),
+
+                                          Row(
+                                            mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
-                                                crossAxisAlignment:
+                                            crossAxisAlignment:
                                                 CrossAxisAlignment.center,
-                                                children: [
-                                                  SizedBox(
-                                                    width: 42.5.w,
-                                                    child: AuthTextField(
-                                                      controller: firstNameController,
-                                                      hintText: 'First Name',
-                                                      obscureText: false,
-                                                      keyBoardType:
+                                            children: [
+                                              SizedBox(
+                                                width: 42.5.w,
+                                                child: AuthTextField(
+                                                  controller:
+                                                      firstNameController,
+                                                  hintText: 'First Name',
+                                                  obscureText: false,
+                                                  keyBoardType:
                                                       TextInputType.text,
-                                                      // validator: iFirstNameValidator,
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    width: 42.5.w,
-                                                    child: AuthTextField(
-                                                      controller:
+                                                  // validator: iFirstNameValidator,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: 42.5.w,
+                                                child: AuthTextField(
+                                                  controller:
                                                       surnameNameController,
-                                                      hintText: 'Surname',
-                                                      obscureText: false,
-                                                      keyBoardType:
+                                                  hintText: 'Surname',
+                                                  obscureText: false,
+                                                  keyBoardType:
                                                       TextInputType.text,
-                                                      // validator: iLastNameValidator,
-                                                    ),
-                                                  ),
-                                                ],
+                                                  // validator: iLastNameValidator,
+                                                ),
                                               ),
+                                            ],
+                                          ),
 
-                                              SizedBox(
-                                                height: 1.h,
-                                              ),
+                                          SizedBox(
+                                            height: 1.h,
+                                          ),
 
-                                              AuthTextField(
-                                                controller: middleNameController,
-                                                hintText: 'Middle Name',
-                                                obscureText: false,
-                                                keyBoardType: TextInputType.text,
-                                                // validator: iFirstNameValidator,
-                                              ),
+                                          AuthTextField(
+                                            controller: middleNameController,
+                                            hintText: 'Middle Name',
+                                            obscureText: false,
+                                            keyBoardType: TextInputType.text,
+                                            // validator: iFirstNameValidator,
+                                          ),
 
-                                              SizedBox(
-                                                height: 1.h,
-                                              ),
+                                          SizedBox(
+                                            height: 1.h,
+                                          ),
 
-                                              AuthTextField(
-                                                controller:
+                                          AuthTextField(
+                                            controller:
                                                 individualEmailNameController,
-                                                hintText: 'Email',
-                                                obscureText: false,
-                                                keyBoardType:
+                                            hintText: 'Email',
+                                            obscureText: false,
+                                            keyBoardType:
                                                 TextInputType.emailAddress,
-                                                // validator: iEmailValidator,
-                                              ),
+                                            // validator: iEmailValidator,
+                                          ),
 
-                                              SizedBox(
-                                                height: 1.h,
-                                              ),
+                                          SizedBox(
+                                            height: 1.h,
+                                          ),
 
-                                              AuthTextField(
-                                                controller:
+                                          AuthTextField(
+                                            controller:
                                                 individualPhoneNameController,
-                                                hintText: 'Contact',
-                                                obscureText: false,
-                                                keyBoardType: TextInputType.number,
-                                                // validator: iPhoneValidator,
-                                              ),
+                                            hintText: 'Contact',
+                                            obscureText: false,
+                                            keyBoardType: TextInputType.number,
+                                            // validator: iPhoneValidator,
+                                          ),
 
-                                              SizedBox(
-                                                height: 1.h,
-                                              ),
+                                          SizedBox(
+                                            height: 1.h,
+                                          ),
 
-                                              AuthTextField(
-                                                controller:
+                                          AuthTextField(
+                                            controller:
                                                 individualDateOfBirthController,
-                                                hintText: 'D.O.B',
-                                                obscureText: false,
-                                                onTap: () {
-                                                  _selectDateOfBirth(context);
-                                                },
-                                              ),
+                                            hintText: 'D.O.B',
+                                            obscureText: false,
+                                            onTap: () {
+                                              _selectDateOfBirth(context);
+                                            },
+                                          ),
 
-                                              SizedBox(
-                                                height: 1.h,
-                                              ),
+                                          SizedBox(
+                                            height: 1.h,
+                                          ),
 
-                                              CustomGenericDropdown(
-                                                hintText: 'Branch',
-                                                menuItems: [],
-                                              ),
+                                          CustomGenericDropdown(
+                                            hintText: 'Branch',
+                                            menuItems: [],
+                                          ),
 
-                                              SizedBox(
-                                                height: 1.h,
-                                              ),
+                                          SizedBox(
+                                            height: 1.h,
+                                          ),
 
-                                              AuthTextField(
-                                                controller: idNumberController,
-                                                hintText: 'ID Number',
-                                                obscureText: false,
-                                                keyBoardType: TextInputType.number,
-                                                // validator: iFirstNameValidator,
-                                              ),
+                                          AuthTextField(
+                                            controller: idNumberController,
+                                            hintText: 'ID Number',
+                                            obscureText: false,
+                                            keyBoardType: TextInputType.number,
+                                            // validator: iFirstNameValidator,
+                                          ),
 
-                                              SizedBox(
-                                                height: 1.h,
-                                              ),
+                                          SizedBox(
+                                            height: 1.h,
+                                          ),
 
-                                              AuthTextField(
-                                                controller: individualNinController,
-                                                hintText: 'NIN',
-                                                obscureText: false,
-                                                keyBoardType: TextInputType.text,
-                                                // validator: iNinValidator,
-                                              ),
+                                          AuthTextField(
+                                            controller: individualNinController,
+                                            hintText: 'NIN',
+                                            obscureText: false,
+                                            keyBoardType: TextInputType.text,
+                                            // validator: iNinValidator,
+                                          ),
 
-                                              SizedBox(
-                                                height: 1.h,
-                                              ),
+                                          SizedBox(
+                                            height: 1.h,
+                                          ),
 
-                                              AuthTextField(
-                                                controller: tinNumberController,
-                                                hintText: 'Tin Number',
-                                                obscureText: false,
-                                                keyBoardType: TextInputType.number,
-                                                // validator: iFirstNameValidator,
-                                              ),
+                                          AuthTextField(
+                                            controller: tinNumberController,
+                                            hintText: 'Tin Number',
+                                            obscureText: false,
+                                            keyBoardType: TextInputType.number,
+                                            // validator: iFirstNameValidator,
+                                          ),
 
-                                              SizedBox(
-                                                height: 1.h,
-                                              ),
+                                          SizedBox(
+                                            height: 1.h,
+                                          ),
 
-                                              CustomGenericDropdown<String>(
-                                                hintText: 'Gender',
-                                                menuItems: [],
-                                                onChanged: (value) {},
-                                              ),
+                                          CustomGenericDropdown<String>(
+                                            hintText: 'Gender',
+                                            menuItems: [],
+                                            onChanged: (value) {},
+                                          ),
 
-                                              SizedBox(
-                                                height: 1.h,
-                                              ),
+                                          SizedBox(
+                                            height: 1.h,
+                                          ),
 
-                                              AuthTextField(
-                                                controller: addressController,
-                                                hintText: 'Address',
-                                                obscureText: false,
-                                                keyBoardType:
+                                          AuthTextField(
+                                            controller: addressController,
+                                            hintText: 'Address',
+                                            obscureText: false,
+                                            keyBoardType:
                                                 TextInputType.streetAddress,
-                                                // validator: iFirstNameValidator,
-                                              ),
+                                            // validator: iFirstNameValidator,
+                                          ),
 
-                                              SizedBox(
-                                                height: 1.h,
-                                              ),
+                                          SizedBox(
+                                            height: 1.h,
+                                          ),
 
-                                              DescriptionTextField(
-                                                controller:
+                                          DescriptionTextField(
+                                            controller:
                                                 individualDescriptionController,
-                                                hintText: 'Description',
-                                                obscureText: false,
-                                              ),
+                                            hintText: 'Description',
+                                            obscureText: false,
+                                          ),
 
-                                              SizedBox(
-                                                height: 1.h,
-                                              ),
+                                          SizedBox(
+                                            height: 1.h,
+                                          ),
 
-                                              Bounceable(
-                                                onTap: () {
-                                                  FullPicker(
-                                                    prefixName: 'add tenant',
-                                                    context: context,
-                                                    image: true,
-                                                    imageCamera: kDebugMode,
-                                                    imageCropper: true,
-                                                    onError: (int value) {
-                                                      print(
-                                                          " ----  onError ----=$value");
-                                                    },
-                                                    onSelected: (value) async {
-                                                      print(" ----  onSelected ----");
-
-                                                      setState(() {
-                                                        tenantPic = value.file.first;
-                                                        tenantImagePath =
-                                                            value.file.first!.path;
-                                                        tenantImageExtension = value
-                                                            .file.first!.path
-                                                            .split('.')
-                                                            .last;
-                                                        tenantFileName = value
-                                                            .file.first!.path
-                                                            .split('/')
-                                                            .last;
-                                                      });
-                                                      tenantBytes = await tenantPic!
-                                                          .readAsBytes();
-                                                      print('MY PIC == $tenantPic');
-                                                      print(
-                                                          'MY path == $tenantImagePath');
-                                                      print(
-                                                          'MY bytes == $tenantBytes');
-                                                      print(
-                                                          'MY extension == $tenantImageExtension');
-                                                      print(
-                                                          'MY FILE NAME == $tenantFileName');
-                                                    },
-                                                  );
+                                          Bounceable(
+                                            onTap: () {
+                                              FullPicker(
+                                                prefixName: 'add tenant',
+                                                context: context,
+                                                image: true,
+                                                imageCamera: kDebugMode,
+                                                imageCropper: true,
+                                                onError: (int value) {
+                                                  print(
+                                                      " ----  onError ----=$value");
                                                 },
-                                                child: Container(
-                                                  width: 50.w,
-                                                  height: 30.h,
-                                                  decoration: BoxDecoration(
-                                                      color: AppTheme.appWidgetColor,
-                                                      borderRadius:
+                                                onSelected: (value) async {
+                                                  print(
+                                                      " ----  onSelected ----");
+
+                                                  setState(() {
+                                                    tenantPic =
+                                                        value.file.first;
+                                                    tenantImagePath =
+                                                        value.file.first!.path;
+                                                    tenantImageExtension = value
+                                                        .file.first!.path
+                                                        .split('.')
+                                                        .last;
+                                                    tenantFileName = value
+                                                        .file.first!.path
+                                                        .split('/')
+                                                        .last;
+                                                  });
+                                                  tenantBytes = await tenantPic!
+                                                      .readAsBytes();
+                                                  print('MY PIC == $tenantPic');
+                                                  print(
+                                                      'MY path == $tenantImagePath');
+                                                  print(
+                                                      'MY bytes == $tenantBytes');
+                                                  print(
+                                                      'MY extension == $tenantImageExtension');
+                                                  print(
+                                                      'MY FILE NAME == $tenantFileName');
+                                                },
+                                              );
+                                            },
+                                            child: Container(
+                                              width: 50.w,
+                                              height: 30.h,
+                                              decoration: BoxDecoration(
+                                                  color:
+                                                      AppTheme.appWidgetColor,
+                                                  borderRadius:
                                                       BorderRadius.circular(
                                                           15.sp),
-                                                      image: DecorationImage(
-                                                          image: FileImage(
-                                                              tenantPic ?? File('')),
-                                                          fit: BoxFit.cover)),
-                                                  child: tenantPic == null
-                                                      ? Center(
-                                                    child: Text(
-                                                        'Upload profile pic'),
-                                                  )
-                                                      : null,
-                                                ),
-                                              )
+                                                  image: DecorationImage(
+                                                      image: FileImage(
+                                                          tenantPic ??
+                                                              File('')),
+                                                      fit: BoxFit.cover)),
+                                              child: tenantPic == null
+                                                  ? Center(
+                                                      child: Text(
+                                                          'Upload profile pic'),
+                                                    )
+                                                  : null,
+                                            ),
+                                          )
 
-                                              // AppTextField(
-                                              //   controller: individualDescriptionController,
-                                              //   hintText: 'Description',
-                                              //   obscureText: false,
-                                              //   keyBoardType: TextInputType.text,
-                                              //   validator: iDescriptionValidator,
-                                              // ),
-                                            ],
-                                          ),
-                                        ),
+                                          // AppTextField(
+                                          //   controller: individualDescriptionController,
+                                          //   hintText: 'Description',
+                                          //   obscureText: false,
+                                          //   keyBoardType: TextInputType.text,
+                                          //   validator: iDescriptionValidator,
+                                          // ),
+                                        ],
                                       ),
                                     ),
-
-                                    SlideInUp(
-                                      child: Container(
-                                        child: Form(
-                                          key: _companyFormKey,
-                                          child: Column(
-                                            children: [
-                                              Text(
-                                                'Company Details',
-                                                style: AppTheme.appTitle3,
-                                              ),
-                                              AuthTextField(
-                                                controller: companyNameController,
-                                                hintText: 'Business Name',
-                                                obscureText: false,
-                                                keyBoardType: TextInputType.text,
-                                                // validator: companyNameValidator,
-                                              ),
-                                              SizedBox(height: 1.h),
-                                              AuthTextField(
-                                                controller: companyBranchController,
-                                                hintText: 'Branch',
-                                                obscureText: false,
-                                                keyBoardType: TextInputType.text,
-                                              ),
-                                              SizedBox(height: 1.h),
-                                              AuthTextField(
-                                                controller: companyEmailController,
-                                                hintText: 'Email',
-                                                obscureText: false,
-                                                keyBoardType:
-                                                TextInputType.emailAddress,
-                                              ),
-                                              SizedBox(height: 1.h),
-                                              AuthTextField(
-                                                controller: companyTinController,
-                                                hintText: 'Tin Number',
-                                                obscureText: false,
-                                                keyBoardType: TextInputType.number,
-                                              ),
-                                              SizedBox(height: 1.h),
-                                              AuthTextField(
-                                                controller: companyAddressController,
-                                                hintText: 'Address',
-                                                obscureText: false,
-                                                keyBoardType:
-                                                TextInputType.streetAddress,
-                                              ),
-                                              SizedBox(
-                                                height: 1.h,
-                                              ),
-                                              DescriptionTextField(
-                                                controller:
-                                                companyDescriptionController,
-                                                hintText: 'Description',
-                                                obscureText: false,
-                                              ),
-                                              CheckboxListTile(
-                                                value: true,
-                                                onChanged: (value) {},
-                                                activeColor: AppTheme.primaryColor,
-                                                title: true
-                                                    ? Text(
-                                                  'remove Contact Person',
-                                                  style: AppTheme.subTextBold1,
-                                                )
-                                                    : Text(
-                                                  'add Contact Person',
-                                                  style: AppTheme.subTextBold1,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-
-                                    Bounceable(
-                                      onTap: () {
-                                        FullPicker(
-                                          prefixName: 'add tenant',
-                                          context: context,
-                                          image: true,
-                                          imageCamera: kDebugMode,
-                                          imageCropper: true,
-                                          onError: (int value) {
-                                            print(" ----  onError ----=$value");
-                                          },
-                                          onSelected: (value) async {
-                                            print(" ----  onSelected ----");
-
-                                            setState(() {
-                                              companyTenantPic = value.file.first;
-                                              companyTenantImagePath =
-                                                  value.file.first!.path;
-                                              companyTenantImageExtension = value
-                                                  .file.first!.path
-                                                  .split('.')
-                                                  .last;
-                                              companyTenantFileName = value
-                                                  .file.first!.path
-                                                  .split('/')
-                                                  .last;
-                                            });
-                                            companyTenantBytes =
-                                            await companyTenantPic!.readAsBytes();
-                                            print(
-                                                'MY Company PIC == $companyTenantPic');
-                                            print(
-                                                'MY Company path == $companyTenantImagePath');
-                                            print(
-                                                'MY Company bytes == $companyTenantBytes');
-                                            print(
-                                                'MY Company extension == $companyTenantImageExtension');
-                                            print(
-                                                'MY Company FILE NAME == $companyTenantFileName');
-                                          },
-                                        );
-                                      },
-                                      child: Container(
-                                        width: 50.w,
-                                        height: 30.h,
-                                        decoration: BoxDecoration(
-                                            color: AppTheme.appWidgetColor,
-                                            borderRadius:
-                                            BorderRadius.circular(15.sp),
-                                            image: DecorationImage(
-                                                image: FileImage(
-                                                    companyTenantPic ?? File('')),
-                                                fit: BoxFit.cover)),
-                                        child: companyTenantPic == null ||
-                                            companyTenantPic!.path.isEmpty
-                                            ? Center(
-                                          child: Text('Upload profile pic'),
-                                        )
-                                            : null,
-                                      ),
-                                    ),
-
-                                    SizedBox(
-                                      height: 2.h,
-                                    ),
-
-                                    // AppTextField(
-                                    //   controller: otherNameController,
-                                    //   hintText: 'Phone No:',
-                                    //   obscureText: false,
-                                    // ),
-                                    //
-                                    // SizedBox(height: 2.h,),
-                                    //
-                                    // SizedBox(
-                                    //   height: 15.h,
-                                    //   width: 90.w,
-                                    //   child: DottedBorder(
-                                    //     borderType: BorderType.RRect,
-                                    //     strokeWidth: 1,
-                                    //     radius: Radius.circular(20.sp),
-                                    //     child: _image.path == '' ?
-                                    //     Center(child: Bounceable(
-                                    //       onTap: () async {
-                                    //         await pickImage();
-                                    //       },
-                                    //       child: Center(
-                                    //         child: Container(
-                                    //             height: 29.5.h,
-                                    //             width: 77.5.w,
-                                    //             decoration: BoxDecoration(
-                                    //                 borderRadius: BorderRadius.circular(20.sp)
-                                    //             ),
-                                    //             child: Row(
-                                    //               mainAxisAlignment: MainAxisAlignment.center,
-                                    //               crossAxisAlignment: CrossAxisAlignment.center,
-                                    //               children: [
-                                    //                 Center(child: Image.asset(
-                                    //                     'assets/general/upload.png')),
-                                    //                 SizedBox(width: 3.w,),
-                                    //                 Text('Upload Picture', style: AppTheme.subText)
-                                    //               ],
-                                    //             )),
-                                    //       ),
-                                    //     ),)
-                                    //         : Center(
-                                    //       child: Container(
-                                    //         clipBehavior: Clip.antiAlias,
-                                    //         height: 29.5.h,
-                                    //         width: 77.5.w,
-                                    //         decoration: BoxDecoration(
-                                    //           // color: AppTheme.borderColor2,
-                                    //             borderRadius: BorderRadius.circular(20.sp)
-                                    //         ),
-                                    //         child: Stack(
-                                    //           children: [
-                                    //             Center(
-                                    //               child: Image(image: FileImage(_image),
-                                    //                 fit: BoxFit.cover,
-                                    //               ),
-                                    //             ),
-                                    //             Align(
-                                    //                 alignment: Alignment.topRight,
-                                    //                 child: Padding(
-                                    //                   padding: EdgeInsets.only(
-                                    //                       right: 2.w, top: 2.h),
-                                    //                   child: Bounceable(
-                                    //                       onTap: () {
-                                    //                         setState(() {
-                                    //                           _image = File('');
-                                    //                         });
-                                    //                       },
-                                    //                       child: Icon(Icons.cancel, size: 25.sp,
-                                    //                         color: AppTheme.primaryColor,)),
-                                    //                 ))
-                                    //           ],
-                                    //         ),),
-                                    //     ),
-                                    //   ),
-                                    // ),
-                                    //
-                                    // imageError == '' ? Container() : Padding(
-                                    //   padding: EdgeInsets.symmetric(
-                                    //       horizontal: 3.w, vertical: 0.5.h),
-                                    //   child: Text(imageError, style: TextStyle(
-                                    //     fontSize: 14.sp,
-                                    //     color: Colors.red.shade800,
-                                    //
-                                    //   ),),
-                                    // ),
-
-                                    TenantProfileContactForm(
-                                      contactKey: _contactFormKey,
-                                      contactFirstNameController:
-                                      contactFirstNameController,
-                                      contactLastNameController:
-                                      contactLastNameController,
-                                      contactNinController: contactNinController,
-                                      contactDesignationController:
-                                      contactDesignationController,
-                                      contactPhoneController: contactPhoneController,
-                                      contactEmailController: contactEmailController,
-                                      designationValidator:
-                                      contactDesignationValidator,
-                                      emailValidator: contactEmailValidator,
-                                      firstNameValidator: contactFirstNameValidator,
-                                      lastNameValidator: contactLastNameValidator,
-                                      ninValidator: contactNinValidator,
-                                      phoneValidator: contactPhoneValidator,
-                                    ),
-
-                                    // SizedBox(
-                                    //   height: 2.h,
-                                    // ),
-                                  ],
+                                  ),
                                 ),
-                              ),
+
+                                SlideInUp(
+                                  child: Container(
+                                    child: Form(
+                                      key: _companyFormKey,
+                                      child: Column(
+                                        children: [
+                                          Text(
+                                            'Company Details',
+                                            style: AppTheme.appTitle3,
+                                          ),
+                                          AuthTextField(
+                                            controller: companyNameController,
+                                            hintText: 'Business Name',
+                                            obscureText: false,
+                                            keyBoardType: TextInputType.text,
+                                            // validator: companyNameValidator,
+                                          ),
+                                          SizedBox(height: 1.h),
+                                          AuthTextField(
+                                            controller: companyBranchController,
+                                            hintText: 'Branch',
+                                            obscureText: false,
+                                            keyBoardType: TextInputType.text,
+                                          ),
+                                          SizedBox(height: 1.h),
+                                          AuthTextField(
+                                            controller: companyEmailController,
+                                            hintText: 'Email',
+                                            obscureText: false,
+                                            keyBoardType:
+                                                TextInputType.emailAddress,
+                                          ),
+                                          SizedBox(height: 1.h),
+                                          AuthTextField(
+                                            controller: companyTinController,
+                                            hintText: 'Tin Number',
+                                            obscureText: false,
+                                            keyBoardType: TextInputType.number,
+                                          ),
+                                          SizedBox(height: 1.h),
+                                          AuthTextField(
+                                            controller:
+                                                companyAddressController,
+                                            hintText: 'Address',
+                                            obscureText: false,
+                                            keyBoardType:
+                                                TextInputType.streetAddress,
+                                          ),
+                                          SizedBox(
+                                            height: 1.h,
+                                          ),
+                                          DescriptionTextField(
+                                            controller:
+                                                companyDescriptionController,
+                                            hintText: 'Description',
+                                            obscureText: false,
+                                          ),
+                                          CheckboxListTile(
+                                            value: true,
+                                            onChanged: (value) {},
+                                            activeColor: AppTheme.primaryColor,
+                                            title: true
+                                                ? Text(
+                                                    'remove Contact Person',
+                                                    style:
+                                                        AppTheme.subTextBold1,
+                                                  )
+                                                : Text(
+                                                    'add Contact Person',
+                                                    style:
+                                                        AppTheme.subTextBold1,
+                                                  ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+
+                                Bounceable(
+                                  onTap: () {
+                                    FullPicker(
+                                      prefixName: 'add tenant',
+                                      context: context,
+                                      image: true,
+                                      imageCamera: kDebugMode,
+                                      imageCropper: true,
+                                      onError: (int value) {
+                                        print(" ----  onError ----=$value");
+                                      },
+                                      onSelected: (value) async {
+                                        print(" ----  onSelected ----");
+
+                                        setState(() {
+                                          companyTenantPic = value.file.first;
+                                          companyTenantImagePath =
+                                              value.file.first!.path;
+                                          companyTenantImageExtension = value
+                                              .file.first!.path
+                                              .split('.')
+                                              .last;
+                                          companyTenantFileName = value
+                                              .file.first!.path
+                                              .split('/')
+                                              .last;
+                                        });
+                                        companyTenantBytes =
+                                            await companyTenantPic!
+                                                .readAsBytes();
+                                        print(
+                                            'MY Company PIC == $companyTenantPic');
+                                        print(
+                                            'MY Company path == $companyTenantImagePath');
+                                        print(
+                                            'MY Company bytes == $companyTenantBytes');
+                                        print(
+                                            'MY Company extension == $companyTenantImageExtension');
+                                        print(
+                                            'MY Company FILE NAME == $companyTenantFileName');
+                                      },
+                                    );
+                                  },
+                                  child: Container(
+                                    width: 50.w,
+                                    height: 30.h,
+                                    decoration: BoxDecoration(
+                                        color: AppTheme.appWidgetColor,
+                                        borderRadius:
+                                            BorderRadius.circular(15.sp),
+                                        image: DecorationImage(
+                                            image: FileImage(
+                                                companyTenantPic ?? File('')),
+                                            fit: BoxFit.cover)),
+                                    child: companyTenantPic == null ||
+                                            companyTenantPic!.path.isEmpty
+                                        ? Center(
+                                            child: Text('Upload profile pic'),
+                                          )
+                                        : null,
+                                  ),
+                                ),
+
+                                SizedBox(
+                                  height: 2.h,
+                                ),
+
+                                // AppTextField(
+                                //   controller: otherNameController,
+                                //   hintText: 'Phone No:',
+                                //   obscureText: false,
+                                // ),
+                                //
+                                // SizedBox(height: 2.h,),
+                                //
+                                // SizedBox(
+                                //   height: 15.h,
+                                //   width: 90.w,
+                                //   child: DottedBorder(
+                                //     borderType: BorderType.RRect,
+                                //     strokeWidth: 1,
+                                //     radius: Radius.circular(20.sp),
+                                //     child: _image.path == '' ?
+                                //     Center(child: Bounceable(
+                                //       onTap: () async {
+                                //         await pickImage();
+                                //       },
+                                //       child: Center(
+                                //         child: Container(
+                                //             height: 29.5.h,
+                                //             width: 77.5.w,
+                                //             decoration: BoxDecoration(
+                                //                 borderRadius: BorderRadius.circular(20.sp)
+                                //             ),
+                                //             child: Row(
+                                //               mainAxisAlignment: MainAxisAlignment.center,
+                                //               crossAxisAlignment: CrossAxisAlignment.center,
+                                //               children: [
+                                //                 Center(child: Image.asset(
+                                //                     'assets/general/upload.png')),
+                                //                 SizedBox(width: 3.w,),
+                                //                 Text('Upload Picture', style: AppTheme.subText)
+                                //               ],
+                                //             )),
+                                //       ),
+                                //     ),)
+                                //         : Center(
+                                //       child: Container(
+                                //         clipBehavior: Clip.antiAlias,
+                                //         height: 29.5.h,
+                                //         width: 77.5.w,
+                                //         decoration: BoxDecoration(
+                                //           // color: AppTheme.borderColor2,
+                                //             borderRadius: BorderRadius.circular(20.sp)
+                                //         ),
+                                //         child: Stack(
+                                //           children: [
+                                //             Center(
+                                //               child: Image(image: FileImage(_image),
+                                //                 fit: BoxFit.cover,
+                                //               ),
+                                //             ),
+                                //             Align(
+                                //                 alignment: Alignment.topRight,
+                                //                 child: Padding(
+                                //                   padding: EdgeInsets.only(
+                                //                       right: 2.w, top: 2.h),
+                                //                   child: Bounceable(
+                                //                       onTap: () {
+                                //                         setState(() {
+                                //                           _image = File('');
+                                //                         });
+                                //                       },
+                                //                       child: Icon(Icons.cancel, size: 25.sp,
+                                //                         color: AppTheme.primaryColor,)),
+                                //                 ))
+                                //           ],
+                                //         ),),
+                                //     ),
+                                //   ),
+                                // ),
+                                //
+                                // imageError == '' ? Container() : Padding(
+                                //   padding: EdgeInsets.symmetric(
+                                //       horizontal: 3.w, vertical: 0.5.h),
+                                //   child: Text(imageError, style: TextStyle(
+                                //     fontSize: 14.sp,
+                                //     color: Colors.red.shade800,
+                                //
+                                //   ),),
+                                // ),
+
+                                TenantProfileContactForm(
+                                  contactKey: _contactFormKey,
+                                  contactFirstNameController:
+                                      contactFirstNameController,
+                                  contactLastNameController:
+                                      contactLastNameController,
+                                  contactNinController: contactNinController,
+                                  contactDesignationController:
+                                      contactDesignationController,
+                                  contactPhoneController:
+                                      contactPhoneController,
+                                  contactEmailController:
+                                      contactEmailController,
+                                  designationValidator:
+                                      contactDesignationValidator,
+                                  emailValidator: contactEmailValidator,
+                                  firstNameValidator: contactFirstNameValidator,
+                                  lastNameValidator: contactLastNameValidator,
+                                  ninValidator: contactNinValidator,
+                                  phoneValidator: contactPhoneValidator,
+                                ),
+
+                                // SizedBox(
+                                //   height: 2.h,
+                                // ),
+                              ],
                             ),
                           ),
-                        ],
+                        ),
                       ),
-                    ),
+                    ],
                   ),
-                );
-              });
+                ),
+              ),
+            );
+          });
         },
       );
     });
 
     print(result); // This is the result.
   }
-
-
 }

@@ -2,30 +2,22 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:animate_do/animate_do.dart';
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/controllers/tenants/tenant_controller.dart';
 import 'package:smart_rent/models/business/business_type_model.dart';
-import 'package:smart_rent/models/general/smart_model.dart';
-import 'package:smart_rent/models/salutation/salutation_model.dart';
 import 'package:smart_rent/models/tenant/tenant_model.dart';
-import 'package:smart_rent/models/tenant/tenant_type_model.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 import 'package:smart_rent/utils/app_prefs.dart';
 import 'package:smart_rent/widgets/app_button.dart';
 import 'package:smart_rent/widgets/app_drop_downs.dart';
 import 'package:smart_rent/widgets/app_image_header.dart';
-import 'package:smart_rent/widgets/app_max_textfield.dart';
 import 'package:smart_rent/widgets/app_textfield.dart';
-import 'package:smart_rent/widgets/tenant_profile_contact_form.dart';
 import 'package:smart_rent/widgets/update_tenant_profile_contact_form.dart';
 
 class UpdateCompanyTenantWithContactScreen extends StatefulWidget {
@@ -41,11 +33,8 @@ class UpdateCompanyTenantWithContactScreen extends StatefulWidget {
 
 class _UpdateCompanyTenantWithContactScreenState
     extends State<UpdateCompanyTenantWithContactScreen> {
-
-
   late TextEditingController companyNameController;
   late TextEditingController companyDescriptionController;
-
 
   late TextEditingController contactFirstNameController;
   late TextEditingController contactLastNameController;
@@ -67,11 +56,9 @@ class _UpdateCompanyTenantWithContactScreenState
     MaxLengthValidator(50, errorText: 'business name too long'),
   ]);
 
-
   final companyDescriptionValidator = MultiValidator([
     MaxLengthValidator(500, errorText: 'descrition too long'),
   ]);
-
 
   final companyNameValidator = MultiValidator([
     RequiredValidator(errorText: 'business name required'),
@@ -89,7 +76,6 @@ class _UpdateCompanyTenantWithContactScreenState
     RequiredValidator(errorText: 'email is required'),
     EmailValidator(errorText: 'input does\'nt match email'),
   ]);
-
 
   final contactFirstNameValidator = MultiValidator([
     RequiredValidator(errorText: 'first name required'),
@@ -184,18 +170,12 @@ class _UpdateCompanyTenantWithContactScreenState
     companyDescriptionController =
         TextEditingController(text: widget.tenantModel.description);
 
-    contactFirstNameController =
-        TextEditingController();
-    contactLastNameController =
-        TextEditingController();
-    contactNinController =
-        TextEditingController();
-    contactEmailController =
-        TextEditingController();
-    contactDesignationController =
-        TextEditingController();
-    contactPhoneController =
-        TextEditingController();
+    contactFirstNameController = TextEditingController();
+    contactLastNameController = TextEditingController();
+    contactNinController = TextEditingController();
+    contactEmailController = TextEditingController();
+    contactDesignationController = TextEditingController();
+    contactPhoneController = TextEditingController();
   }
 
   @override
@@ -252,9 +232,9 @@ class _UpdateCompanyTenantWithContactScreenState
                   key: _formKey,
                   child: Column(
                     children: [
-
                       Obx(() {
-                        return CustomUpdateApiGenericDropdown<BusinessTypeModel>(
+                        return CustomUpdateApiGenericDropdown<
+                            BusinessTypeModel>(
                           hintText: tenantController.uCompanyBusinessType.value,
                           menuItems: tenantController.businessList.value,
                           onChanged: (value) {
@@ -262,9 +242,9 @@ class _UpdateCompanyTenantWithContactScreenState
                           },
                         );
                       }),
-
-                      SizedBox(height: 1.h,),
-
+                      SizedBox(
+                        height: 1.h,
+                      ),
                       Obx(() {
                         return CustomUpdateApiNationalityDropdown(
                           hintText: tenantController.uCompanyCountryType.value,
@@ -285,7 +265,10 @@ class _UpdateCompanyTenantWithContactScreenState
                     key: _companyFormKey,
                     child: Column(
                       children: [
-                        Text('Company Details', style: AppTheme.appTitle3,),
+                        Text(
+                          'Company Details',
+                          style: AppTheme.appTitle3,
+                        ),
 
                         // AppTextField(
                         //   controller: companyNameController,
@@ -296,19 +279,20 @@ class _UpdateCompanyTenantWithContactScreenState
                         // ),
 
                         AuthTextField(
-                            controller: companyNameController,
-                            hintText: 'Business Name',
-                            obscureText: false,
+                          controller: companyNameController,
+                          hintText: 'Business Name',
+                          obscureText: false,
                         ),
 
-                        SizedBox(height: 1.h,),
+                        SizedBox(
+                          height: 1.h,
+                        ),
 
                         DescriptionTextField(
                           controller: companyDescriptionController,
                           hintText: 'Description',
                           obscureText: false,
                         ),
-
 
                         // Obx(() {
                         //   return tenantController.tenantTypeId.value == 1
@@ -333,13 +317,11 @@ class _UpdateCompanyTenantWithContactScreenState
                         //       : Container();
                         // }),
                         //
-
                       ],
                     ),
                   ),
                 ),
               ),
-
 
               SizedBox(
                 height: 2.h,
@@ -430,32 +412,36 @@ class _UpdateCompanyTenantWithContactScreenState
               //   ),),
               // ),
 
-
               Obx(() {
                 return tenantController.isContactDetailsLoading.value
-                    ? Center(child: CircularProgressIndicator(),)
+                    ? Center(
+                        child: CircularProgressIndicator(),
+                      )
                     : Column(
-                      children: [
-                        Center(child: Text('Contact', style: AppTheme.appTitle3,)),
-                        UpdateTenantProfileContactForm(
-                  tenantController: tenantController,
-                  contactKey: _contactFormKey,
-                  // contactFirstNameController: contactFirstNameController,
-                  // contactLastNameController: contactLastNameController,
-                  // contactNinController: contactNinController,
-                  // contactDesignationController: contactDesignationController,
-                  // contactPhoneController: contactPhoneController,
-                  // contactEmailController: contactEmailController,
-                  designationValidator: contactDesignationValidator,
-                  emailValidator: contactEmailValidator,
-                  firstNameValidator: contactFirstNameValidator,
-                  lastNameValidator: contactLastNameValidator,
-                  ninValidator: contactNinValidator,
-                  phoneValidator: contactPhoneValidator,
-
-                ),
-                      ],
-                    );
+                        children: [
+                          Center(
+                              child: Text(
+                            'Contact',
+                            style: AppTheme.appTitle3,
+                          )),
+                          UpdateTenantProfileContactForm(
+                            tenantController: tenantController,
+                            contactKey: _contactFormKey,
+                            // contactFirstNameController: contactFirstNameController,
+                            // contactLastNameController: contactLastNameController,
+                            // contactNinController: contactNinController,
+                            // contactDesignationController: contactDesignationController,
+                            // contactPhoneController: contactPhoneController,
+                            // contactEmailController: contactEmailController,
+                            designationValidator: contactDesignationValidator,
+                            emailValidator: contactEmailValidator,
+                            firstNameValidator: contactFirstNameValidator,
+                            lastNameValidator: contactLastNameValidator,
+                            ninValidator: contactNinValidator,
+                            phoneValidator: contactPhoneValidator,
+                          ),
+                        ],
+                      );
               }),
 
               SizedBox(
@@ -466,18 +452,18 @@ class _UpdateCompanyTenantWithContactScreenState
                 title: 'Submit',
                 color: AppTheme.primaryColor,
                 function: () async {
-
                   if (_formKey.currentState!.validate() &&
                       _companyFormKey.currentState!.validate() &&
                       _contactFormKey.currentState!.validate()) {
                     // Get.snackbar(
                     //     'Posting Company', 'With Company Contact');
 
-                    await tenantController.updateCompanyTenantDetailsWithContact(
+                    await tenantController
+                        .updateCompanyTenantDetailsWithContact(
                       companyNameController.text.trim().toString(),
                       12,
                       tenantController.businessTypeId.value,
-                        userStorage.read('userProfileId'),
+                      userStorage.read('userProfileId'),
                       tenantController.nationalityId.value,
                       contactFirstNameController.text.trim().toString(),
                       contactLastNameController.text.trim().toString(),
@@ -487,19 +473,16 @@ class _UpdateCompanyTenantWithContactScreenState
                       contactEmailController.text.trim().toString(),
                       companyDescriptionController.text.toString(),
                     );
-
-
                   } else {
-                    Fluttertoast.showToast(msg: 'Fill in fields', gravity: ToastGravity.TOP);
+                    Fluttertoast.showToast(
+                        msg: 'Fill in fields', gravity: ToastGravity.TOP);
                   }
-
                 },
               ),
 
               SizedBox(
                 height: 2.h,
               ),
-
             ],
           ),
         ),

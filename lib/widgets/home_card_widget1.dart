@@ -9,7 +9,12 @@ class HomeCardWidget1 extends StatelessWidget {
   final String title;
   final VoidCallback function;
 
-  const HomeCardWidget1({super.key, required this.color, required this.total, required this.title, required this.function});
+  const HomeCardWidget1(
+      {super.key,
+      required this.color,
+      required this.total,
+      required this.title,
+      required this.function});
 
   @override
   Widget build(BuildContext context) {
@@ -27,14 +32,20 @@ class HomeCardWidget1 extends StatelessWidget {
           children: [
             Align(
               alignment: Alignment.centerLeft,
-              child: Text(title, style: AppTheme.buttonText,),
+              child: Text(
+                title,
+                style: AppTheme.buttonText,
+              ),
             ),
             Align(
               alignment: Alignment.bottomRight,
               child: CircleAvatar(
                 backgroundColor: Colors.white,
                 radius: 3.w,
-                child: Text(total.toString(), style: TextStyle(color: color),),
+                child: Text(
+                  total.toString(),
+                  style: TextStyle(color: color),
+                ),
               ),
             )
           ],

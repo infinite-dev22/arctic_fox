@@ -23,8 +23,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         emit(state.copyWith(status: LoginStatus.success, isLoading: false));
         userStorage.write('isLoggedIn', true);
         userStorage.write('accessToken', response.token);
-      } else if(response.success == false){
-        emit(state.copyWith(status: LoginStatus.accessDenied, isLoading: false, message: response.message.toString()));
+      } else if (response.success == false) {
+        emit(state.copyWith(
+            status: LoginStatus.accessDenied,
+            isLoading: false,
+            message: response.message.toString()));
       } else {
         // emit(state.copyWith(status: LoginStatus.accessDenied, isLoading: false));
       }

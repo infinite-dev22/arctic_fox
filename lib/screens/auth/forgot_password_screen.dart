@@ -5,11 +5,8 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/controllers/user/auth_controller.dart';
-import 'package:smart_rent/screens/auth/complete_signup_screen.dart';
-import 'package:smart_rent/screens/auth/login_screen.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 import 'package:smart_rent/widgets/app_button.dart';
-import 'package:smart_rent/widgets/app_password_textfield.dart';
 import 'package:smart_rent/widgets/app_textfield.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
@@ -20,7 +17,6 @@ class ForgotPasswordScreen extends StatefulWidget {
 }
 
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
-
   final TextEditingController emailEditingController = TextEditingController();
   AuthController authController = Get.put(AuthController());
 
@@ -48,17 +44,18 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-
                   // Center(child: Image.asset('assets/auth/otp.png')),
 
-                  Text('Forgot Password', style: AppTheme.appTitle2,),
+                  Text(
+                    'Forgot Password',
+                    style: AppTheme.appTitle2,
+                  ),
 
                   AuthTextField(
                     isEmail: true,
                     controller: emailEditingController,
                     hintText: 'Email',
                     obscureText: false,
-
                   ),
 
                   // AppDateTextField(
@@ -67,12 +64,13 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   //   validator: emailValidator,
                   // ),
 
-
-                  SizedBox(height: 3.h,),
+                  SizedBox(
+                    height: 3.h,
+                  ),
 
                   Obx(() {
                     return AppButton(
-                      isLoading: authController.isSendOtpLoading.value,
+                        isLoading: authController.isSendOtpLoading.value,
                         title: 'Send Reset Code',
                         color: AppTheme.primaryColor,
                         function: () async {
@@ -80,32 +78,35 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                           bool isValid = isEmailValid(email);
 
                           if (email.isEmpty) {
-                            Fluttertoast.showToast(msg: 'Email Required', gravity: ToastGravity.TOP);
+                            Fluttertoast.showToast(
+                                msg: 'Email Required',
+                                gravity: ToastGravity.TOP);
                           } else if (!isValid) {
-                            Fluttertoast.showToast(msg: 'Enter Correct Email', gravity: ToastGravity.TOP);
+                            Fluttertoast.showToast(
+                                msg: 'Enter Correct Email',
+                                gravity: ToastGravity.TOP);
                           } else {
-                            await authController.checkUserEmailAvailability(
-                                email);
+                            await authController
+                                .checkUserEmailAvailability(email);
 
                             // print('Okay');
                             // await authController.sendResetOtp(email);
                             // Fluttertoast.showToast(msg: 'Enter New Password');
-
                           }
-                        }
-
-
-                    );
+                        });
                   }),
-                  SizedBox(height: 1.h,),
-                  Center(child: Bounceable(
-                      onTap: () {
-                        Get.back();
-                      },
-                      child: Text(
-                        'back to login', style: AppTheme.subTextBold,))),
-
-
+                  SizedBox(
+                    height: 1.h,
+                  ),
+                  Center(
+                      child: Bounceable(
+                          onTap: () {
+                            Get.back();
+                          },
+                          child: Text(
+                            'back to login',
+                            style: AppTheme.subTextBold,
+                          ))),
                 ],
               ),
             ),

@@ -6,11 +6,13 @@ import 'dart:convert';
 
 import 'package:smart_rent/models/general/smart_model.dart';
 
-BusinessTypeModel businessTypeModelFromJson(String str) => BusinessTypeModel.fromJson(json.decode(str));
+BusinessTypeModel businessTypeModelFromJson(String str) =>
+    BusinessTypeModel.fromJson(json.decode(str));
 
-String businessTypeModelToJson(BusinessTypeModel data) => json.encode(data.toJson());
+String businessTypeModelToJson(BusinessTypeModel data) =>
+    json.encode(data.toJson());
 
-class BusinessTypeModel extends SmartModel{
+class BusinessTypeModel extends SmartModel {
   int? id;
   String name;
 
@@ -19,21 +21,24 @@ class BusinessTypeModel extends SmartModel{
     required this.name,
   });
 
-  factory BusinessTypeModel.fromJson(Map<String, dynamic> json) => BusinessTypeModel(
-    id: json["id"],
-    name: json["name"],
-  );
+  factory BusinessTypeModel.fromJson(Map<String, dynamic> json) =>
+      BusinessTypeModel(
+        id: json["id"],
+        name: json["name"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-  };
+        "id": id,
+        "name": name,
+      };
 
   @override
-  int getId() { return id!;
+  int getId() {
+    return id!;
   }
 
   @override
-  String getName() { return name;
+  String getName() {
+    return name;
   }
 }

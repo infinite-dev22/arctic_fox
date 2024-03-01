@@ -4,9 +4,11 @@
 
 import 'dart:convert';
 
-AddPropertyResponseModel addPropertyResponseModelFromJson(String str) => AddPropertyResponseModel.fromJson(json.decode(str));
+AddPropertyResponseModel addPropertyResponseModelFromJson(String str) =>
+    AddPropertyResponseModel.fromJson(json.decode(str));
 
-String addPropertyResponseModelToJson(AddPropertyResponseModel data) => json.encode(data.toJson());
+String addPropertyResponseModelToJson(AddPropertyResponseModel data) =>
+    json.encode(data.toJson());
 
 class AddPropertyResponseModel {
   PropertyCreatedViaApi? propertyCreatedViaApi;
@@ -15,13 +17,16 @@ class AddPropertyResponseModel {
     this.propertyCreatedViaApi,
   });
 
-  factory AddPropertyResponseModel.fromJson(Map<String, dynamic> json) => AddPropertyResponseModel(
-    propertyCreatedViaApi: json["propertyCreatedViaApi"] == null ? null : PropertyCreatedViaApi.fromJson(json["propertyCreatedViaApi"]),
-  );
+  factory AddPropertyResponseModel.fromJson(Map<String, dynamic> json) =>
+      AddPropertyResponseModel(
+        propertyCreatedViaApi: json["propertyCreatedViaApi"] == null
+            ? null
+            : PropertyCreatedViaApi.fromJson(json["propertyCreatedViaApi"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "propertyCreatedViaApi": propertyCreatedViaApi?.toJson(),
-  };
+        "propertyCreatedViaApi": propertyCreatedViaApi?.toJson(),
+      };
 }
 
 class PropertyCreatedViaApi {
@@ -51,31 +56,36 @@ class PropertyCreatedViaApi {
     this.id,
   });
 
-  factory PropertyCreatedViaApi.fromJson(Map<String, dynamic> json) => PropertyCreatedViaApi(
-    number: json["number"],
-    name: json["name"],
-    location: json["location"],
-    squareMeters: json["square_meters"],
-    description: json["description"],
-    propertyTypeId: json["property_type_id"],
-    propertyCategoryId: json["property_category_id"],
-    createdBy: json["created_by"],
-    updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
-    createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
-    id: json["id"],
-  );
+  factory PropertyCreatedViaApi.fromJson(Map<String, dynamic> json) =>
+      PropertyCreatedViaApi(
+        number: json["number"],
+        name: json["name"],
+        location: json["location"],
+        squareMeters: json["square_meters"],
+        description: json["description"],
+        propertyTypeId: json["property_type_id"],
+        propertyCategoryId: json["property_category_id"],
+        createdBy: json["created_by"],
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        id: json["id"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "number": number,
-    "name": name,
-    "location": location,
-    "square_meters": squareMeters,
-    "description": description,
-    "property_type_id": propertyTypeId,
-    "property_category_id": propertyCategoryId,
-    "created_by": createdBy,
-    "updated_at": updatedAt?.toIso8601String(),
-    "created_at": createdAt?.toIso8601String(),
-    "id": id,
-  };
+        "number": number,
+        "name": name,
+        "location": location,
+        "square_meters": squareMeters,
+        "description": description,
+        "property_type_id": propertyTypeId,
+        "property_category_id": propertyCategoryId,
+        "created_by": createdBy,
+        "updated_at": updatedAt?.toIso8601String(),
+        "created_at": createdAt?.toIso8601String(),
+        "id": id,
+      };
 }

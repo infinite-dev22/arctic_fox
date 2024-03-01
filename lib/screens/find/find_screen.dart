@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 
-
 class FindScreen extends StatelessWidget {
   const FindScreen({super.key});
 
@@ -12,7 +11,11 @@ class FindScreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            Center(child: Text('Find Screen', style: AppTheme.appTitle3,))
+            Center(
+                child: Text(
+              'Find Screen',
+              style: AppTheme.appTitle3,
+            ))
           ],
         ),
       ),

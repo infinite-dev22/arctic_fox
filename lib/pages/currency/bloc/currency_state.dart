@@ -1,14 +1,12 @@
 part of 'currency_bloc.dart';
 
-enum CurrencyStatus {initial, loading, success, empty, error, accessDenied}
+enum CurrencyStatus { initial, loading, success, empty, error, accessDenied }
 
 class CurrencyState extends Equatable {
   final List<CurrencyModel>? currencies;
   final CurrencyStatus? status;
-  const CurrencyState({
-    this.currencies,
-    this.status = CurrencyStatus.initial
-});
+
+  const CurrencyState({this.currencies, this.status = CurrencyStatus.initial});
 
   @override
   // TODO: implement props
@@ -17,13 +15,11 @@ class CurrencyState extends Equatable {
   CurrencyState copyWith({
     List<CurrencyModel>? currencies,
     CurrencyStatus? status,
-}) {
+  }) {
     return CurrencyState(
-      currencies: currencies ?? this.currencies,
-      status: status ?? this.status
-    );
+        currencies: currencies ?? this.currencies,
+        status: status ?? this.status);
   }
-
 }
 
 class CurrencyInitial extends CurrencyState {

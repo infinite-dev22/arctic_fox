@@ -3,16 +3,10 @@ import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:smart_rent/config/app_config.dart';
 import 'package:smart_rent/controllers/user/user_controller.dart';
-import 'package:smart_rent/models/user/user_model.dart';
 import 'package:smart_rent/screens/auth/create_organisation_screen.dart';
 import 'package:smart_rent/screens/auth/forgot_password_screen.dart';
-import 'package:smart_rent/screens/auth/signup_screen.dart';
-import 'package:smart_rent/screens/bottom_nav_bar/bottom_nav_bar.dart';
-import 'package:smart_rent/screens/home/homepage_screen.dart';
 import 'package:smart_rent/styles/app_theme.dart';
-import 'package:smart_rent/utils/extra.dart';
 import 'package:smart_rent/widgets/app_button.dart';
 import 'package:smart_rent/widgets/app_password_textfield.dart';
 import 'package:smart_rent/widgets/app_textfield.dart';
@@ -25,7 +19,6 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
@@ -51,10 +44,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Image.asset(
+                      'assets/auth/logo.png',
+                      width: 50.w,
+                    ),
 
-                    Image.asset('assets/auth/logo.png', width: 50.w,),
-
-                    Text('Sign in', style: AppTheme.appTitleLarge,),
+                    Text(
+                      'Sign in',
+                      style: AppTheme.appTitleLarge,
+                    ),
 
                     AuthTextField(
                       controller: usernameController,
@@ -65,7 +63,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                     ),
 
-                    SizedBox(height: 1.h,),
+                    SizedBox(
+                      height: 1.h,
+                    ),
 
                     AppPasswordTextField(
                       controller: passwordController,
@@ -74,20 +74,24 @@ class _LoginScreenState extends State<LoginScreen> {
                       fillColor: AppTheme.appWidgetColor,
                     ),
 
-                    SizedBox(height: 2.h,),
+                    SizedBox(
+                      height: 2.h,
+                    ),
 
                     Obx(() {
                       return AppButton(
-                        isLoading: userController.isLoginLoading.value,
+                          isLoading: userController.isLoginLoading.value,
                           title: 'Sign in',
                           color: AppTheme.primaryColor,
                           function: () async {
                             if (usernameController.text.length < 10) {
                               Fluttertoast.showToast(
-                                  msg: 'short or no username', gravity: ToastGravity.TOP);
+                                  msg: 'short or no username',
+                                  gravity: ToastGravity.TOP);
                             } else if (passwordController.text.length < 6) {
                               Fluttertoast.showToast(
-                                  msg: 'short or no password', gravity: ToastGravity.TOP);
+                                  msg: 'short or no password',
+                                  gravity: ToastGravity.TOP);
                             } else {
                               // Fluttertoast.showToast(msg: 'SUCCESS', backgroundColor: Colors.green);
                               userController.checkUsernameType(
@@ -96,20 +100,30 @@ class _LoginScreenState extends State<LoginScreen> {
                             }
                           });
                     }),
-                    SizedBox(height: 1.h,),
-                    Center(child: Bounceable(
+                    SizedBox(
+                      height: 1.h,
+                    ),
+                    Center(
+                        child: Bounceable(
                       onTap: () {
                         Get.to(() => ForgotPasswordScreen());
                         usernameController.clear();
                         passwordController.clear();
                       },
                       child: Text(
-                        'Forgot Password!', style: AppTheme.subTextBold,),
+                        'Forgot Password!',
+                        style: AppTheme.subTextBold,
+                      ),
                     )),
 
-                    SizedBox(height: 5.h,),
-                    Center(child: Text(
-                      'Don\'t have an account?', style: AppTheme.subTextBold,)),
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    Center(
+                        child: Text(
+                      'Don\'t have an account?',
+                      style: AppTheme.subTextBold,
+                    )),
                     AppButton(
                       title: 'Create An Account',
                       color: AppTheme.darkerColor,
@@ -130,7 +144,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     //         return Text(user.email);
                     //       });
                     // })
-
                   ],
                 ),
               ),

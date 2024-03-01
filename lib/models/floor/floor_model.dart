@@ -6,13 +6,15 @@ import 'dart:convert';
 
 import 'package:smart_rent/models/general/smart_model.dart';
 
-FloorModel floorModelFromJson(String str) => FloorModel.fromJson(json.decode(str));
+FloorModel floorModelFromJson(String str) =>
+    FloorModel.fromJson(json.decode(str));
 
 String floorModelToJson(FloorModel data) => json.encode(data.toJson());
 
-class FloorModel extends SmartModel{
+class FloorModel extends SmartModel {
   int? id;
   String? name;
+
   // String description;
   // int propertyId;
 
@@ -24,24 +26,26 @@ class FloorModel extends SmartModel{
   });
 
   factory FloorModel.fromJson(Map<String, dynamic> json) => FloorModel(
-    id: json["id"],
-    name: json["name"],
-    // description: json["description"],
-    // propertyId: json["property_id"],
-  );
+        id: json["id"],
+        name: json["name"],
+        // description: json["description"],
+        // propertyId: json["property_id"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-    // "description": description,
-    // "property_id": propertyId,
-  };
+        "id": id,
+        "name": name,
+        // "description": description,
+        // "property_id": propertyId,
+      };
 
   @override
-  int getId() { return id!;
+  int getId() {
+    return id!;
   }
 
   @override
-  String getName() { return name!;
+  String getName() {
+    return name!;
   }
 }

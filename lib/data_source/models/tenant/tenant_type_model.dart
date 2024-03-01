@@ -6,11 +6,14 @@ import 'dart:convert';
 
 import 'package:smart_rent/models/general/smart_model.dart';
 
-List<TenantTypeModel> tenantTypeModelFromJson(String str) => List<TenantTypeModel>.from(json.decode(str).map((x) => TenantTypeModel.fromJson(x)));
+List<TenantTypeModel> tenantTypeModelFromJson(String str) =>
+    List<TenantTypeModel>.from(
+        json.decode(str).map((x) => TenantTypeModel.fromJson(x)));
 
-String tenantTypeModelToJson(List<TenantTypeModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String tenantTypeModelToJson(List<TenantTypeModel> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class TenantTypeModel extends SmartModel{
+class TenantTypeModel extends SmartModel {
   int? id;
   String? name;
   String? code;
@@ -31,33 +34,40 @@ class TenantTypeModel extends SmartModel{
     this.updatedAt,
   });
 
-  factory TenantTypeModel.fromJson(Map<String, dynamic> json) => TenantTypeModel(
-    id: json["id"],
-    name: json["name"],
-    code: json["code"],
-    description: json["description"],
-    createdBy: json["created_by"],
-    updatedBy: json["updated_by"],
-    createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
-    updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
-  );
+  factory TenantTypeModel.fromJson(Map<String, dynamic> json) =>
+      TenantTypeModel(
+        id: json["id"],
+        name: json["name"],
+        code: json["code"],
+        description: json["description"],
+        createdBy: json["created_by"],
+        updatedBy: json["updated_by"],
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-    "code": code,
-    "description": description,
-    "created_by": createdBy,
-    "updated_by": updatedBy,
-    "created_at": createdAt?.toIso8601String(),
-    "updated_at": updatedAt?.toIso8601String(),
-  };
+        "id": id,
+        "name": name,
+        "code": code,
+        "description": description,
+        "created_by": createdBy,
+        "updated_by": updatedBy,
+        "created_at": createdAt?.toIso8601String(),
+        "updated_at": updatedAt?.toIso8601String(),
+      };
 
   @override
-  int getId() { return id!;
+  int getId() {
+    return id!;
   }
 
   @override
-  String getName() { return name!;
+  String getName() {
+    return name!;
   }
 }

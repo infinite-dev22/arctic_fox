@@ -10,8 +10,10 @@ class AuthUserEvent extends LoginEvent {
   final String email;
   final String password;
 
-  AuthUserEvent(this.email,
-      this.password,);
+  AuthUserEvent(
+    this.email,
+    this.password,
+  );
 
   @override
   List<Object> get props => [email, password];

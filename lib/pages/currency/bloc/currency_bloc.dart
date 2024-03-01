@@ -15,11 +15,15 @@ class CurrencyBloc extends Bloc<CurrencyEvent, CurrencyState> {
     on<LoadAllCurrenciesEvent>(_mapFetchCurrenciesToState);
   }
 
-  _mapFetchCurrenciesToState(LoadAllCurrenciesEvent event, Emitter<CurrencyState> emit) async{
+  _mapFetchCurrenciesToState(
+      LoadAllCurrenciesEvent event, Emitter<CurrencyState> emit) async {
     emit(state.copyWith(status: CurrencyStatus.loading));
-    await CurrencyRepoImpl().getAllCurrencies(userStorage.read('accessToken').toString()).then((currencies) {
-      if(currencies.isNotEmpty){
-        emit(state.copyWith(status: CurrencyStatus.success, currencies: currencies));
+    await CurrencyRepoImpl()
+        .getAllCurrencies(userStorage.read('accessToken').toString())
+        .then((currencies) {
+      if (currencies.isNotEmpty) {
+        emit(state.copyWith(
+            status: CurrencyStatus.success, currencies: currencies));
       } else {
         emit(state.copyWith(status: CurrencyStatus.empty));
       }
@@ -31,5 +35,4 @@ class CurrencyBloc extends Bloc<CurrencyEvent, CurrencyState> {
       }
     });
   }
-
 }

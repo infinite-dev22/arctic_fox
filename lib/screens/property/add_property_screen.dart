@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
@@ -9,7 +8,6 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/controllers/property/property_controller.dart';
-import 'package:smart_rent/models/general/smart_model.dart';
 import 'package:smart_rent/models/property/property_category_model.dart';
 import 'package:smart_rent/models/property/property_type_model.dart';
 import 'package:smart_rent/styles/app_theme.dart';
@@ -21,7 +19,6 @@ import 'package:smart_rent/widgets/app_max_textfield.dart';
 import 'package:smart_rent/widgets/app_textfield.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
-
 class AddPropertyScreen extends StatefulWidget {
   const AddPropertyScreen({super.key});
 
@@ -30,7 +27,6 @@ class AddPropertyScreen extends StatefulWidget {
 }
 
 class _AddPropertyScreenState extends State<AddPropertyScreen> {
-
   File? propertyPic;
   String? propertyImagePath;
   String? propertyImageExtension;
@@ -43,15 +39,9 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
   final TextEditingController locationController = TextEditingController();
   final TextEditingController sqmController = TextEditingController();
 
-  var typeList = [
-    'single',
-    'double'
-  ];
+  var typeList = ['single', 'double'];
 
-  var categoryList = [
-    'flat',
-    'bungalow'
-  ];
+  var categoryList = ['flat', 'bungalow'];
 
   String imageError = '';
 
@@ -99,7 +89,6 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
         title: 'assets/auth/srw.png',
         isTitleCentred: true,
       ),
-
       body: Padding(
         padding: EdgeInsets.only(left: 5.w, right: 5.w, top: 2.h),
         child: SingleChildScrollView(
@@ -108,20 +97,22 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Text('Add Property', style: AppTheme.appTitle5,),
+              Text(
+                'Add Property',
+                style: AppTheme.appTitle5,
+              ),
               AuthTextField(
                 controller: titleController,
                 hintText: 'Property title',
                 obscureText: false,
               ),
-
-              SizedBox(height: 1.h,),
-
+              SizedBox(
+                height: 1.h,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-
                   SizedBox(
                     width: 42.5.w,
                     child: Obx(() {
@@ -135,13 +126,13 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                       );
                     }),
                   ),
-
                   SizedBox(
                     width: 42.5.w,
                     child: Obx(() {
                       return CustomApiGenericDropdown<PropertyCategoryModel>(
                         hintText: 'Category',
-                        menuItems: propertyController.propertyCategoryList.value,
+                        menuItems:
+                            propertyController.propertyCategoryList.value,
                         onChanged: (value) {
                           print(value!.id);
                           propertyController.setCategoryId(value.id);
@@ -149,12 +140,11 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                       );
                     }),
                   ),
-
                 ],
               ),
-
-              SizedBox(height: 1.h,),
-
+              SizedBox(
+                height: 1.h,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -166,7 +156,6 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                       obscureText: false,
                     ),
                   ),
-
                   SizedBox(
                     width: 42.5.w,
                     child: AuthTextField(
@@ -175,23 +164,20 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                       obscureText: false,
                     ),
                   ),
-
-
                 ],
               ),
-
-              SizedBox(height: 1.h,),
-
+              SizedBox(
+                height: 1.h,
+              ),
               AppMaxTextField(
-                  controller: descriptionController,
-                  hintText: 'Description',
-                  obscureText: false,
+                controller: descriptionController,
+                hintText: 'Description',
+                obscureText: false,
                 fillColor: AppTheme.appWidgetColor,
               ),
-
-
-              SizedBox(height: 1.h,),
-
+              SizedBox(
+                height: 1.h,
+              ),
               Bounceable(
                 onTap: () {
                   FullPicker(
@@ -215,21 +201,16 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                       setState(() {
                         propertyPic = value.file.first;
                         propertyImagePath = value.file.first!.path;
-                        propertyImageExtension = value.file.first!
-                            .path
-                            .split('.')
-                            .last;
-                        propertyFileName = value.file.first!
-                            .path
-                            .split('/')
-                            .last;
+                        propertyImageExtension =
+                            value.file.first!.path.split('.').last;
+                        propertyFileName =
+                            value.file.first!.path.split('/').last;
                       });
                       propertyBytes = await propertyPic!.readAsBytes();
                       print('MY PIC == $propertyPic');
                       print('MY path == $propertyImagePath');
                       print('MY bytes == $propertyBytes');
-                      print(
-                          'MY extension == $propertyImageExtension');
+                      print('MY extension == $propertyImageExtension');
                       print('MY FILE NAME == $propertyFileName');
                     },
                   );
@@ -242,22 +223,21 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                       borderRadius: BorderRadius.circular(15.sp),
                       image: DecorationImage(
                           image: FileImage(propertyPic ?? File('')),
-                          fit: BoxFit.cover)
-                  ),
-                  child: propertyPic == null ? Center(
-                    child: Text('Upload profile pic'),) : null,
+                          fit: BoxFit.cover)),
+                  child: propertyPic == null
+                      ? Center(
+                          child: Text('Upload profile pic'),
+                        )
+                      : null,
                 ),
               ),
-
-
-
-              SizedBox(height: 3.h,),
-
+              SizedBox(
+                height: 3.h,
+              ),
               AppButton(
                 title: 'Submit',
                 color: AppTheme.primaryColor,
                 function: () {
-
                   propertyController.addProperty(
                       titleController.text.trim().toString(),
                       descriptionController.text.trim().toString(),
@@ -266,22 +246,19 @@ class _AddPropertyScreenState extends State<AddPropertyScreen> {
                       propertyController.categoryId.value,
                       locationController.text.trim().toString(),
                       sqmController.text.trim().toString(),
-                    userStorage.read('userProfileId').toString(),
-                    userStorage.read('userProfileId').toString(),
+                      userStorage.read('userProfileId').toString(),
+                      userStorage.read('userProfileId').toString(),
                       propertyBytes!,
                       propertyImageExtension!,
                       propertyFileName!
-                  // "userStorage.read('userProfileId')",
-                  );
+                      // "userStorage.read('userProfileId')",
+                      );
                 },
               ),
-
-
             ],
           ),
         ),
       ),
-
     );
   }
 }

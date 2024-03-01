@@ -1,6 +1,5 @@
 class FloorModel {
   final String floorName;
 
-  FloorModel({ required this.floorName });
-
+  FloorModel({required this.floorName});
 }

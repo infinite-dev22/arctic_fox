@@ -1,6 +1,6 @@
-
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/retry.dart';
@@ -9,7 +9,6 @@ import 'package:smart_rent/data_source/models/floor/floor_model.dart';
 import 'package:smart_rent/data_source/repositories/interfaces/floor_repo.dart';
 
 class FloorRepoImpl implements FloorRepo {
-
   @override
   Future<List<FloorModel>> getALlFloors(String token, int id) async {
     var client = RetryClient(http.Client());
@@ -20,8 +19,8 @@ class FloorRepoImpl implements FloorRepo {
         HttpHeaders.authorizationHeader: 'Bearer $token'
       };
 
-      var url = Uri.parse('${AppConfig().baseUrl}api/rent/floorsonproperty/$id');
-
+      var url =
+          Uri.parse('${AppConfig().baseUrl}api/rent/floorsonproperty/$id');
 
       var response = await client.get(url, headers: headers);
       List floorData = jsonDecode(response.body)['floorsonproperty'];
@@ -32,12 +31,9 @@ class FloorRepoImpl implements FloorRepo {
     } finally {
       client.close();
     }
-
   }
 
-
-
-@override
+  @override
   Future<dynamic> addFloor(String token, int propertyId, String floorName,
       String? description) async {
     var client = RetryClient(http.Client());
@@ -73,5 +69,6 @@ class FloorRepoImpl implements FloorRepo {
       client.close();
     }
   }
+
 
 }

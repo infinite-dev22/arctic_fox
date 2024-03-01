@@ -4,21 +4,22 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/controllers/tenants/tenant_controller.dart';
 import 'package:smart_rent/styles/app_theme.dart';
-import 'package:smart_rent/widgets/app_image_header.dart';
 import 'package:smart_rent/widgets/app_state_text_header.dart';
-import 'package:smart_rent/widgets/app_text_header.dart';
 
 class SpecificPaymentScheduleScreen extends StatefulWidget {
   final TenantController tenantController;
   final int unitId;
-  const SpecificPaymentScheduleScreen({super.key, required this.tenantController, required this.unitId});
+
+  const SpecificPaymentScheduleScreen(
+      {super.key, required this.tenantController, required this.unitId});
 
   @override
-  State<SpecificPaymentScheduleScreen> createState() => _SpecificPaymentScheduleScreenState();
+  State<SpecificPaymentScheduleScreen> createState() =>
+      _SpecificPaymentScheduleScreenState();
 }
 
-class _SpecificPaymentScheduleScreenState extends State<SpecificPaymentScheduleScreen> {
-
+class _SpecificPaymentScheduleScreenState
+    extends State<SpecificPaymentScheduleScreen> {
   final AmountFormatter amountFormatter = AmountFormatter(separator: ',');
 
   @override
@@ -34,7 +35,8 @@ class _SpecificPaymentScheduleScreenState extends State<SpecificPaymentScheduleS
       backgroundColor: AppTheme.whiteColor,
       appBar: AppStateTextHeader(
         title: widget.tenantController.specificTenantName.value,
-        title2: 'Room ${widget.tenantController.specificUnitNumber.value.toString()}',
+        title2:
+            'Room ${widget.tenantController.specificUnitNumber.value.toString()}',
         isTitleCentred: true,
       ),
       body: Padding(
@@ -76,15 +78,14 @@ class _SpecificPaymentScheduleScreenState extends State<SpecificPaymentScheduleS
                                     cells: [
                                       DataCell(Text(
                                           '${schedule.fromDate} to\n ${schedule.toDate}')),
-                                      DataCell(
-                                          Text(amountFormatter.format(schedule.amount.toString()))),
-                                      DataCell(Text(amountFormatter.format(schedule.paid.toString()))),
-                                      DataCell(
-                                          Text(amountFormatter.format(schedule.balance.toString()))),
-
+                                      DataCell(Text(amountFormatter
+                                          .format(schedule.amount.toString()))),
+                                      DataCell(Text(amountFormatter
+                                          .format(schedule.paid.toString()))),
+                                      DataCell(Text(amountFormatter.format(
+                                          schedule.balance.toString()))),
                                     ]);
                               }).toList(),
-
                             ),
                           ),
                         ),

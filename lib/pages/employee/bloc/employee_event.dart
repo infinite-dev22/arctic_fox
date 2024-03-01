@@ -8,5 +8,4 @@ class LoadEmployeesEvent extends EmployeeEvent {
   @override
   // TODO: implement props
   List<Object?> get props => [];
-
 }

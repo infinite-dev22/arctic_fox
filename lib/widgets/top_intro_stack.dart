@@ -11,7 +11,6 @@ class TopIntroStack extends StatelessWidget {
     return Stack(
       clipBehavior: Clip.none,
       children: [
-
         ClipPath(
           clipper: ProsteThirdOrderBezierCurve(
             position: ClipPosition.bottom,
@@ -24,15 +23,15 @@ class TopIntroStack extends StatelessWidget {
               ),
             ],
           ),
-          child: Image.asset('assets/auth/sky2.jpg',),
+          child: Image.asset(
+            'assets/auth/sky2.jpg',
+          ),
         ),
-        
         Positioned(
-          top: 10.h,
+            top: 10.h,
             left: 10.w,
             right: 10.w,
             child: Image.asset('assets/auth/house.png'))
-
       ],
     );
   }

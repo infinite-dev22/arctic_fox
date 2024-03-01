@@ -14,15 +14,17 @@ class UserDetailsScreenLayout extends StatelessWidget {
       appBar: AppBar(
         title: Text('User $id'),
       ),
-
       body: BlocBuilder<UserDetailsBloc, UserDetailsState>(
         builder: (context, state) {
-
-          if(state.status == UserDetailsStatus.initial){
+          if (state.status == UserDetailsStatus.initial) {
             context.read<UserDetailsBloc>().add(ViewUserDetailsEvent(id));
-          } if(state.status ==  UserDetailsStatus.loading){
-            return Center(child: CircularProgressIndicator(),);
-          } if(state.status == UserDetailsStatus.success){
+          }
+          if (state.status == UserDetailsStatus.loading) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if (state.status == UserDetailsStatus.success) {
             return Column(
               children: [
                 Text(state.user!.data!.name.toString()),
@@ -30,22 +32,28 @@ class UserDetailsScreenLayout extends StatelessWidget {
                 Text(state.user!.data!.pantoneValue.toString()),
                 Text(state.user!.data!.year.toString()),
                 Text(state.user!.data!.id.toString()),
-                SizedBox(height: 3.h,),
+                SizedBox(
+                  height: 3.h,
+                ),
                 Text(state.user!.support!.url.toString()),
                 Text(state.user!.support!.text.toString()),
               ],
             );
-          } if(state.status == UserDetailsStatus.empty){
-            return Center(child: Text('Users doesnt exist'),);
-          } if(state.status == UserDetailsStatus.error){
-            return Center(child: Text('An Error Occured'),);
+          }
+          if (state.status == UserDetailsStatus.empty) {
+            return Center(
+              child: Text('Users doesnt exist'),
+            );
+          }
+          if (state.status == UserDetailsStatus.error) {
+            return Center(
+              child: Text('An Error Occured'),
+            );
           }
 
           return Container();
-
         },
       ),
-
     );
   }
 }

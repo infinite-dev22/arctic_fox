@@ -6,28 +6,23 @@ class UserDetailsState extends Equatable {
   final UserDetailsModel? user;
   final UserDetailsStatus status;
   final bool? isLoading;
-  const UserDetailsState({
-    this.user,
-    this.status = UserDetailsStatus.initial,
-    this.isLoading =  false
-});
+
+  const UserDetailsState(
+      {this.user,
+      this.status = UserDetailsStatus.initial,
+      this.isLoading = false});
 
   @override
   List<Object?> get props => [user, status, isLoading];
 
-  UserDetailsState copyWith({
-    UserDetailsModel? user,
-    UserDetailsStatus? status,
-    bool? isLoading
-  }) {
+  UserDetailsState copyWith(
+      {UserDetailsModel? user, UserDetailsStatus? status, bool? isLoading}) {
     return UserDetailsState(
       user: user,
       status: status ?? this.status,
       isLoading: isLoading ?? this.isLoading,
-
     );
   }
-
 }
 
 class UserDetailsInitial extends UserDetailsState {
@@ -36,8 +31,9 @@ class UserDetailsInitial extends UserDetailsState {
 }
 
 class UserDetailsLoading extends UserDetailsState {}
+
 class UserDetailsSuccess extends UserDetailsState {}
+
 class UserDetailsEmpty extends UserDetailsState {}
+
 class UserDetailsAccessDenied extends UserDetailsState {}
-
-

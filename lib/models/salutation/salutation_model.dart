@@ -6,11 +6,13 @@ import 'dart:convert';
 
 import 'package:smart_rent/models/general/smart_model.dart';
 
-SalutationModel salutationModelFromJson(String str) => SalutationModel.fromJson(json.decode(str));
+SalutationModel salutationModelFromJson(String str) =>
+    SalutationModel.fromJson(json.decode(str));
 
-String salutationModelToJson(SalutationModel data) => json.encode(data.toJson());
+String salutationModelToJson(SalutationModel data) =>
+    json.encode(data.toJson());
 
-class SalutationModel extends SmartModel{
+class SalutationModel extends SmartModel {
   int id;
   String name;
 
@@ -19,21 +21,24 @@ class SalutationModel extends SmartModel{
     required this.name,
   });
 
-  factory SalutationModel.fromJson(Map<String, dynamic> json) => SalutationModel(
-    id: json["id"],
-    name: json["name"],
-  );
+  factory SalutationModel.fromJson(Map<String, dynamic> json) =>
+      SalutationModel(
+        id: json["id"],
+        name: json["name"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-  };
+        "id": id,
+        "name": name,
+      };
 
   @override
-  int getId() { return id;
+  int getId() {
+    return id;
   }
 
   @override
-  String getName() { return name;
+  String getName() {
+    return name;
   }
 }

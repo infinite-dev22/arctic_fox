@@ -583,15 +583,10 @@
 //   }
 // }
 
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:get/get.dart';
-import 'package:photo_view/photo_view_gallery.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/controllers/property_options/property_details_options_controller.dart';
-import 'package:smart_rent/controllers/property_options/property_options_controller.dart';
 import 'package:smart_rent/controllers/tenants/tenant_controller.dart';
 import 'package:smart_rent/controllers/units/unit_controller.dart';
 import 'package:smart_rent/models/property/property_model.dart';
@@ -600,17 +595,8 @@ import 'package:smart_rent/pages/payment/payment_tab_screen.dart';
 import 'package:smart_rent/pages/property/layout/property_details_tab.dart';
 import 'package:smart_rent/pages/tenant_unit/tenant_unit_tab_screen.dart';
 import 'package:smart_rent/pages/unit/unit_tab_screen.dart';
-import 'package:smart_rent/screens/property/floor_tab_screen.dart';
-import 'package:smart_rent/screens/property/payment_tab_screen.dart';
-
-import 'package:smart_rent/screens/property/property_tab_options_widget.dart';
-import 'package:smart_rent/screens/property/room_tab_screen.dart';
-import 'package:smart_rent/screens/property/tenant_tab_screen.dart';
-import 'package:smart_rent/screens/property/video_player_screen.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 import 'package:smart_rent/widgets/app_image_header.dart';
-import 'package:smart_rent/widgets/property_details_widget.dart';
-import 'package:smart_rent/widgets/property_options_widget.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 // class PropertyDetailsScreen extends StatefulWidget {
@@ -781,28 +767,34 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 //   }
 // }
 
-
-
-
 class PropertyDetailsPageLayout extends StatefulWidget {
   final TenantController tenantController;
   final UnitController unitController;
   final PropertyModel propertyModel;
   final int id;
-  const PropertyDetailsPageLayout({super.key, required this.unitController, required this.tenantController, required this.propertyModel, required this.id});
+
+  const PropertyDetailsPageLayout(
+      {super.key,
+      required this.unitController,
+      required this.tenantController,
+      required this.propertyModel,
+      required this.id});
 
   @override
-  State<PropertyDetailsPageLayout> createState() => _PropertyDetailsPageLayoutState();
+  State<PropertyDetailsPageLayout> createState() =>
+      _PropertyDetailsPageLayoutState();
 }
 
-class _PropertyDetailsPageLayoutState extends State<PropertyDetailsPageLayout> with TickerProviderStateMixin{
+class _PropertyDetailsPageLayoutState extends State<PropertyDetailsPageLayout>
+    with TickerProviderStateMixin {
+  String videoId =
+      YoutubePlayer.convertUrlToId("https://youtu.be/izFcWmL1YYQ").toString();
 
-
-  String videoId = YoutubePlayer.convertUrlToId("https://youtu.be/izFcWmL1YYQ")
-      .toString();
   // final PropertyOptionsController propertyOptionsController = Get.put(
   //     PropertyOptionsController());
-  final PropertyDetailsOptionsController propertyDetailsOptionsController = Get.put(PropertyDetailsOptionsController());
+  final PropertyDetailsOptionsController propertyDetailsOptionsController =
+      Get.put(PropertyDetailsOptionsController());
+
   // final UnitController unitController = Get.put(UnitController(), permanent: true);
   @override
   void initState() {
@@ -822,7 +814,6 @@ class _PropertyDetailsPageLayoutState extends State<PropertyDetailsPageLayout> w
 
   @override
   Widget build(BuildContext context) {
-
     // TabController propertyTabCont = TabController(length: 4, vsync: this);
 
     return DefaultTabController(
@@ -832,7 +823,7 @@ class _PropertyDetailsPageLayoutState extends State<PropertyDetailsPageLayout> w
           isTitleCentred: true,
           title: 'assets/auth/srw.png',
         ),
-        backgroundColor: AppTheme.whiteColor,
+        backgroundColor: AppTheme.appBgColor,
         // backgroundColor: Colors.white,
         // extendBodyBehindAppBar: true,
         body: NestedScrollView(
@@ -842,15 +833,23 @@ class _PropertyDetailsPageLayoutState extends State<PropertyDetailsPageLayout> w
               physics: BouncingScrollPhysics(),
               child: Column(
                 children: [
-                  SizedBox(height: 5.h,),
+                  SizedBox(
+                    height: 5.h,
+                  ),
                   SizedBox(
                     height: MediaQuery.of(context).size.height,
                     child: TabBarView(
                       // controller: propertyTabCont,
                       children: [
-                        PropertyDetailsTabScreen(propertyDetailsOptionsController: propertyDetailsOptionsController,  id: widget.id,),
+                        PropertyDetailsTabScreen(
+                          propertyDetailsOptionsController:
+                              propertyDetailsOptionsController,
+                          id: widget.id,
+                        ),
                         Container(),
-                        FloorTabListScreen(id: widget.id,),
+                        FloorTabListScreen(
+                          id: widget.id,
+                        ),
                         UnitTabScreen(id: widget.id),
                         TenantUnitTabScreen(id: widget.id),
                         PaymentScreen(id: widget.id)
@@ -860,7 +859,6 @@ class _PropertyDetailsPageLayoutState extends State<PropertyDetailsPageLayout> w
                         //     propertyModel: widget.propertyModel
                         //
                         // ),
-
                       ],
                     ),
                   ),
@@ -868,11 +866,11 @@ class _PropertyDetailsPageLayoutState extends State<PropertyDetailsPageLayout> w
               ),
             ),
           ),
-
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
               SliverOverlapAbsorber(
-                handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                handle:
+                    NestedScrollView.sliverOverlapAbsorberHandleFor(context),
                 sliver: SliverAppBar(
                   floating: false,
                   pinned: true,
@@ -1039,13 +1037,42 @@ class _PropertyDetailsPageLayoutState extends State<PropertyDetailsPageLayout> w
                     child: TabBar(
                       labelPadding: EdgeInsets.only(right: 0),
                       tabs: [
-                        Tab(icon: Icon(Icons.meeting_room_rounded), child: Text('Details', style: AppTheme.subTextBold2,)),
-                        Tab(icon: Icon(Icons.book), child: Text('Documents', style: AppTheme.subTextBold2,)),
-                        Tab(icon: Icon(Icons.piano), child: Text('Floors', style: AppTheme.subTextBold2,)),
-                        Tab(icon: Icon(Icons.bed), child: Text('Units', style: AppTheme.subTextBold2,)),
-                        Tab(icon: Icon(Icons.person), child: Text('Tenants', style: AppTheme.subTextBold2,)),
-                        Tab(icon: Icon(Icons.payment), child: Text('Payments', style: AppTheme.subTextBold2,)),
-
+                        Tab(
+                            icon: Icon(Icons.meeting_room_rounded),
+                            child: Text(
+                              'Details',
+                              style: AppTheme.subTextBold2,
+                            )),
+                        Tab(
+                            icon: Icon(Icons.book),
+                            child: Text(
+                              'Documents',
+                              style: AppTheme.subTextBold2,
+                            )),
+                        Tab(
+                            icon: Icon(Icons.piano),
+                            child: Text(
+                              'Floors',
+                              style: AppTheme.subTextBold2,
+                            )),
+                        Tab(
+                            icon: Icon(Icons.bed),
+                            child: Text(
+                              'Units',
+                              style: AppTheme.subTextBold2,
+                            )),
+                        Tab(
+                            icon: Icon(Icons.person),
+                            child: Text(
+                              'Tenants',
+                              style: AppTheme.subTextBold2,
+                            )),
+                        Tab(
+                            icon: Icon(Icons.payment),
+                            child: Text(
+                              'Payments',
+                              style: AppTheme.subTextBold2,
+                            )),
                       ],
                     ),
                   ),
@@ -1352,7 +1379,6 @@ class _PropertyDetailsPageLayoutState extends State<PropertyDetailsPageLayout> w
         //     ],
         //   ),
         // ),
-
       ),
     );
   }

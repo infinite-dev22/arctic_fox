@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:smart_rent/data_source/dtos/implemantation/property_dto_impl.dart';
 import 'package:smart_rent/data_source/models/property/add_response_model.dart';
@@ -14,18 +13,22 @@ part 'property_event.dart';
 part 'property_state.dart';
 
 class PropertyBloc extends Bloc<PropertyEvent, PropertyState> {
-  PropertyBloc() : super(PropertyState()) {
+  PropertyBloc() : super(const PropertyState()) {
     on<LoadPropertiesEvent>(_mapFetchPropertiesToState);
     on<LoadSinglePropertyEvent>(_mapViewSinglePropertyDetailsEventToState);
     on<AddPropertyEvent>(_mapAddPropertyEventToState);
+
   }
 
-
-  _mapFetchPropertiesToState(LoadPropertiesEvent event, Emitter<PropertyState> emit) async{
+  _mapFetchPropertiesToState(
+      LoadPropertiesEvent event, Emitter<PropertyState> emit) async {
     emit(state.copyWith(status: PropertyStatus.loading));
-    await PropertyRepoImpl().getALlProperties(userStorage.read('accessToken').toString()).then((properties) {
-      if(properties.isNotEmpty){
-        emit(state.copyWith(status: PropertyStatus.success, properties: properties));
+    await PropertyRepoImpl()
+        .getALlProperties(userStorage.read('accessToken').toString())
+        .then((properties) {
+      if (properties.isNotEmpty) {
+        emit(state.copyWith(
+            status: PropertyStatus.success, properties: properties));
       } else {
         emit(state.copyWith(status: PropertyStatus.empty));
       }
@@ -38,36 +41,85 @@ class PropertyBloc extends Bloc<PropertyEvent, PropertyState> {
     });
   }
 
-  _mapViewSinglePropertyDetailsEventToState(LoadSinglePropertyEvent event, Emitter<PropertyState> emit) async {
-    emit(state.copyWith(status: PropertyStatus.loadingDetails,));
-    await PropertyRepoImpl().getSingleProperty(event.id, userStorage.read('accessToken').toString()).then((property) {
-      if(property != null) {
-        emit(state.copyWith(status: PropertyStatus.successDetails, property: property));
+  _mapViewSinglePropertyDetailsEventToState(
+      LoadSinglePropertyEvent event, Emitter<PropertyState> emit) async {
+    emit(state.copyWith(
+      status: PropertyStatus.loadingDetails,
+    ));
+    await PropertyRepoImpl()
+        .getSingleProperty(event.id, userStorage.read('accessToken').toString())
+        .then((property) async {
+      if (property != null) {
+        emit(state.copyWith(
+            status: PropertyStatus.successDetails, property: property));
       } else {
-        emit(state.copyWith(status: PropertyStatus.emptyDetails, property: null));
+        emit(state.copyWith(
+            status: PropertyStatus.emptyDetails, property: null));
       }
     }).onError((error, stackTrace) {
-      emit(state.copyWith(status: PropertyStatus.errorDetails, isPropertyLoading: false));
+      emit(state.copyWith(
+          status: PropertyStatus.errorDetails, isPropertyLoading: false));
     });
-
   }
 
   _mapAddPropertyEventToState(
       AddPropertyEvent event, Emitter<PropertyState> emit) async {
-    emit(state.copyWith(status: PropertyStatus.loadingAdd, isPropertyLoading: true));
-    await PropertyDtoImpl.addProperty(userStorage.read('accessToken').toString(), event.name, event.location, event.sqm,
-        event.description, event.propertyTypeId, event.propertyCategoryId).then((response) {
+    emit(state.copyWith(
+        status: PropertyStatus.loadingAdd, isPropertyLoading: true));
+    await PropertyDtoImpl.addProperty(
+            userStorage.read('accessToken').toString(),
+            event.name,
+            event.location,
+            event.sqm,
+            event.description,
+            event.propertyTypeId,
+            event.propertyCategoryId)
+        .then((response) async{
       print('success ${response.propertyCreatedViaApi}');
 
       if (response != null) {
-        emit(state.copyWith(status: PropertyStatus.successAdd, isPropertyLoading: false, addPropertyResponseModel: response));
+
+        await PropertyRepoImpl()
+            .getALlProperties(userStorage.read('accessToken').toString())
+            .then((properties) {
+          if (properties.isNotEmpty) {
+            emit(state.copyWith(
+                status: PropertyStatus.success, properties: properties));
+          } else {
+            emit(state.copyWith(status: PropertyStatus.empty));
+          }
+        }).onError((error, stackTrace) {
+          emit(state.copyWith(status: PropertyStatus.error));
+          if (kDebugMode) {
+            print("Error: $error");
+            print("Stacktrace: $stackTrace");
+          }
+        }).then((value) {
+          emit(state.copyWith(
+              status: PropertyStatus.successAdd,
+              isPropertyLoading: false,
+              addPropertyResponseModel: response));
+        });
+
+
       } else {
-        emit(state.copyWith(status: PropertyStatus.accessDeniedAdd, isPropertyLoading: false,));
+        emit(state.copyWith(
+          status: PropertyStatus.accessDeniedAdd,
+          isPropertyLoading: false,
+        ));
       }
     }).onError((error, stackTrace) {
-      emit(state.copyWith(status: PropertyStatus.errorDetails, isPropertyLoading: false, message: error.toString()));
+      emit(state.copyWith(
+          status: PropertyStatus.errorDetails,
+          isPropertyLoading: false,
+          message: error.toString()));
     });
   }
+
+
+
+
+
   @override
   void onEvent(PropertyEvent event) {
     print(event);
@@ -92,5 +144,4 @@ class PropertyBloc extends Bloc<PropertyEvent, PropertyState> {
     print(stackTrace);
     super.onError(error, stackTrace);
   }
-
 }

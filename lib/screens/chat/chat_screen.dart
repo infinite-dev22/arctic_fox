@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:smart_rent/controllers/chats/chat_controller.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 
-
 class ChatScreen extends StatelessWidget {
   const ChatScreen({super.key});
 
@@ -15,7 +14,11 @@ class ChatScreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            Center(child: Text('Chat Screen', style: AppTheme.appTitle3,)),
+            Center(
+                child: Text(
+              'Chat Screen',
+              style: AppTheme.appTitle3,
+            )),
 
             // chatController.obx((state) {
             //   return Expanded(
@@ -33,14 +36,12 @@ class ChatScreen extends StatelessWidget {
             //   },
             //   onLoading: CircularProgressIndicator(),
             // )
-
           ],
         ),
       ),
     );
   }
 }
-
 
 // class ChatScreen extends StatelessWidget {
 //   const ChatScreen({super.key});

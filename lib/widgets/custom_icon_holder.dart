@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 import 'package:smart_rent/widgets/custom_elevated_image.dart';
 
-
 class CustomIconHolder extends StatelessWidget {
   const CustomIconHolder(
       {super.key,

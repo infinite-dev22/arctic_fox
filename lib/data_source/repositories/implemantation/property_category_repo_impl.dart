@@ -8,11 +8,10 @@ import 'package:smart_rent/config/app_config.dart';
 import 'package:smart_rent/data_source/models/property/property_category_model.dart';
 import 'package:smart_rent/data_source/repositories/interfaces/property_category_repo.dart';
 
-
 class PropertyCategoryRepoImpl implements PropertyCategoryRepo {
-
   @override
-  Future<List<PropertyCategoryModel>> getALlPropertyCategories(String token) async {
+  Future<List<PropertyCategoryModel>> getALlPropertyCategories(
+      String token) async {
     var client = RetryClient(http.Client());
     try {
       var headers = {
@@ -23,18 +22,16 @@ class PropertyCategoryRepoImpl implements PropertyCategoryRepo {
 
       var url = Uri.parse('${AppConfig().baseUrl}api/rent/propertycategories');
 
-
       var response = await client.get(url, headers: headers);
       List categoryData = jsonDecode(response.body);
       if (kDebugMode) {
         print("property categories RESPONSE: $response");
       }
-      return categoryData.map((employee) => PropertyCategoryModel.fromJson(employee)).toList();
+      return categoryData
+          .map((employee) => PropertyCategoryModel.fromJson(employee))
+          .toList();
     } finally {
       client.close();
     }
-
   }
-
-
 }

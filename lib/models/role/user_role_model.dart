@@ -6,11 +6,14 @@ import 'dart:convert';
 
 import 'package:smart_rent/models/general/smart_model.dart';
 
-List<UserRoleModel> userRoleModelFromJson(String str) => List<UserRoleModel>.from(json.decode(str).map((x) => UserRoleModel.fromJson(x)));
+List<UserRoleModel> userRoleModelFromJson(String str) =>
+    List<UserRoleModel>.from(
+        json.decode(str).map((x) => UserRoleModel.fromJson(x)));
 
-String userRoleModelToJson(List<UserRoleModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String userRoleModelToJson(List<UserRoleModel> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class UserRoleModel extends SmartUserRoleModel{
+class UserRoleModel extends SmartUserRoleModel {
   int? id;
   String? name;
   String? description;
@@ -22,26 +25,29 @@ class UserRoleModel extends SmartUserRoleModel{
   });
 
   factory UserRoleModel.fromJson(Map<String, dynamic> json) => UserRoleModel(
-    id: json["id"],
-    name: json["name"],
-    description: json["description"],
-  );
+        id: json["id"],
+        name: json["name"],
+        description: json["description"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-    "description": description,
-  };
+        "id": id,
+        "name": name,
+        "description": description,
+      };
 
   @override
-  String getDescription() { return description.toString();
+  String getDescription() {
+    return description.toString();
   }
 
   @override
-  int getId() { return id!;
+  int getId() {
+    return id!;
   }
 
   @override
-  String getName() { return name.toString();
+  String getName() {
+    return name.toString();
   }
 }

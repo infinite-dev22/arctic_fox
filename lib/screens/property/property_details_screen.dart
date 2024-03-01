@@ -583,29 +583,19 @@
 //   }
 // }
 
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:get/get.dart';
-import 'package:photo_view/photo_view_gallery.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/controllers/property_options/property_details_options_controller.dart';
-import 'package:smart_rent/controllers/property_options/property_options_controller.dart';
 import 'package:smart_rent/controllers/tenants/tenant_controller.dart';
 import 'package:smart_rent/controllers/units/unit_controller.dart';
 import 'package:smart_rent/models/property/property_model.dart';
-import 'package:smart_rent/screens/property/floor_tab_screen.dart';
 import 'package:smart_rent/screens/property/payment_tab_screen.dart';
 import 'package:smart_rent/screens/property/property_details_tab.dart';
-import 'package:smart_rent/screens/property/property_tab_options_widget.dart';
 import 'package:smart_rent/screens/property/room_tab_screen.dart';
 import 'package:smart_rent/screens/property/tenant_tab_screen.dart';
-import 'package:smart_rent/screens/property/video_player_screen.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 import 'package:smart_rent/widgets/app_image_header.dart';
-import 'package:smart_rent/widgets/property_details_widget.dart';
-import 'package:smart_rent/widgets/property_options_widget.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 // class PropertyDetailsScreen extends StatefulWidget {
@@ -776,28 +766,33 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 //   }
 // }
 
-
-
-
 class PropertyDetailsScreen extends StatefulWidget {
   final TenantController tenantController;
   final UnitController unitController;
   final PropertyModel propertyModel;
   final int id;
-  const PropertyDetailsScreen({super.key, required this.unitController, required this.tenantController, required this.propertyModel, required this.id});
+
+  const PropertyDetailsScreen(
+      {super.key,
+      required this.unitController,
+      required this.tenantController,
+      required this.propertyModel,
+      required this.id});
 
   @override
   State<PropertyDetailsScreen> createState() => _PropertyDetailsScreenState();
 }
 
-class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> with TickerProviderStateMixin{
+class _PropertyDetailsScreenState extends State<PropertyDetailsScreen>
+    with TickerProviderStateMixin {
+  String videoId =
+      YoutubePlayer.convertUrlToId("https://youtu.be/izFcWmL1YYQ").toString();
 
-
-  String videoId = YoutubePlayer.convertUrlToId("https://youtu.be/izFcWmL1YYQ")
-      .toString();
   // final PropertyOptionsController propertyOptionsController = Get.put(
   //     PropertyOptionsController());
-  final PropertyDetailsOptionsController propertyDetailsOptionsController = Get.put(PropertyDetailsOptionsController());
+  final PropertyDetailsOptionsController propertyDetailsOptionsController =
+      Get.put(PropertyDetailsOptionsController());
+
   // final UnitController unitController = Get.put(UnitController(), permanent: true);
   @override
   void initState() {
@@ -806,18 +801,19 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> with Tick
     super.initState();
     widget.unitController.fetchAllFloors(widget.propertyModel.id!);
     widget.tenantController.fetchOnlyAvailableUnits(widget.propertyModel.id!);
-    widget.tenantController.listenToPropertyTenantListChanges(widget.propertyModel.id!);
+    widget.tenantController
+        .listenToPropertyTenantListChanges(widget.propertyModel.id!);
     widget.unitController.listenToUnitChanges(widget.propertyModel.id!);
     widget.unitController.countPropertyTotalUnits(widget.propertyModel);
     widget.unitController.countPropertyAvailableUnits(widget.propertyModel);
     widget.unitController.countPropertyOccupiedUnits(widget.propertyModel);
     // widget.unitController.countPropertyRevenue(widget.propertyModel);
-    widget.tenantController.listenToTenantPaymentChanges(widget.propertyModel.id!);
+    widget.tenantController
+        .listenToTenantPaymentChanges(widget.propertyModel.id!);
   }
 
   @override
   Widget build(BuildContext context) {
-
     // TabController propertyTabCont = TabController(length: 4, vsync: this);
 
     return DefaultTabController(
@@ -837,26 +833,34 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> with Tick
               physics: BouncingScrollPhysics(),
               child: Column(
                 children: [
-                  SizedBox(height: 5.h,),
+                  SizedBox(
+                    height: 5.h,
+                  ),
                   SizedBox(
                     height: MediaQuery.of(context).size.height,
                     child: TabBarView(
                       // controller: propertyTabCont,
                       children: [
-                        PropertyDetailsTabScreen(propertyDetailsOptionsController: propertyDetailsOptionsController,  id: widget.id,),
+                        PropertyDetailsTabScreen(
+                          propertyDetailsOptionsController:
+                              propertyDetailsOptionsController,
+                          id: widget.id,
+                        ),
                         // FloorTabScreen(propertyDetailsOptionsController: propertyDetailsOptionsController,),
                         RoomTabScreen(
                             unitController: widget.unitController,
-                            propertyDetailsOptionsController: propertyDetailsOptionsController,
-                            propertyModel: widget.propertyModel
-                        ),
-                        TenantTabScreen(propertyDetailsOptionsController: propertyDetailsOptionsController, propertyModel: widget.propertyModel),
+                            propertyDetailsOptionsController:
+                                propertyDetailsOptionsController,
+                            propertyModel: widget.propertyModel),
+                        TenantTabScreen(
+                            propertyDetailsOptionsController:
+                                propertyDetailsOptionsController,
+                            propertyModel: widget.propertyModel),
                         PaymentTabScreen(
-                            propertyDetailsOptionsController: propertyDetailsOptionsController,
+                            propertyDetailsOptionsController:
+                                propertyDetailsOptionsController,
                             unitController: widget.unitController,
-                            propertyModel: widget.propertyModel
-
-                        ),
+                            propertyModel: widget.propertyModel),
                       ],
                     ),
                   ),
@@ -864,11 +868,11 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> with Tick
               ),
             ),
           ),
-
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
               SliverOverlapAbsorber(
-                handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                handle:
+                    NestedScrollView.sliverOverlapAbsorberHandleFor(context),
                 sliver: SliverAppBar(
                   floating: false,
                   pinned: true,
@@ -1033,12 +1037,31 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> with Tick
                   bottom: PreferredSize(
                     preferredSize: Size.fromHeight(2.5.h),
                     child: TabBar(
-
                       tabs: [
-                        Tab(icon: Icon(Icons.meeting_room_rounded), child: Text('Details', style: AppTheme.subTextBold2,)),
-                        Tab(icon: Icon(Icons.bed), child: Text('Units', style: AppTheme.subTextBold2,)),
-                        Tab(icon: Icon(Icons.person), child: Text('Tenants', style: AppTheme.subTextBold2,)),
-                        Tab(icon: Icon(Icons.payment), child: Text('Payments', style: AppTheme.subTextBold2,)),
+                        Tab(
+                            icon: Icon(Icons.meeting_room_rounded),
+                            child: Text(
+                              'Details',
+                              style: AppTheme.subTextBold2,
+                            )),
+                        Tab(
+                            icon: Icon(Icons.bed),
+                            child: Text(
+                              'Units',
+                              style: AppTheme.subTextBold2,
+                            )),
+                        Tab(
+                            icon: Icon(Icons.person),
+                            child: Text(
+                              'Tenants',
+                              style: AppTheme.subTextBold2,
+                            )),
+                        Tab(
+                            icon: Icon(Icons.payment),
+                            child: Text(
+                              'Payments',
+                              style: AppTheme.subTextBold2,
+                            )),
                       ],
                     ),
                   ),
@@ -1345,7 +1368,6 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> with Tick
         //     ],
         //   ),
         // ),
-
       ),
     );
   }

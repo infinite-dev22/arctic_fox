@@ -21,14 +21,22 @@ class UpdateTenantProfileContactForm extends StatelessWidget {
   final String? Function(String?)? emailValidator;
   final GlobalKey<FormState> contactKey;
 
-  const UpdateTenantProfileContactForm({super.key,
+  const UpdateTenantProfileContactForm({
+    super.key,
     // required this.contactFirstNameController,
     // required this.contactLastNameController,
     // required this.contactNinController,
     // required this.contactDesignationController,
     // required this.contactPhoneController,
     // required this.contactEmailController,
-    required this.contactKey, this.firstNameValidator, this.lastNameValidator, this.designationValidator, this.ninValidator, this.phoneValidator, this.emailValidator, required this.tenantController,
+    required this.contactKey,
+    this.firstNameValidator,
+    this.lastNameValidator,
+    this.designationValidator,
+    this.ninValidator,
+    this.phoneValidator,
+    this.emailValidator,
+    required this.tenantController,
   });
 
   @override
@@ -46,14 +54,13 @@ class UpdateTenantProfileContactForm extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   // crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-
                     SizedBox(
                       width: 40.w,
                       child: Obx(() {
                         return AuthTextField(
                           controller: TextEditingController(
-                              text: tenantController
-                                  .uCompanyFirstName.value.toString()),
+                              text: tenantController.uCompanyFirstName.value
+                                  .toString()),
                           hintText: 'First Name',
                           obscureText: false,
                           // validator: firstNameValidator,
@@ -61,14 +68,13 @@ class UpdateTenantProfileContactForm extends StatelessWidget {
                         );
                       }),
                     ),
-
                     Obx(() {
                       return SizedBox(
                         width: 40.w,
                         child: AuthTextField(
                           controller: TextEditingController(
-                              text: tenantController
-                                  .uCompanySurname.value.toString()),
+                              text: tenantController.uCompanySurname.value
+                                  .toString()),
                           hintText: 'Surname',
                           obscureText: false,
                           // validator: lastNameValidator,
@@ -76,13 +82,11 @@ class UpdateTenantProfileContactForm extends StatelessWidget {
                         ),
                       );
                     }),
-
                   ],
-
                 ),
-
-                SizedBox(height: 1.h,),
-
+                SizedBox(
+                  height: 1.h,
+                ),
                 Obx(() {
                   return AuthTextField(
                     controller: TextEditingController(
@@ -95,9 +99,9 @@ class UpdateTenantProfileContactForm extends StatelessWidget {
                     keyBoardType: TextInputType.text,
                   );
                 }),
-
-                SizedBox(height: 1.h,),
-
+                SizedBox(
+                  height: 1.h,
+                ),
                 Obx(() {
                   return AuthTextField(
                     controller: TextEditingController(
@@ -106,26 +110,25 @@ class UpdateTenantProfileContactForm extends StatelessWidget {
                     obscureText: false,
                     keyBoardType: TextInputType.text,
                     // validator: ninValidator,
-
                   );
                 }),
-
-                SizedBox(height: 1.h,),
-
+                SizedBox(
+                  height: 1.h,
+                ),
                 Obx(() {
                   return AuthTextField(
                     controller: TextEditingController(
-                        text: tenantController.uCompanyContact.value
-                            .toString()),
+                        text:
+                            tenantController.uCompanyContact.value.toString()),
                     hintText: 'Contact',
                     obscureText: false,
                     keyBoardType: TextInputType.number,
                     // validator: phoneValidator,
                   );
                 }),
-
-                SizedBox(height: 1.h,),
-
+                SizedBox(
+                  height: 1.h,
+                ),
                 Obx(() {
                   return AuthTextField(
                     controller: TextEditingController(
@@ -136,7 +139,6 @@ class UpdateTenantProfileContactForm extends StatelessWidget {
                     // validator: emailValidator,
                   );
                 }),
-
               ],
             ),
           ),

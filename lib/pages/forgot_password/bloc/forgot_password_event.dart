@@ -4,7 +4,6 @@ abstract class ForgotPasswordEvent extends Equatable {
   const ForgotPasswordEvent();
 }
 
-
 class SendForgotPasswordEvent extends ForgotPasswordEvent {
   final String email;
   final String token;
@@ -14,7 +13,4 @@ class SendForgotPasswordEvent extends ForgotPasswordEvent {
   @override
   // TODO: implement props
   List<Object?> get props => [email, token];
-
-
-
 }

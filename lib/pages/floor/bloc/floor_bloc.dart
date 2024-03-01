@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:smart_rent/data_source/dtos/implemantation/floor_dto_impl.dart';
 import 'package:smart_rent/data_source/models/floor/add_floor_response_model.dart';
@@ -19,38 +18,56 @@ class FloorBloc extends Bloc<FloorEvent, FloorState> {
     on<AddFloorEvent>(_mapAddFloorEventToState);
   }
 
-  _mapFetchFloorsToState(LoadAllFloorsEvent event, Emitter<FloorState> emit) async{
+  _mapFetchFloorsToState(
+      LoadAllFloorsEvent event, Emitter<FloorState> emit) async {
+    print("JON MARK");
     emit(state.copyWith(status: FloorStatus.loading));
-    await FloorRepoImpl().getALlFloors(userStorage.read('accessToken').toString(), event.id).then((floors) {
-      if(floors.isNotEmpty){
+    print("JANET");
+    await FloorRepoImpl()
+        .getALlFloors(userStorage.read('accessToken').toString(), event.id)
+        .then((floors) {
+      if (floors.isNotEmpty) {
         emit(state.copyWith(status: FloorStatus.success, floors: floors));
+        print("JANET 2");
       } else {
         emit(state.copyWith(status: FloorStatus.empty));
+        print("JANET 3");
       }
+      print("JON MARK 2");
     }).onError((error, stackTrace) {
       emit(state.copyWith(status: FloorStatus.error));
       if (kDebugMode) {
         print("Error: $error");
         print("Stacktrace: $stackTrace");
+        print("JON MARK 3");
       }
     });
   }
 
-
   _mapAddFloorEventToState(
       AddFloorEvent event, Emitter<FloorState> emit) async {
     emit(state.copyWith(status: FloorStatus.loadingAdd, isFloorLoading: true));
-    await FloorDtoImpl.addFloor(userStorage.read('accessToken').toString(), event.propertyId,
-        event.floorName, event.description) .then((response) {
+    await FloorDtoImpl.addFloor(userStorage.read('accessToken').toString(),
+            event.propertyId, event.floorName, event.description)
+        .then((response) {
       print('success ${response.floorCreatedViaApi}');
 
       if (response != null) {
-        emit(state.copyWith(status: FloorStatus.successAdd, isFloorLoading: false, floorResponseModel: response));
+        emit(state.copyWith(
+            status: FloorStatus.successAdd,
+            isFloorLoading: false,
+            floorResponseModel: response));
       } else {
-        emit(state.copyWith(status: FloorStatus.accessDeniedAdd, isFloorLoading: false,));
+        emit(state.copyWith(
+          status: FloorStatus.accessDeniedAdd,
+          isFloorLoading: false,
+        ));
       }
     }).onError((error, stackTrace) {
-      emit(state.copyWith(status: FloorStatus.errorAdd, isFloorLoading: false, message: error.toString()));
+      emit(state.copyWith(
+          status: FloorStatus.errorAdd,
+          isFloorLoading: false,
+          message: error.toString()));
     });
   }
 
@@ -92,5 +109,4 @@ class FloorBloc extends Bloc<FloorEvent, FloorState> {
     print(stackTrace);
     super.onError(error, stackTrace);
   }
-
 }

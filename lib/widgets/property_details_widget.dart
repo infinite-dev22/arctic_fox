@@ -5,7 +5,8 @@ import 'package:smart_rent/styles/app_theme.dart';
 class PropertyDetailsWidget extends StatelessWidget {
   final String? icon;
   final String detail;
-  const PropertyDetailsWidget({super.key,  this.icon, required this.detail});
+
+  const PropertyDetailsWidget({super.key, this.icon, required this.detail});
 
   @override
   Widget build(BuildContext context) {
@@ -13,8 +14,13 @@ class PropertyDetailsWidget extends StatelessWidget {
       child: Row(
         children: [
           icon == null ? Container() : Image.asset(icon.toString()),
-          SizedBox(width: 2.w,),
-          Text(detail, style: AppTheme.subText,)
+          SizedBox(
+            width: 2.w,
+          ),
+          Text(
+            detail,
+            style: AppTheme.subText,
+          )
         ],
       ),
     );

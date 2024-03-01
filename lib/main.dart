@@ -4,13 +4,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:smart_rent/pages/user/bloc/user_bloc.dart';
-import 'package:smart_rent/pages/user/layout/user_screen_layout.dart';
-import 'package:smart_rent/pages/user/user_list_screen.dart';
+import 'package:smart_rent/pages/bottom_nav_bar/bottom_nav_bar_page.dart';
+import 'package:smart_rent/pages/currency/bloc/currency_bloc.dart';
+import 'package:smart_rent/pages/floor/bloc/floor_bloc.dart';
+import 'package:smart_rent/pages/period/bloc/period_bloc.dart';
+import 'package:smart_rent/pages/tenant/bloc/tenant_bloc.dart';
+import 'package:smart_rent/pages/tenant_unit/bloc/tenant_unit_bloc.dart';
+import 'package:smart_rent/pages/unit/bloc/unit_bloc.dart';
 import 'package:smart_rent/screens/auth/initial_screen.dart';
-import 'package:smart_rent/screens/test/bloc/country_city_bloc.dart';
-import 'package:smart_rent/screens/bottom_nav_bar/bottom_nav_bar.dart';
-import 'package:smart_rent/screens/test/country_state_list_screen.dart';
 import 'package:smart_rent/utils/app_prefs.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -20,10 +21,34 @@ void main() async {
     url: 'https://nsmowxdnkhgxyleexifv.supabase.co',
     // anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5zbW93eGRua2hneHlsZWV4aWZ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTk4ODQ5NDYsImV4cCI6MjAxNTQ2MDk0Nn0.aNrLzAm74sF0aH04qUGyodAqRMDLs-MsLlCGRbKsd-w',
     anonKey:
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5zbW93eGRua2hneHlsZWV4aWZ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTk4ODQ5NDYsImV4cCI6MjAxNTQ2MDk0Nn0.aNrLzAm74sF0aH04qUGyodAqRMDLs-MsLlCGRbKsd-w',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5zbW93eGRua2hneHlsZWV4aWZ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTk4ODQ5NDYsImV4cCI6MjAxNTQ2MDk0Nn0.aNrLzAm74sF0aH04qUGyodAqRMDLs-MsLlCGRbKsd-w',
   );
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const MyApp());
+  runApp(
+    MultiBlocProvider(
+      providers: [
+        BlocProvider<CurrencyBloc>(
+          create: (context) => CurrencyBloc(),
+        ),
+        BlocProvider<FloorBloc>(
+          create: (context) => FloorBloc(),
+        ),
+        BlocProvider<TenantBloc>(
+          create: (context) => TenantBloc(),
+        ),
+        BlocProvider<UnitBloc>(
+          create: (context) => UnitBloc(),
+        ),
+        BlocProvider<PeriodBloc>(
+          create: (context) => PeriodBloc(),
+        ),
+        BlocProvider<TenantUnitBloc>(
+          create: (context) => TenantUnitBloc(),
+        ),
+      ],
+      child: const MyApp(),
+    ),
+  );
   await SystemChrome.setPreferredOrientations(
     [DeviceOrientation.portraitUp],
   );
@@ -63,7 +88,9 @@ class _MyAppState extends State<MyApp> {
             useMaterial3: true,
           ),
           // home: HomePage(),
-          home: userStorage.read('isLoggedIn') ? BottomNavBar() : InitialScreen(),
+          home: userStorage.read('isLoggedIn')
+              ? BottomNavBarPage()
+              : InitialScreen(),
           // home: CountryCityListScreen(),
 
           // home: const LoginScreen(),

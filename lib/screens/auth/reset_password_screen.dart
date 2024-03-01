@@ -7,13 +7,10 @@ import 'package:get/get.dart';
 import 'package:pinput/pinput.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/controllers/user/auth_controller.dart';
-import 'package:smart_rent/screens/auth/complete_signup_screen.dart';
 import 'package:smart_rent/screens/auth/initial_screen.dart';
-import 'package:smart_rent/screens/auth/login_screen.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 import 'package:smart_rent/widgets/app_button.dart';
 import 'package:smart_rent/widgets/app_password_textfield.dart';
-import 'package:smart_rent/widgets/app_textfield.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
   final String email;
@@ -25,9 +22,9 @@ class ResetPasswordScreen extends StatefulWidget {
 }
 
 class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
-
   final TextEditingController otpTokenController = TextEditingController();
-  final TextEditingController passwordEditingController = TextEditingController();
+  final TextEditingController passwordEditingController =
+      TextEditingController();
 
   final AuthController authController = Get.put(AuthController());
 
@@ -55,11 +52,16 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-
                   // Center(child: Image.asset('assets/auth/otp.png')),
 
-                  Text('Reset Password', style: AppTheme.appTitle2,),
-              Text('Enter OTP sent to ${widget.email}', style: AppTheme.blueSubText,),
+                  Text(
+                    'Reset Password',
+                    style: AppTheme.appTitle2,
+                  ),
+                  Text(
+                    'Enter OTP sent to ${widget.email}',
+                    style: AppTheme.blueSubText,
+                  ),
 
                   FadeInRight(
                     child: Padding(
@@ -97,7 +99,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                             color: AppTheme.appWidgetColor,
                             borderRadius: BorderRadius.circular(15.sp),
                             border: Border.all(
-                              color: Colors.red, width: 2,
+                              color: Colors.red,
+                              width: 2,
                             ),
                           ),
                           textStyle: TextStyle(
@@ -110,7 +113,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     ),
                   ),
 
-
                   // AuthTextField(
                   //   isEmail: true,
                   //   controller: otpTokenController,
@@ -118,7 +120,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   //   obscureText: false,
                   //
                   // ),
-                  SizedBox(height: 2.h,),
+                  SizedBox(
+                    height: 2.h,
+                  ),
 
                   AppPasswordTextField(
                     controller: passwordEditingController,
@@ -133,22 +137,25 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   //   validator: emailValidator,
                   // ),
 
-
-                  SizedBox(height: 3.h,),
+                  SizedBox(
+                    height: 3.h,
+                  ),
 
                   Obx(() {
                     return AppButton(
-                      isLoading: authController.isResetPasswordLoading.value,
+                        isLoading: authController.isResetPasswordLoading.value,
                         title: 'Reset Password',
                         color: AppTheme.primaryColor,
                         function: () async {
                           if (passwordEditingController.text.isEmpty &&
                               otpTokenController.text.isEmpty) {
-                            Fluttertoast.showToast(msg: 'all fields required',
+                            Fluttertoast.showToast(
+                                msg: 'all fields required',
                                 gravity: ToastGravity.TOP);
-                          } else
-                          if (passwordEditingController.text.length < 6) {
-                            Fluttertoast.showToast(msg: 'Password is short',
+                          } else if (passwordEditingController.text.length <
+                              6) {
+                            Fluttertoast.showToast(
+                                msg: 'Password is short',
                                 gravity: ToastGravity.TOP);
                           } else if (otpTokenController.text.length < 6) {
                             Fluttertoast.showToast(
@@ -163,19 +170,20 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                             // await authController.resetPassword(
                             //     widget.email, passwordEditingController.text.trim());
                           }
-                        }
-
-
-                    );
+                        });
                   }),
-                  SizedBox(height: 1.h,),
-                  Center(child: Bounceable(
-                      onTap: () {
-                        Get.off(() => InitialScreen());
-                      },
-                      child: Text('back', style: AppTheme.subTextBold,))),
-
-
+                  SizedBox(
+                    height: 1.h,
+                  ),
+                  Center(
+                      child: Bounceable(
+                          onTap: () {
+                            Get.off(() => InitialScreen());
+                          },
+                          child: Text(
+                            'back',
+                            style: AppTheme.subTextBold,
+                          ))),
                 ],
               ),
             ),

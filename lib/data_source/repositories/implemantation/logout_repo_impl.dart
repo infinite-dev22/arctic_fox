@@ -7,7 +7,6 @@ import 'package:http/retry.dart';
 import 'package:smart_rent/config/app_config.dart';
 import 'package:smart_rent/data_source/repositories/interfaces/logout_repo.dart';
 
-
 class LogoutRepoImpl implements LogOutRepo {
   @override
   Future<dynamic> logout(String token) async {

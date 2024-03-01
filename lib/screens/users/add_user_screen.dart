@@ -1,19 +1,12 @@
-import 'dart:io';
-
 import 'package:fl_country_code_picker/fl_country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import 'package:full_picker/full_picker.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/controllers/user/user_controller.dart';
-import 'package:smart_rent/models/general/smart_model.dart';
 import 'package:smart_rent/models/role/user_role_model.dart';
-import 'package:smart_rent/models/user/user_model.dart';
-import 'package:smart_rent/screens/bottom_nav_bar/bottom_nav_bar.dart';
-import 'package:smart_rent/screens/home/homepage_screen.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 import 'package:smart_rent/widgets/app_button.dart';
 import 'package:smart_rent/widgets/app_drop_downs.dart';
@@ -34,8 +27,6 @@ class AddUserScreen extends StatefulWidget {
 }
 
 class _AddUserScreenState extends State<AddUserScreen> {
-
-
   final TextEditingController firstNameEditingController =
       TextEditingController();
   final TextEditingController lastNameEditingController =
@@ -80,7 +71,6 @@ class _AddUserScreenState extends State<AddUserScreen> {
     MaxLengthValidator(9, errorText: 'phone number has exceeded'),
   ]);
 
-
   final _formKey = GlobalKey<FormState>();
 
   final UserController userController = Get.put(UserController());
@@ -90,9 +80,8 @@ class _AddUserScreenState extends State<AddUserScreen> {
     // TODO: implement initState
     super.initState();
     countryCode =
-    const CountryCode(name: 'Uganda', code: 'UG', dialCode: '+256');
+        const CountryCode(name: 'Uganda', code: 'UG', dialCode: '+256');
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -172,20 +161,20 @@ class _AddUserScreenState extends State<AddUserScreen> {
                     obscureText: false,
                   ),
 
-                  SizedBox(height: 1.h,),
+                  SizedBox(
+                    height: 1.h,
+                  ),
 
                   Container(
                     clipBehavior: Clip.antiAlias,
                     width: 90.w,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15.sp)
-                    ),
+                        borderRadius: BorderRadius.circular(15.sp)),
                     child: TextFormField(
                       // maxLength: 9,
                       onChanged: (value) {
-                        print('dialCode==${countryCode
-                            .dialCode} code==${countryCode
-                            .code} phone==${mobileCont.text}');
+                        print(
+                            'dialCode==${countryCode.dialCode} code==${countryCode.code} phone==${mobileCont.text}');
                       },
                       textAlign: TextAlign.left,
                       keyboardType: TextInputType.phone,
@@ -206,8 +195,8 @@ class _AddUserScreenState extends State<AddUserScreen> {
                             child: SizedBox(
                               width: 30.w,
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment
-                                    .spaceEvenly,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: [
                                   countryCode.flagImage,
                                   Container(
@@ -270,13 +259,14 @@ class _AddUserScreenState extends State<AddUserScreen> {
                       title: 'Add User',
                       color: AppTheme.primaryColor,
                       function: () async {
-
                         if (firstNameEditingController.text.isEmpty ||
                             lastNameEditingController.text.isEmpty ||
                             emailEditingController.text.isEmpty ||
                             confirmPasswordEditingController.text.isEmpty ||
                             passwordEditingController.text.isEmpty) {
-                          Fluttertoast.showToast(msg: 'fill in all fields', gravity: ToastGravity.TOP);
+                          Fluttertoast.showToast(
+                              msg: 'fill in all fields',
+                              gravity: ToastGravity.TOP);
                         } else {
                           // await userController
                           //     .adminCreateUser(

@@ -16,19 +16,19 @@ class UnitTabScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final UnitController unitController = Get.put(UnitController());
-    final PropertyDetailsOptionsController propertyDetailsOptionsController = Get
-        .put(PropertyDetailsOptionsController());
-    return  MultiBlocProvider(
+    final PropertyDetailsOptionsController propertyDetailsOptionsController =
+        Get.put(PropertyDetailsOptionsController());
+    return MultiBlocProvider(
       providers: [
-    BlocProvider<UnitBloc>(create: (context) => UnitBloc()),
-    BlocProvider<FloorBloc>(create: (context) => FloorBloc()),
-    BlocProvider<CurrencyBloc>(create: (context) => CurrencyBloc()),
+        BlocProvider<UnitBloc>(create: (context) => UnitBloc()),
+        BlocProvider<FloorBloc>(create: (context) => FloorBloc()),
+        BlocProvider<CurrencyBloc>(create: (context) => CurrencyBloc()),
       ],
       child: UnitTabScreenLayout(
-          propertyDetailsOptionsController: propertyDetailsOptionsController,
-          unitController: unitController,
-          id: id,
-        ),
+        propertyDetailsOptionsController: propertyDetailsOptionsController,
+        unitController: unitController,
+        id: id,
+      ),
     );
   }
 }

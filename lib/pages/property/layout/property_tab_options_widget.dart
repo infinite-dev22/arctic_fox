@@ -5,7 +5,8 @@ class PropertyTabOptionsWidget extends StatefulWidget {
   const PropertyTabOptionsWidget({super.key});
 
   @override
-  State<PropertyTabOptionsWidget> createState() => _PropertyTabOptionsWidgetState();
+  State<PropertyTabOptionsWidget> createState() =>
+      _PropertyTabOptionsWidgetState();
 }
 
 class _PropertyTabOptionsWidgetState extends State<PropertyTabOptionsWidget> {

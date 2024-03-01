@@ -1,11 +1,24 @@
 part of 'floor_bloc.dart';
 
-enum FloorStatus { initial, success, loading, accessDenied, error, empty,
-  loadingDetails, successDetails, errorDetails, emptyDetails, successAdd, loadingAdd,
-  accessDeniedAdd, errorAdd, emptyAdd
+enum FloorStatus {
+  initial,
+  success,
+  loading,
+  accessDenied,
+  error,
+  empty,
+  loadingDetails,
+  successDetails,
+  errorDetails,
+  emptyDetails,
+  successAdd,
+  loadingAdd,
+  accessDeniedAdd,
+  errorAdd,
+  emptyAdd
 }
 
- class FloorState extends Equatable {
+class FloorState extends Equatable {
   final List<FloorModel>? floors;
   final FloorStatus status;
   final FloorModel? floorModel;
@@ -20,7 +33,7 @@ enum FloorStatus { initial, success, loading, accessDenied, error, empty,
     this.floorResponseModel,
     this.isFloorLoading = false,
     this.message = '',
-});
+  });
 
   FloorState copyWith({
     List<FloorModel>? floors,
@@ -29,22 +42,20 @@ enum FloorStatus { initial, success, loading, accessDenied, error, empty,
     AddFloorResponseModel? floorResponseModel,
     bool? isFloorLoading,
     String? message,
-
-}) {
+  }) {
     return FloorState(
-      floors: floors ?? this.floors,
-      status: status ?? this.status,
-      floorModel: floorModel ?? this.floorModel,
-      floorResponseModel: floorResponseModel ?? this.floorResponseModel,
-      isFloorLoading: isFloorLoading ?? this.isFloorLoading,
-      message: message ?? this.message
-    );
-}
+        floors: floors ?? this.floors,
+        status: status ?? this.status,
+        floorModel: floorModel ?? this.floorModel,
+        floorResponseModel: floorResponseModel ?? this.floorResponseModel,
+        isFloorLoading: isFloorLoading ?? this.isFloorLoading,
+        message: message ?? this.message);
+  }
 
   @override
   // TODO: implement props
-  List<Object?> get props => [floors, status, floorModel, floorResponseModel, isFloorLoading, message];
-
+  List<Object?> get props =>
+      [floors, status, floorModel, floorResponseModel, isFloorLoading, message];
 }
 
 @immutable

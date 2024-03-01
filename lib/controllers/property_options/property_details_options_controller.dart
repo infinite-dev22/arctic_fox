@@ -2,22 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smart_rent/config/app_config.dart';
 import 'package:smart_rent/models/property/floor_model.dart';
-import 'package:smart_rent/models/property/room_model.dart';
 import 'package:smart_rent/models/property_options/floor_option_widget_model.dart';
-import 'package:smart_rent/models/property_options/room_option_widget.dart';
 import 'package:smart_rent/models/unit/unit_model.dart';
 
 class PropertyDetailsOptionsController extends GetxController {
-
   var selectedIndex = 100.obs;
 
   RxList<FloorOptionModel> floorDataList = <FloorOptionModel>[].obs;
+
   // RxList<RoomOptionModel> roomDataList = <RoomOptionModel>[].obs;
   RxList<UnitModel> roomList = <UnitModel>[].obs;
 
   var isFloorList = false.obs;
   var isRoomList = false.obs;
-  var isUnitLoading =  false.obs;
+  var isUnitLoading = false.obs;
 
   var floorList = [
     FloorModel(floorName: 'Level 1'),
@@ -36,7 +34,6 @@ class PropertyDetailsOptionsController extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-
   }
 
   var options = [
@@ -46,41 +43,20 @@ class PropertyDetailsOptionsController extends GetxController {
     'Payments',
   ].obs;
 
-  var roomTypeList = [
-    'single',
-    'double'
-  ];
+  var roomTypeList = ['single', 'double'];
 
-  var periodList = [
-    'Per Month',
-    'Per Year',
-    'Per Day'
-  ];
+  var periodList = ['Per Month', 'Per Year', 'Per Day'];
 
-  var levelList = [
-    'level 1',
-    'level 2'
-  ];
+  var levelList = ['level 1', 'level 2'];
 
-  var unitList = [
-    'Unit 1',
-    'Unit 2'
-  ];
+  var unitList = ['Unit 1', 'Unit 2'];
 
-  var tenantList = [
-    'vincent west',
-    'jonathan mark',
-    'ryan jupiter'
-
-  ];
-
-
+  var tenantList = ['vincent west', 'jonathan mark', 'ryan jupiter'];
 
   changeSelectedIndex(index) {
     selectedIndex.value = index;
     print(selectedIndex);
   }
-
 
   void addFloorWidget() {
     final textController = TextEditingController();
@@ -92,12 +68,12 @@ class PropertyDetailsOptionsController extends GetxController {
     );
   }
 
-  void changeAddFloorStatus(bool status){
+  void changeAddFloorStatus(bool status) {
     isFloorList.value = status;
     print(isFloorList);
   }
 
-  void changeAddRoomStatus(bool status){
+  void changeAddRoomStatus(bool status) {
     isRoomList.value = status;
     print(isRoomList);
   }
@@ -113,7 +89,6 @@ class PropertyDetailsOptionsController extends GetxController {
     return floorDataList.map((floorData) {
       return [
         floorData.textController.text,
-
       ];
     }).toList();
   }
@@ -125,15 +100,17 @@ class PropertyDetailsOptionsController extends GetxController {
       case 0:
         floorData.textController.text = newValue;
         break;
-
     }
   }
 
   void fetchAllPropertyUnits() async {
     isUnitLoading(true);
     try {
-
-      final response = await AppConfig().supaBaseClient.from('units').select().order('created_at', ascending: false);
+      final response = await AppConfig()
+          .supaBaseClient
+          .from('units')
+          .select()
+          .order('created_at', ascending: false);
       final data = response as List<dynamic>;
       print('MY UNITS ARE ${response}');
       print(response.length);
@@ -141,16 +118,11 @@ class PropertyDetailsOptionsController extends GetxController {
       print(data);
       isUnitLoading(false);
 
-      return roomList.assignAll(
-          data.map((json) => UnitModel.fromJson(json)).toList());
-
+      return roomList
+          .assignAll(data.map((json) => UnitModel.fromJson(json)).toList());
     } catch (error) {
       print('Error fetching Units: $error');
       isUnitLoading(false);
     }
-
   }
-
-
-
 }

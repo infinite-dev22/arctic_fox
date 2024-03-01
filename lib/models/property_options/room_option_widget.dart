@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class RoomOptionModel {
-
   String levelNumber;
   String roomType;
   String period;

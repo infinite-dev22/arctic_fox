@@ -4,15 +4,22 @@ import 'package:smart_rent/data_source/repositories/interfaces/property_repo.dar
 
 class PropertyDtoImpl {
   static Future<AddPropertyResponseModel> addProperty(
-      String token, String name, String location, String sqm,
-      String description, int propertyTypeId, int propertyCategoryId, {
-        Function()? onSuccess,
-        Function()? onError,
-      }) async {
+    String token,
+    String name,
+    String location,
+    String sqm,
+    String description,
+    int propertyTypeId,
+    int propertyCategoryId, {
+    Function()? onSuccess,
+    Function()? onError,
+  }) async {
     PropertyRepo propertyRepo = PropertyRepoImpl();
     var result = await propertyRepo
-        .addProperty(token, name, location, sqm, description, propertyTypeId, propertyCategoryId)
-        .then((loginResponse) => AddPropertyResponseModel.fromJson(loginResponse));
+        .addProperty(token, name, location, sqm, description, propertyTypeId,
+            propertyCategoryId)
+        .then((loginResponse) =>
+            AddPropertyResponseModel.fromJson(loginResponse));
 
     return result;
   }

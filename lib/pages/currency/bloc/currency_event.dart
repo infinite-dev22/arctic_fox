@@ -8,5 +8,4 @@ class LoadAllCurrenciesEvent extends CurrencyEvent {
   @override
   // TODO: implement props
   List<Object?> get props => [];
-
 }

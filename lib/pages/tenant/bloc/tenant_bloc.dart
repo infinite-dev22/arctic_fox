@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:smart_rent/data_source/models/tenant/tenant_details_model.dart';
 import 'package:smart_rent/data_source/models/tenant/tenant_model.dart';
@@ -20,10 +19,13 @@ class TenantBloc extends Bloc<TenantEvent, TenantState> {
     on<LoadTenantTypes>(_mapFetchTenantTypesToState);
   }
 
-  _mapFetchTenantsToState(LoadAllTenantsEvent event, Emitter<TenantState> emit) async{
+  _mapFetchTenantsToState(
+      LoadAllTenantsEvent event, Emitter<TenantState> emit) async {
     emit(state.copyWith(status: TenantStatus.loading));
-    await TenantRepoImpl().getALlTenants(userStorage.read('accessToken').toString()).then((tenants) {
-      if(tenants.isNotEmpty){
+    await TenantRepoImpl()
+        .getALlTenants(userStorage.read('accessToken').toString())
+        .then((tenants) {
+      if (tenants.isNotEmpty) {
         emit(state.copyWith(status: TenantStatus.success, tenants: tenants));
       } else {
         emit(state.copyWith(status: TenantStatus.empty));
@@ -37,25 +39,35 @@ class TenantBloc extends Bloc<TenantEvent, TenantState> {
     });
   }
 
-  _mapViewSingleTenantDetailsEventToState(LoadSingleTenantEvent event, Emitter<TenantState> emit) async {
-    emit(state.copyWith(status: TenantStatus.loadingDetails,));
-    await TenantRepoImpl().getSingleTenant(userStorage.read('accessToken').toString(), event.id).then((tenant) {
-      if(tenant != null) {
-        emit(state.copyWith(status: TenantStatus.successDetails, tenantModel: tenant));
+  _mapViewSingleTenantDetailsEventToState(
+      LoadSingleTenantEvent event, Emitter<TenantState> emit) async {
+    emit(state.copyWith(
+      status: TenantStatus.loadingDetails,
+    ));
+    await TenantRepoImpl()
+        .getSingleTenant(userStorage.read('accessToken').toString(), event.id)
+        .then((tenant) {
+      if (tenant != null) {
+        emit(state.copyWith(
+            status: TenantStatus.successDetails, tenantModel: tenant));
       } else {
-        emit(state.copyWith(status: TenantStatus.emptyDetails, tenantModel: null));
+        emit(state.copyWith(
+            status: TenantStatus.emptyDetails, tenantModel: null));
       }
     }).onError((error, stackTrace) {
       emit(state.copyWith(status: TenantStatus.errorDetails, isLoading: false));
     });
-
   }
 
-  _mapFetchTenantTypesToState(LoadTenantTypes event, Emitter<TenantState> emit) async{
+  _mapFetchTenantTypesToState(
+      LoadTenantTypes event, Emitter<TenantState> emit) async {
     emit(state.copyWith(status: TenantStatus.loadingTT));
-    await TenantRepoImpl().getALlTenantTypes(userStorage.read('accessToken').toString()).then((types) {
-      if(types.isNotEmpty){
-        emit(state.copyWith(status: TenantStatus.successTT, tenantTypes: types));
+    await TenantRepoImpl()
+        .getALlTenantTypes(userStorage.read('accessToken').toString())
+        .then((types) {
+      if (types.isNotEmpty) {
+        emit(
+            state.copyWith(status: TenantStatus.successTT, tenantTypes: types));
       } else {
         emit(state.copyWith(status: TenantStatus.emptyTT));
       }
@@ -92,5 +104,4 @@ class TenantBloc extends Bloc<TenantEvent, TenantState> {
     print(stackTrace);
     super.onError(error, stackTrace);
   }
-
 }

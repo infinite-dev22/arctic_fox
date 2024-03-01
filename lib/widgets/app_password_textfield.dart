@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/styles/app_theme.dart';
-
-
-
 
 class AppPasswordTextField extends StatefulWidget {
   final TextEditingController controller;
@@ -43,12 +38,13 @@ class _AppPasswordTextField extends State<AppPasswordTextField> {
     return SizedBox(
       height: 50,
       child: TextFormField(
-        inputFormatters: widget.inputFormatters ?? [
-          LengthLimitingTextInputFormatter(30),
-        ],
+        inputFormatters: widget.inputFormatters ??
+            [
+              LengthLimitingTextInputFormatter(30),
+            ],
         cursorColor: AppTheme.gray45,
         validator: (val) =>
-        val!.isEmpty ? 'Required field, Please fill in.' : null,
+            val!.isEmpty ? 'Required field, Please fill in.' : null,
         controller: widget.controller,
         obscureText: obscure,
         style: widget.style,
@@ -56,20 +52,20 @@ class _AppPasswordTextField extends State<AppPasswordTextField> {
         decoration: InputDecoration(
           focusedBorder: (widget.borderSide != BorderSide.none)
               ? OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: const BorderSide(
-              color: AppTheme.gray45,
-              width: 2.0,
-            ),
-          )
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: const BorderSide(
+                    color: AppTheme.gray45,
+                    width: 2.0,
+                  ),
+                )
               : null,
           enabledBorder: (widget.borderSide != BorderSide.none)
               ? OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: const BorderSide(
-              color: AppTheme.gray45,
-            ),
-          )
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: const BorderSide(
+                    color: AppTheme.gray45,
+                  ),
+                )
               : null,
           suffixIcon: IconButton(
               onPressed: () {

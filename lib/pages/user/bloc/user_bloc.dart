@@ -14,10 +14,10 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     on<LoadUserEvent>(_mapFetchUsersToState);
   }
 
-  _mapFetchUsersToState(LoadUserEvent event, Emitter<UserState> emit) async{
+  _mapFetchUsersToState(LoadUserEvent event, Emitter<UserState> emit) async {
     emit(state.copyWith(status: UserStatus.loading));
     await UserRepoImpl().getALl().then((users) {
-      if(users.isNotEmpty){
+      if (users.isNotEmpty) {
         emit(state.copyWith(status: UserStatus.success, users: users));
       } else {
         emit(state.copyWith(status: UserStatus.empty));
@@ -55,5 +55,4 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     print(stackTrace);
     super.onError(error, stackTrace);
   }
-
 }

@@ -4,11 +4,8 @@ import 'package:get/get.dart';
 import 'package:smart_rent/controllers/tenants/tenant_controller.dart';
 import 'package:smart_rent/controllers/units/unit_controller.dart';
 import 'package:smart_rent/models/property/property_model.dart';
-import 'package:smart_rent/pages/employee/bloc/employee_bloc.dart';
-import 'package:smart_rent/pages/employee/layout/employee_list_screen_layout.dart';
 import 'package:smart_rent/pages/property/bloc/property_bloc.dart';
 import 'package:smart_rent/pages/property/layout/property_details_page_layout.dart';
-import 'package:smart_rent/pages/property/layout/property_list_screen_layout.dart';
 import 'package:smart_rent/pages/unit/bloc/unit_bloc.dart';
 
 class PropertyDetailsPage extends StatelessWidget {
@@ -25,14 +22,17 @@ class PropertyDetailsPage extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<PropertyBloc>(
-          create: (_) => PropertyBloc(),),
+          create: (_) => PropertyBloc(),
+        ),
         BlocProvider<UnitBloc>(
-          create: (_) => UnitBloc(),),
+          create: (_) => UnitBloc(),
+        ),
       ],
       child: PropertyDetailsPageLayout(
         unitController: unitController,
         tenantController: tenantController,
-        propertyModel: propertyModel, id: id,
+        propertyModel: propertyModel,
+        id: id,
       ),
     );
   }

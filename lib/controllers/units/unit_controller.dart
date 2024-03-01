@@ -11,7 +11,6 @@ import 'package:smart_rent/models/unit/unit_model.dart';
 import 'package:smart_rent/models/unit/unit_type_model.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 import 'package:smart_rent/utils/app_prefs.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class UnitController extends GetxController {
   RxList<UnitTypeModel> unitTypeList = <UnitTypeModel>[].obs;
@@ -364,7 +363,8 @@ class UnitController extends GetxController {
     var response;
     await AppConfig()
         .supaBaseClient
-        .rpc('property_revenue', params: {"arg_id": propertyModel.organisationId})
+        .rpc('property_revenue',
+            params: {"arg_id": propertyModel.organisationId})
         .then((value) => response = value[index])
         .onError((error, stackTrace) {
           print(error);
@@ -372,7 +372,6 @@ class UnitController extends GetxController {
         });
 
     print('Functions response == is $response');
-
 
     // final response = await AppConfig().supaBaseClient.from('tenant_units').select('discount').eq('property_id', propertyModel.id);
     //
@@ -408,8 +407,6 @@ class UnitController extends GetxController {
     // // print('MY property revenue count is == ${rowSum}');
     // // print('MY property revenue count is == ${specificPropertyRevenue.value}');
     //
-
-
 
     return response;
   }

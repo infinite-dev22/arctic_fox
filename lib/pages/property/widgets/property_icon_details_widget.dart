@@ -6,7 +6,8 @@ import 'package:smart_rent/styles/app_theme.dart';
 class PropertyIconDetailsWidget extends StatelessWidget {
   final IconData? icon;
   final String detail;
-  const PropertyIconDetailsWidget({super.key,  this.icon, required this.detail});
+
+  const PropertyIconDetailsWidget({super.key, this.icon, required this.detail});
 
   @override
   Widget build(BuildContext context) {
@@ -15,8 +16,13 @@ class PropertyIconDetailsWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           icon == null ? Container() : FaIcon(icon, size: 17.5.sp),
-          SizedBox(width: 2.w,),
-          Text(detail, style: AppTheme.subText,)
+          SizedBox(
+            width: 2.w,
+          ),
+          Text(
+            detail,
+            style: AppTheme.subText,
+          )
         ],
       ),
     );

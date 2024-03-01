@@ -12,7 +12,6 @@ class LoadAllFloorsEvent extends FloorEvent {
   @override
   // TODO: implement props
   List<Object?> get props => [];
-
 }
 
 class AddFloorEvent extends FloorEvent {
@@ -21,10 +20,14 @@ class AddFloorEvent extends FloorEvent {
   final String floorName;
   final String description;
 
-  const AddFloorEvent(this.token, this.propertyId, this.floorName,  this.description,);
+  const AddFloorEvent(
+    this.token,
+    this.propertyId,
+    this.floorName,
+    this.description,
+  );
 
   @override
   // TODO: implement props
   List<Object?> get props => [token, propertyId, floorName, description];
-
 }

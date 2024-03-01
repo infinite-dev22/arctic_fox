@@ -5,6 +5,5 @@ class FloorOptionWidgetModel {
 
   FloorOptionWidgetModel({
     required this.textController,
-
   });
 }

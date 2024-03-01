@@ -7,13 +7,9 @@ import 'package:get/get.dart';
 import 'package:pinput/pinput.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smart_rent/controllers/user/auth_controller.dart';
-import 'package:smart_rent/screens/auth/complete_signup_screen.dart';
 import 'package:smart_rent/screens/auth/initial_screen.dart';
-import 'package:smart_rent/screens/auth/login_screen.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 import 'package:smart_rent/widgets/app_button.dart';
-import 'package:smart_rent/widgets/app_password_textfield.dart';
-import 'package:smart_rent/widgets/app_textfield.dart';
 
 class VerifyPhoneOtpScreen extends StatefulWidget {
   final String phone;
@@ -25,7 +21,6 @@ class VerifyPhoneOtpScreen extends StatefulWidget {
 }
 
 class _VerifyPhoneOtpScreenState extends State<VerifyPhoneOtpScreen> {
-
   final TextEditingController otpTokenController = TextEditingController();
   late TextEditingController phoneEditingController;
 
@@ -39,7 +34,6 @@ class _VerifyPhoneOtpScreenState extends State<VerifyPhoneOtpScreen> {
     RequiredValidator(errorText: 'email is required'),
     EmailValidator(errorText: 'input does\'nt match email'),
   ]);
-
 
   @override
   void initState() {
@@ -63,12 +57,16 @@ class _VerifyPhoneOtpScreenState extends State<VerifyPhoneOtpScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-
                   // Center(child: Image.asset('assets/auth/otp.png')),
 
-                  Text('Verify Phone', style: AppTheme.appTitle2,),
-                  Text('Enter OTP sent to ${widget.phone}',
-                    style: AppTheme.blueSubText,),
+                  Text(
+                    'Verify Phone',
+                    style: AppTheme.appTitle2,
+                  ),
+                  Text(
+                    'Enter OTP sent to ${widget.phone}',
+                    style: AppTheme.blueSubText,
+                  ),
 
                   FadeInRight(
                     child: Padding(
@@ -106,7 +104,8 @@ class _VerifyPhoneOtpScreenState extends State<VerifyPhoneOtpScreen> {
                             color: AppTheme.appWidgetColor,
                             borderRadius: BorderRadius.circular(15.sp),
                             border: Border.all(
-                              color: Colors.red, width: 2,
+                              color: Colors.red,
+                              width: 2,
                             ),
                           ),
                           textStyle: TextStyle(
@@ -119,19 +118,22 @@ class _VerifyPhoneOtpScreenState extends State<VerifyPhoneOtpScreen> {
                     ),
                   ),
 
-
-                  SizedBox(height: 3.h,),
+                  SizedBox(
+                    height: 3.h,
+                  ),
 
                   Obx(() {
                     return AppButton(
-                      isLoading: authController.isVerifyPhoneOtpLoading.value,
+                        isLoading: authController.isVerifyPhoneOtpLoading.value,
                         title: 'Verify Otp',
                         color: AppTheme.primaryColor,
                         function: () async {
                           if (otpTokenController.text.isEmpty) {
-                            Fluttertoast.showToast(msg: 'otp required', gravity: ToastGravity.TOP);
+                            Fluttertoast.showToast(
+                                msg: 'otp required', gravity: ToastGravity.TOP);
                           } else if (otpTokenController.text.length < 6) {
-                            Fluttertoast.showToast(msg: 'Otp is short', gravity: ToastGravity.TOP);
+                            Fluttertoast.showToast(
+                                msg: 'Otp is short', gravity: ToastGravity.TOP);
                           } else {
                             await authController.verifyPhoneOtp(
                               otpTokenController.text.trim().toString(),
@@ -143,22 +145,21 @@ class _VerifyPhoneOtpScreenState extends State<VerifyPhoneOtpScreen> {
                             //   otpTokenController.text.trim().toString(),
                             //   phoneEditingController.text.trim().toString(),
                             // );
-
-
                           }
-                        }
-
-
-                    );
+                        });
                   }),
-                  SizedBox(height: 1.h,),
-                  Center(child: Bounceable(
-                      onTap: () {
-                        Get.off(() => InitialScreen());
-                      },
-                      child: Text('back', style: AppTheme.subTextBold,))),
-
-
+                  SizedBox(
+                    height: 1.h,
+                  ),
+                  Center(
+                      child: Bounceable(
+                          onTap: () {
+                            Get.off(() => InitialScreen());
+                          },
+                          child: Text(
+                            'back',
+                            style: AppTheme.subTextBold,
+                          ))),
                 ],
               ),
             ),

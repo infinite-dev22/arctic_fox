@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:smart_rent/data_source/models/nation/nation_model.dart';
 import 'package:smart_rent/data_source/repositories/implemantation/nation_repo_impl.dart';
@@ -16,10 +15,13 @@ class NationBloc extends Bloc<NationEvent, NationState> {
     on<LoadNationsEvent>(_mapFetchNationsToState);
   }
 
-  _mapFetchNationsToState(LoadNationsEvent event, Emitter<NationState> emit) async{
+  _mapFetchNationsToState(
+      LoadNationsEvent event, Emitter<NationState> emit) async {
     emit(state.copyWith(status: NationStatus.loading));
-    await NationRepoImpl().getALlNations(userStorage.read('accessToken').toString()).then((nations) {
-      if(nations.isNotEmpty){
+    await NationRepoImpl()
+        .getALlNations(userStorage.read('accessToken').toString())
+        .then((nations) {
+      if (nations.isNotEmpty) {
         emit(state.copyWith(status: NationStatus.success, nations: nations));
       } else {
         emit(state.copyWith(status: NationStatus.empty));
@@ -32,5 +34,4 @@ class NationBloc extends Bloc<NationEvent, NationState> {
       }
     });
   }
-
 }

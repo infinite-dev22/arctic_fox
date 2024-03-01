@@ -8,5 +8,4 @@ class LoadNationsEvent extends NationEvent {
   @override
   // TODO: implement props
   List<Object?> get props => [];
-
 }

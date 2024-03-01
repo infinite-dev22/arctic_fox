@@ -10,8 +10,12 @@ class CountryCityListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(providers: [
-      BlocProvider<CountryCityBloc>(create: (context) => CountryCityBloc(),),
-      BlocProvider<PropertyBloc>(create: (context) => PropertyBloc()..add(LoadPropertiesEvent()),),
+      BlocProvider<CountryCityBloc>(
+        create: (context) => CountryCityBloc(),
+      ),
+      BlocProvider<PropertyBloc>(
+        create: (context) => PropertyBloc()..add(LoadPropertiesEvent()),
+      ),
     ], child: CountryCityListScreenLayout());
   }
 }

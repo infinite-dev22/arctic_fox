@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:date_picker_plus/date_picker_plus.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:file_picker/file_picker.dart';
@@ -280,15 +281,19 @@ class _TenantUnitTabLayoutScreenState extends State<TenantUnitTabLayoutScreen> {
                                       selectedDate1.value.year,
                                       selectedDate1.value.month,
                                       selectedDate1.value.day);
-
-                                  descriptionController.clear();
+                                  selectedTenantId == 0;
+                                  selectedUnitId == 0;
+                                  selectedPeriodId == 0;
+                                  selectedCurrencyId == 0;
                                   dailyController.clear();
                                   weeklyController.clear();
                                   monthlyController.clear();
                                   yearlyController.clear();
-                                  lumpSumController.clear();
                                   amountController.clear();
+                                  lumpSumController.clear();
+                                  descriptionController.clear();
                                   discountController.clear();
+                                  descriptionController.clear();
                                   _cnt.clearDropDown();
                                   _unitCont.clearDropDown();
                                   tenantPic = File('');
@@ -306,23 +311,69 @@ class _TenantUnitTabLayoutScreenState extends State<TenantUnitTabLayoutScreen> {
                               'Add Tenant',
                               style: AppTheme.darkBlueTitle2,
                             ),
-                            BlocBuilder<TenantUnitBloc, TenantUnitState>(builder: (context, state) {
+                            BlocListener<TenantUnitBloc, TenantUnitState>(
+                              listener: (context, state) {
+                                if (state.status == TenantUnitStatus.successAdd) {
+                                  Fluttertoast.showToast(
+                                      msg: 'Tenant Unit Added Successfully',
+                                      backgroundColor: Colors.green,
+                                      gravity: ToastGravity.TOP);
+                                  selectedDate2.value = DateTime(
+                                      selectedDate1.value.year,
+                                      selectedDate1.value.month,
+                                      selectedDate1.value.day);
+                                  selectedTenantId == 0;
+                                  selectedUnitId == 0;
+                                  selectedPeriodId == 0;
+                                  selectedCurrencyId == 0;
+                                  dailyController.clear();
+                                  weeklyController.clear();
+                                  monthlyController.clear();
+                                  yearlyController.clear();
+                                  amountController.clear();
+                                  lumpSumController.clear();
+                                  descriptionController.clear();
+                                  discountController.clear();
+                                  descriptionController.clear();
+                                  _cnt.clearDropDown();
+                                  _unitCont.clearDropDown();
+                                  tenantPic = File('');
+                                  tenantPic = null;
+                                  Navigator.pop(context);
+                                }
+                                if (state.status == TenantUnitStatus.accessDeniedAdd) {
+                                  Fluttertoast.showToast(
+                                      msg: state.message.toString(),
+                                      gravity: ToastGravity.TOP);
+                                }
+                                if (state.status == TenantUnitStatus.errorAdd) {
+                                  Fluttertoast.showToast(
+                                      msg: state.message.toString(),
+                                      gravity: ToastGravity.TOP);
+                                }
+                              },
+                              child: BlocBuilder<TenantUnitBloc, TenantUnitState>(builder: (context, state) {
                               if (state.isLoading == true) {
                                 return AppLoader(color: AppTheme.primaryColor,);
                               }
                               return Bounceable(
                                       onTap: () async {
 
+                                        var formatedFromDate1 = "${selectedDate1.value.year}-${selectedDate1.value.day}-${selectedDate1.value.month}";
+                                        var formatedToDate1 = "${selectedDate2.value.year}-${selectedDate2.value.day}-${selectedDate2.value.month}";
+                                        print('formatedFromDate1 $formatedFromDate1');
+                                        print('formatedToDate1 $formatedToDate1');
+
                                         context.read<TenantUnitBloc>().add(AddTenantUnitEvent(
                                           userStorage.read('accessToken').toString(),
                                           selectedTenantId,
                                           selectedUnitId,
                                           tenantController.paymentScheduleId.value,
-                                          selectedDate1.value,
-                                          selectedDate2.value,
-                                          int.parse(amountController.text.trim().toString().replaceAll(',', '')),
+                                          formatedFromDate1,
+                                          formatedToDate1,
+                                          amountController.text.trim().toString().replaceAll(',', ''),
                                           selectedCurrencyId,
-                                          int.parse(discountController.text.trim().toString().replaceAll(',', '')),
+                                          discountController.text.trim().toString().replaceAll(',', ''),
                                           descriptionController.text.trim().toString(),
                                           widget.id,
                                         ));
@@ -637,6 +688,7 @@ class _TenantUnitTabLayoutScreenState extends State<TenantUnitTabLayoutScreen> {
                                         ),
                                       ));
   },
+),
 ),
                           ],
                         ),
@@ -1924,7 +1976,7 @@ class _TenantUnitTabLayoutScreenState extends State<TenantUnitTabLayoutScreen> {
                   );
                 }
                 if (state.status == TenantUnitStatus.success) {
-                  return Text('');
+                  // return Text('');
                   // return Expanded(
                   //     child: ListView.builder(
                   //       shrinkWrap: true,
@@ -1934,46 +1986,46 @@ class _TenantUnitTabLayoutScreenState extends State<TenantUnitTabLayoutScreen> {
                   //           return Text(tenantUnit.amount.toString());
                   // }));
 
-                  // return Expanded(
-                  //   child: ListView.builder(
-                  //     shrinkWrap: true,
-                  //       itemCount: state.tenantUnits!.length,
-                  //       itemBuilder: (context, index) {
-                  //         var tenantUnit = state.tenantUnits![index];
-                  //       return  Padding(
-                  //                 padding: EdgeInsets.only(bottom: 1.h),
-                  //                 child: Bounceable(
-                  //                   onTap: (){
-                  //                     // Get.to(() => TenantDetailsScreen(
-                  //                     //   tenantController: tenantController,
-                  //                     //   tenantId: entry.tenantId!,
-                  //                     //   tenantModel: entry.tenantModel!,
-                  //                     // ));
-                  //                   },
-                  //                   child: Card(
-                  //                     child: ListTile(
-                  //                       leading: ClipRRect(
-                  //                           borderRadius: BorderRadius.circular(10.sp),
-                  //                           child: CachedNetworkImage(
-                  //                             width: 20.w,
-                  //                             imageUrl: 'https://img.freepik.com/free-photo/real-estate-broker-agent-presenting-consult-customer-decision-making-sign-insurance-form-agreement_1150-15023.jpg?w=996&t=st=1708346770~exp=1708347370~hmac=d7c8476699ac83e0dbb2375a511e548c2d78c4e1b2d69da7cc5ce31d4c915c90',
-                  //                             fit: BoxFit.cover,
-                  //                           )
-                  //                       ),
-                  //                       title: Text(tenantUnit.number!.toString(),
-                  //                         style: AppTheme.appTitle3,
-                  //                       ),
-                  //                       subtitle: Text(
-                  //                         '${tenantUnit.description}',
-                  //                         style: AppTheme.subText,
-                  //                       ),
-                  //                     ),
-                  //                   ),
-                  //                 ),
-                  //               );
-                  //
-                  //       }),
-                  // );
+                  return Expanded(
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                        itemCount: state.tenantUnits!.length,
+                        itemBuilder: (context, index) {
+                          var tenantUnit = state.tenantUnits![index];
+                        return  Padding(
+                                  padding: EdgeInsets.only(bottom: 1.h),
+                                  child: Bounceable(
+                                    onTap: (){
+                                      // Get.to(() => TenantDetailsScreen(
+                                      //   tenantController: tenantController,
+                                      //   tenantId: entry.tenantId!,
+                                      //   tenantModel: entry.tenantModel!,
+                                      // ));
+                                    },
+                                    child: Card(
+                                      child: ListTile(
+                                        leading: ClipRRect(
+                                            borderRadius: BorderRadius.circular(10.sp),
+                                            child: CachedNetworkImage(
+                                              width: 20.w,
+                                              imageUrl: 'https://img.freepik.com/free-photo/real-estate-broker-agent-presenting-consult-customer-decision-making-sign-insurance-form-agreement_1150-15023.jpg?w=996&t=st=1708346770~exp=1708347370~hmac=d7c8476699ac83e0dbb2375a511e548c2d78c4e1b2d69da7cc5ce31d4c915c90',
+                                              fit: BoxFit.cover,
+                                            )
+                                        ),
+                                        title: Text(tenantUnit.unit!.name.toString(),
+                                          style: AppTheme.appTitle3,
+                                        ),
+                                        subtitle: Text(
+                                          'from: ${DateFormat('MMM d yyyy').format(tenantUnit.fromDate!)} to: ${DateFormat('MMM d yyyy').format(tenantUnit.toDate!)} @${amountFormatter.format(tenantUnit.discountAmount.toString())}',
+                                          style: AppTheme.subText,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                );
+
+                        }),
+                  );
                 }
                 if (state.status == TenantUnitStatus.empty) {
                   return const Center(

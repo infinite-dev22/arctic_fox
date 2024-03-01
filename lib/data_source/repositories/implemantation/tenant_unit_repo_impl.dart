@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -37,8 +38,8 @@ class TenantUnitRepoImpl implements TenantUnitRepo {
 
 
   @override
-  Future<dynamic> addTenantUnit(String token, int tenantId, int unitId, int periodId, DateTime fromDate,
-      DateTime toDate, int unitAmount, int currencyId, int agreedAmount, String description, int propertyId) async {
+  Future<dynamic> addTenantUnit(String token, int tenantId, int unitId, int periodId, String fromDate,
+      String toDate, String unitAmount, int currencyId, String agreedAmount, String description, int propertyId) async {
     var client = RetryClient(http.Client());
     try {
       var headers = {
@@ -47,7 +48,24 @@ class TenantUnitRepoImpl implements TenantUnitRepo {
         HttpHeaders.authorizationHeader: 'Bearer $token'
       };
 
+      print("Soon Posting");
+
       var url = Uri.parse('${AppConfig().baseUrl}api/rent/tenantunits/store');
+
+      print("Soon Posting: URL Created");
+
+      log("POST_DATA: {"
+        '\"from_date\": \"$fromDate\",'
+        '\"to_date\": \"$toDate\",'
+        '\"amount\": \"$unitAmount\",'
+        '\"discount_amount\": \"$agreedAmount\",'
+        '\"description\": \"$description\",'
+        '\"unit_id\": \"$unitId\",'
+        '\"tenant_id\": \"$tenantId\",'
+        '\"schedule_id\": \"$periodId\",'
+        '\"property_id\": \"$propertyId\",'
+        '\"currency_id\": \"$currencyId\",'
+      "}");
 
       var response = await client.post(
         url,

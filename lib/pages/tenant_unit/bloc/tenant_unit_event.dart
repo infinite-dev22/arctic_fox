@@ -17,16 +17,16 @@ class LoadTenantUnitsEvent extends TenantUnitEvent {
 
 class AddTenantUnitEvent extends TenantUnitEvent {
   final String token;
-  final  int tenantId;
-      final int unitId;
-  final   int periodId;
-      final DateTime fromDate;
-  final     DateTime toDate;
-      final int unitAmount;
-  final  int currencyId;
-      final int agreedAmount;
-  final  String description;
-      final int propertyId;
+  final int tenantId;
+  final int unitId;
+  final int periodId;
+  final String fromDate;
+  final String toDate;
+  final String unitAmount;
+  final int currencyId;
+  final String agreedAmount;
+  final String description;
+  final int propertyId;
 
       const AddTenantUnitEvent(
           this.token,

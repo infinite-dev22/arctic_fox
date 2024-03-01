@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -65,12 +66,20 @@ class TenantUnitBloc extends Bloc<TenantUnitEvent, TenantUnitState> {
         .then((response) {
       print('success ${response.tenantunitcreated}');
 
-      if (response != null) {
+      if (response.tenantunitcreated != null) {
         emit(state.copyWith(
             status: TenantUnitStatus.successAdd,
             isLoading: false,
             addTenantUnitResponse: response));
+        print('Add Tenant Unit success ==  ${response.tenantunitcreated}');
 
+      } else if(response.message != null){
+        emit(state.copyWith(
+            status: TenantUnitStatus.errorAdd,
+            isLoading: false,
+            addTenantUnitResponse: response,
+            message: response.message.toString()));
+        print('Add Tenant Unit failed ==  ${response.message}');
       } else {
         emit(state.copyWith(
           status: TenantUnitStatus.accessDeniedAdd,
@@ -78,6 +87,8 @@ class TenantUnitBloc extends Bloc<TenantUnitEvent, TenantUnitState> {
         ));
       }
     }).onError((error, stackTrace) {
+      print(error);
+      print(stackTrace);
       emit(state.copyWith(
           status: TenantUnitStatus.errorAdd,
           isLoading: false,

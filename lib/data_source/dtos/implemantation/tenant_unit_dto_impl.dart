@@ -4,16 +4,19 @@ import 'package:smart_rent/data_source/repositories/interfaces/tenant_unit_repo.
 
 class TenantUnitDtoImpl {
   static Future<AddTenantUnitResponse> addTenantUnit(
-      String token, int tenantId, int unitId, int periodId, DateTime fromDate,
-      DateTime toDate, int unitAmount, int currencyId, int agreedAmount, String description, int propertyId, {
+      String token, int tenantId, int unitId, int periodId, String fromDate,
+      String toDate, String unitAmount, int currencyId, String agreedAmount, String description, int propertyId, {
         Function()? onSuccess,
         Function()? onError,
       }) async {
+    print("In here");
+    var result;
     TenantUnitRepo tenantUnitRepo = TenantUnitRepoImpl();
-    var result = await tenantUnitRepo
+    await tenantUnitRepo
         .addTenantUnit(  token,  tenantId,  unitId,  periodId,  fromDate,
          toDate,  unitAmount,  currencyId,  agreedAmount,  description,  propertyId
-    ).then((response) => AddTenantUnitResponse.fromJson(response));
+    ).then((response) => result = AddTenantUnitResponse.fromJson(response));
+    print("Then here");
 
     return result;
   }

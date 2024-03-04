@@ -26,7 +26,7 @@ class NavBarState extends Equatable {
     this.screens,
     this.color = Colors.transparent,
     this.icon,
-    this.status = NavBarStatus.initial,
+    this.status = NavBarStatus.changed,
     this.idSelected = 0,
   });
 

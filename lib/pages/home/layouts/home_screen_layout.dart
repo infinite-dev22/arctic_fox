@@ -259,18 +259,18 @@ class _HomeScreenLayoutState extends State<HomeScreenLayout> {
             //the return value will be from "Yes" or "No" options
             context: context,
             builder: (context) => AlertDialog(
-              title: Text('Exit App'),
-              content: Text('Do you want to exit?'),
+              title: const Text('Exit App'),
+              content: const Text('Do you want to exit?'),
               actions: [
                 ElevatedButton(
                   onPressed: () => Get.back(canPop: false),
                   //return false when click on "NO"
-                  child: Text('No'),
+                  child: const Text('No'),
                 ),
                 ElevatedButton(
                   onPressed: () => Navigator.of(context).pop(true),
                   //return true when click on "Yes"
-                  child: Text('Yes'),
+                  child: const Text('Yes'),
                 ),
               ],
             ),
@@ -307,8 +307,8 @@ class _HomeScreenLayoutState extends State<HomeScreenLayout> {
                       borderRadius: BorderRadius.circular(10.sp),
                       color: AppTheme.primaryColor,
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                    child: const Padding(
+                      padding: EdgeInsets.all(8.0),
                       child: Center(
                         child: Icon(
                           Icons.add,
@@ -330,8 +330,8 @@ class _HomeScreenLayoutState extends State<HomeScreenLayout> {
                       borderRadius: BorderRadius.circular(10.sp),
                       color: AppTheme.primaryColor,
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                    child: const Padding(
+                      padding: EdgeInsets.all(8.0),
                       child: Center(
                         child: Icon(
                           Icons.cancel,
@@ -364,7 +364,7 @@ class _HomeScreenLayoutState extends State<HomeScreenLayout> {
                           padding: const EdgeInsets.all(8.0),
                           child: Row(
                             children: [
-                              Icon(Icons.person),
+                              const Icon(Icons.person),
                               SizedBox(
                                 width: 3.w,
                               ),
@@ -397,7 +397,7 @@ class _HomeScreenLayoutState extends State<HomeScreenLayout> {
                           padding: const EdgeInsets.all(8.0),
                           child: Row(
                             children: [
-                              Icon(Icons.house),
+                              const Icon(Icons.house),
                               SizedBox(
                                 width: 3.w,
                               ),
@@ -477,13 +477,13 @@ class _HomeScreenLayoutState extends State<HomeScreenLayout> {
                                                 }
                                                 if (state.status ==
                                                     PropertyStatus.empty) {
-                                                  return Center(
+                                                  return const Center(
                                                     child: Text('No Tenants'),
                                                   );
                                                 }
                                                 if (state.status ==
                                                     PropertyStatus.error) {
-                                                  return Center(
+                                                  return const Center(
                                                     child: Text(
                                                         'An Error Occurred'),
                                                   );
@@ -648,7 +648,7 @@ class _HomeScreenLayoutState extends State<HomeScreenLayout> {
                           padding: const EdgeInsets.all(8.0),
                           child: Row(
                             children: [
-                              Icon(Icons.meeting_room),
+                              const Icon(Icons.meeting_room),
                               SizedBox(
                                 width: 3.w,
                               ),
@@ -677,7 +677,7 @@ class _HomeScreenLayoutState extends State<HomeScreenLayout> {
                       msg: 'LoggedOut Successfully',
                       backgroundColor: Colors.green,
                       gravity: ToastGravity.TOP);
-                  Get.offAll(() => InitialScreen());
+                  Get.offAll(() => const InitialScreen());
                 }
                 if (state.status == HomeStatus.error) {
                   Fluttertoast.showToast(
@@ -702,7 +702,7 @@ class _HomeScreenLayoutState extends State<HomeScreenLayout> {
                     },
                     itemBuilder: (context) {
                       return [
-                        PopupMenuItem(
+                        const PopupMenuItem(
                           value: 1,
                           child: Text('LogOut'),
                         )
@@ -717,7 +717,7 @@ class _HomeScreenLayoutState extends State<HomeScreenLayout> {
         body: Padding(
           padding: EdgeInsets.only(left: 5.w, right: 5.w),
           child: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
@@ -742,7 +742,7 @@ class _HomeScreenLayoutState extends State<HomeScreenLayout> {
                               ),
                               width: 47.5.w,
                             ),
-                            delay: Duration(seconds: 0),
+                            delay: const Duration(seconds: 0),
                           )
                         : ZoomIn(
                             child: SizedBox(
@@ -758,7 +758,7 @@ class _HomeScreenLayoutState extends State<HomeScreenLayout> {
                               ),
                               width: 47.5.w,
                             ),
-                            delay: Duration(seconds: 0),
+                            delay: const Duration(seconds: 0),
                           )
                   ],
                 ),
@@ -785,7 +785,7 @@ class _HomeScreenLayoutState extends State<HomeScreenLayout> {
                               : state.properties!.length,
                           title: 'Total Property',
                           function: () {
-                            Get.to(() => PropertyListPage());
+                            Get.to(() => const PropertyListPage());
                           },
                         );
                       },
@@ -802,7 +802,7 @@ class _HomeScreenLayoutState extends State<HomeScreenLayout> {
                               state.tenants == null ? 0 : state.tenants!.length,
                           title: 'Total Tenants',
                           function: () {
-                            Get.to(() => TenantListPage());
+                            Get.to(() => const TenantListPage());
                           },
                         );
                       },
@@ -854,7 +854,7 @@ class _HomeScreenLayoutState extends State<HomeScreenLayout> {
       return SlidingSheetDialog(
         extendBody: false,
         maxWidth: 90.h,
-        duration: Duration(microseconds: 1),
+        duration: const Duration(microseconds: 1),
         minHeight: 90.h,
         elevation: 8,
         cornerRadius: 15.sp,
@@ -871,7 +871,7 @@ class _HomeScreenLayoutState extends State<HomeScreenLayout> {
               child: Container(
                 width: MediaQuery.of(context).size.width,
                 height: 7.5.h,
-                decoration: BoxDecoration(boxShadow: []),
+                decoration: const BoxDecoration(boxShadow: []),
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
                   child: Row(
@@ -924,7 +924,7 @@ class _HomeScreenLayoutState extends State<HomeScreenLayout> {
                         child: BlocBuilder<PropertyBloc, PropertyState>(
                           builder: (context, state) {
                             if (state.status == PropertyStatus.loadingDetails) {
-                              return CircularProgressIndicator();
+                              return const CircularProgressIndicator();
                             }
                             return Bounceable(
                                 onTap: () async {
@@ -959,14 +959,6 @@ class _HomeScreenLayoutState extends State<HomeScreenLayout> {
                                           selectedPropertyTypeId!,
                                           selectedPropertyCategoryId!,
                                         ));
-
-                                    // propertyTitleController.clear();
-                                    // propertyAddressController.clear();
-                                    // propertyDescriptionController.clear();
-                                    // propertyLocationController.clear();
-                                    // propertySqmController.clear();
-                                    // propertyPic = File('');
-                                    // print('Pic = ${propertyPic!.path}');
                                   }
                                 },
                                 child: Text(
@@ -1169,7 +1161,7 @@ class _HomeScreenLayoutState extends State<HomeScreenLayout> {
                                           fit: BoxFit.cover)),
                                   child: propertyPic == null ||
                                           propertyPic!.path.isEmpty
-                                      ? Center(
+                                      ? const Center(
                                           child: Text('Upload profile pic'),
                                         )
                                       : null,
@@ -1188,7 +1180,7 @@ class _HomeScreenLayoutState extends State<HomeScreenLayout> {
         },
       );
     });
-
+    //
     print(result); // This is the result.
   }
 
@@ -1197,7 +1189,7 @@ class _HomeScreenLayoutState extends State<HomeScreenLayout> {
       return SlidingSheetDialog(
         extendBody: false,
         maxWidth: 90.h,
-        duration: Duration(microseconds: 1),
+        duration: const Duration(microseconds: 1),
         minHeight: 90.h,
         elevation: 8,
         cornerRadius: 15.sp,
@@ -1212,7 +1204,7 @@ class _HomeScreenLayoutState extends State<HomeScreenLayout> {
             child: Container(
               width: MediaQuery.of(context).size.width,
               height: 7.5.h,
-              decoration: BoxDecoration(boxShadow: []),
+              decoration: const BoxDecoration(boxShadow: []),
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
                 child: Row(
@@ -1622,7 +1614,7 @@ class _HomeScreenLayoutState extends State<HomeScreenLayout> {
                                             height: 1.h,
                                           ),
 
-                                          CustomGenericDropdown(
+                                          const CustomGenericDropdown(
                                             hintText: 'Branch',
                                             menuItems: [],
                                           ),
@@ -1760,7 +1752,7 @@ class _HomeScreenLayoutState extends State<HomeScreenLayout> {
                                                               File('')),
                                                       fit: BoxFit.cover)),
                                               child: tenantPic == null
-                                                  ? Center(
+                                                  ? const Center(
                                                       child: Text(
                                                           'Upload profile pic'),
                                                     )
@@ -1916,7 +1908,7 @@ class _HomeScreenLayoutState extends State<HomeScreenLayout> {
                                             fit: BoxFit.cover)),
                                     child: companyTenantPic == null ||
                                             companyTenantPic!.path.isEmpty
-                                        ? Center(
+                                        ? const Center(
                                             child: Text('Upload profile pic'),
                                           )
                                         : null,

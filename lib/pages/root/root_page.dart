@@ -7,6 +7,7 @@ import 'package:smart_rent/pages/root/widgets/bottom_nav_bar.dart';
 import 'package:smart_rent/pages/root/widgets/screen.dart';
 import 'package:smart_rent/screens/find/find_screen.dart';
 import 'package:smart_rent/screens/profile/profile_screen.dart';
+import 'package:smart_rent/styles/app_theme.dart';
 
 class RootPage extends StatefulWidget {
   const RootPage({super.key});
@@ -24,6 +25,7 @@ class _RootPageState extends State<RootPage> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: BottomNavBar(
         screens: _screens(),
+        onFabTap: _buildAddWidget,
       ),
       body: BlocBuilder<NavBarBloc, NavBarState>(
         builder: (context, state) {
@@ -69,6 +71,106 @@ class _RootPageState extends State<RootPage> {
       children: List.generate(
         _screens().length,
         (index) => _screens()[index].widget ?? Container(),
+      ),
+    );
+  }
+
+  _buildAddWidget() {
+    return showModalBottomSheet(
+      context: context,
+      enableDrag: true,
+      isDismissible: true,
+      showDragHandle: true,
+      builder: (context) => SizedBox(
+        width: double.infinity,
+        height: 200,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Column(
+                children: [
+                  IconButton.outlined(
+                    style: const ButtonStyle(
+                      iconColor: MaterialStatePropertyAll(
+                        AppTheme.inActiveColor,
+                      ),
+                      side: MaterialStatePropertyAll(
+                        BorderSide(
+                          color: AppTheme.inActiveColor,
+                        ),
+                      ),
+                    ),
+                    onPressed: () {},
+                    icon: const Icon(Icons.person),
+                    iconSize: 45,
+                  ),
+                  const Text(
+                    "Add Tenant",
+                    style: TextStyle(
+                      color: AppTheme.inActiveColor,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+              Column(
+                children: [
+                  IconButton.outlined(
+                    style: const ButtonStyle(
+                      iconColor: MaterialStatePropertyAll(
+                        AppTheme.inActiveColor,
+                      ),
+                      side: MaterialStatePropertyAll(
+                        BorderSide(
+                          color: AppTheme.inActiveColor,
+                        ),
+                      ),
+                    ),
+                    onPressed: () {},
+                    icon: const Icon(Icons.house),
+                    iconSize: 45,
+                  ),
+                  const Text(
+                    "Add Property",
+                    style: TextStyle(
+                      color: AppTheme.inActiveColor,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+              Column(
+                children: [
+                  IconButton.outlined(
+                    style: const ButtonStyle(
+                      iconColor: MaterialStatePropertyAll(
+                        AppTheme.inActiveColor,
+                      ),
+                      side: MaterialStatePropertyAll(
+                        BorderSide(
+                          color: AppTheme.inActiveColor,
+                        ),
+                      ),
+                    ),
+                    onPressed: () {},
+                    icon: const Icon(Icons.bed),
+                    iconSize: 45,
+                  ),
+                  const Text(
+                    "Add Floor",
+                    style: TextStyle(
+                      color: AppTheme.inActiveColor,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

@@ -43,23 +43,23 @@ class UnpaidWidget extends StatelessWidget {
       child: DataTable(
         columns: const [
           DataColumn(
-            label: Text("Date"),
+            label: Text("Tenant"),
           ),
           DataColumn(
-            label: Text("Name"),
+            label: Text("Period"),
           ),
           DataColumn(
-            label: Text("Paid"),
+            label: Text("Amount"),
           ),
         ],
         rows: const [
           DataRow(
             cells: [
               DataCell(
-                Text("20/02/2024"),
+                Text("Alison Kyrill"),
               ),
               DataCell(
-                Text("Alison Kyrill"),
+                Text("20/02/2024"),
               ),
               DataCell(
                 Text("USD 1,500"),
@@ -69,10 +69,10 @@ class UnpaidWidget extends StatelessWidget {
           DataRow(
             cells: [
               DataCell(
-                Text("28/01/2024"),
+                Text("Mac'Migel Hanis"),
               ),
               DataCell(
-                Text("Mac'Migel Hanis"),
+                Text("28/01/2024"),
               ),
               DataCell(
                 Text("USD 850"),
@@ -82,10 +82,10 @@ class UnpaidWidget extends StatelessWidget {
           DataRow(
             cells: [
               DataCell(
-                Text("01/02/2024"),
+                Text("Mitch WinStone"),
               ),
               DataCell(
-                Text("Mitch WinStone"),
+                Text("01/02/2024"),
               ),
               DataCell(
                 Text("USD 1,000"),
@@ -95,10 +95,10 @@ class UnpaidWidget extends StatelessWidget {
           DataRow(
             cells: [
               DataCell(
-                Text("03/03/2024"),
+                Text("Abdul Krimlin"),
               ),
               DataCell(
-                Text("Abdul Krimlin"),
+                Text("03/03/2024"),
               ),
               DataCell(
                 Text("USD 2,560"),

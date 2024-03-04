@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_rent/pages/root/bloc/nav_bar_bloc.dart';
@@ -7,11 +6,13 @@ import 'package:smart_rent/pages/root/widgets/screen.dart';
 import 'package:smart_rent/styles/app_theme.dart';
 
 class BottomNavBar extends StatelessWidget {
+  final Function()? onFabTap;
   final List<Screen> screens;
 
   const BottomNavBar({
     super.key,
     required this.screens,
+    this.onFabTap,
   });
 
   @override
@@ -38,7 +39,7 @@ class BottomNavBar extends StatelessWidget {
                 Center(
                   heightFactor: .6,
                   child: FloatingActionButton(
-                    onPressed: () {},
+                    onPressed: onFabTap,
                     backgroundColor: AppTheme.primary,
                     shape: const CircleBorder(),
                     child: const Icon(
@@ -56,7 +57,9 @@ class BottomNavBar extends StatelessWidget {
                     children: List.generate(
                       screens.length,
                       (index) => screens[index].icon == null
-                          ? Container(width: size.width * .2,)
+                          ? Container(
+                              width: size.width * .2,
+                            )
                           : BottomBarItem(
                               key: ValueKey('${screens[index].name}$index'),
                               screen: screens[index],

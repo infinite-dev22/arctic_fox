@@ -118,7 +118,7 @@ class OccupancyWidget extends StatelessWidget {
                     child: const TabBarView(
                       children: [
                         DataTable1(),
-                        DataTable1(),
+                        DataTable2(),
                       ],
                     ),
                   ),
@@ -148,65 +148,50 @@ class DataTable2 extends StatelessWidget {
       child: DataTable(
         columns: const [
           DataColumn(
-            label: Text("Date"),
+            label: Text("Property"),
           ),
           DataColumn(
-            label: Text("Name"),
-          ),
-          DataColumn(
-            label: Text("Paid"),
+            label: Text("Unity"),
           ),
         ],
         rows: const [
           DataRow(
             cells: [
               DataCell(
-                Text("20/02/2024"),
+                Text("Wicliff Estate"),
               ),
               DataCell(
-                Text("Alison Kyrill"),
-              ),
-              DataCell(
-                Text("USD 1,500"),
+                Text("First Floor"),
               ),
             ],
           ),
           DataRow(
             cells: [
               DataCell(
-                Text("28/01/2024"),
+                Text("Wicliff Estate"),
               ),
               DataCell(
-                Text("Mac'Migel Hanis"),
-              ),
-              DataCell(
-                Text("USD 850"),
+                Text("Ground Flow"),
               ),
             ],
           ),
           DataRow(
             cells: [
               DataCell(
-                Text("01/02/2024"),
+                Text("Wicliff Estate"),
               ),
               DataCell(
-                Text("Mitch WinStone"),
-              ),
-              DataCell(
-                Text("USD 1,000"),
+                Text("Top Floor"),
               ),
             ],
           ),
           DataRow(
             cells: [
               DataCell(
-                Text("03/03/2024"),
+                Text("Miore Tower"),
               ),
               DataCell(
-                Text("Abdul Krimlin"),
-              ),
-              DataCell(
-                Text("USD 2,560"),
+                Text("FK - 0493"),
               ),
             ],
           ),
@@ -234,65 +219,65 @@ class DataTable1 extends StatelessWidget {
       child: DataTable(
         columns: const [
           DataColumn(
-            label: Text("Date"),
+            label: Text("Property"),
           ),
           DataColumn(
-            label: Text("Name"),
+            label: Text("Unit"),
           ),
           DataColumn(
-            label: Text("Paid"),
+            label: Text("Tenant"),
           ),
         ],
         rows: const [
           DataRow(
             cells: [
               DataCell(
-                Text("20/02/2024"),
+                Text("Wicliff Estate"),
+              ),
+              DataCell(
+                Text("First Floor"),
               ),
               DataCell(
                 Text("Alison Kyrill"),
               ),
-              DataCell(
-                Text("USD 1,500"),
-              ),
             ],
           ),
           DataRow(
             cells: [
               DataCell(
-                Text("28/01/2024"),
+                Text("Wicliff Estate"),
+              ),
+              DataCell(
+                Text("Ground Flow"),
               ),
               DataCell(
                 Text("Mac'Migel Hanis"),
               ),
-              DataCell(
-                Text("USD 850"),
-              ),
             ],
           ),
           DataRow(
             cells: [
               DataCell(
-                Text("01/02/2024"),
+                Text("Wicliff Estate"),
+              ),
+              DataCell(
+                Text("Top Floor"),
               ),
               DataCell(
                 Text("Mitch WinStone"),
               ),
-              DataCell(
-                Text("USD 1,000"),
-              ),
             ],
           ),
           DataRow(
             cells: [
               DataCell(
-                Text("03/03/2024"),
+                Text("Miore Tower"),
+              ),
+              DataCell(
+                Text("FK - 0493"),
               ),
               DataCell(
                 Text("Abdul Krimlin"),
-              ),
-              DataCell(
-                Text("USD 2,560"),
               ),
             ],
           ),

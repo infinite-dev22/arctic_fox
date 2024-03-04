@@ -4,14 +4,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:smart_rent/pages/bottom_nav_bar/bottom_nav_bar_page.dart';
 import 'package:smart_rent/pages/currency/bloc/currency_bloc.dart';
+import 'package:smart_rent/pages/dashboard/bloc/dashboard_bloc.dart';
 import 'package:smart_rent/pages/floor/bloc/floor_bloc.dart';
 import 'package:smart_rent/pages/period/bloc/period_bloc.dart';
+import 'package:smart_rent/pages/root/bloc/nav_bar_bloc.dart';
+import 'package:smart_rent/pages/root/root_page.dart';
 import 'package:smart_rent/pages/tenant/bloc/tenant_bloc.dart';
 import 'package:smart_rent/pages/tenant_unit/bloc/tenant_unit_bloc.dart';
 import 'package:smart_rent/pages/unit/bloc/unit_bloc.dart';
-import 'package:smart_rent/screens/auth/initial_screen.dart';
 import 'package:smart_rent/utils/app_prefs.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -27,6 +28,12 @@ void main() async {
   runApp(
     MultiBlocProvider(
       providers: [
+        BlocProvider<NavBarBloc>(
+          create: (context) => NavBarBloc(),
+        ),
+        BlocProvider<DashboardBloc>(
+          create: (context) => DashboardBloc(),
+        ),
         BlocProvider<CurrencyBloc>(
           create: (context) => CurrencyBloc(),
         ),
@@ -81,24 +88,25 @@ class _MyAppState extends State<MyApp> {
     return ResponsiveSizer(
       builder: (context, orientation, screenType) {
         return GetMaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Smart Rent',
-          theme: ThemeData(
-            // colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-            useMaterial3: true,
-          ),
-          // home: HomePage(),
-          home: userStorage.read('isLoggedIn')
-              ? BottomNavBarPage()
-              : InitialScreen(),
-          // home: CountryCityListScreen(),
+            debugShowCheckedModeBanner: false,
+            title: 'Smart Rent',
+            theme: ThemeData(
+              // colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+              useMaterial3: true,
+            ),
+            // home: HomePage(),
+            home: /*userStorage.read('isLoggedIn')
+              ? */
+                RootPage()
+            // : InitialScreen(),
+            // home: CountryCityListScreen(),
 
-          // home: const LoginScreen(),
+            // home: const LoginScreen(),
 
-          // home: UserListScreen(),
-          // home: ResetPasswordScreen(email: ''),
-          // home: VerifyPhoneOtpScreen(phone: '+256785556722'),
-        );
+            // home: UserListScreen(),
+            // home: ResetPasswordScreen(email: ''),
+            // home: VerifyPhoneOtpScreen(phone: '+256785556722'),
+            );
       },
     );
   }

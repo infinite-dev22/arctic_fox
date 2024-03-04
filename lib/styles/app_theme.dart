@@ -4,10 +4,12 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 
 class AppTheme {
   static const primary = Color(0xFF1467CB); // 183D5D
+  static const primaryDarker = Color(0xFF052E60); // 183D5D
   static const secondary = Color(0xFFCBE1F3);
   static const shadowColor = Colors.black;
   static const appBgColor = Color(0xFFF2F1F6);
   static const itemBgColor = Colors.white;
+  static const bottomBar = Colors.white;
 
   // static const appBgColor = Color(0xFFF2F1F6);
   static const appWidgetColor = Color(0xFFF2F1F6);
